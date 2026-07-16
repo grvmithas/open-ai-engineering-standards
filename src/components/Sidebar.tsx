@@ -44,7 +44,7 @@ export default function Sidebar({ onLinkClick }: SidebarProps) {
   const toggleCategory = (slug: string) => {
     setExpandedCategories(prev => ({
       ...prev,
-      [slug]: !prev[slug]
+      [slug]: !prev[slug],
     }));
   };
 
@@ -59,13 +59,13 @@ export default function Sidebar({ onLinkClick }: SidebarProps) {
 
     return (
       <li key={`${item.slug}-${depth}`}>
-        <div className="flex items-center justify-between group">
+        <div className="group flex items-center justify-between">
           {hasChildren ? (
             <div
-              className={`w-full flex items-center rounded-lg text-xs font-semibold select-none transition duration-150 ${
-                isActive 
-                  ? 'bg-violet-950/20 text-violet-300 border border-violet-950/30' 
-                  : 'text-slate-300 hover:bg-slate-900 hover:text-white'
+              className={`flex w-full items-center rounded-lg text-xs font-semibold transition duration-150 select-none ${
+                isActive
+                  ? 'border border-[var(--accent-border)] bg-[var(--accent-soft)] text-[var(--primary-dark)]'
+                  : 'text-[var(--shell-muted)] hover:bg-[var(--shell-hover)] hover:text-white'
               }`}
             >
               <Link
@@ -77,7 +77,7 @@ export default function Sidebar({ onLinkClick }: SidebarProps) {
                 {item.icon && <span className="text-sm">{item.icon}</span>}
                 <span className="truncate">{item.title}</span>
                 {item.badge && (
-                  <span className="badge badge-purple px-1 py-0.5 text-[8px] font-bold">
+                  <span className="badge badge-teal px-1 py-0.5 text-[8px] font-bold">
                     {item.badge}
                   </span>
                 )}
@@ -89,26 +89,26 @@ export default function Sidebar({ onLinkClick }: SidebarProps) {
                 aria-label={`${isExpanded ? 'Collapse' : 'Expand'} ${item.title}`}
                 className="p-2.5"
               >
-              <span className={`text-[10px] text-slate-500 transition duration-150 ${isExpanded ? 'rotate-90' : ''}`}>
-                ▶
-              </span>
+                <span className={`text-[10px] text-[var(--shell-muted)] transition duration-150 ${isExpanded ? 'rotate-90' : ''}`}>
+                  ▶
+                </span>
               </button>
             </div>
           ) : (
             <Link
               href={href}
               onClick={onLinkClick}
-              className={`w-full flex items-center gap-2 py-1.5 px-3 rounded-lg text-xs font-semibold transition duration-150 ${
-                isActive 
-                  ? 'bg-violet-950/35 text-violet-300 border border-violet-950/30 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]' 
-                  : 'text-slate-300 hover:bg-slate-900 hover:text-white'
+              className={`flex w-full items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-semibold transition duration-150 ${
+                isActive
+                  ? 'border border-[var(--accent-border)] bg-[var(--accent-soft)] text-[var(--primary-dark)]'
+                  : 'text-[var(--shell-muted)] hover:bg-[var(--shell-hover)] hover:text-white'
               }`}
               style={{ paddingLeft: `${0.75 + depth * 0.65}rem` }}
             >
               {item.icon && <span className="text-sm">{item.icon}</span>}
               <span>{item.title}</span>
               {item.badge && (
-                <span className="badge badge-purple px-1 py-0.5 text-[8px] font-bold">
+                <span className="badge badge-teal px-1 py-0.5 text-[8px] font-bold">
                   {item.badge}
                 </span>
               )}
@@ -117,7 +117,7 @@ export default function Sidebar({ onLinkClick }: SidebarProps) {
         </div>
 
         {hasChildren && isExpanded && (
-          <ul className="mt-1 space-y-1 border-l border-violet-950/20">
+          <ul className="mt-1 space-y-1 border-l border-[var(--shell-border)]">
             {item.children!.map(child => renderNavItem(child, depth + 1))}
           </ul>
         )}
@@ -127,21 +127,21 @@ export default function Sidebar({ onLinkClick }: SidebarProps) {
 
   return (
     <nav aria-label="Documentation">
-      <label className="mb-3 grid gap-1.5 px-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+      <label className="mb-3 grid gap-1.5 px-1 text-[10px] font-bold uppercase tracking-wider text-[var(--shell-muted)]">
         Filter navigation
         <input
           type="search"
           value={query}
           onChange={event => setQuery(event.target.value)}
           placeholder="Title or path…"
-          className="rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-xs font-normal normal-case tracking-normal text-white outline-none placeholder:text-slate-600 focus:border-violet-700 focus:ring-2 focus:ring-violet-700/20"
+          className="rounded-lg border border-[var(--shell-border)] bg-[var(--shell)] px-3 py-2 text-xs font-normal normal-case tracking-normal text-white outline-none placeholder:text-[var(--shell-muted)] focus:border-[var(--accent)] focus:ring-2 focus:ring-blue-500/30"
         />
       </label>
       <ul className="space-y-1">
         {visibleNavigation.map(item => renderNavItem(item))}
       </ul>
       {visibleNavigation.length === 0 && (
-        <p className="px-3 py-4 text-center text-xs text-slate-500">No navigation entries match.</p>
+        <p className="px-3 py-4 text-center text-xs text-[var(--shell-muted)]">No navigation entries match.</p>
       )}
     </nav>
   );

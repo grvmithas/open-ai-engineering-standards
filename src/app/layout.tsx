@@ -1,71 +1,128 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
+import Analytics from '@/components/Analytics';
+import {
+  PRODUCT_NAME,
+  PRODUCT_SHORT,
+  PRODUCT_TAGLINE,
+  STEWARD,
+} from '@/lib/site';
+import {
+  DEFAULT_DESCRIPTION,
+  SEO_KEYWORDS,
+  SITE_URL,
+  organizationJsonLd,
+  softwareJsonLd,
+  websiteJsonLd,
+} from '@/lib/seo';
 import './globals.css';
 
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
+  display: 'swap',
 });
 
 const jetBrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-jetbrains-mono',
+  display: 'swap',
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://oaies.dev';
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b1220' },
+  ],
+  width: 'device-width',
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: 'OAIES — Open AI Engineering Standard',
-    template: '%s | OAIES',
+    default: `${PRODUCT_SHORT} — ${PRODUCT_NAME} | AIDLC, Prompts, Agents, MCP, Evals`,
+    template: `%s | ${PRODUCT_SHORT}`,
   },
-  description:
-    'The production-ready, enterprise-grade AI Engineering Standard. Covers prompt engineering, context engineering, agent engineering, LLMOps, AI SDLC, and enterprise AI governance.',
-  keywords: [
-    'AI Engineering', 'Prompt Engineering', 'Context Engineering', 'Agent Engineering',
-    'LLMOps', 'PromptOps', 'AI SDLC', 'Enterprise AI', 'Multi-Agent Systems',
-    'RAG', 'LLM', 'Claude', 'GPT', 'Gemini', 'MCP', 'AI Architecture',
-    'AI Governance', 'AI Standards', 'OAIES',
-  ],
-  authors: [{ name: 'OAIES Contributors' }],
-  creator: 'OAIES',
+  description: DEFAULT_DESCRIPTION,
+  applicationName: PRODUCT_SHORT,
+  authors: [{ name: STEWARD.name, url: `${SITE_URL}/about` }],
+  creator: STEWARD.name,
+  publisher: PRODUCT_SHORT,
+  category: 'Technology',
+  keywords: [...SEO_KEYWORDS],
+  referrer: 'origin-when-cross-origin',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: '/',
+    languages: {
+      'en-US': '/',
+      en: '/',
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    title: 'OAIES — Open AI Engineering Standard',
-    description: 'The production-ready, enterprise-grade AI Engineering Standard. The "create-react-app" equivalent for AI Engineering.',
-    siteName: 'OAIES',
+    url: SITE_URL,
+    siteName: `${PRODUCT_SHORT} — ${PRODUCT_NAME}`,
+    title: `${PRODUCT_SHORT} — ${PRODUCT_NAME}`,
+    description: DEFAULT_DESCRIPTION,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'OAIES — Open AI Engineering Standard',
-    description: 'The production-ready, enterprise-grade AI Engineering Standard.',
+    title: `${PRODUCT_SHORT} — ${PRODUCT_NAME}`,
+    description: PRODUCT_TAGLINE,
+    creator: '@grvmithas',
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
+  verification: {
+    ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+      : {}),
+    ...(process.env.NEXT_PUBLIC_YANDEX_VERIFICATION
+      ? { yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION }
+      : {}),
+    ...(process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+      ? { other: { 'msvalidate.01': process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION } }
+      : {}),
+  },
+  other: {
+    'geo.region': 'IN',
+    'geo.placename': 'India',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const jsonLd = [organizationJsonLd(), websiteJsonLd(), softwareJsonLd()];
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+        <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM index" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'WebSite',
-              name: 'OAIES — Open AI Engineering Standard',
-              description: 'The production-ready, enterprise-grade AI Engineering Standard',
-              url: siteUrl,
-            }),
-          }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className={`${inter.variable} ${jetBrainsMono.variable}`}>
         <a href="#main-content" className="skip-link">Skip to main content</a>
         {children}
+        <Analytics />
       </body>
     </html>
   );

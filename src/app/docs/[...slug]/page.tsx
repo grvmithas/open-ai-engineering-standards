@@ -5,13 +5,13 @@ import { getPrevNext } from '@/lib/navigation';
 import MarkdownRenderer from '@/components/MarkdownRenderer';
 import TableOfContents from '@/components/TableOfContents';
 import Link from 'next/link';
-import { REPOSITORY_URL, SITE_VERSION } from '@/lib/site';
+import { PRODUCT_SHORT, REPOSITORY_URL, SITE_VERSION, STEWARD } from '@/lib/site';
+import { articleJsonLd, breadcrumbJsonLd, SEO_KEYWORDS } from '@/lib/seo';
 
 interface PageProps {
   params: Promise<{ slug: string[] }> | { slug: string[] };
 }
 
-// Generate static params for all docs to build statically
 export async function generateStaticParams() {
   const slugs = getAllDocSlugs();
   return slugs.map(slug => ({
@@ -21,7 +21,6 @@ export async function generateStaticParams() {
 
 export const dynamicParams = false;
 
-// Generate SEO metadata dynamically for each document page
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolvedParams = await params;
   const slug = resolvedParams.slug.join('/');
@@ -29,18 +28,33 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!doc) return {};
 
+  const path = `/docs/${slug}`;
+  const title = doc.title;
+  const description =
+    doc.description ||
+    `${doc.title} — ${PRODUCT_SHORT} handbook for production AI engineering.`;
+
   return {
-    title: `${doc.title} | Open AI Engineering Standard`,
-    description: doc.description,
+    title,
+    description,
+    keywords: [doc.title, PRODUCT_SHORT, ...SEO_KEYWORDS.slice(0, 10)],
+    authors: [{ name: STEWARD.name, url: '/about' }],
+    alternates: { canonical: path },
     openGraph: {
-      title: `${doc.title} | Open AI Engineering Standard`,
-      description: doc.description,
+      title: `${title} | ${PRODUCT_SHORT}`,
+      description,
+      url: path,
       type: 'article',
+      siteName: PRODUCT_SHORT,
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${doc.title} | Open AI Engineering Standard`,
-      description: doc.description,
+      title: `${title} | ${PRODUCT_SHORT}`,
+      description,
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   };
 }
@@ -67,51 +81,67 @@ export default async function DocPage({ params }: PageProps) {
   });
 
   return (
-    <div className="flex flex-col lg:flex-row gap-10 items-start">
-      
+    <div className="flex items-start gap-10 xl:gap-14">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            articleJsonLd({
+              title: doc.title,
+              description: doc.description || doc.title,
+              path: `/docs/${slug}`,
+            }),
+            breadcrumbJsonLd([
+              { name: 'Docs', path: '/docs/README' },
+              ...breadcrumbs.map((crumb, idx) => ({
+                name: crumb,
+                path: `/docs/${slug.split('/').slice(0, idx + 1).join('/')}`,
+              })),
+            ]),
+          ]),
+        }}
+      />
+
       {/* ─── Document Content ─── */}
-      <article className="flex-1 min-w-0">
+      <article className="min-w-0 flex-1" style={{ maxWidth: '52rem' }}>
         
         {/* Breadcrumbs */}
-        <div className="flex items-center gap-1.5 text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-6">
-          <Link href="/docs" className="hover:text-slate-300">Docs</Link>
+        <div className="mb-6 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--ink-muted)]">
+          <Link href="/docs" className="hover:text-[var(--ink)]">Docs</Link>
           {breadcrumbs.map((crumb, idx) => (
             <span key={idx} className="flex items-center gap-1.5">
               <span>/</span>
-              <span className={idx === breadcrumbs.length - 1 ? 'text-violet-400 font-bold' : ''}>
+              <span className={idx === breadcrumbs.length - 1 ? 'font-bold text-[var(--accent)]' : ''}>
                 {crumb}
               </span>
             </span>
           ))}
         </div>
 
-        {/* Content Body */}
         <MarkdownRenderer blocks={doc.blocks} />
 
-        {/* Edit/Contribute footer info */}
-        <div className="mt-12 pt-6 border-t border-violet-950/20 flex flex-wrap gap-4 items-center justify-between text-xs text-slate-500">
-          <span>Version: OAIES v{SITE_VERSION}</span>
+        <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-[var(--paper-border)] pt-6 text-xs text-[var(--ink-muted)]">
+          <span>Version: AIES v{SITE_VERSION}</span>
           <a
             href={`${REPOSITORY_URL}/edit/main/${doc.sourcePath}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-slate-300 flex items-center gap-1"
+            className="flex items-center gap-1 hover:text-[var(--ink)]"
           >
             ✏️ Edit this page on GitHub
           </a>
         </div>
 
-        {/* Prev / Next Page Controls */}
-        <div className="mt-8 pt-8 border-t border-violet-950/20 flex gap-4 justify-between items-stretch">
+        <div className="mt-8 flex items-stretch justify-between gap-4 border-t border-[var(--paper-border)] pt-8">
           {prev ? (
             <Link
               href={`/docs/${prev.slug}`}
-              className="flex-1 max-w-[48%] flex flex-col p-4 rounded-xl border border-violet-950/20 bg-slate-950/20 hover:bg-slate-950/50 hover:border-violet-900/40 transition duration-150 group"
+              className="group flex max-w-[48%] flex-1 flex-col rounded-xl border border-[var(--paper-border)] bg-[var(--paper-subtle)] p-4 transition duration-150 hover:border-[var(--accent-border)] hover:bg-[var(--accent-soft)]"
             >
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">
+              <span className="mb-1 text-[10px] font-bold uppercase tracking-widest text-[var(--ink-muted)]">
                 Previous Chapter
               </span>
-              <span className="text-xs font-semibold text-slate-300 group-hover:text-violet-300 transition duration-150 line-clamp-1">
+              <span className="line-clamp-1 text-xs font-semibold text-[var(--ink-secondary)] transition duration-150 group-hover:text-[var(--accent-hover)]">
                 ← {prev.title}
               </span>
             </Link>
@@ -122,12 +152,12 @@ export default async function DocPage({ params }: PageProps) {
           {next ? (
             <Link
               href={`/docs/${next.slug}`}
-              className="flex-1 max-w-[48%] flex flex-col p-4 rounded-xl border border-violet-950/20 bg-slate-950/20 hover:bg-slate-950/50 hover:border-violet-900/40 transition duration-150 text-right group"
+              className="group flex max-w-[48%] flex-1 flex-col rounded-xl border border-[var(--paper-border)] bg-[var(--paper-subtle)] p-4 text-right transition duration-150 hover:border-[var(--accent-border)] hover:bg-[var(--accent-soft)]"
             >
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">
+              <span className="mb-1 text-[10px] font-bold uppercase tracking-widest text-[var(--ink-muted)]">
                 Next Chapter
               </span>
-              <span className="text-xs font-semibold text-slate-300 group-hover:text-violet-300 transition duration-150 line-clamp-1">
+              <span className="line-clamp-1 text-xs font-semibold text-[var(--ink-secondary)] transition duration-150 group-hover:text-[var(--accent-hover)]">
                 {next.title} →
               </span>
             </Link>
@@ -139,7 +169,7 @@ export default async function DocPage({ params }: PageProps) {
       </article>
 
       {/* ─── Table of Contents (Desktop Sidebar) ─── */}
-      <aside className="hidden lg:block w-[200px] sticky top-[100px] max-h-[calc(100vh-120px)] overflow-y-auto pr-2 scrollbar shrink-0">
+      <aside className="sticky top-[100px] hidden w-[220px] shrink-0 overflow-y-auto pr-1 scrollbar lg:block" style={{ maxHeight: 'calc(100vh - 120px)' }}>
         <TableOfContents headings={doc.headings} />
       </aside>
 

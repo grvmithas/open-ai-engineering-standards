@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { patternCatalog } from '@/lib/navigation';
 
 interface PatternsMegaMenuProps {
-  /** Visual density for header contexts */
   compact?: boolean;
 }
 
@@ -39,8 +38,8 @@ export default function PatternsMegaMenu({ compact = false }: PatternsMegaMenuPr
         onClick={() => setOpen(current => !current)}
         className={
           compact
-            ? 'rounded-lg border border-violet-950/30 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-950/40 hover:text-white'
-            : 'rounded-md px-3 py-1.5 text-sm font-medium text-slate-400 transition hover:text-white'
+            ? 'rounded-lg border border-[var(--shell-border)] px-3 py-1.5 text-[11px] font-semibold text-[var(--shell-muted)] transition hover:border-slate-500 hover:text-white'
+            : 'rounded-md px-3 py-1.5 text-sm font-medium text-[var(--shell-muted)] transition hover:text-white'
         }
       >
         Patterns ▾
@@ -49,17 +48,17 @@ export default function PatternsMegaMenu({ compact = false }: PatternsMegaMenuPr
         <div
           id={menuId}
           role="menu"
-          className="absolute right-0 z-50 mt-2 w-[min(92vw,720px)] rounded-2xl border border-violet-900/40 bg-[#0c0c16]/98 p-4 shadow-2xl backdrop-blur-md"
+          className="absolute right-0 z-50 mt-2 w-[min(92vw,720px)] rounded-2xl border border-[var(--paper-border)] bg-[var(--paper)] p-4 text-[var(--ink)] shadow-xl"
         >
           <div className="mb-3 flex items-end justify-between gap-3">
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-violet-300">AI Engineering Patterns</p>
-              <p className="mt-1 text-xs text-slate-400">Twelve operational envelopes — open the pattern README, not a dump of 13 stubs.</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--accent)]">AI Engineering Patterns</p>
+              <p className="mt-1 text-xs text-[var(--ink-muted)]">Twelve operational envelopes — open the pattern README.</p>
             </div>
             <Link
               href="/docs/patterns/README"
               onClick={() => setOpen(false)}
-              className="shrink-0 text-xs font-semibold text-violet-300 underline decoration-violet-700 underline-offset-4 hover:text-violet-200"
+              className="shrink-0 text-xs font-semibold text-[var(--accent)] underline decoration-[var(--accent-border)] underline-offset-4 hover:text-[var(--accent-hover)]"
             >
               Pattern library →
             </Link>
@@ -71,10 +70,10 @@ export default function PatternsMegaMenu({ compact = false }: PatternsMegaMenuPr
                 href={`/docs/${pattern.slug}`}
                 role="menuitem"
                 onClick={() => setOpen(false)}
-                className="rounded-xl border border-slate-800 bg-slate-950/50 p-3 transition hover:border-violet-700/50 hover:bg-violet-950/20"
+                className="rounded-xl border border-[var(--paper-border)] bg-[var(--paper-subtle)] p-3 transition hover:border-[var(--accent-border)] hover:bg-[var(--accent-soft)]"
               >
-                <div className="text-sm font-bold text-white">{pattern.title}</div>
-                <div className="mt-1 text-[11px] leading-4 text-slate-400">{pattern.outcome}</div>
+                <div className="text-sm font-bold text-[var(--ink)]">{pattern.title}</div>
+                <div className="mt-1 text-[11px] leading-4 text-[var(--ink-muted)]">{pattern.outcome}</div>
               </Link>
             ))}
           </div>

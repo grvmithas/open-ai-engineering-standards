@@ -1,0 +1,27 @@
+# AIES — AI Engineering Standard
+
+> Open, vendor-neutral community standard and handbook for production AI delivery.
+
+Site: https://open-ai-engineering-standards.vercel.app
+Repository: https://github.com/grvmithas/open-ai-engineering-standards
+Steward: Gaurav Mithas (https://open-ai-engineering-standards.vercel.app/about)
+
+## Primary entry points
+
+- / — Product homepage (mission, capabilities, adoption roadmap)
+- /docs/README — Documentation index
+- /docs/handbook/README — Practitioner handbook
+- /docs/principles — Engineering principles
+- /docs/roadmap — Adoption roadmap
+- /docs/08-ai-sdlc/README — AIDLC / AI SDLC
+- /docs/patterns/README — Operational AI engineering patterns
+- /portal — Normative controls & standards portal
+- /about — Steward profile and contact
+
+## Topics covered
+
+AIDLC, AI SDLC, prompt engineering, context engineering, skills vs agents, MCP, memory/RAG, evaluation gates, LLMOps, HITL, hooks, enterprise governance, org playbooks.
+
+## Optional
+
+Set NEXT_PUBLIC_SITE_URL in production so sitemap, canonicals, and this file’s absolute URLs stay aligned.

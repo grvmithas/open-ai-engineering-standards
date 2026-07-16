@@ -13,7 +13,9 @@ export const navigation: NavItem[] = [
     slug: 'README',
     icon: '🚀',
     children: [
-      { title: 'Handbook overview', slug: 'handbook/README', badge: 'New' },
+      { title: 'Principles', slug: 'principles', badge: 'Draft' },
+      { title: 'Roadmap', slug: 'roadmap' },
+      { title: 'Handbook overview', slug: 'handbook/README', badge: 'Daily' },
       { title: 'Contributing', slug: 'CONTRIBUTING' },
       { title: 'Changelog', slug: 'CHANGELOG' },
     ],

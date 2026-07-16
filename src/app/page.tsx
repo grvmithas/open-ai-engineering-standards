@@ -1,381 +1,387 @@
+import type { CSSProperties } from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import PatternsMegaMenu from '@/components/PatternsMegaMenu';
-import { REPOSITORY_URL, SITE_VERSION } from '@/lib/site';
+import {
+  PRODUCT_NAME,
+  PRODUCT_SHORT,
+  PRODUCT_TAGLINE,
+  RELEASE_STATUS,
+  RELEASE_STATUS_NOTE,
+  REPOSITORY_URL,
+  SITE_VERSION,
+} from '@/lib/site';
+import { DEFAULT_DESCRIPTION, SEO_KEYWORDS } from '@/lib/seo';
 
-const MATURITY_LEVELS = [
-  { level: 0, slug: '00-foundations', title: 'AI Foundations', desc: 'The Harness Principle, failure modes, core mental models', icon: '🧱', color: '#6366f1' },
-  { level: 1, slug: '01-prompt-engineering', title: 'Prompt Engineering', desc: 'XML-structured prompts, anti-patterns, system prompt templates', icon: '✍️', color: '#8b5cf6' },
-  { level: 2, slug: '02-context-engineering', title: 'Context Engineering', desc: 'Context fidelity, 13 context types, progressive disclosure', icon: '📦', color: '#a855f7' },
-  { level: 3, slug: '03-skill-engineering', title: 'Skill Engineering', desc: 'Reusable procedural knowledge for debug, review, security', icon: '🛠️', color: '#c026d3' },
-  { level: 4, slug: '04-agent-engineering', title: 'Agent Engineering', desc: 'OAIES agent spec, hooks, subagents, termination criteria', icon: '🤖', color: '#db2777' },
-  { level: 5, slug: '05-multi-agent-systems', title: 'Multi-Agent Systems', desc: 'Supervisor, pipeline, parallel patterns, communication protocol', icon: '🕸️', color: '#e11d48' },
-  { level: 6, slug: '06-memory-knowledge', title: 'Memory & Knowledge', desc: 'Hybrid RAG, vector databases, episodic and semantic memory', icon: '🧠', color: '#dc2626' },
-  { level: 7, slug: '07-llmops', title: 'LLMOps', desc: 'Evaluation gates, PromptOps, cost optimization, observability', icon: '⚙️', color: '#ea580c' },
-  { level: 8, slug: '08-ai-sdlc', title: 'AI SDLC', desc: 'Stage workflow with 15 production prompts and quality gates', icon: '🔄', color: '#d97706' },
-  { level: 9, slug: '09-enterprise-ai', title: 'Enterprise AI', desc: 'Governance, EU AI Act, provider-neutral architecture, audit logging', icon: '🏢', color: '#65a30d' },
-  { level: 10, slug: '10-ai-org-playbook', title: 'AI Org Playbook', desc: 'Roles, operating models, hiring criteria, culture principles', icon: '📖', color: '#059669' },
+export const metadata: Metadata = {
+  title: `${PRODUCT_SHORT} — ${PRODUCT_NAME}`,
+  description: DEFAULT_DESCRIPTION,
+  keywords: [...SEO_KEYWORDS],
+  alternates: { canonical: '/' },
+  openGraph: {
+    title: `${PRODUCT_SHORT} — ${PRODUCT_NAME}`,
+    description: DEFAULT_DESCRIPTION,
+    url: '/',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${PRODUCT_SHORT} — ${PRODUCT_NAME}`,
+    description: PRODUCT_TAGLINE,
+  },
+};
+
+const CAPABILITIES = [
+  { title: 'AI SDLC / AIDLC', desc: 'Stage gates, plans, HITL, and production prompts', href: '/docs/08-ai-sdlc/README' },
+  { title: 'Prompt engineering', desc: 'Structured prompts, anti-patterns, templates', href: '/docs/01-prompt-engineering/README' },
+  { title: 'Context engineering', desc: 'Minimal high-signal packages, progressive disclosure', href: '/docs/handbook/how-to-give-context' },
+  { title: 'Skills & agents', desc: 'Procedures, tool-bounded actors, termination', href: '/docs/handbook/skills-vs-prompts-vs-agents' },
+  { title: 'Patterns', desc: 'Planner, reviewer, release, hotfix, and more', href: '/docs/patterns/README' },
+  { title: 'Memory & knowledge', desc: 'Hybrid RAG, lifecycle, poisoning defenses', href: '/docs/06-memory-knowledge/README' },
+  { title: 'MCP integrations', desc: 'When to add tools — and how not to', href: '/docs/handbook/mcp-when-and-how' },
+  { title: 'Evaluation & LLMOps', desc: 'Gates, judges, tracing, cost discipline', href: '/docs/handbook/evals-as-quality-gates' },
+  { title: 'Governance', desc: 'Enterprise controls, evidence, SoA semantics', href: '/docs/standard/README' },
+  { title: 'Org playbook', desc: 'Roles, operating model, assurance culture', href: '/docs/10-ai-org-playbook/README' },
 ];
 
-const FEATURES = [
-  {
-    icon: '📘',
-    title: 'Practitioner Handbook',
-    desc: 'Skills vs prompts, context packages, planning gates, HITL, PR review, evals, hooks, MCP, and token discipline — written for teams that ship UI with AI.',
-    href: '/docs/handbook/README',
-  },
-  {
-    icon: '🎯',
-    title: '12 AI Engineering Patterns',
-    desc: 'Operational envelopes (planner, reviewer, release, hotfix…). Open the pattern README from the Patterns menu — not a dump of stub components.',
-    href: '/docs/patterns/README',
-  },
-  {
-    icon: '🔒',
-    title: 'Security-First by Default',
-    desc: 'Security skill, review gates, and enterprise control maps. High-impact effects require human approval.',
-    href: '/docs/03-skill-engineering/skills/security.skill',
-  },
-  {
-    icon: '📊',
-    title: 'Evaluation CI/CD Gate',
-    desc: 'GitHub Actions workflow that blocks PRs when LLM evaluation tests fail. Prompts are treated like code.',
-    href: '/docs/handbook/evals-as-quality-gates',
-  },
-  {
-    icon: '🔄',
-    title: 'AI SDLC + 15 production prompts',
-    desc: 'Stage workflow with versioned prompts for story, plan, coding, security, incident, RCA, and knowledge capture.',
-    href: '/docs/08-ai-sdlc/README',
-  },
-  {
-    icon: '🍳',
-    title: 'Technology cookbooks',
-    desc: 'React, Next.js, microfrontends, and more — native commands, failure classes, and rollback — linked from curated nav.',
-    href: '/docs/cookbook/README',
-  },
+const PRINCIPLES = [
+  'Human first',
+  'AI assisted',
+  'Reproducible',
+  'Observable',
+  'Testable',
+  'Deterministic where it matters',
+  'Vendor neutral',
+  'Secure by default',
+  'Context rich, noise poor',
+  'Documentation driven',
 ];
+
+const ROADMAP = [
+  { ver: 'A1', title: 'Corpus publish — prompts, skills, MCP, evals, AIDLC, patterns', state: 'done' },
+  { ver: 'A2', title: 'Packaging & discoverability for external contributors', state: 'current' },
+  { ver: 'A3', title: 'External pilots with published evidence notes', state: 'next' },
+  { ver: 'A4', title: 'Shared governance + non-steward RFC reviewers', state: 'planned' },
+  { ver: 'A5', title: 'Inter-assessor SoA reliability notes', state: 'planned' },
+  { ver: 'S1', title: 'Community-standard claim (adoption earned)', state: 'future' },
+];
+
+const navLink: CSSProperties = {
+  padding: '0.4rem 0.75rem',
+  borderRadius: 6,
+  color: 'var(--shell-muted)',
+  fontSize: '0.85rem',
+  textDecoration: 'none',
+  fontWeight: 500,
+};
+
+const paperCard: CSSProperties = {
+  background: 'var(--paper)',
+  color: 'var(--ink)',
+  border: '1px solid var(--paper-border)',
+  borderRadius: 12,
+  boxShadow: 'var(--shadow-sm)',
+};
 
 export default function HomePage() {
   return (
-    <main id="main-content" style={{ minHeight: '100vh', background: 'var(--bg)' }}>
-
-      {/* ─── Header ─── */}
+    <main id="main-content" style={{ minHeight: '100vh', background: 'var(--shell)', color: 'var(--shell-text)' }}>
       <header style={{
         position: 'sticky', top: 0, zIndex: 50,
-        background: 'rgba(5, 5, 9, 0.85)',
-        backdropFilter: 'blur(16px)',
-        borderBottom: '1px solid var(--border)',
+        background: 'rgba(17, 24, 39, 0.92)',
+        backdropFilter: 'blur(12px)',
+        borderBottom: '1px solid var(--shell-border)',
         height: 'var(--header-h)',
         display: 'flex', alignItems: 'center',
       }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', width: '100%', padding: '0 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', width: '100%', padding: '0 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-            <span style={{ fontSize: '1.25rem' }}>⚡</span>
-            <span style={{ fontWeight: 800, letterSpacing: '-0.02em', color: '#fff', fontSize: '0.95rem' }}>OAIES</span>
-            <span style={{ padding: '0.1rem 0.45rem', background: 'rgba(139,92,246,0.15)', color: 'var(--primary-light)', borderRadius: 4, fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', border: '1px solid rgba(139,92,246,0.3)' }}>v{SITE_VERSION}</span>
+            <span style={{ fontSize: '1.25rem' }} aria-hidden>⚡</span>
+            <span style={{ fontWeight: 800, letterSpacing: '-0.02em', color: '#fff', fontSize: '0.95rem' }}>{PRODUCT_SHORT}</span>
+            <span style={{
+              padding: '0.1rem 0.45rem',
+              background: 'rgba(245, 158, 11, 0.15)',
+              color: '#fcd34d',
+              borderRadius: 4,
+              fontSize: '0.6rem',
+              fontWeight: 700,
+              letterSpacing: '0.04em',
+              textTransform: 'uppercase',
+              border: '1px solid rgba(245, 158, 11, 0.35)',
+            }}>
+              {RELEASE_STATUS}
+            </span>
           </Link>
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-            <Link href="/docs/handbook/README" style={{ padding: '0.4rem 0.85rem', borderRadius: 6, color: 'var(--text-subtle)', fontSize: '0.85rem', textDecoration: 'none', transition: 'color 0.15s', fontWeight: 500 }}>Handbook</Link>
-            <Link href="/docs/README" style={{ padding: '0.4rem 0.85rem', borderRadius: 6, color: 'var(--text-subtle)', fontSize: '0.85rem', textDecoration: 'none', transition: 'color 0.15s', fontWeight: 500 }}>Docs</Link>
-            <Link href="/portal" style={{ padding: '0.4rem 0.85rem', borderRadius: 6, color: 'var(--text-subtle)', fontSize: '0.85rem', textDecoration: 'none', transition: 'color 0.15s', fontWeight: 500 }}>Portal</Link>
+          <nav aria-label="Primary" style={{ display: 'flex', alignItems: 'center', gap: '0.1rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+            <Link href="/docs/principles" style={navLink}>Principles</Link>
+            <Link href="/docs/roadmap" style={navLink}>Roadmap</Link>
+            <Link href="/docs/handbook/README" style={navLink}>Handbook</Link>
             <PatternsMegaMenu />
-            <Link href="/about" style={{ padding: '0.4rem 0.85rem', borderRadius: 6, color: 'var(--text-subtle)', fontSize: '0.85rem', textDecoration: 'none', transition: 'color 0.15s', fontWeight: 500 }}>About</Link>
-            <Link href="/docs/08-ai-sdlc/README" style={{ padding: '0.4rem 0.85rem', borderRadius: 6, color: 'var(--text-subtle)', fontSize: '0.85rem', textDecoration: 'none', transition: 'color 0.15s', fontWeight: 500 }}>SDLC</Link>
-            <Link href="/docs/resources/README" style={{ padding: '0.4rem 0.85rem', borderRadius: 6, color: 'var(--text-subtle)', fontSize: '0.85rem', textDecoration: 'none', transition: 'color 0.15s', fontWeight: 500 }}>Resources</Link>
-            <a
-              href={REPOSITORY_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                marginLeft: '0.5rem',
-                padding: '0.4rem 0.85rem',
-                borderRadius: 8,
-                background: 'rgba(139,92,246,0.1)',
-                color: 'var(--primary-light)',
-                fontSize: '0.85rem',
-                textDecoration: 'none',
-                fontWeight: 600,
-                border: '1px solid rgba(139,92,246,0.25)',
-                transition: 'all 0.15s',
-              }}
-            >
-              GitHub →
+            <Link href="/docs/08-ai-sdlc/README" style={navLink}>AIDLC</Link>
+            <Link href="/portal" style={navLink}>Portal</Link>
+            <Link href="/about" style={navLink}>About</Link>
+            <Link href="/docs/CONTRIBUTING" style={navLink}>Contribute</Link>
+            <a href={REPOSITORY_URL} target="_blank" rel="noopener noreferrer" style={{
+              marginLeft: '0.35rem',
+              padding: '0.4rem 0.85rem',
+              borderRadius: 8,
+              background: 'var(--accent)',
+              color: '#fff',
+              fontSize: '0.85rem',
+              textDecoration: 'none',
+              fontWeight: 600,
+            }}>
+              Repository →
             </a>
           </nav>
         </div>
       </header>
 
-      {/* ─── Hero ─── */}
-      <section style={{ position: 'relative', overflow: 'hidden', padding: '6rem 2rem 5rem' }}>
-        {/* Background glow */}
-        <div style={{
-          position: 'absolute', top: '10%', left: '50%', transform: 'translate(-50%, 0)',
-          width: 800, height: 600,
-          background: 'radial-gradient(ellipse at center, rgba(139,92,246,0.12) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }} />
-        <div style={{ position: 'relative', maxWidth: 900, margin: '0 auto', textAlign: 'center' }}>
-          <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-            <span style={{
-              padding: '0.35rem 1rem',
-              borderRadius: 20,
-              background: 'rgba(139,92,246,0.1)',
-              color: 'var(--primary-light)',
-              fontSize: '0.78rem',
-              fontWeight: 600,
-              letterSpacing: '0.05em',
-              textTransform: 'uppercase',
-              border: '1px solid rgba(139,92,246,0.25)',
-            }}>
-              🚀 The AI Engineering Standard
-            </span>
-          </div>
-
+      <section style={{
+        padding: '4.5rem 2rem 3.5rem',
+        borderBottom: '1px solid var(--shell-border)',
+        background: 'linear-gradient(180deg, #111827 0%, var(--shell) 100%)',
+      }}>
+        <div style={{ maxWidth: 880, margin: '0 auto', textAlign: 'center' }}>
+          <p style={{
+            display: 'inline-block',
+            marginBottom: '1.1rem',
+            padding: '0.35rem 0.9rem',
+            borderRadius: 999,
+            background: 'rgba(37, 99, 235, 0.15)',
+            color: '#93c5fd',
+            fontSize: '0.72rem',
+            fontWeight: 700,
+            letterSpacing: '0.07em',
+            textTransform: 'uppercase',
+            border: '1px solid rgba(37, 99, 235, 0.35)',
+          }}>
+            Open · Community driven · Vendor neutral
+          </p>
           <h1 style={{
-            fontSize: 'clamp(2.5rem, 6vw, 4rem)',
+            fontSize: 'clamp(2.3rem, 5vw, 3.5rem)',
             fontWeight: 800,
             letterSpacing: '-0.03em',
             lineHeight: 1.1,
-            marginBottom: '1.5rem',
-            background: 'linear-gradient(135deg, #fff 0%, #a78bfa 50%, #22d3ee 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
+            marginBottom: '0.9rem',
+            color: '#fff',
           }}>
-            Open AI Engineering<br />Standard
+            {PRODUCT_NAME}
           </h1>
-
-          <p style={{
-            fontSize: '1.15rem',
-            color: 'var(--text-subtle)',
-            maxWidth: 640,
-            margin: '0 auto 2.5rem',
-            lineHeight: 1.7,
-          }}>
-            The production-ready, enterprise-grade foundation for AI systems.
-            One standard. One stack. No exceptions.
+          <p style={{ fontSize: '1.15rem', color: '#d1d5db', maxWidth: 640, margin: '0 auto 0.65rem', lineHeight: 1.65 }}>
+            {PRODUCT_TAGLINE}
           </p>
-
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="/docs/README" style={{
-              padding: '0.75rem 2rem',
-              borderRadius: 10,
-              background: 'linear-gradient(135deg, var(--primary-dark), var(--primary))',
-              color: '#fff',
-              fontWeight: 700,
-              fontSize: '0.95rem',
-              textDecoration: 'none',
-              boxShadow: '0 4px 20px rgba(139,92,246,0.35)',
-              transition: 'transform 0.15s, box-shadow 0.15s',
+          <p style={{ fontSize: '0.92rem', color: 'var(--shell-muted)', maxWidth: 560, margin: '0 auto 1.75rem', lineHeight: 1.6 }}>
+            {RELEASE_STATUS_NOTE}
+          </p>
+          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <a href={REPOSITORY_URL} target="_blank" rel="noopener noreferrer" style={{
+              padding: '0.75rem 1.5rem', borderRadius: 10, background: 'var(--accent)', color: '#fff',
+              fontWeight: 700, fontSize: '0.92rem', textDecoration: 'none',
             }}>
-              Read the Standard →
+              Open the repository →
+            </a>
+            <Link href="/docs/handbook/README" style={{
+              padding: '0.75rem 1.5rem', borderRadius: 10, background: 'var(--paper)', color: 'var(--ink)',
+              fontWeight: 600, fontSize: '0.92rem', textDecoration: 'none', border: '1px solid var(--paper-border)',
+            }}>
+              Practitioner handbook
             </Link>
-            <Link href="/docs/08-ai-sdlc/README" style={{
-              padding: '0.75rem 2rem',
-              borderRadius: 10,
-              background: 'rgba(255,255,255,0.05)',
-              color: '#fff',
-              fontWeight: 600,
-              fontSize: '0.95rem',
-              textDecoration: 'none',
-              border: '1px solid rgba(255,255,255,0.1)',
-              transition: 'all 0.15s',
+            <Link href="/docs/roadmap" style={{
+              padding: '0.75rem 1.5rem', borderRadius: 10,
+              background: 'transparent', color: '#93c5fd',
+              fontWeight: 600, fontSize: '0.92rem', textDecoration: 'none',
+              border: '1px solid rgba(147, 197, 253, 0.4)',
             }}>
-              AI SDLC Prompts
-            </Link>
-            <Link href="/portal" style={{
-              padding: '0.75rem 2rem',
-              borderRadius: 10,
-              background: 'rgba(6,182,212,0.08)',
-              color: '#67e8f9',
-              fontWeight: 600,
-              fontSize: '0.95rem',
-              textDecoration: 'none',
-              border: '1px solid rgba(6,182,212,0.25)',
-              transition: 'all 0.15s',
-            }}>
-              Explore the Standards Portal
+              View roadmap
             </Link>
           </div>
+          <p style={{ marginTop: '1.75rem', fontSize: '0.8rem', color: 'var(--shell-muted)' }}>
+            Maintained in the open. Attribution:{' '}
+            <Link href="/about" style={{ color: '#d1d5db' }}>project steward</Link>
+            {' '}· not a personal portfolio.
+          </p>
+        </div>
+      </section>
 
-          {/* Stats */}
-          <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', marginTop: '3.5rem', flexWrap: 'wrap' }}>
-            {[
-              { value: '10', label: 'Handbook chapters' },
-              { value: '12', label: 'Patterns' },
-              { value: '15', label: 'SDLC prompts' },
-              { value: String(MATURITY_LEVELS.length), label: 'Maturity levels' },
-            ].map(stat => (
-              <div key={stat.label} style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '2rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em' }}>{stat.value}</div>
-                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: '0.2rem' }}>{stat.label}</div>
-              </div>
+      {/* White content band */}
+      <section style={{ background: 'var(--paper-subtle)', color: 'var(--ink)', padding: '3rem 2rem', borderBottom: '1px solid var(--paper-border)' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto' }}>
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.65rem', letterSpacing: '-0.02em' }}>
+            Why AI engineering needs a standard
+          </h2>
+          <p style={{ color: 'var(--ink-secondary)', lineHeight: 1.7, marginBottom: '0.85rem' }}>
+            Teams invent private dialects for prompts, agents, evals, and approvals. The result is unreproducible delivery,
+            silent security gaps, and tools that cannot interoperate. AIES exists so organizations share one vocabulary,
+            one set of gates, and one way to evidence production readiness — without locking to a single model vendor.
+          </p>
+          <p style={{ color: 'var(--ink-muted)', fontSize: '0.9rem', lineHeight: 1.6 }}>
+            Trust comes from documentation, versioning, and community critique — not from declaring “the standard” on day one.
+          </p>
+        </div>
+      </section>
+
+      <section style={{ background: 'var(--paper-subtle)', color: 'var(--ink)', padding: '1rem 2rem 3.5rem' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '0.35rem' }}>
+              Standards by capability
+            </h2>
+            <p style={{ color: 'var(--ink-muted)', maxWidth: 560 }}>
+              Organized by engineering concern — not by a laundry list of frameworks.
+            </p>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '0.75rem' }}>
+            {CAPABILITIES.map(item => (
+              <Link key={item.title} href={item.href} style={{
+                ...paperCard,
+                display: 'block',
+                padding: '1rem 1.1rem',
+                textDecoration: 'none',
+              }}>
+                <div style={{ fontWeight: 700, color: 'var(--ink)', fontSize: '0.9rem', marginBottom: '0.3rem' }}>{item.title}</div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--ink-muted)', lineHeight: 1.5 }}>{item.desc}</div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ─── Maturity Model ─── */}
-      <section style={{ padding: '4rem 2rem', maxWidth: 1200, margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-          <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', marginBottom: '0.75rem' }}>
-            {MATURITY_LEVELS.length}-Level Maturity Model
-          </h2>
-          <p style={{ color: 'var(--text-subtle)', maxWidth: 560, margin: '0 auto' }}>
-            Enter at your current level. Each level has a readiness gate before progression.
-          </p>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
-          {MATURITY_LEVELS.map(level => (
-            <Link
-              key={level.level}
-              href={`/docs/${level.slug}/README`}
-              style={{
-                display: 'block',
-                padding: '1.25rem 1.5rem',
-                background: 'var(--bg-card)',
-                border: '1px solid var(--border)',
-                borderRadius: 12,
-                textDecoration: 'none',
-                transition: 'all 0.2s',
-                position: 'relative',
-                overflow: 'hidden',
-              }}
-              className="maturity-card"
-            >
-              <div style={{
-                position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-                background: `linear-gradient(90deg, ${level.color}, transparent)`,
-              }} />
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.875rem' }}>
-                <div style={{
-                  fontSize: '1.25rem',
-                  width: 42, height: 42, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  background: `${level.color}18`,
-                  borderRadius: 10,
-                  border: `1px solid ${level.color}30`,
-                  flexShrink: 0,
-                }}>{level.icon}</div>
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
-                    <span style={{ fontSize: '0.65rem', fontWeight: 700, color: level.color, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Level {level.level}</span>
-                  </div>
-                  <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.95rem', marginBottom: '0.3rem' }}>{level.title}</div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>{level.desc}</div>
-                </div>
-              </div>
+      <section style={{ background: 'var(--paper)', color: 'var(--ink)', padding: '2.5rem 2rem', borderTop: '1px solid var(--paper-border)', borderBottom: '1px solid var(--paper-border)' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', gap: 16, flexWrap: 'wrap', marginBottom: '1rem' }}>
+            <div>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--ink)', letterSpacing: '-0.02em' }}>Engineering principles</h2>
+              <p style={{ color: 'var(--ink-muted)', marginTop: 6 }}>The constitution every AIES artifact should obey.</p>
+            </div>
+            <Link href="/docs/principles" style={{ color: 'var(--accent)', fontSize: '0.9rem', fontWeight: 600 }}>
+              Full principles →
             </Link>
-          ))}
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem' }}>
+            {PRINCIPLES.map(name => (
+              <span key={name} style={{
+                padding: '0.4rem 0.8rem',
+                borderRadius: 999,
+                border: '1px solid var(--accent-border)',
+                background: 'var(--accent-soft)',
+                color: 'var(--primary-dark)',
+                fontSize: '0.78rem',
+                fontWeight: 600,
+              }}>
+                {name}
+              </span>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ─── Key Features ─── */}
-      <section style={{ padding: '4rem 2rem', maxWidth: 1200, margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-          <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em', marginBottom: '0.75rem' }}>
-            What Makes OAIES Different
-          </h2>
-          <p style={{ color: 'var(--text-subtle)', maxWidth: 540, margin: '0 auto' }}>
-            Most AI repos say &ldquo;here are 3 ways.&rdquo; OAIES says: this is the one way. This is why.
-          </p>
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '1rem' }}>
-          {FEATURES.map(feature => (
-            <Link key={feature.title} href={feature.href} style={{
-              display: 'block',
-              padding: '1.5rem',
-              background: 'var(--bg-card)',
-              border: '1px solid var(--border)',
-              borderRadius: 12,
-              textDecoration: 'none',
-              transition: 'all 0.2s',
-            }}>
-              <div style={{ fontSize: '1.5rem', marginBottom: '0.75rem' }}>{feature.icon}</div>
-              <div style={{ fontWeight: 700, color: '#fff', marginBottom: '0.5rem', fontSize: '0.95rem' }}>{feature.title}</div>
-              <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>{feature.desc}</div>
+      <section style={{ background: 'var(--paper-subtle)', color: 'var(--ink)', padding: '2.5rem 2rem 3rem' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', gap: 16, flexWrap: 'wrap', marginBottom: '1rem' }}>
+            <div>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--ink)', letterSpacing: '-0.02em' }}>Adoption roadmap</h2>
+              <p style={{ color: 'var(--ink-muted)', marginTop: 6 }}>Corpus is shipped. What remains is external adoption and shared governance.</p>
+            </div>
+            <Link href="/docs/roadmap" style={{ color: 'var(--accent)', fontSize: '0.9rem', fontWeight: 600 }}>
+              Detailed roadmap →
             </Link>
-          ))}
+          </div>
+          <ol style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '0.55rem' }}>
+            {ROADMAP.map(item => {
+              const isCurrent = item.state === 'current';
+              const isDone = item.state === 'done';
+              return (
+                <li key={item.ver} style={{
+                  ...paperCard,
+                  display: 'grid',
+                  gridTemplateColumns: '4.5rem 1fr auto',
+                  gap: '1rem',
+                  alignItems: 'center',
+                  padding: '0.85rem 1rem',
+                  border: isCurrent
+                    ? '1px solid var(--warning-border)'
+                    : isDone
+                      ? '1px solid var(--accent-border)'
+                      : '1px solid var(--paper-border)',
+                  background: isCurrent
+                    ? 'var(--warning-soft)'
+                    : isDone
+                      ? 'var(--accent-soft)'
+                      : 'var(--paper)',
+                }}>
+                  <span style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', fontWeight: 700, color: 'var(--ink)' }}>{item.ver}</span>
+                  <span style={{ color: 'var(--ink-secondary)' }}>{item.title}</span>
+                  <span style={{
+                    fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase',
+                    color: isCurrent ? 'var(--warning-text)' : isDone ? 'var(--primary-dark)' : 'var(--ink-muted)',
+                  }}>
+                    {item.state}
+                  </span>
+                </li>
+              );
+            })}
+          </ol>
         </div>
       </section>
 
-      {/* ─── Quick Links ─── */}
-      <section style={{ padding: '4rem 2rem 6rem', maxWidth: 900, margin: '0 auto', textAlign: 'center' }}>
+      <section style={{ background: 'var(--paper-subtle)', padding: '1rem 2rem 4rem' }}>
         <div style={{
-          padding: '3rem',
-          background: 'var(--bg-card)',
-          border: '1px solid var(--border)',
-          borderRadius: 16,
-          position: 'relative',
-          overflow: 'hidden',
+          ...paperCard,
+          maxWidth: 900,
+          margin: '0 auto',
+          padding: '2rem',
+          textAlign: 'center',
         }}>
-          <div style={{
-            position: 'absolute', top: 0, left: 0, right: 0, height: 1,
-            background: 'linear-gradient(90deg, transparent, var(--primary), transparent)',
-          }} />
-          <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fff', marginBottom: '0.75rem', letterSpacing: '-0.02em' }}>
-            Ready to raise your AI engineering standard?
-          </h2>
-          <p style={{ color: 'var(--text-subtle)', marginBottom: '2rem' }}>
-            Start with Level 0: The Harness Principle. Every production AI system starts here.
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.55rem' }}>Community & contributing</h2>
+          <p style={{ color: 'var(--ink-muted)', marginBottom: '1.35rem', lineHeight: 1.65 }}>
+            AIES improves through issues, PRs, pilot evidence, and disagreement on the record.
           </p>
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="/docs/00-foundations/02-the-harness-principle" style={{
-              padding: '0.7rem 1.75rem',
-              borderRadius: 8,
-              background: 'linear-gradient(135deg, var(--primary-dark), var(--primary))',
-              color: '#fff',
-              fontWeight: 700,
-              fontSize: '0.9rem',
-              textDecoration: 'none',
-              boxShadow: '0 4px 16px rgba(139,92,246,0.3)',
+          <div style={{ display: 'flex', gap: '0.65rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Link href="/docs/CONTRIBUTING" style={{
+              padding: '0.6rem 1.2rem', borderRadius: 8, background: 'var(--accent)', color: '#fff',
+              fontWeight: 700, fontSize: '0.86rem', textDecoration: 'none',
             }}>
-              The Harness Principle →
+              Contributing guide
             </Link>
-            <Link href="/docs/patterns/README" style={{
-              padding: '0.7rem 1.75rem',
-              borderRadius: 8,
-              background: 'rgba(255,255,255,0.05)',
-              color: '#fff',
-              fontWeight: 600,
-              fontSize: '0.9rem',
-              textDecoration: 'none',
-              border: '1px solid rgba(255,255,255,0.1)',
+            <a href={REPOSITORY_URL} target="_blank" rel="noopener noreferrer" style={{
+              padding: '0.6rem 1.2rem', borderRadius: 8, border: '1px solid var(--paper-border)', color: 'var(--ink)',
+              fontWeight: 600, fontSize: '0.86rem', textDecoration: 'none', background: 'var(--paper)',
             }}>
-              Browse Patterns
+              GitHub
+            </a>
+            <Link href="/portal" style={{
+              padding: '0.6rem 1.2rem', borderRadius: 8, border: '1px solid var(--accent-border)', color: 'var(--accent)',
+              fontWeight: 600, fontSize: '0.86rem', textDecoration: 'none', background: 'var(--accent-soft)',
+            }}>
+              Standards portal
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ─── Footer ─── */}
       <footer style={{
-        borderTop: '1px solid var(--border)',
-        padding: '2rem',
+        borderTop: '1px solid var(--shell-border)',
+        padding: '1.5rem 2rem 2.25rem',
         textAlign: 'center',
-        color: 'var(--text-muted)',
-        fontSize: '0.82rem',
+        color: 'var(--shell-muted)',
+        fontSize: '0.8rem',
+        background: 'var(--shell)',
       }}>
         <p>
-          <strong style={{ color: 'var(--text-subtle)' }}>OAIES v{SITE_VERSION}</strong> — Open AI Engineering Standard
-          <span style={{ margin: '0 0.75rem' }}>·</span>
-          <em>&ldquo;The standard doesn&rsquo;t tell you what you can do. It tells you what you must do.&rdquo;</em>
+          <strong style={{ color: '#d1d5db' }}>{PRODUCT_SHORT}</strong>
+          {' '}— {PRODUCT_NAME} · {RELEASE_STATUS} · site v{SITE_VERSION}
         </p>
-        <p style={{ marginTop: '0.5rem' }}>
-          <Link href="/docs/README" style={{ color: 'var(--text-muted)', textDecoration: 'none', marginRight: '1.25rem' }}>Docs</Link>
-          <Link href="/about" style={{ color: 'var(--text-muted)', textDecoration: 'none', marginRight: '1.25rem' }}>About</Link>
-          <Link href="/docs/CONTRIBUTING" style={{ color: 'var(--text-muted)', textDecoration: 'none', marginRight: '1.25rem' }}>Contributing</Link>
-          <Link href="/docs/CHANGELOG" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Changelog</Link>
+        <p style={{ marginTop: '0.4rem', maxWidth: 640, marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.55 }}>
+          Not affiliated with OpenAI, Anthropic, or any model vendor. “Open” means open-source and community-governed.
+        </p>
+        <p style={{ marginTop: '0.75rem' }}>
+          <Link href="/docs/principles" style={{ color: 'var(--shell-muted)', marginRight: '1rem', textDecoration: 'none' }}>Principles</Link>
+          <Link href="/docs/roadmap" style={{ color: 'var(--shell-muted)', marginRight: '1rem', textDecoration: 'none' }}>Roadmap</Link>
+          <Link href="/docs/CONTRIBUTING" style={{ color: 'var(--shell-muted)', marginRight: '1rem', textDecoration: 'none' }}>Contribute</Link>
+          <Link href="/about" style={{ color: 'var(--shell-muted)', textDecoration: 'none' }}>About</Link>
         </p>
       </footer>
-
-      <style>{`
-        .maturity-card:hover {
-          border-color: rgba(139,92,246,0.3) !important;
-          background: rgba(139,92,246,0.06) !important;
-          transform: translateY(-2px);
-        }
-      `}</style>
     </main>
   );
 }

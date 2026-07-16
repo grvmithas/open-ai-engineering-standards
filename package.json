@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/grvmithas/open-ai-engineering-standard.git"
+    "url": "https://github.com/grvmithas/open-ai-engineering-standards.git"
   },
   "engines": {
     "node": ">=20.9.0"

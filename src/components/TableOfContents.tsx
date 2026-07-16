@@ -17,55 +17,55 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
 
   useEffect(() => {
     const headingElements = headings.map(h => document.getElementById(h.id)).filter(Boolean) as HTMLElement[];
-    
     if (headingElements.length === 0) return;
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        // Find first visible heading
+      entries => {
         const visible = entries.find(entry => entry.isIntersecting);
-        if (visible) {
-          setActiveId(visible.target.id);
-        }
+        if (visible) setActiveId(visible.target.id);
       },
-      {
-        rootMargin: '-80px 0px -60% 0px', // Trigger when heading enters top half of viewport
-        threshold: 0.1
-      }
+      { rootMargin: '-80px 0px -60% 0px', threshold: 0.1 },
     );
 
     headingElements.forEach(el => observer.observe(el));
-
-    return () => {
-      headingElements.forEach(el => observer.unobserve(el));
-    };
+    return () => headingElements.forEach(el => observer.unobserve(el));
   }, [headings]);
 
   if (headings.length === 0) return null;
 
+  const baseLevel = Math.min(...headings.map(h => h.level));
+
   return (
-    <nav className="space-y-2 select-none" aria-label="Table of contents">
-      <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">
+    <nav className="select-none" aria-label="Table of contents">
+      <div className="mb-3 text-[10px] font-bold uppercase tracking-widest text-[var(--ink-muted)]">
         On This Page
       </div>
-      <ul className="space-y-2 border-l border-violet-950/20 pl-4 text-xs font-medium">
-        {headings.map(h => (
-          <li 
-            key={h.id}
-            style={{ paddingLeft: `${(h.level - 1) * 0.75}rem` }}
-          >
-            <a
-              href={`#${h.id}`}
-              className={`block py-0.5 transition duration-150 ${
-                activeId === h.id
-                  ? 'text-violet-400 font-semibold border-l-2 border-violet-500 -ml-[18px] pl-4'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              {h.text}
-            </a>
-          </li>
-        ))}
+      <ul className="border-l border-[var(--paper-border)] text-xs font-medium">
+        {headings.map(h => {
+          const isActive = activeId === h.id;
+          const depth = Math.max(0, h.level - baseLevel);
+          return (
+            <li key={h.id} className="relative">
+              {isActive && (
+                <span
+                  aria-hidden
+                  className="absolute top-0 bottom-0 left-[-1.5px] w-[2px] bg-[var(--accent)]"
+                />
+              )}
+              <a
+                href={`#${h.id}`}
+                className={`block py-1.5 transition duration-150 ${
+                  isActive
+                    ? 'font-semibold text-[var(--accent)]'
+                    : 'text-[var(--ink-muted)] hover:text-[var(--ink)]'
+                }`}
+                style={{ paddingLeft: `${0.9 + depth * 0.7}rem` }}
+              >
+                {h.text}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );

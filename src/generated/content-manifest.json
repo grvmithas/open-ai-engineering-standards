@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "documentCount": 578,
+  "documentCount": 580,
   "documents": [
     {
       "slug": "00-foundations/01-how-llms-think",
@@ -3333,6 +3333,12 @@
       "description": "Do not run a punitive review in parallel under the same document. If HR/legal needs a separate track, keep it separate from the blameless RCA artifact."
     },
     {
+      "slug": "principles",
+      "sourcePath": "content/principles.md",
+      "title": "Engineering Principles",
+      "description": "These principles are the constitution of AIES. Every prompt, skill, agent, pattern, cookbook, and control should be consistent with them. If a recommendation vi"
+    },
+    {
       "slug": "README",
       "sourcePath": "content/README.md",
       "title": "Open AI Engineering Standard (OAIES)",
@@ -3343,6 +3349,12 @@
       "sourcePath": "content/resources/README.md",
       "title": "Curated Resources",
       "description": "Open AI Engineering Standard — production-grade AI engineering documentation."
+    },
+    {
+      "slug": "roadmap",
+      "sourcePath": "content/roadmap.md",
+      "title": "Roadmap",
+      "description": "This roadmap separates two things teams confuse:"
     },
     {
       "slug": "standard/01-kernel-and-applicability",

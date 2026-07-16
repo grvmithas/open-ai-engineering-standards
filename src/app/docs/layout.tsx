@@ -5,61 +5,55 @@ import Link from 'next/link';
 import Sidebar from '@/components/Sidebar';
 import Search from '@/components/Search';
 import PatternsMegaMenu from '@/components/PatternsMegaMenu';
-import { REPOSITORY_URL, SITE_VERSION } from '@/lib/site';
+import { REPOSITORY_URL, RELEASE_STATUS } from '@/lib/site';
 
 export default function DocsLayout({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#050509]">
-      
-      {/* ─── Header ─── */}
-      <header className="sticky top-0 z-40 w-full bg-[#050509]/80 backdrop-blur-md border-b border-violet-950/20 h-[60px] flex items-center px-4 md:px-8">
-        <div className="w-full max-w-7xl mx-auto flex items-center justify-between gap-4">
-          
-          {/* Logo & Mobile Menu Toggle */}
+    <div className="flex min-h-screen flex-col bg-[var(--shell)] text-[var(--shell-text)]">
+      <header className="sticky top-0 z-40 flex h-[60px] w-full items-center border-b border-[var(--shell-border)] bg-[var(--shell-elevated)]/95 px-4 backdrop-blur-md md:px-6">
+        <div className="flex w-full items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
               aria-expanded={isSidebarOpen}
               aria-controls="mobile-navigation"
-              className="md:hidden p-1.5 rounded-lg border border-violet-950/30 text-slate-300 hover:text-white"
+              className="rounded-lg border border-[var(--shell-border)] p-1.5 text-[var(--shell-text)] hover:bg-[var(--shell-hover)] md:hidden"
               aria-label="Toggle menu"
             >
               <span className="text-base">☰</span>
             </button>
             <Link href="/" className="flex items-center gap-2">
-              <span className="text-lg">⚡</span>
-              <span className="font-extrabold text-sm tracking-tight text-white">OAIES</span>
-              <span className="hidden sm:inline-block px-1.5 py-0.5 text-[9px] bg-violet-950/20 text-violet-300 border border-violet-950/30 rounded font-bold uppercase tracking-wider">
-                v{SITE_VERSION}
+              <span className="text-lg" aria-hidden>⚡</span>
+              <span className="text-sm font-extrabold tracking-tight text-white">AIES</span>
+              <span className="hidden rounded border border-amber-500/40 bg-amber-500/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-amber-200 sm:inline-block">
+                {RELEASE_STATUS}
               </span>
             </Link>
           </div>
 
-          {/* Search bar */}
-          <div className="flex-1 max-w-xs md:max-w-md">
+          <div className="max-w-xs flex-1 md:max-w-md">
             <Search />
           </div>
 
-          {/* Action Links */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <Link
               href="/docs/handbook/README"
-              className="hidden sm:inline-block text-[11px] font-semibold text-amber-200 hover:text-amber-100 px-3 py-1.5 border border-amber-900/40 rounded-lg hover:bg-amber-950/20 transition duration-150"
+              className="hidden rounded-lg bg-[var(--accent)] px-3 py-1.5 text-[11px] font-semibold text-white transition hover:bg-[var(--accent-hover)] sm:inline-block"
             >
               Handbook
             </Link>
             <PatternsMegaMenu compact />
             <Link
               href="/portal"
-              className="text-[11px] font-semibold text-cyan-300 hover:text-cyan-200 px-3 py-1.5 border border-cyan-950/50 rounded-lg hover:bg-cyan-950/20 transition duration-150"
+              className="rounded-lg border border-[var(--shell-border)] px-3 py-1.5 text-[11px] font-semibold text-[var(--shell-muted)] transition hover:border-slate-500 hover:text-white"
             >
               Portal
             </Link>
             <Link
               href="/about"
-              className="text-[11px] font-semibold text-slate-300 hover:text-white px-3 py-1.5 border border-violet-950/30 rounded-lg hover:bg-slate-950/40 transition duration-150"
+              className="rounded-lg border border-[var(--shell-border)] px-3 py-1.5 text-[11px] font-semibold text-[var(--shell-muted)] transition hover:border-slate-500 hover:text-white"
             >
               About
             </Link>
@@ -67,69 +61,59 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
               href={REPOSITORY_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-block text-[11px] font-semibold text-slate-300 hover:text-white px-3 py-1.5 border border-violet-950/30 rounded-lg hover:bg-slate-950/40 transition duration-150"
+              className="hidden rounded-lg border border-[var(--shell-border)] px-3 py-1.5 text-[11px] font-semibold text-[var(--shell-muted)] transition hover:border-slate-500 hover:text-white sm:inline-block"
             >
               GitHub
             </a>
           </div>
-
         </div>
       </header>
 
-      <div className="flex-1 flex max-w-7xl mx-auto w-full relative">
-        
-        {/* ─── Sidebar (Desktop) ─── */}
-        <aside className="hidden md:block w-[260px] sticky top-[60px] h-[calc(100vh-60px)] overflow-y-auto border-r border-violet-950/15 p-6 scrollbar">
-          <div className="space-y-6">
-            <div>
-              <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 pl-3">
-                Handbook navigation
-              </div>
-              <Sidebar />
-            </div>
+      <div className="relative flex w-full flex-1">
+        <aside className="sticky top-[60px] hidden h-[calc(100vh-60px)] w-[260px] shrink-0 overflow-y-auto border-r border-[var(--shell-border)] bg-[var(--bg-sidebar)] p-5 md:block lg:w-[280px]">
+          <div className="mb-3 pl-3 text-[10px] font-bold uppercase tracking-widest text-[var(--shell-muted)]">
+            Handbook navigation
           </div>
+          <Sidebar />
         </aside>
 
-        {/* ─── Sidebar (Mobile Drawer) ─── */}
         {isSidebarOpen && (
-          <div className="fixed inset-0 z-50 md:hidden flex">
-            {/* Backdrop */}
-            <div 
+          <div className="fixed inset-0 z-50 flex md:hidden">
+            <div
               onClick={() => setIsSidebarOpen(false)}
-              className="fixed inset-0 bg-slate-950/80 backdrop-blur-xs" 
+              className="fixed inset-0 bg-black/60 backdrop-blur-xs"
             />
-            {/* Drawer Content */}
-            <div id="mobile-navigation" role="dialog" aria-modal="true" aria-label="Documentation navigation" className="relative w-[280px] bg-[#0c0c16] border-r border-violet-950/30 h-full flex flex-col p-6 overflow-y-auto shadow-2xl z-10">
-              <div className="flex items-center justify-between mb-6">
+            <div
+              id="mobile-navigation"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Documentation navigation"
+              className="relative z-10 flex h-full w-[280px] flex-col overflow-y-auto border-r border-[var(--shell-border)] bg-[var(--shell-elevated)] p-6 shadow-xl"
+            >
+              <div className="mb-6 flex items-center justify-between">
                 <Link href="/" className="flex items-center gap-2">
                   <span className="text-lg">⚡</span>
-                  <span className="font-extrabold text-sm tracking-tight text-white">OAIES</span>
+                  <span className="text-sm font-extrabold tracking-tight text-white">AIES</span>
                 </Link>
                 <button
                   onClick={() => setIsSidebarOpen(false)}
                   aria-label="Close navigation"
-                  className="p-1 rounded-lg border border-violet-950/20 text-slate-400"
+                  className="rounded-lg border border-[var(--shell-border)] p-1 text-[var(--shell-muted)]"
                 >
                   ✕
                 </button>
               </div>
-              <div className="flex-1">
-                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 pl-3">
-                  Handbook navigation
-                </div>
-                <Sidebar onLinkClick={() => setIsSidebarOpen(false)} />
-              </div>
+              <Sidebar onLinkClick={() => setIsSidebarOpen(false)} />
             </div>
           </div>
         )}
 
-        {/* ─── Main Content Wrapper ─── */}
-        <main id="main-content" className="flex-1 min-w-0 p-6 md:p-10">
-          <div className="max-w-3xl mx-auto">
+        {/* Full-width white reading column — fills remaining viewport */}
+        <main id="main-content" className="min-w-0 flex-1 bg-[var(--paper)]">
+          <div className="paper h-full w-full px-6 py-8 md:px-10 md:py-10 xl:px-12">
             {children}
           </div>
         </main>
-
       </div>
     </div>
   );

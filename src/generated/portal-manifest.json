@@ -1570,8 +1570,8 @@
     "status": "tooling-available",
     "sourcePath": "tools/conformance/README.md",
     "commands": [
-      "node tools/conformance/cli.mjs assess \\\n  --manifest tools/conformance/fixtures/manifest.valid.json \\\n  --evidence tools/conformance/fixtures/evidence.valid.json \\\n  --format json",
-      "node --test tools/conformance/test/*.test.mjs"
+      "node tools/conformance/cli.mjs assess \\\n  --manifest records/ai-system.json \\\n  --soa records/statement-of-applicability.json \\\n  --catalog records/control-catalog.json \\\n  --evidence records/evidence-bundle.json \\\n  --exception records/exception-DAT-010.json \\\n  --as-of 2026-07-16T00:00:00.000Z \\\n  --format json",
+      "node --test \\\n  tools/conformance/test/conformance.test.mjs \\\n  reference/test/harness.test.mjs \\\n  eval/test/evaluation.test.mjs"
     ],
     "warning": "CLI output is a deterministic assessment of supplied artifacts, not external certification or regulatory approval."
   },
