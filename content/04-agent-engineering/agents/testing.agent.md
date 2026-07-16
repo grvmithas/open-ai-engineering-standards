@@ -77,6 +77,9 @@ Flaky synchronization, test pollution, implementation-coupled assertions, false 
 ## Verification
 Repeat tests with recorded seeds; prove regression tests fail against the defect; detect order dependence and leaked resources.
 
+## Domain Recovery Playbook
+Preserve random seeds, traces, fixture state, and order; reset contaminated resources, classify environmental versus product failure, and quarantine only with an owner and expiry.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

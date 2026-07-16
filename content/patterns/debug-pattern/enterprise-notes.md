@@ -1,47 +1,28 @@
-# Debug: Enterprise Operations
+# Debug Pattern — Enterprise Notes
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Debug  
+> **Component:** enterprise-notes.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Debug enterprise-notes operationalizes this pattern outcome: isolate a software defect through reproducible observations and falsifiable experiments.
+## Audit trail
 
-## Tailored controls
+Retain: symptom package, experiment log, root cause, fix SHA, regression test ID, verifier. Link from incident ticket and PR.
 
-Production debugging uses time-bound break-glass access, sampled/redacted traces, immutable session recording, and regional data controls. Diagnostic code receives an owner and automatic expiry.
+## Separation of duties / access
 
-## Governance model
+| Activity | Who |
+|----------|-----|
+| Read prod logs/traces | On-call / approved debugger |
+| Mutate prod data | Incident commander approval |
+| Merge fix | Reviewer ≠ sole debugger when High-risk |
+| Close incident | IC after verification evidence |
 
-Debug enterprise-notes governance binds owner, policy revision, and retained proof to "reproduction rate before fix is recorded", with "Revert probes and fix, restore the locked environment, and preserve diagnostic artifacts" as the recorded recovery authority.
+## Blameless posture
 
-## Metrics and assurance
+Debug and RCA artifacts name systems and conditions, not people as moral failures. Accountability is owning preventive actions with due dates.
 
-- Control dashboard reports reproduction rate before fix is recorded.
-- Control dashboard reports regression test fails before and passes after.
-- Control dashboard reports no unrelated variable changes during causal experiment.
-- Control dashboard reports recurrence monitor remains clear for one release window.
+## Anti-claim
 
-Debug enterprise-notes metrics and assurance gate 3 is accepted only when "reproduction rate before fix is recorded" is source-verifiable; otherwise, revert probes and fix, restore the locked environment, and preserve diagnostic artifacts.
-
-## Tradeoffs
-
-Debug enterprise-notes deliberately spends additional review time to protect "reproduction rate before fix is recorded"; evidence weakness triggers "Revert probes and fix, restore the locked environment, and preserve diagnostic artifacts".
-
-## Anti-patterns
-
-Debug enterprise-notes rejects shortcuts around "Write a deterministic symptom statement without assigning cause." because they sever the evidence chain required for "reproduction rate before fix is recorded".
-
-## Citations
-
-- [Google SRE troubleshooting](https://sre.google/sre-book/effective-troubleshooting/)
-- [Scientific method](https://plato.stanford.edu/entries/scientific-method/)
-- [OpenTelemetry](https://opentelemetry.io/docs/concepts/observability-primer/)
-
-## Checklist
-
-- [ ] RACI, data flow, threat model, capacity, and recovery are current
-- [ ] Audit evidence can be retrieved within one business day
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+A completed debug report is **not** automatically a regulatory postmortem or legal hold document. Use your incident management system of record when those obligations exist.

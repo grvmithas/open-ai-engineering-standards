@@ -1,39 +1,31 @@
-# Legacy Modernization: Subagents
+# Legacy Modernization Pattern — Subagents
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Legacy Modernization  
+> **Component:** subagents.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Legacy Modernization subagents operationalizes this pattern outcome: replace obsolete internals incrementally while preserving observed business behavior.
+| Subagent | Role | When invoked | Output |
+|----------|------|--------------|--------|
+| Legacy Behavior Mapper | Extracts golden behaviors from code/jobs/SME | Start of slice | Behavior catalog + fixtures |
+| Parity Harness Builder | Compares legacy vs new outputs | Before / during shadow | Pass/fail report |
+| Traffic Shift Controller | Defines ramp and abort | After parity green | Shift runbook |
 
-| Subagent | Mandate | Required output |
-|---|---|---|
-| Behavior archaeologist | derives relied-upon behavior from code and telemetry | behavior archaeologist artifact with source IDs, uncertainty, and stop status |
-| Seam designer | introduces reversible isolation points | seam designer artifact with source IDs, uncertainty, and stop status |
-| Consumer advocate | validates hidden downstream contracts | consumer advocate artifact with source IDs, uncertainty, and stop status |
+## Behavior Mapper contract
 
-## Delegation protocol
+- Prefer executable oracles (batch outputs, API recordings) over anecdotes
+- Include edge cases: nulls, leap days, max cart, denied auth
+- Mark unknown rules explicitly — do not invent
 
-Legacy Modernization specialists receive only sources needed for "Inventory business capabilities, consumers, and operational pain."; the parent retains effect approval and accountability for "characterized critical behavior = 100%".
+## Parity Harness contract
 
-## Tradeoffs
+- Same inputs to legacy and new whenever shadow is possible
+- Tolerances explicit (e.g. money rounding 0.01)
+- Failures block traffic increase
 
-Legacy Modernization subagents deliberately spends additional review time to protect "characterized critical behavior = 100%"; evidence weakness triggers "Flip the strangler route to the legacy implementation and replay buffered work after reconciliation".
+## Traffic Shift Controller contract
 
-## Anti-patterns
-
-Legacy Modernization subagents rejects shortcuts around "Inventory business capabilities, consumers, and operational pain." because they sever the evidence chain required for "characterized critical behavior = 100%".
-
-## Enterprise considerations
-
-Legacy Modernization subagents governance binds owner, policy revision, and retained proof to "characterized critical behavior = 100%", with "Flip the strangler route to the legacy implementation and replay buffered work after reconciliation" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Behavior archaeologist returned its required evidence
-- [ ] Seam designer returned its required evidence
-- [ ] Consumer advocate returned its required evidence
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- Steps include abort KPIs (error rate, conversion, latency)
+- Always include immediate rollback to legacy path
+- 100% requires business + eng acknowledgment

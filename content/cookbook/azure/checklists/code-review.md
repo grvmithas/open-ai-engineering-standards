@@ -20,7 +20,7 @@ Capture Azure CLI/Bicep versions, resource-provider API versions, and service SK
 
 ## Tradeoffs
 
-The Azure review gate requires runtime/configuration evidence beyond a source diff. It increases reviewer effort but catches defects static style review cannot observe.
+Review must prove "Bicep uses explicit supported API versions and deterministic names/scopes" using Bicep/ARM source, parameter provenance, compiled template, and What-If result. That Azure evidence costs more than diff inspection but exposes management-plane authorization or policy denial before merge.
 
 ## Anti-patterns
 

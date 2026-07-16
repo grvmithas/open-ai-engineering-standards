@@ -20,7 +20,7 @@ Use the locally installed Next.js documentation under `node_modules/next/dist/do
 
 ## Tradeoffs
 
-The Next.js review gate requires runtime/configuration evidence beyond a source diff. It increases reviewer effort but catches defects static style review cannot observe.
+Review must prove "`use client` appears only at the smallest browser-interactive boundary" using `package.json`, lockfile, `next.config.*`, and installed Next.js docs. That Next.js evidence costs more than diff inspection but exposes Server/Client module boundary violations before merge.
 
 ## Anti-patterns
 

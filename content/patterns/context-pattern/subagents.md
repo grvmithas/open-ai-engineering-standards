@@ -1,39 +1,30 @@
-# Context: Subagents
+# Context Pattern — Subagents
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Context  
+> **Component:** subagents.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Context subagents operationalizes this pattern outcome: construct a minimal, provenance-bearing information package that preserves decision quality.
+| Subagent | Role | When invoked | Output |
+|----------|------|--------------|--------|
+| Path Seeder | Maps intent keywords/symbols to paths | Start | Seed path list |
+| Call-site Expander | Follows imports, routes, schema refs | After seed | Expanded path set |
+| Secret Scrubber | Greps dangerous patterns before emit | Pre-handoff | Clean certificate or hit report |
 
-| Subagent | Mandate | Required output |
-|---|---|---|
-| Source scout | discovers candidate material without summarizing it | source scout artifact with source IDs, uncertainty, and stop status |
-| Provenance curator | scores authority and resolves conflicts | provenance curator artifact with source IDs, uncertainty, and stop status |
-| Context compressor | extracts lossless decision-relevant passages | context compressor artifact with source IDs, uncertainty, and stop status |
+## Path Seeder contract
 
-## Delegation protocol
+- Use task nouns (e.g. `reports`, `orgId`) and error stacks as anchors
+- Prefer existing module roots over random matches
+- Cap seeds at 10 before expansion
 
-Context specialists receive only sources needed for "List decisions the operator must make and evidence each decision requires."; the parent retains effect approval and accountability for "required-decision source recall = 100%".
+## Call-site Expander contract
 
-## Tradeoffs
+- Include both producers (impl) and consumers (routes, UI, jobs)
+- Include schema/migration when data shape is in scope
+- Stop expansion at package boundaries unless the task crosses them
 
-Context subagents deliberately spends additional review time to protect "required-decision source recall = 100%"; evidence weakness triggers "Invalidate the manifest, purge derived caches, and rebuild from authoritative revisions".
+## Secret Scrubber contract
 
-## Anti-patterns
-
-Context subagents rejects shortcuts around "List decisions the operator must make and evidence each decision requires." because they sever the evidence chain required for "required-decision source recall = 100%".
-
-## Enterprise considerations
-
-Context subagents governance binds owner, policy revision, and retained proof to "required-decision source recall = 100%", with "Invalidate the manifest, purge derived caches, and rebuild from authoritative revisions" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Source scout returned its required evidence
-- [ ] Provenance curator returned its required evidence
-- [ ] Context compressor returned its required evidence
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- Fail the package on matches for: `API_KEY`, `BEGIN PRIVATE KEY`, `aws_secret`, password assignments in `.env`
+- Redaction is allowed only if human policy says so; default is exclude entire file

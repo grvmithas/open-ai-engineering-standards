@@ -71,11 +71,11 @@ PostgreSQL governance assigns schema ownership, migration approval, privileged-r
 
 ## Checklist
 
-- [ ] Connection budgets allocate capacity among application pools, migrations, replication, and operator reserve..
-- [ ] Primary constraints are authoritative for invariants under concurrency..
-- [ ] Read replicas serve only workloads that tolerate measured lag..
-- [ ] Migration phases are separately deployable and backfills are resumable..
-- [ ] Backups are accepted only after restore and consistency verification..
+- [ ] Connection budgets allocate capacity among application pools, migrations, replication, and operator reserve.
+- [ ] Primary constraints are authoritative for invariants under concurrency.
+- [ ] Read replicas serve only workloads that tolerate measured lag.
+- [ ] Migration phases are separately deployable and backfills are resumable.
+- [ ] Backups are accepted only after restore and consistency verification.
 - [ ] Diagram matches deployed topology rather than an aspirational target.
 - [ ] Rollback path preserves state and mixed-version contracts.
 

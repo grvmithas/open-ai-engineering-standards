@@ -8,11 +8,11 @@ Review a Docker change using native configuration, failure, and operational evid
 
 ## Why
 
-Images are minimal, immutable, reproducible, non-root, secret-free, multi-architecture aware, and terminate correctly. This prompt requires native Docker artifacts instead of substituting a generic incident or code-generation checklist.
+Images are minimal, immutable, reproducible, non-root, secret-free, multi-architecture aware, and terminate correctly. The review decision is accepted only when base and final image digests, platform manifest, layer history, SBOM, and vulnerability report supports it; generic review advice cannot establish that Docker state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Docker evidence for the Dockerfile, BuildKit build, OCI image, Compose service, or container release. Apply the invariant "Images are minimal, immutable, reproducible, non-root, secret-free, multi-architecture aware, and terminate correctly." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Capture Docker Engine, Buildx/BuildKit, Dockerfile syntax directive, Compose spe
 
 ## Tradeoffs
 
-Docker review takes longer because configuration and runtime state must be correlated with source. It eliminates generic style findings and prioritizes defects that can change production behavior.
+Docker review correlates source with base and final image digests, platform manifest, layer history, SBOM, and vulnerability report and runtime user, capabilities, seccomp, mounts, ports, environment, healthcheck, and stop signal. The cost is a deeper review; the benefit is direct evidence for "base image is maintained and pinned by digest with an update mechanism" and "multi-stage build leaves compilers, package caches, and credentials outside runtime" instead of generic style findings.
 
 ## Anti-patterns
 

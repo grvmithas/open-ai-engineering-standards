@@ -20,7 +20,7 @@ Capture Docker Engine, Buildx/BuildKit, Dockerfile syntax directive, Compose spe
 
 ## Tradeoffs
 
-The Docker deployment gate adds manual and target-environment checks that slow promotion. It reduces the chance that version, topology, state, or rollback assumptions reach production.
+Promotion waits for "registry digest—not mutable tag—is promoted between environments" and "signature/provenance, SBOM, license, and vulnerability policy pass". Those Docker target checks slow release but directly bound architecture or entrypoint exec-format mismatch and make this rollback executable: Redeploy the previous OCI digest, not a reused tag; preserve volumes and inspect migration compatibility before starting the older image.
 
 ## Anti-patterns
 

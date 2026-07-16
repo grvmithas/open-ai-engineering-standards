@@ -1,47 +1,96 @@
-# Release: Lifecycle Hooks
+# Release Pattern — Hooks
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Release  
+> **Component:** hooks.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Enforce release gates outside model discretion.
-
-| Hook | Enforced condition | Failure behavior |
-|---|---|---|
-| preflight | reject unsigned or mismatched artifacts | fail closed without creating an effect |
-| domain-gate | block promotion until hold period and signal gates pass | fail closed without creating an effect |
-| closure | automatically abort on SLO burn or security signal | halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health |
+## `pre-release.hook.sh`
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-: "${TASK_ID:?required}" "${MANIFEST_HASH:?required}" "${RISK_TIER:?required}". For the Release hooks contract, gate 1 is evidenced by "artifact-to-runtime digest match = 100%"; failure invokes this domain recovery: Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health.
-# oaies-release: evaluate the three versioned policy rules documented above.
-policy_check --pattern "release" --task "$TASK_ID" --manifest "$MANIFEST_HASH" --risk "$RISK_TIER"
+
+echo "Checking release prerequisites..."
+
+: "${RELEASE_PACKAGE:?ERROR: set RELEASE_PACKAGE}"
+: "${ARTIFACT_DIGEST:?ERROR: set ARTIFACT_DIGEST}"
+: "${FEATURE_FLAG:?ERROR: set FEATURE_FLAG (or 'traffic-split' with SPLIT_CONFIG)}"
+
+if [[ ! -f "$RELEASE_PACKAGE" ]]; then
+  echo "ERROR: RELEASE_PACKAGE not found: $RELEASE_PACKAGE"
+  exit 1
+fi
+
+if [[ ! "$ARTIFACT_DIGEST" =~ ^sha256:[a-f0-9]{64}$ ]]; then
+  echo "ERROR: ARTIFACT_DIGEST must be sha256:<64 hex> (mutable tags rejected)."
+  exit 1
+fi
+
+if ! grep -q "$ARTIFACT_DIGEST" "$RELEASE_PACKAGE"; then
+  echo "ERROR: Package does not reference ARTIFACT_DIGEST."
+  exit 1
+fi
+
+if ! grep -qiE 'abort criteria' "$RELEASE_PACKAGE"; then
+  echo "ERROR: Abort criteria section missing."
+  exit 1
+fi
+
+if ! grep -qiE 'rollback' "$RELEASE_PACKAGE"; then
+  echo "ERROR: Rollback section missing."
+  exit 1
+fi
+
+# crude check that abort section contains a number
+if ! awk 'BEGIN{IGNORECASE=1} /abort criteria/{f=1} f && /[0-9]/ {found=1} END{exit !found}' "$RELEASE_PACKAGE"; then
+  echo "ERROR: Abort criteria appear non-quantitative (no numbers found)."
+  exit 1
+fi
+
+if [[ "$FEATURE_FLAG" == "none" ]]; then
+  echo "ERROR: FEATURE_FLAG=none is not allowed for this pattern without SPLIT_CONFIG."
+  exit 1
+fi
+
+echo "Release prerequisites OK for $ARTIFACT_DIGEST."
 ```
 
-## Verification
+## `post-canary-stage.hook.sh`
 
-Release hooks verification records raw evidence for "artifact-to-runtime digest match = 100%" and invokes "Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health" when the threshold is not demonstrated.
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-## Tradeoffs
+STAGE_LOG="${1:-}"
+if [[ -z "$STAGE_LOG" || ! -f "$STAGE_LOG" ]]; then
+  echo "ERROR: Usage: post-canary-stage.hook.sh <stage-log>"
+  exit 1
+fi
 
-Release hooks deliberately spends additional review time to protect "artifact-to-runtime digest match = 100%"; evidence weakness triggers "Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health".
+echo "Validating canary stage log..."
 
-## Anti-patterns
+if ! grep -qiE 'stage|exposure|hold' "$STAGE_LOG"; then
+  echo "ERROR: Stage log missing stage/exposure/hold markers."
+  exit 1
+fi
 
-Release hooks rejects shortcuts around "Freeze artifact digest, configuration, migrations, and release evidence." because they sever the evidence chain required for "artifact-to-runtime digest match = 100%".
+if grep -qiE 'raised threshold|increased abort|relaxed abort' "$STAGE_LOG"; then
+  echo "ERROR: Abort criteria renegotiation detected in stage log."
+  exit 1
+fi
 
-## Enterprise considerations
+if grep -qiE 'ABORT|aborted' "$STAGE_LOG"; then
+  if ! grep -qiE 'flag.*(off|disabled)|redeploy|rollback' "$STAGE_LOG"; then
+    echo "ERROR: Abort recorded without rollback/flag-disable action."
+    exit 1
+  fi
+fi
 
-Release hooks governance binds owner, policy revision, and retained proof to "artifact-to-runtime digest match = 100%", with "Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health" as the recorded recovery authority.
+echo "Stage log validated."
+```
 
-## Checklist
+## CI integration note
 
-- [ ] Automated test proves: reject unsigned or mismatched artifacts
-- [ ] Automated test proves: block promotion until hold period and signal gates pass
-- [ ] Automated test proves: automatically abort on SLO burn or security signal
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+Promotion jobs must require `ARTIFACT_DIGEST` and a package path. Block any deploy job whose image reference is only a floating tag.

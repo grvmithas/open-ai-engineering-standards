@@ -8,11 +8,11 @@ Generate a production-ready App Router route, layout, Server Component, Client C
 
 ## Why
 
-Server Components are the default; client boundaries are minimal; cache and dynamic behavior are declared at the data boundary. This prompt requires native Next.js artifacts instead of substituting a generic incident or code-generation checklist.
+Server Components are the default; client boundaries are minimal; cache and dynamic behavior are declared at the data boundary. The generate decision is accepted only when `package.json`, lockfile, `next.config.*`, and installed Next.js docs supports it; generic generate advice cannot establish that Next.js state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Next.js evidence for the App Router route, layout, Server Component, Client Component, or Route Handler. Apply the invariant "Server Components are the default; client boundaries are minimal; cache and dynamic behavior are declared at the data boundary." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Use the locally installed Next.js documentation under `node_modules/next/dist/do
 
 ## Tradeoffs
 
-The prompt rejects fast code generation when Next.js version, configuration, or target evidence is absent. That delay prevents plausible output from crossing an unsupported App Router route, layout, Server Component, Client Component, or Route Handler boundary.
+Generation waits for `package.json`, lockfile, `next.config.*`, and installed Next.js docs and route tree including `layout`, `page`, `loading`, `error`, `not-found`, and Route Handlers. That extra Next.js discovery is justified because the output must prove "`use client` appears only at the smallest browser-interactive boundary" and survive Server/Client module boundary violations rather than merely compile.
 
 ## Anti-patterns
 

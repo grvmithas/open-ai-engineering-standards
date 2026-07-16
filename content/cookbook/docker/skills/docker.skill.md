@@ -45,7 +45,7 @@ Images are minimal, immutable, reproducible, non-root, secret-free, multi-archit
 
 ## Verification
 
-The evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. For manual checks, record environment, operator, exact steps, and result.
+The Docker evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. It must also retain Dockerfile, `.dockerignore`, build context list, syntax directive, and BuildKit provenance. For manual Dockerfile, BuildKit build, OCI image, Compose service, or container release checks, record environment, operator, exact steps, and result.
 
 ## Failure recovery
 
@@ -61,7 +61,7 @@ Report the Docker boundary, facts, hypotheses, commands actually run, changed ar
 
 ## Termination criteria
 
-Finish when native validation, all applicable review/deployment gates, and recovery signals pass, or when a named owner accepts a documented blocker through the repository's risk process.
+Finish the Docker workflow only when native validation, applicable review/deployment gates, and recovery signals for architecture or entrypoint exec-format mismatch and runtime file permission or read-only filesystem failure pass. Otherwise record a named owner and the exact missing Docker evidence; risk acceptance does not convert a failed native check into a pass.
 
 ## Version-aware caution
 
@@ -69,7 +69,7 @@ Capture Docker Engine, Buildx/BuildKit, Dockerfile syntax directive, Compose spe
 
 ## Tradeoffs
 
-This skill spends time fingerprinting Docker and collecting native evidence before editing. It reduces throughput for trivial changes but prevents incorrect commands, unsupported APIs, and state-destructive rollback.
+This skill fingerprints Docker through Dockerfile, `.dockerignore`, build context list, syntax directive, and BuildKit provenance before editing and retains runtime user, capabilities, seccomp, mounts, ports, environment, healthcheck, and stop signal before recovery. The added work is warranted when architecture or entrypoint exec-format mismatch could make Redeploy the previous OCI digest, not a reused tag; preserve volumes and inspect migration compatibility before starting the older image.
 
 ## Anti-patterns
 

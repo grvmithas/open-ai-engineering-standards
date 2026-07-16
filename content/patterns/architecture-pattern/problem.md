@@ -1,39 +1,36 @@
-# Architecture: Problem
+# Architecture Pattern — Problem
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Architecture  
+> **Component:** problem.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Architecture problem operationalizes this pattern outcome: choose and govern a system design against quantified quality-attribute scenarios.
+## Statement
 
-## Observable problem
+Teams and agents commit to topologies without recording alternatives, evaluating quality attributes, or walking failure and trust boundaries. The “architecture” is a diagram that cannot guide implementation or survive review.
 
-1. When a decision is expensive to reverse, an undocumented assumption can become a production decision.
-2. When quality attributes conflict, an undocumented assumption can become a production decision.
-3. When multiple teams depend on a stable boundary, an undocumented assumption can become a production decision.
+## Measurable symptoms
 
-## Quality boundary
+| Symptom | How you detect it |
+|---------|-------------------|
+| No ADR | Major new boundary with only a slide deck |
+| Single option | Decision names a tool without rejected alternatives |
+| Surprise tenancy bugs | Cross-tenant data access after launch |
+| Irreversible coupling | Shared DB across “services” discovered too late |
+| Rubber-stamp review | Approve with no conditions and no challenged assumptions |
 
-Architecture problem quality boundary gate 2 is accepted only when "all priority scenarios have measurable responses" is source-verifiable; otherwise, supersede the adr, disable the new topology at its seam, and restore the prior approved architecture.
+## Root cause
 
-## Tradeoffs
+Architecture work is treated as drawing boxes, not as deciding under forces. Without forced alternatives, QA scenarios, and independent challenge, agents optimize for familiarity and speed.
 
-Architecture problem deliberately spends additional review time to protect "all priority scenarios have measurable responses"; evidence weakness triggers "Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture".
+## Non-goals of this pattern
 
-## Anti-patterns
+- Not detailed implementation planning (planner-pattern)
+- Not code review of a PR (reviewer-pattern)
+- Not library bike-shedding with identical boundaries
+- Not a substitute for threat modeling workshops on Critical systems — it triggers them
 
-Architecture problem rejects shortcuts around "Name stakeholders and express quality attributes as stimulus-response scenarios." because they sever the evidence chain required for "all priority scenarios have measurable responses".
+## Related failure modes
 
-## Enterprise considerations
-
-Architecture problem governance binds owner, policy revision, and retained proof to "all priority scenarios have measurable responses", with "Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Trigger and affected population are quantified
-- [ ] Baseline and desired outcome are distinguishable
-- [ ] Scope and non-goals have named owners
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+See [failures.md](./failures.md).

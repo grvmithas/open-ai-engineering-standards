@@ -77,6 +77,9 @@ Cross-tenant retrieval, stale/revoked chunks, low recall hidden by fluent genera
 ## Verification
 Run recall@k/nDCG, citation/faithfulness graders, ACL leakage tests, deletion tests, ingestion lag, and p95 latency.
 
+## Domain Recovery Playbook
+Disable the candidate retriever or index alias, restore the last evaluated corpus/index version, replay deletion and ACL events, and rerun the failed quality slice.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

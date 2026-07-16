@@ -20,7 +20,7 @@ Capture Azure CLI/Bicep versions, resource-provider API versions, and service SK
 
 ## Tradeoffs
 
-The Azure deployment gate adds manual and target-environment checks that slow promotion. It reduces the chance that version, topology, state, or rollback assumptions reach production.
+Promotion waits for "Bicep build/lint and ARM What-If are retained and reviewed for deletes/replacements" and "target tenant, subscription, region, provider registration, quota, and policy state are preflighted". Those Azure target checks slow release but directly bound management-plane authorization or policy denial and make this rollback executable: Reapply the last approved Bicep/parameter artifact or route traffic to the prior deployment slot; never delete stateful resources to force convergence, and restore access changes through reviewed RBAC/policy state.
 
 ## Anti-patterns
 

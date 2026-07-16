@@ -1,6 +1,6 @@
 # Secure Software and AI Supply-Chain Crosswalk
 
-**Version:** 1.0.0  
+**Version:** 1.0.1  
 **Date:** 2026-07-16  
 **Status:** Informative
 
@@ -104,6 +104,10 @@ Sources accessed 2026-07-16. Pin the exact SLSA and Scorecard versions in each a
 - [ ] No SLSA level, OpenSSF badge, or NIST certification is claimed without basis
 
 ## Changelog
+
+### 1.0.1 — 2026-07-16
+
+- Narrowed relationship claims to evidence support, partial coverage, or no mapping.
 
 ### 1.0.0 — 2026-07-16
 

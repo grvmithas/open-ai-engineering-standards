@@ -8,11 +8,11 @@ Generate a production-ready document model, collection validator, query, aggrega
 
 ## Why
 
-Documents match atomic access patterns; validators enforce shape; explain evidence drives indexes; shard keys distribute both writes and queries. This prompt requires native MongoDB artifacts instead of substituting a generic incident or code-generation checklist.
+Documents match atomic access patterns; validators enforce shape; explain evidence drives indexes; shard keys distribute both writes and queries. The generate decision is accepted only when `db.version()`, `getParameter featureCompatibilityVersion`, driver version, `hello`, and replica/shard topology supports it; generic generate advice cannot establish that MongoDB state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized MongoDB evidence for the document model, collection validator, query, aggregation, index, transaction, or shard key. Apply the invariant "Documents match atomic access patterns; validators enforce shape; explain evidence drives indexes; shard keys distribute both writes and queries." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Capture server/FCV, driver, topology, storage engine, Atlas/managed tier, and fe
 
 ## Tradeoffs
 
-The prompt rejects fast code generation when MongoDB version, configuration, or target evidence is absent. That delay prevents plausible output from crossing an unsupported document model, collection validator, query, aggregation, index, transaction, or shard key boundary.
+Generation waits for `db.version()`, `getParameter featureCompatibilityVersion`, driver version, `hello`, and replica/shard topology and `getCollectionInfos`, `$jsonSchema` validator, indexes, collection stats, and sampled document-size distribution. That extra MongoDB discovery is justified because the output must prove "embed values updated/read atomically and reference independent or unbounded aggregates" and survive E11000 unique-index conflict rather than merely compile.
 
 ## Anti-patterns
 

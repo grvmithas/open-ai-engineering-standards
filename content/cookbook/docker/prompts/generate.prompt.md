@@ -8,11 +8,11 @@ Generate a production-ready Dockerfile, BuildKit build, OCI image, Compose servi
 
 ## Why
 
-Images are minimal, immutable, reproducible, non-root, secret-free, multi-architecture aware, and terminate correctly. This prompt requires native Docker artifacts instead of substituting a generic incident or code-generation checklist.
+Images are minimal, immutable, reproducible, non-root, secret-free, multi-architecture aware, and terminate correctly. The generate decision is accepted only when Dockerfile, `.dockerignore`, build context list, syntax directive, and BuildKit provenance supports it; generic generate advice cannot establish that Docker state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Docker evidence for the Dockerfile, BuildKit build, OCI image, Compose service, or container release. Apply the invariant "Images are minimal, immutable, reproducible, non-root, secret-free, multi-architecture aware, and terminate correctly." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Capture Docker Engine, Buildx/BuildKit, Dockerfile syntax directive, Compose spe
 
 ## Tradeoffs
 
-The prompt rejects fast code generation when Docker version, configuration, or target evidence is absent. That delay prevents plausible output from crossing an unsupported Dockerfile, BuildKit build, OCI image, Compose service, or container release boundary.
+Generation waits for Dockerfile, `.dockerignore`, build context list, syntax directive, and BuildKit provenance and base and final image digests, platform manifest, layer history, SBOM, and vulnerability report. That extra Docker discovery is justified because the output must prove "base image is maintained and pinned by digest with an update mechanism" and survive architecture or entrypoint exec-format mismatch rather than merely compile.
 
 ## Anti-patterns
 

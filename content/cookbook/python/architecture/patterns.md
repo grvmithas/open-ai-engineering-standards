@@ -69,11 +69,11 @@ Python governance requires approved indexes, hash-locked dependencies, native-wh
 
 ## Checklist
 
-- [ ] Framework models map into typed application inputs at the adapter..
-- [ ] Protocols describe infrastructure behavior without importing framework classes into the core..
-- [ ] One request or job owns its session and task group..
-- [ ] Application lifespan creates and closes pools exactly once..
-- [ ] Background work crosses a durable queue rather than escaping request task ownership..
+- [ ] Framework models map into typed application inputs at the adapter.
+- [ ] Protocols describe infrastructure behavior without importing framework classes into the core.
+- [ ] One request or job owns its session and task group.
+- [ ] Application lifespan creates and closes pools exactly once.
+- [ ] Background work crosses a durable queue rather than escaping request task ownership.
 - [ ] Diagram matches deployed topology rather than an aspirational target.
 - [ ] Rollback path preserves state and mixed-version contracts.
 

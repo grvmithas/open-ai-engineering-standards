@@ -20,7 +20,7 @@ Capture server/FCV, driver, topology, storage engine, Atlas/managed tier, and fe
 
 ## Tradeoffs
 
-The MongoDB review gate requires runtime/configuration evidence beyond a source diff. It increases reviewer effort but catches defects static style review cannot observe.
+Review must prove "embed values updated/read atomically and reference independent or unbounded aggregates" using `db.version()`, `getParameter featureCompatibilityVersion`, driver version, `hello`, and replica/shard topology. That MongoDB evidence costs more than diff inspection but exposes E11000 unique-index conflict before merge.
 
 ## Anti-patterns
 

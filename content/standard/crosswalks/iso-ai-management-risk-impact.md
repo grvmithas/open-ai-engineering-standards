@@ -1,6 +1,6 @@
 # ISO AI Management, Risk, and Impact Crosswalk
 
-**Version:** 1.0.0  
+**Version:** 1.0.1  
 **Date:** 2026-07-16  
 **Status:** Informative
 
@@ -87,6 +87,10 @@ Sources accessed 2026-07-16. ISO standards pages identify editions and scope; th
 - [ ] No equivalence or certification claim is made
 
 ## Changelog
+
+### 1.0.1 — 2026-07-16
+
+- Made relationship claims evidence-specific and aligned artifact field names with the normative kernel.
 
 ### 1.0.0 — 2026-07-16
 

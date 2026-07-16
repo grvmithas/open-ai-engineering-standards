@@ -1,47 +1,100 @@
-# Reviewer: Lifecycle Hooks
+# Reviewer Pattern — Hooks
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Reviewer  
+> **Component:** hooks.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Enforce reviewer gates outside model discretion.
+## `pre-review.hook.sh`
 
-| Hook | Enforced condition | Failure behavior |
-|---|---|---|
-| preflight | block comments lacking location and evidence | fail closed without creating an effect |
-| domain-gate | reject approval when critical requirements lack tests | fail closed without creating an effect |
-| closure | invalidate review when the base revision changes | reject approval, remove unverified review-driven edits, and restore the reviewed revision |
+Runs before the reviewer activates. Verifies diff and acceptance criteria exist.
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-: "${TASK_ID:?required}" "${MANIFEST_HASH:?required}" "${RISK_TIER:?required}". For the Reviewer hooks contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision.
-# oaies-reviewer: evaluate the three versioned policy rules documented above.
-policy_check --pattern "reviewer" --task "$TASK_ID" --manifest "$MANIFEST_HASH" --risk "$RISK_TIER"
+
+echo "Checking review prerequisites..."
+
+if [[ -z "${DIFF_FILE:-}" || ! -f "$DIFF_FILE" ]]; then
+  echo "ERROR: DIFF_FILE missing. Export a patch (e.g. git diff base...HEAD > /tmp/pr.diff)."
+  exit 1
+fi
+
+DIFF_SIZE=$(wc -c < "$DIFF_FILE" | tr -d ' ')
+if (( DIFF_SIZE < 20 )); then
+  echo "ERROR: Diff is empty or trivially small. Nothing to review."
+  exit 1
+fi
+
+if [[ -z "${AC_FILE:-}" || ! -f "$AC_FILE" ]]; then
+  echo "ERROR: AC_FILE missing. Provide acceptance criteria before review."
+  exit 1
+fi
+
+if ! grep -qiE 'acceptance|criteria|AC-|must |should ' "$AC_FILE"; then
+  echo "ERROR: AC_FILE does not look like acceptance criteria."
+  exit 1
+fi
+
+if [[ -n "${RISK_FILE:-}" && -f "$RISK_FILE" ]]; then
+  if ! grep -qiE 'pii|payment|sensitivity|deployment|public|internal' "$RISK_FILE"; then
+    echo "WARNING: RISK_FILE present but missing sensitivity/deployment fields."
+  fi
+else
+  echo "WARNING: RISK_FILE unset — defaulting to elevated caution for security pass."
+fi
+
+echo "Prerequisites satisfied. Review can begin."
 ```
 
-## Verification
+## `post-review.hook.sh`
 
-Reviewer hooks verification records raw evidence for "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision." and invokes "Reject approval, remove unverified review-driven edits, and restore the reviewed revision" when the threshold is not demonstrated.
+Runs after the review report is written. Verifies verdict and findings structure.
 
-## Tradeoffs
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-Reviewer hooks deliberately spends additional review time to protect "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision."; evidence weakness triggers "Reject approval, remove unverified review-driven edits, and restore the reviewed revision".
+REPORT="${1:-}"
+if [[ -z "$REPORT" || ! -f "$REPORT" ]]; then
+  echo "ERROR: Usage: post-review.hook.sh <review-report-file>"
+  exit 1
+fi
 
-## Anti-patterns
+echo "Validating review report structure..."
 
-Reviewer hooks rejects shortcuts around "Reconstruct intended behavior from requirements before reading the implementation." because they sever the evidence chain required for "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision.".
+if ! grep -qiE 'Verdict:.*(Approve|Request changes|Block)' "$REPORT"; then
+  echo "ERROR: Report missing a valid Verdict line."
+  exit 1
+fi
 
-## Enterprise considerations
+REQUIRED=("Critical" "Summary" "AC")
+for section in "${REQUIRED[@]}"; do
+  if ! grep -qi "$section" "$REPORT"; then
+    echo "ERROR: Report missing required section/keyword: $section"
+    exit 1
+  fi
+done
 
-Reviewer hooks governance binds owner, policy revision, and retained proof to "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision.", with "Reject approval, remove unverified review-driven edits, and restore the reviewed revision" as the recorded recovery authority.
+# If verdict is Approve, Critical section must not list open blockers with REV- IDs
+if grep -qiE 'Verdict:.*Approve' "$REPORT" && ! grep -qiE 'Verdict:.*Approve with' "$REPORT"; then
+  if grep -qiE '^\| *REV-[0-9]+' "$REPORT" | head -1 | grep -qi Critical; then
+    echo "WARNING: Approve with REV-* rows present — confirm Critical table is empty."
+  fi
+fi
 
-## Checklist
+if grep -qiE 'Verdict:.*Approve' "$REPORT" && grep -qiE 'CRITICAL|must fix before merge' "$REPORT"; then
+  # Soft check: open Critical tables often still have header-only rows
+  if grep -E '\| *REV-[0-9]+' "$REPORT" | grep -qi 'block\|critical'; then
+    echo "ERROR: Approve verdict with open Critical findings."
+    exit 1
+  fi
+fi
 
-- [ ] Automated test proves: block comments lacking location and evidence
-- [ ] Automated test proves: reject approval when critical requirements lack tests
-- [ ] Automated test proves: invalidate review when the base revision changes
+echo "Review report structure validated."
+```
 
-## Changelog
+## CI integration note
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+Call `pre-review` from the agent harness before review; call `post-review` as a PR check on the uploaded report artifact. Green unit tests do not replace this structure gate.

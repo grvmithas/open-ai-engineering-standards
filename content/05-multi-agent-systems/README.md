@@ -1,80 +1,298 @@
 # Level 5: Multi-Agent Systems
 
-> **Version:** 2.0.0  
-> **Last updated:** 2026-07-16  
-> **Prerequisite:** reliable, evaluated single-agent operation
+> **Prerequisites:** Level 4: Agent Engineering
+> **Goal:** Orchestrate multiple agents reliably, with defined communication protocols and failure isolation
 
-## Purpose
+---
 
-Define the production control plane for systems in which independently executing agents delegate, communicate, and mutate durable state.
+## Why Multi-Agent Systems
 
-## Why
+Single agents hit fundamental limits:
+- **Context saturation:** Long tasks fill the context window, degrading reasoning
+- **Tool overload:** Many tools degrade agent tool selection accuracy
+- **Specialization:** A generalist agent cannot match a specialist on specific domains
+- **Parallelization:** Sequential single-agent execution cannot parallelize independent work
+- **Isolation:** A failed action in a single agent affects the entire task
 
-Multiple agents add trust boundaries, failure modes, latency, and cost. Use them only when an evaluated topology outperforms the strongest single-agent baseline on a representative workload.
+Multi-agent systems solve these through separation of concerns. The key principle: **separate agents maintain separate contexts, enabling specialization and isolation.**
 
-## How
+**When NOT to use multi-agent systems:**
+- Single-step tasks
+- Tasks that fit in one context window
+- Tasks with no natural separation of concerns
+- Teams that don't yet have reliable single agents (fix single agent reliability first)
+
+---
+
+## Architecture Patterns
+
+### Pattern 1: Supervisor Pattern (Most Common)
 
 ```mermaid
-flowchart LR
-    U[User] --> O[Authenticated orchestrator]
-    O --> P[Policy enforcement]
-    P --> W1[Isolated worker]
-    P --> W2[Isolated worker]
-    W1 & W2 --> V[Deterministic validation]
-    V --> S[(Versioned state and audit log)]
-    S --> O
+graph TD
+    H[Human] --> S[Supervisor Agent]
+    S --> P[Planner Agent]
+    S --> C[Coder Agent]
+    S --> R[Reviewer Agent]
+    S --> T[Testing Agent]
+    P --> S
+    C --> S
+    R --> S
+    T --> S
+    S --> H
 ```
 
-1. Establish identity, capability, budget, deadline, and termination policy before dispatch.
-2. Use signed, replay-resistant message envelopes and validate provenance at every hop.
-3. Commit outputs through versioned checkpoints; never let conversational context be authoritative state.
-4. Isolate worker credentials and validate artifacts before privilege is propagated.
-5. Compare quality, safety, latency, and cost against a single-agent control before release.
+**When to use:** Complex tasks where a coordinator needs to delegate to and monitor specialists.
+**Key property:** The supervisor maintains the overall plan and state; specialists execute focused subtasks.
 
-## Standards Corpus
+### Pattern 2: Pipeline Pattern
 
-- [Architecture and benefit proof](./standards/architecture-and-benefit.md)
-- [Identity and authenticated delegation](./standards/identity-and-delegation.md)
-- [Message provenance and non-repudiation](./standards/message-provenance.md)
-- [Durable state and checkpoints](./standards/durable-state-checkpoints.md)
-- [Threat controls](./standards/threat-controls.md)
-- [Cost, budgets, and termination](./standards/cost-and-termination.md)
-- [LangGraph integration](./frameworks/langgraph/README.md)
-- [AutoGen integration](./frameworks/autogen/README.md)
-- [CrewAI integration](./frameworks/crewai/README.md)
+```mermaid
+graph LR
+    A[Research Agent] --> B[Planner Agent]
+    B --> C[Coder Agent]
+    C --> D[Reviewer Agent]
+    D --> E[Testing Agent]
+    E --> F[Documentation Agent]
+    F --> G[Release Agent]
+```
 
-## Tradeoffs
+**When to use:** Tasks with a clear sequential dependency — each stage feeds the next.
+**Key property:** Each agent's output is the next agent's input. No shared state.
 
-Multi-agent execution can improve parallelism and context isolation, but increases coordination overhead, attack surface, nondeterminism, and observability burden. Central orchestration is the default because ownership and termination remain explicit; peer-to-peer autonomy requires a documented exception.
+### Pattern 3: Parallel Specialist Pattern
 
-## Anti-patterns
+```mermaid
+graph TD
+    O[Orchestrator] --> S[Security Agent]
+    O --> P[Performance Agent]
+    O --> A[Accessibility Agent]
+    S --> O
+    P --> O
+    A --> O
+    O --> Report[Combined Report]
+```
 
-- **Agent count as architecture:** roles without measured independent value add cost without capability.
-- **Bearer authority propagation:** forwarding a caller token makes every downstream agent a confused-deputy target.
-- **Chat as state:** free-form transcripts cannot provide atomicity, conflict detection, or recoverable checkpoints.
-- **Unlimited debate:** peer critique without budgets or convergence tests creates loops and collusion risk.
+**When to use:** Independent checks that can run simultaneously.
+**Key property:** Agents work in parallel on separate concerns; orchestrator combines results.
 
-## Enterprise Considerations
+### Pattern 4: Hierarchical Pattern
 
-Map every agent and service identity to an accountable owner. Retain tamper-evident decision and delegation records according to legal policy, segregate tenants cryptographically and logically, and require human approval for irreversible or regulated actions.
+```mermaid
+graph TD
+    L[Lead Agent] --> F[Feature Agent 1]
+    L --> G[Feature Agent 2]
+    F --> FR[React Subagent]
+    F --> FA[API Subagent]
+    G --> GD[DB Subagent]
+    G --> GG[GraphQL Subagent]
+```
 
-## Checklist
+**When to use:** Very large tasks that decompose into independent sub-features.
+**Key property:** Multiple levels of delegation; top-level maintains business context.
 
-- [ ] Multi-agent benefit is statistically and operationally demonstrated against the single-agent baseline.
-- [ ] Every delegation is authenticated, audience-bound, least-privilege, and expires.
-- [ ] Messages are signed, replay-protected, correlated, and retained in a tamper-evident log.
-- [ ] Durable state supports optimistic concurrency, idempotency, checkpoints, and tested recovery.
-- [ ] Loop, collusion, confused-deputy, and privilege-propagation tests pass.
-- [ ] Per-agent and workflow budgets, deadlines, cancellation, and terminal states are enforced.
-- [ ] Human escalation and emergency revocation are tested end to end.
+---
 
-## References
+## Communication Protocol (OAIES Standard)
 
-- [NIST AI RMF 1.0](https://doi.org/10.6028/NIST.AI.100-1)
-- [NIST SP 800-207, Zero Trust Architecture](https://doi.org/10.6028/NIST.SP.800-207)
-- [RFC 9421, HTTP Message Signatures](https://www.rfc-editor.org/rfc/rfc9421.html)
-- [OWASP Top 10 for LLM Applications 2025](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
+All agent-to-agent communication uses a standard message schema:
 
-## Changelog
+```typescript
+interface AgentMessage {
+  // Routing
+  from: string;              // Sending agent ID
+  to: string;                // Receiving agent ID
+  session_id: string;        // Shared across all agents in this task
+  message_id: string;        // UUID for this message
+  
+  // Content
+  type: MessageType;         // "task" | "result" | "question" | "escalation" | "complete"
+  priority: "high" | "normal";
+  
+  // Task context (included in every message)
+  task_context: {
+    story_id: string;        // The story this task belongs to
+    objective: string;       // What the overall task is achieving
+    constraints: string[];   // Active constraints (security, performance, etc.)
+  };
+  
+  // Message body
+  content: string;           // The actual message content
+  artifacts: Artifact[];     // Files, plans, or code produced
+  
+  // State management
+  requires_response: boolean;
+  timeout_seconds: number;
+  escalation_target: string; // Who to escalate to if this message is not answered
+}
 
-- **2.0.0 — 2026-07-16:** Replaced introductory guidance with production identity, provenance, state, threat, budget, and benefit gates.
+type MessageType = 
+  | "task"        // Delegating a task
+  | "result"      // Returning a completed task result
+  | "question"    // Asking for clarification (blocks until answered)
+  | "escalation"  // Agent cannot proceed without human input
+  | "complete";   // Task fully complete, session can close
+```
+
+---
+
+## State Management
+
+**The critical challenge in multi-agent systems:** How do agents share state without creating coupling?
+
+### OAIES State Management Pattern
+
+```mermaid
+graph TD
+    A[Shared Task State Store] --> S[Supervisor]
+    A --> C[Coder]
+    A --> R[Reviewer]
+    
+    S -->|write: plan_approved=true| A
+    C -->|write: implementation_complete=true| A
+    R -->|write: review_passed=true| A
+```
+
+**Rules:**
+1. State is stored in one place — not in any individual agent's context
+2. Agents read and write state explicitly — no implicit context passing
+3. Every state change is logged (who changed what, when)
+4. State schema is defined upfront — agents cannot add arbitrary state
+
+### Minimum State Schema
+
+```typescript
+interface TaskState {
+  task_id: string;
+  status: "planning" | "implementing" | "reviewing" | "testing" | "complete" | "failed";
+  
+  // Gate states (boolean flags that must be set before next stage)
+  gates: {
+    plan_approved: boolean;         // Human approved the plan
+    implementation_complete: boolean;
+    review_passed: boolean;
+    tests_passing: boolean;
+    security_approved: boolean;
+    deployment_approved: boolean;
+  };
+  
+  // Artifacts
+  artifacts: {
+    implementation_plan?: string;   // File path or content
+    code_files?: string[];          // File paths
+    test_results?: string;          // Test output
+    review_report?: string;         // Review findings
+  };
+  
+  // Agent status
+  active_agents: string[];
+  completed_agents: string[];
+  failed_agents: string[];
+}
+```
+
+---
+
+## Failure Isolation
+
+**The most important property of a multi-agent system:** a failing agent should not corrupt the overall task.
+
+### Failure Isolation Pattern
+
+```python
+async def execute_agent_task(agent: Agent, task: Task, state: TaskState) -> AgentResult:
+    """Execute an agent task with full isolation."""
+    try:
+        result = await agent.execute(task, timeout=agent.timeout_seconds)
+        
+        # Validate agent output before accepting it
+        validated = await validate_output(result, expected_schema=task.output_schema)
+        
+        # Update state only after validation
+        await state.update(agent.id, status="complete", artifacts=validated.artifacts)
+        
+        return validated
+        
+    except AgentTimeoutError:
+        await state.update(agent.id, status="failed", reason="timeout")
+        await escalate_to_human(f"Agent {agent.id} timed out. Current state: {state.summary()}")
+        raise
+        
+    except AgentLoopError:
+        await state.update(agent.id, status="failed", reason="loop_detected")
+        await escalate_to_human(f"Agent {agent.id} detected loop. Last action: {agent.last_action}")
+        raise
+        
+    except ValidationError as e:
+        await state.update(agent.id, status="failed", reason=f"invalid_output: {e}")
+        # Don't escalate — try recovery
+        return await retry_with_different_context(agent, task, state, error=e)
+```
+
+---
+
+## Framework Integrations
+
+### LangGraph (Recommended for Stateful Graphs)
+See [frameworks/langgraph/](./frameworks/langgraph/) for:
+- Graph definition patterns
+- State management with LangGraph
+- Human-in-the-loop integration
+- Streaming output
+
+### AutoGen (Microsoft)
+See [frameworks/autogen/](./frameworks/autogen/) for:
+- Conversation-based multi-agent setup
+- GroupChat patterns
+- Tool registration
+
+### CrewAI (Role-Based)
+See [frameworks/crewai/](./frameworks/crewai/) for:
+- Crew and role definition
+- Task delegation patterns
+- Sequential vs. parallel execution
+
+---
+
+## Production Standards
+
+Operational specs that expand this level beyond the overview:
+
+| Standard | What it covers |
+|----------|----------------|
+| [Architecture and benefit](./standards/architecture-and-benefit.md) | Supervisor, pipeline, parallel, hierarchical patterns with Mermaid |
+| [Identity and delegation](./standards/identity-and-delegation.md) | Workload identity, delegation tokens, confused-deputy defenses |
+| [Message provenance](./standards/message-provenance.md) | `AgentMessage` schema, delivery, idempotency, audit |
+| [Durable state and checkpoints](./standards/durable-state-checkpoints.md) | Authoritative state vs chat context; recovery |
+| [Threat controls](./standards/threat-controls.md) | Cross-agent injection, tool abuse, exfiltration |
+| [Cost and termination](./standards/cost-and-termination.md) | Budgets, max hops, kill switches, cost attribution |
+
+---
+
+## Anti-Patterns
+
+### ❌ Agents That Share Context Windows
+If agents share the same context window, you have one agent with multiple roles — not a multi-agent system. Context sharing defeats the purpose.
+
+### ❌ No Communication Schema
+Agents that communicate via free-form text cannot be reliably parsed, monitored, or debugged. Structured message schemas are required.
+
+### ❌ Coordinator Without Authority
+A supervisor that can only suggest but not direct is an advisory board, not an orchestrator. The supervisor must have authority to terminate failing agents and reassign tasks.
+
+### ❌ No Failure Isolation
+A system where one failing agent brings down the entire task is not a multi-agent system — it's a pipeline with multiple failure points and no recovery.
+
+---
+
+## Readiness Gate
+
+Before deploying a multi-agent system, verify:
+- [ ] Single agent system reliable (before adding multi-agent complexity)
+- [ ] Communication schema defined and versioned
+- [ ] State management centralized (not distributed across agent contexts)
+- [ ] Failure isolation tested (kill one agent, verify task continues or escalates gracefully)
+- [ ] Human escalation path tested end-to-end
+- [ ] All agent interactions logged in audit trail
+- [ ] Total system timeout enforced (not just per-agent timeout)
+- [ ] Cost per task bounded and monitored

@@ -1,72 +1,149 @@
 # Code Review Skill
 
 > **Skill ID:** `code-review`  
-> **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Version:** 1.1 | **Updated:** 2026-07-16  
+> **Install:** `.claude/skills/code-review.skill.md`  
+> **Handbook:** [`handbook/pr-review-with-ai.md`](../../handbook/pr-review-with-ai.md)  
+> **Pattern:** [`patterns/reviewer-pattern/README.md`](../../patterns/reviewer-pattern/README.md)
+
+---
+
+## Trigger
+
+Activate when any of these are true:
+
+- A human asks for a PR / diff review
+- A coder agent claims “ready for review”
+- CI attached a diff and acceptance criteria
+- A security or plan-conformance check is requested before merge
+
+Do **not** activate for “rewrite this feature” — that is coding, not review.
+
+---
 
 ## Purpose
-Activate this skill when A diff, pull request, patch, or release candidate requires an independent engineering review.
 
-## Why
-A prioritized review report with file/line evidence, impact, reproduction or reasoning, remediation, and a merge verdict is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
+Produce a **severity-calibrated** review: concrete file:line findings, remediations, and a verdict a human can own. Verify claimed fixes. Do not merge.
 
-## Trigger Conditions
-- A diff, pull request, patch, or release candidate requires an independent engineering review.
-- The requester expects an implementation, design, audit, or release decision in this domain.
+---
 
-## Required Inputs
-- The exact target and acceptance criteria.
-- Repository-pinned versions, environment constraints, and available evidence.
-- Data classification, effect permissions, and owner where the procedure can affect external systems.
+## Inputs required
 
-## Produced Artifacts
-- A prioritized review report with file/line evidence
-- impact
-- reproduction or reasoning
-- remediation
-- a merge verdict.
+| Input | Why |
+|-------|-----|
+| Diff or PR URL | What changed |
+| Acceptance criteria / story | Intent |
+| Approved plan (if multi-file) | Plan conformance |
+| Test commands + results | Evidence, not vibes |
+| Risk profile | Depth of security/perf passes |
+
+Missing AC → stop and request it. Missing plan on a multi-service change → escalate.
+
+---
 
 ## Procedure
-1. Read the change intent, acceptance criteria, risk classification, and test evidence before the diff.
-2. Trace changed data and control flow through callers, persistence, concurrency, and failure paths.
-3. Inspect authorization, validation, secrets, dependencies, performance, compatibility, and operability where touched.
-4. Run or reason through focused tests and construct counterexamples for risky branches.
-5. Report only actionable findings with severity, evidence, fix direction, and missing-review scope.
 
-## Verification
-Every blocking finding must be reproducible or supported by a concrete execution path; verify the proposed fix would close that path.
+```mermaid
+flowchart TD
+  A[Load AC + plan + diff] --> B[Pass 1: Intent & plan conformance]
+  B --> C[Pass 2: Correctness & edge cases]
+  C --> D[Pass 3: Security & authz]
+  D --> E[Pass 4: Performance & cost]
+  E --> F[Pass 5: Tests & observability]
+  F --> G[Severity + verdict]
+  G --> H{Critical/High open?}
+  H -->|Yes| I[Request changes]
+  H -->|No| J[Approve or approve-with-nits]
+```
 
-## Unhappy Paths and Recovery
-If intent is missing, withhold verdict. If generated files dominate, review the generator and reproducibility. If tests cannot run, state the exact unverified risk rather than approving.
+### Pass 1 — Intent and plan conformance
 
-## Concrete Example
-Review a pagination change by proving an unstable sort can duplicate rows, citing the query line, and prescribing a deterministic tie-breaker test.
+- Does the diff match the approved plan paths? Unexpected files → finding (Major+) unless plan revision linked.
+- Does each AC have evidence (test or explicit manual protocol)?
+- Drive-by refactors outside scope → Major (process debt).
 
-## Do Not Use This Skill When
-Do not use as a penetration test, architecture approval, or style-only formatting pass.
+### Pass 2 — Correctness
 
-## Tradeoffs
-The required domain artifacts and verification cost more than a generic implementation pass, but they expose assumptions, safety gates, and operational limits before release.
+- Happy path and failure paths
+- Null/empty/boundary behavior
+- Error handling that does not swallow security-relevant failures
+- UI: loading/error/empty states; a11y for new interactive controls
 
-## Anti-Patterns
-- Substituting a generic checklist for the domain procedure above.
-- Claiming a gate passed without retaining the exact command, inspected artifact, or observed signal.
-- Expanding scope or executing an external effect without target-specific approval.
+### Pass 3 — Security (invoke [`security.skill.md`](./security.skill.md) for deep pass)
 
-## Enterprise Considerations
-Apply repository ownership, separation of duties, data residency and retention, audit evidence, and approved-tool policies to every produced artifact. Redact secrets and regulated data from examples and logs.
+- AuthZ on new/changed routes and tools
+- Injection (SQL, XSS, prompt injection into tools)
+- Secrets / PII in logs or client bundles
+- SSRF / unsafe URL fetch from user input
 
-## Checklist
-- [ ] Trigger and anti-trigger evaluated
-- [ ] Required inputs and domain artifacts complete
-- [ ] Procedure followed in order
-- [ ] Verification evidence retained
-- [ ] Recovery, rollback, owner, and residual risk recorded
+### Pass 4 — Performance and cost
 
-## Authoritative Sources
-- [Google Code Review Standard](https://google.github.io/eng-practices/review/reviewer/standard.html)
-- [OWASP Code Review Guide](https://owasp.org/www-project-code-review-guide/)
+- N+1, unbounded lists, sync work on request path
+- For AI features: token fan-out, unbounded tool loops, missing budgets
 
-## Changelog
-- **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
-- **1.1:** Initial standardized structure.
+### Pass 5 — Tests and operability
+
+- Behavior tests exist for new logic
+- Eval cases for user-visible model behavior (link to [`evals handbook`](../../handbook/evals-as-quality-gates.md) when present)
+- Metrics/logs sufficient to detect the failure modes in the plan
+
+---
+
+## Output format
+
+```markdown
+## Code Review
+
+**PR / change:** <id or paths>
+**Summary:** <1–2 sentences>
+**Verdict:** Approve | Approve with nits | Request changes | Block
+**Plan conformance:** Yes | Delta <link> | N/A (single-file)
+
+### Critical (must fix)
+- **path:line** — Issue — Fix — Evidence
+
+### High
+- ...
+
+### Medium
+- ...
+
+### Low / nit
+- ...
+
+### Verified claims
+- Claim: "tests pass" → Evidence: <CI URL or command output summary>
+
+### Positive
+- <specific good practice>
+```
+
+---
+
+## Verification (skill succeeded when)
+
+- [ ] All five passes considered (or explicitly N/A with reason)
+- [ ] Every Critical/High has path + fix
+- [ ] At least one positive note when the change is non-trivial
+- [ ] Verdict matches open severity (no Approve with open Critical)
+- [ ] Claimed test/eval results are checked, not trusted from chat
+
+---
+
+## Unhappy path
+
+| Failure | Recovery |
+|---------|----------|
+| Diff too large to review well | Demand split or plan slices; Block |
+| Author “fixed” without showing evidence | Re-open High; require command output |
+| Model invented a finding | Delete finding; never bluff file:line |
+| Security Critical | Escalate to security owner; Block |
+
+---
+
+## Related repo files
+
+- Reviewer pattern: [`content/patterns/reviewer-pattern/`](../../patterns/reviewer-pattern/README.md)
+- Security skill: [`security.skill.md`](./security.skill.md)
+- React review checklist: [`content/cookbook/react/checklists/code-review.md`](../../cookbook/react/checklists/code-review.md)
+- Definition of Done: [`content/08-ai-sdlc/quality-standards/definition-of-done.md`](../../08-ai-sdlc/quality-standards/definition-of-done.md)

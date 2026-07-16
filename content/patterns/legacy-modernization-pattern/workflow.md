@@ -1,67 +1,46 @@
-# Legacy Modernization: Workflow
+# Legacy Modernization Pattern — Workflow
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Legacy Modernization  
+> **Component:** workflow.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Apply the domain workflow to replace obsolete internals incrementally while preserving observed business behavior.
+## End-to-end flow
 
 ```mermaid
 flowchart TD
-  S1[1. Inventory business capabilities, consumers, and operational pain] --> S2
-  S2[2. Capture golden-master and characterization tests before refactoring] --> S3
-  S3[3. Create seams around time, I/O, state, and external dependencies] --> S4
-  S4[4. Select a vertical capability by value, coupling, and reversibility] --> S5
-  S5[5. Place a strangler route with shadow comparison] --> S6
-  S6[6. Implement the replacement behind contract tests] --> S7
-  S7[7. Shift traffic gradually and compare business outcomes] --> S8
-  S8[8. Delete the legacy slice only after consumer and rollback expiry]
-  S8 --> V{Domain metrics pass?}
-  V -->|No| R[flip the strangler route to the legacy implementation and replay buffered work after reconciliation]
-  V -->|Yes| C[Retain evidence and close]
+    A[Input: capability slice + legacy surface] --> B[Modernization Lead Agent]
+    B --> C[Map legacy behaviors + data flows]
+    C --> D[Choose strangler seam]
+    D --> E[Build new path behind flag]
+    E --> F[Parity tests: legacy vs new]
+    F --> G{Parity gate green?}
+    G -->|No| E
+    G -->|Yes| H[Shift traffic 1%→10%→50%→100%]
+    H --> I{Error/business KPIs OK?}
+    I -->|No| J[Shift traffic back]
+    I -->|Yes| K[Retire legacy path for slice]
+    K --> L[Next capability slice]
 ```
 
-## Procedure
+## Step procedure
 
-1. **Inventory business capabilities,.** Inventory business capabilities, consumers, and operational pain.
-2. **Capture golden-master and.** Capture golden-master and characterization tests before refactoring.
-3. **Create seams around.** Create seams around time, I/O, state, and external dependencies.
-4. **Select a vertical.** Select a vertical capability by value, coupling, and reversibility.
-5. **Place a strangler.** Place a strangler route with shadow comparison.
-6. **Implement the replacement.** Implement the replacement behind contract tests.
-7. **Shift traffic gradually.** Shift traffic gradually and compare business outcomes.
-8. **Delete the legacy.** Delete the legacy slice only after consumer and rollback expiry.
+| Step | Actor | Action | Exit criteria |
+|------|-------|--------|---------------|
+| 1 | Human | Select capability slice | Bounded backlog item |
+| 2 | Behavior Mapper | Document golden behaviors + edge cases | Characterization notes |
+| 3 | Modernization Lead | Choose seam (facade, proxy, event, data) | Seam ADR |
+| 4 | Coder | Implement new path behind flag | Feature-flagged |
+| 5 | Parity Harness | Compare legacy vs new on fixtures + shadow | Gate green |
+| 6 | Traffic Shift | Ramp % with abort KPIs | 100% or abort |
+| 7 | Human + eng | Retire legacy path for slice | Retirement checklist done |
+| 8 | Program | Pick next slice | Repeat |
 
-## Verification
+## Deviation rule
 
-- characterized critical behavior = 100%
-- contract mismatch rate = 0
-- change lead time improves by target
-- legacy attack surface decreases each tranche
+If parity fails in production shadow, **do not** increase traffic. Fix or narrow the slice. Never skip to 100% to “make the demo.”
 
-## Tradeoffs
+## Parallelism rule
 
-Legacy Modernization workflow deliberately spends additional review time to protect "characterized critical behavior = 100%"; evidence weakness triggers "Flip the strangler route to the legacy implementation and replay buffered work after reconciliation".
-
-## Anti-patterns
-
-Legacy Modernization workflow rejects shortcuts around "Inventory business capabilities, consumers, and operational pain." because they sever the evidence chain required for "characterized critical behavior = 100%".
-
-## Enterprise considerations
-
-Legacy Modernization workflow governance binds owner, policy revision, and retained proof to "characterized critical behavior = 100%", with "Flip the strangler route to the legacy implementation and replay buffered work after reconciliation" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Inventory business capabilities, consumers, and operational pain
-- [ ] Capture golden-master and characterization tests before refactoring
-- [ ] Create seams around time, I/O, state, and external dependencies
-- [ ] Select a vertical capability by value, coupling, and reversibility
-- [ ] Place a strangler route with shadow comparison
-- [ ] Implement the replacement behind contract tests
-- [ ] Shift traffic gradually and compare business outcomes
-- [ ] Delete the legacy slice only after consumer and rollback expiry
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+Independent capability slices may proceed in parallel only if seams do not contend on the same legacy write path without a coordination plan.

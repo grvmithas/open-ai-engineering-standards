@@ -45,7 +45,7 @@ Constraints enforce invariants; actual plans justify indexes; transactions are s
 
 ## Verification
 
-The evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. For manual checks, record environment, operator, exact steps, and result.
+The PostgreSQL evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. It must also retain `\conninfo`, `SELECT version()`, extension inventory, relevant `SHOW` settings, and topology. For manual schema, migration, query, index, transaction, replication path, or recovery runbook checks, record environment, operator, exact steps, and result.
 
 ## Failure recovery
 
@@ -61,7 +61,7 @@ Report the PostgreSQL boundary, facts, hypotheses, commands actually run, change
 
 ## Termination criteria
 
-Finish when native validation, all applicable review/deployment gates, and recovery signals pass, or when a named owner accepts a documented blocker through the repository's risk process.
+Finish the PostgreSQL workflow only when native validation, applicable review/deployment gates, and recovery signals for deadlock or long lock wait and connection exhaustion or pool leak pass. Otherwise record a named owner and the exact missing PostgreSQL evidence; risk acceptance does not convert a failed native check into a pass.
 
 ## Version-aware caution
 
@@ -69,7 +69,7 @@ Capture `server_version`, client version, extensions, parameter settings, manage
 
 ## Tradeoffs
 
-This skill spends time fingerprinting PostgreSQL and collecting native evidence before editing. It reduces throughput for trivial changes but prevents incorrect commands, unsupported APIs, and state-destructive rollback.
+This skill fingerprints PostgreSQL through `\conninfo`, `SELECT version()`, extension inventory, relevant `SHOW` settings, and topology before editing and retains `pg_stat_activity`, `pg_locks`, blockers, wait events, transaction age, and statement fingerprints before recovery. The added work is warranted when deadlock or long lock wait could make Stop the migration runner and application feature, release locks, and revert only additive/compatible DDL; for destructive or data-rewriting steps use a tested forward fix or point-in-time recovery, never an improvised down migration.
 
 ## Anti-patterns
 

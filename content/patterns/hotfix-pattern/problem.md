@@ -1,39 +1,36 @@
-# Hotfix: Problem
+# Hotfix Pattern — Problem
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Hotfix  
+> **Component:** problem.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Hotfix problem operationalizes this pattern outcome: contain an active production defect with the smallest reversible intervention.
+## Statement
 
-## Observable problem
+During production harm, teams that skip incident command and containment ship oversized “hotfixes,” conflict with each other, and extend customer impact — often creating a second incident during recovery.
 
-1. When customer harm is active or imminent, an undocumented assumption can become a production decision.
-2. When normal release lead time exceeds incident tolerance, an undocumented assumption can become a production decision.
-3. When incident command authorizes an emergency path, an undocumented assumption can become a production decision.
+## Measurable symptoms
 
-## Quality boundary
+| Symptom | How you detect it |
+|---------|-------------------|
+| Slow containment | Time from declare → harm reduced misses SEV target |
+| Scope bloat | Hotfix diff touches unrelated paths or deps |
+| Dual deploy | Two “fixes” land without IC authorization |
+| Evidence loss | Logs rotated / pods deleted before capture |
+| Comms chaos | Customers hear conflicting status |
 
-Hotfix problem quality boundary gate 2 is accepted only when "time to containment meets severity target" is source-verifiable; otherwise, execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment.
+## Root cause
 
-## Tradeoffs
+Organizations reward “finding root cause live” over stopping impact with a known-good state. Emergency process without roles and abort criteria becomes freestyle engineering.
 
-Hotfix problem deliberately spends additional review time to protect "time to containment meets severity target"; evidence weakness triggers "Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment".
+## Non-goals of this pattern
 
-## Anti-patterns
+- Not the durable architectural fix (schedule after containment)
+- Not the RCA document (use [root-cause-pattern](../root-cause-pattern/README.md))
+- Not a bypass for criminal/security forensics holds when those apply
+- Not performance optimization theater under a SEV label
 
-Hotfix problem rejects shortcuts around "Establish incident command, severity, roles, and update cadence." because they sever the evidence chain required for "time to containment meets severity target".
+## Related failure modes
 
-## Enterprise considerations
-
-Hotfix problem governance binds owner, policy revision, and retained proof to "time to containment meets severity target", with "Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Trigger and affected population are quantified
-- [ ] Baseline and desired outcome are distinguishable
-- [ ] Scope and non-goals have named owners
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+See [failures.md](./failures.md).

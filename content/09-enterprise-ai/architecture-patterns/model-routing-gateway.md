@@ -1,6 +1,6 @@
 # Enterprise Model Routing Gateway
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative OAIES implementation profile
 
@@ -21,7 +21,7 @@ Use when multiple applications, models, or providers exist.
 5. Fail safely; requalify providers before adding or materially changing routes.
 
 ## Evidence contract
-The decision record is the **gateway policy release**. It records identity inputs; policy version; approved routes; data/residency constraints; budgets; decisions; failover; kill switch. The AI gateway service owner owns completeness; the evidence is invalid when applications can call providers outside the gateway. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+The decision record is the **gateway policy release**. It records identity inputs; policy version; approved routes; data/residency constraints; budgets; decisions; failover; kill switch. The AI gateway service owner owns completeness; the evidence is invalid when applications can call providers outside the gateway. Architecture evidence binds diagrams and contracts to deployed adapters, policies, identities, data routes, resilience tests, and exit drills.
 
 ## Failure response and recovery
 **Trigger:** policy service fails or no qualified route remains.
@@ -29,7 +29,7 @@ The decision record is the **gateway policy release**. It records identity input
 **Immediate response:** fail closed for consequential work and return an explicit unavailable response. Preserve the gateway policy release, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to enterprise model routing gateway.
 
 ## Decision authority
-The **AI gateway service owner** accepts the operational decision. The **enterprise security architect** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+The **AI gateway service owner** accepts the operational decision. The **enterprise security architect** provides independent challenge for high-risk scope, failed gates, or exceptions. Runtime policy may select only approved paths; architecture, service, data, and risk owners approve topology and failover boundaries.
 
 ## Tradeoffs
 | Choice | Benefit | Cost |
@@ -45,12 +45,12 @@ The **AI gateway service owner** accepts the operational decision. The **enterpr
 - Separate policy administration from runtime.
 
 ## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+**Enterprise Model Routing Gateway** is an informative architecture pattern. Teams may use an equivalent design that satisfies the same boundaries, and no portability or provider-neutrality certification is implied.
 
 | Source | Relationship for Enterprise Model Routing Gateway | Boundary |
 |---|---|---|
-| NIST AI RMF | MANAGE 2.2 and 2.3 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clause 8.1 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| NIST AI RMF | MANAGE 2.2 and 2.3 | Use NIST risk outcomes to evaluate the actual data and control plane. |
+| ISO/IEC 42001 | 42001 clause 8.1 | ISO-related evidence is informative unless incorporated into the organization’s formally scoped system. |
 | Domain threat/control source | LLM06 and LLM10 | Test only the threats applicable to the documented system and release |
 
 ## Checklist

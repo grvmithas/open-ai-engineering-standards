@@ -1,56 +1,173 @@
 # Release Pattern
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Release  
+> **Category:** Progressive Delivery & Change Safety  
+> **Maturity:** Stable v1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Promote a signed artifact through progressive exposure with objective abort criteria.
+## Overview
 
-## Applicability
+The Release Pattern prevents the failure mode where teams **treat “tests passed” as permission for 100% production traffic**. Unsigned or mutable artifacts, renegotiated abort thresholds mid-canary, and missing feature-flag kill switches turn every deploy into an uncontrolled experiment.
 
-- a verified artifact is ready for production
-- customer behavior or data can change
-- rollback must meet an operational RTO
+This pattern enforces evidence → go/no-go → progressive exposure → quantitative abort → promote or roll back — with a named release owner and rehearsed rollback.
 
-## Evidence
+## When to Apply
 
-- signed artifact and provenance
-- test and security results
-- SBOM and dependency policy
-- change record and release notes
-- SLO baseline and rollback rehearsal
+Apply this pattern when:
+- A verified artifact is ready for production or production-like exposure
+- Customer behavior, data, or model output can change as a result
+- Rollback must meet an operational RTO
+- Migrations, flags, or multi-service order matter
+- Risk tier requires witnessed go/no-go (medium/high)
 
-## Components
+Do NOT apply this pattern to:
+- Purely internal documentation with no runtime effect
+- Flag-only config flips already covered by a lighter change process **and** instant kill switch (still record the flip)
+- Active SEV hotfix under incident command (use [hotfix-pattern](../hotfix-pattern/README.md); fold back into normal release after)
+- Deploying unreviewed local builds or mutable `:latest` tags
 
-Release README components gate 1 is accepted only when "artifact-to-runtime digest match = 100%" is source-verifiable; otherwise, halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health.
+---
 
-README is component thirteen.
+## Problem
 
-## Outcome measures
+```
+release-pattern/problem.md
+```
 
-- artifact-to-runtime digest match = 100%
-- deployment success > 99%
-- rollback completes within RTO
-- no accelerated SLO burn during holds
+**Statement:** Releases without digest-pinned artifacts, progressive exposure, and pre-declared abort criteria create outages that are slow to detect and slower to reverse.
 
-## Rollback
+**Measurable symptom:** Rollback exceeds RTO, or canary abort criteria are invented after error rates spike.
 
-Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health.
+**Root cause:** Delivery optimizes for merge/deploy greenness rather than bounded exposure and reversible promotion.
 
-## Tradeoffs
+---
 
-Release README deliberately spends additional review time to protect "artifact-to-runtime digest match = 100%"; evidence weakness triggers "Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health".
+## Context Requirements
 
-## Anti-patterns
+Before applying this pattern:
+- [ ] Artifact digest + provenance available
+- [ ] Gate results (tests, security, SBOM policy) fresh for this digest
+- [ ] Feature flag or traffic-split mechanism ready
+- [ ] Abort criteria quantitative and pre-declared
+- [ ] Rollback owner named; rollback command rehearsed
+- [ ] Change record / release notes drafted
 
-Release README rejects shortcuts around "Freeze artifact digest, configuration, migrations, and release evidence." because they sever the evidence chain required for "artifact-to-runtime digest match = 100%".
+---
 
-## Citations
+## Workflow
 
-- [SLSA](https://slsa.dev/spec/v1.0/)
-- [CISA SBOM](https://www.cisa.gov/sbom)
-- [Google SRE canarying](https://sre.google/workbook/canarying-releases/)
+```mermaid
+flowchart TD
+    A[Pin artifact digest + provenance] --> B[Verify gates for this digest]
+    B --> C{Go / No-Go}
+    C -->|No-Go| Z[Stop; remediate]
+    C -->|Go| D[Pre-prod: migrations expand-only]
+    D --> E[Enable flag / start canary 1%]
+    E --> F{Abort metrics OK?}
+    F -->|Trip| G[Abort: disable flag / redeploy prior]
+    F -->|Hold OK| H[Promote 5% → 25% → 100%]
+    H --> I[Post-release observation window]
+    I --> J{SLO burn OK?}
+    J -->|No| G
+    J -->|Yes| K[Close change; capture learnings]
+```
 
-## Changelog
+---
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+## Prompt
+
+See [prompt.md](./prompt.md) — aligns with [`../../08-ai-sdlc/prompts/release.prompt.md`](../../08-ai-sdlc/prompts/release.prompt.md).
+
+---
+
+## Agent Definition
+
+```yaml
+name: Release Manager Agent
+role: |
+  You produce go/no-go packages: digest verification, sequence, canary plan,
+  abort criteria, rollback owner. You do not waive failed gates without an
+  expiring named exception. You do not execute irreversible prod actions.
+```
+
+Full YAML: [agent.md](./agent.md)
+
+---
+
+## Subagents
+
+| Subagent | Role | When Invoked |
+|---------|------|-------------|
+| Artifact Verifier | Digest + provenance + SBOM | Pre go/no-go |
+| Gate Aggregator | Collates CI/security results | Pre go/no-go |
+| Canary Controller | Progressive traffic / flags | During release |
+| Rollback Operator | Executes abort path | On abort or failed soak |
+
+---
+
+## Skills Required
+
+- Progressive delivery / canary skill  
+- Feature-flag skill  
+- Migration expand/contract skill  
+- Observability abort-signal skill  
+
+---
+
+## Hooks
+
+Executable pre-release and post-canary checks in [hooks.md](./hooks.md).
+
+---
+
+## Checklist
+
+See [checklist.md](./checklist.md).
+
+---
+
+## Examples
+
+See [examples/example.md](./examples/example.md) — payments API canary with flag, abort thresholds, and abort that fired at 5%.
+
+| Component | File |
+|-----------|------|
+| Problem | [problem.md](./problem.md) |
+| Context | [context.md](./context.md) |
+| Workflow | [workflow.md](./workflow.md) |
+| Prompt | [prompt.md](./prompt.md) |
+| Agent | [agent.md](./agent.md) |
+| Subagents | [subagents.md](./subagents.md) |
+| Skills | [skills.md](./skills.md) |
+| Hooks | [hooks.md](./hooks.md) |
+| Checklist | [checklist.md](./checklist.md) |
+| Failures | [failures.md](./failures.md) |
+| Enterprise | [enterprise-notes.md](./enterprise-notes.md) |
+
+---
+
+## Common Failures
+
+### Failure 1: Mutable tag deploy
+**Symptom:** Cannot prove what ran; rollback redeploys the wrong bits.  
+**Cause:** `:latest` or moving tags.  
+**Recovery:** Pin digests; rebuild release evidence; block pipeline.
+
+### Failure 2: Abort criteria negotiated mid-fire
+**Symptom:** Team raises thresholds while canary burns error budget.  
+**Cause:** Criteria not pre-declared.  
+**Recovery:** Abort immediately on original criteria; treat negotiation as process defect.
+
+### Failure 3: Migration without expand/contract
+**Symptom:** Rollback requires forward fix under pressure.  
+**Cause:** Destructive schema in the same release as app cutover.  
+**Recovery:** Separate expand → app → contract; abort app via flag; leave expand in place.
+
+---
+
+## Enterprise Notes
+
+- Medium/high risk: go/no-go authority independent of the authoring agent.
+- Provenance and SBOM policy are change evidence — not marketing badges.
+- No certification claims from a green canary alone.

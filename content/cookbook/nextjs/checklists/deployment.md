@@ -20,7 +20,7 @@ Use the locally installed Next.js documentation under `node_modules/next/dist/do
 
 ## Tradeoffs
 
-The Next.js deployment gate adds manual and target-environment checks that slow promotion. It reduces the chance that version, topology, state, or rollback assumptions reach production.
+Promotion waits for "`next build` route classification matches the reviewed static/dynamic design" and "standalone or platform output includes every required runtime asset and server file". Those Next.js target checks slow release but directly bound Server/Client module boundary violations and make this rollback executable: Route traffic to the prior immutable deployment, then invalidate only cache entries whose HTML/RSC or data contract is incompatible; never rely on redeploy alone to remove stale edge content.
 
 ## Anti-patterns
 

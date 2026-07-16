@@ -1,53 +1,37 @@
-# Hotfix: Quality Gate
+# Hotfix Pattern — Checklist
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Hotfix  
+> **Component:** checklist.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Applicability
+---
 
-- [ ] Trigger evidenced: customer harm is active or imminent
-- [ ] Trigger evidenced: normal release lead time exceeds incident tolerance
-- [ ] Trigger evidenced: incident command authorizes an emergency path
+**Gate:** No emergency code deploy until containment was attempted or IC documents why containment is impossible.
 
-## Evidence package
+## Declare
 
-- [ ] incident severity and commander has authority, revision, timestamp, and owner
-- [ ] impact and affected scope has authority, revision, timestamp, and owner
-- [ ] live telemetry or reproduction has authority, revision, timestamp, and owner
-- [ ] last known-good artifact has authority, revision, timestamp, and owner
-- [ ] tested rollback command and communication plan has authority, revision, timestamp, and owner
+- [ ] SEV declared
+- [ ] IC + scribe named in channel topic
+- [ ] Comms cadence set
+- [ ] Impact + containment success metric written
 
-## Domain execution
+## Contain
 
-- [ ] Establish incident command, severity, roles, and update cadence
-- [ ] Contain blast radius using flags, rate limits, isolation, or rollback
-- [ ] State the narrow failed invariant and evidence; avoid broad diagnosis
-- [ ] Choose the smallest reversible remediation and explicit non-goals
-- [ ] Pair-author and independently review the hotfix
-- [ ] Test the exact failure, critical smoke path, and rollback
-- [ ] Canary under incident observation with automatic abort
-- [ ] Close emergency path; schedule full RCA and durable remediation
+- [ ] Evidence preserved (digests, flag states, key traces)
+- [ ] Fastest reversible containment executed
+- [ ] Impact trending down (or escalation triggered)
 
-## Measured verification
+## Hotfix (only if needed)
 
-- [ ] Evidence demonstrates time to containment meets severity target
-- [ ] Evidence demonstrates affected requests/users trend down after action
-- [ ] Evidence demonstrates hotfix changes only authorized scope
-- [ ] Evidence demonstrates rollback remains within incident RTO
+- [ ] Allowed paths listed; lockfiles/refactors forbidden
+- [ ] IC + one reviewer ack
+- [ ] Abort criteria for the deploy defined
+- [ ] Probes verify improvement
+- [ ] Timeline updated with digests
 
-## Recovery and closure
+## Exit
 
-- [ ] Rehearsed rollback can execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment
-- [ ] Residual risks and follow-ups have owners and dates
-- [ ] Artifact hashes, effect approvals, and raw checks are retained
-
-## Anti-patterns
-
-Hotfix checklist rejects shortcuts around "Establish incident command, severity, roles, and update cadence." because they sever the evidence chain required for "time to containment meets severity target".
-
-## Enterprise considerations
-
-Hotfix checklist governance binds owner, policy revision, and retained proof to "time to containment meets severity target", with "Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment" as the recorded recovery authority.
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- [ ] Status MITIGATED / MONITORING
+- [ ] Durable fix owner assigned
+- [ ] RCA scheduled with [root-cause-pattern](../root-cause-pattern/README.md)
+- [ ] Emergency exceptions time-boxed

@@ -20,7 +20,7 @@ Read `requires-python`, lock/constraint files, environment metadata, and framewo
 
 ## Tradeoffs
 
-The Python review gate requires runtime/configuration evidence beyond a source diff. It increases reviewer effort but catches defects static style review cannot observe.
+Review must prove "package imports work after installation, not through `sys.path` mutation" using `pyproject.toml`, lock/constraints, interpreter pin, and installed dependency report. That Python evidence costs more than diff inspection but exposes environment or import resolution mismatch before merge.
 
 ## Anti-patterns
 

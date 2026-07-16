@@ -32,15 +32,15 @@ Controllers own Pods; workload identity and network policy are least-privilege; 
 
 **Preserve first:** rendered manifests plus Git revision, field manager, server-side dry-run, diff, and admission result.
 
-**Discriminate:** kubectl describe and logs --previous. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** kubectl describe and logs --previous. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For CrashLoopBackOff, probe failure, or bad configuration, correlate that observation to the exact Kubernetes target, revision, request/job, and UTC interval; compare rendered manifests plus Git revision, field manager, server-side dry-run, diff, and admission result with one healthy peer or baseline.
 
-**Native action:** `kubectl version` and `kubectl api-resources` against the target cluster. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `kubectl version` and `kubectl api-resources` against the target cluster. Start in the safest Kubernetes read-only or dry-run mode available. Before changing the controller-managed workload, Service, policy, autoscaler, disruption budget, or GitOps release, name which of CrashLoopBackOff, probe failure, or bad configuration and ImagePullBackOff or architecture/registry identity failure the action distinguishes.
 
 **Root-cause direction:** The container repeatedly exits or fails startup probes.
 
 **Correction:** Inspect previous logs, termination reason, config, and startup dependencies.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `CrashLoopBackOff` reproduction, verify the CrashLoopBackOff, probe failure, or bad configuration signal cleared in kubectl describe and logs --previous. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Inspect previous logs, termination reason, config, and startup dependencies. restored the intended Kubernetes behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Revert the Git revision or use `kubectl rollout undo` only when controller history and schema compatibility are verified; never patch Pods, and pause rollout before collecting failed Pod events and previous logs.
 
@@ -50,15 +50,15 @@ Controllers own Pods; workload identity and network policy are least-privilege; 
 
 **Preserve first:** Deployment/StatefulSet status, ReplicaSets, Pod conditions, events, previous logs, and termination state.
 
-**Discriminate:** Pod events. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** Pod events. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For ImagePullBackOff or architecture/registry identity failure, correlate that observation to the exact Kubernetes target, revision, request/job, and UTC interval; compare Deployment/StatefulSet status, ReplicaSets, Pod conditions, events, previous logs, and termination state with one healthy peer or baseline.
 
-**Native action:** `kubectl apply --server-side --dry-run=server -f <rendered.yaml>`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `kubectl apply --server-side --dry-run=server -f <rendered.yaml>`. Start in the safest Kubernetes read-only or dry-run mode available. Before changing the controller-managed workload, Service, policy, autoscaler, disruption budget, or GitOps release, name which of ImagePullBackOff or architecture/registry identity failure and Pending due to requests, affinity, taints, topology, or volume the action distinguishes.
 
 **Root-cause direction:** Image name, tag/digest, registry access, or credentials are invalid.
 
 **Correction:** Verify digest and node-side registry authentication.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `ImagePullBackOff` reproduction, verify the ImagePullBackOff or architecture/registry identity failure signal cleared in Pod events. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Verify digest and node-side registry authentication. restored the intended Kubernetes behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Revert the Git revision or use `kubectl rollout undo` only when controller history and schema compatibility are verified; never patch Pods, and pause rollout before collecting failed Pod events and previous logs.
 
@@ -68,15 +68,15 @@ Controllers own Pods; workload identity and network policy are least-privilege; 
 
 **Preserve first:** Service, EndpointSlice, NetworkPolicy, DNS, routes, and caller-side connectivity.
 
-**Discriminate:** kubectl describe pod. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** kubectl describe pod. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For Pending due to requests, affinity, taints, topology, or volume, correlate that observation to the exact Kubernetes target, revision, request/job, and UTC interval; compare Service, EndpointSlice, NetworkPolicy, DNS, routes, and caller-side connectivity with one healthy peer or baseline.
 
-**Native action:** `kubectl diff -f <rendered.yaml>`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `kubectl diff -f <rendered.yaml>`. Start in the safest Kubernetes read-only or dry-run mode available. Before changing the controller-managed workload, Service, policy, autoscaler, disruption budget, or GitOps release, name which of Pending due to requests, affinity, taints, topology, or volume and OOMKilled, throttling, node pressure, or eviction the action distinguishes.
 
 **Root-cause direction:** Scheduler cannot satisfy resources, affinity, taints, or volume constraints.
 
 **Correction:** Read scheduling events and correct the specific unsatisfied predicate.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Pending Pod` reproduction, verify the Pending due to requests, affinity, taints, topology, or volume signal cleared in kubectl describe pod. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Read scheduling events and correct the specific unsatisfied predicate. restored the intended Kubernetes behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Revert the Git revision or use `kubectl rollout undo` only when controller history and schema compatibility are verified; never patch Pods, and pause rollout before collecting failed Pod events and previous logs.
 
@@ -86,15 +86,15 @@ Controllers own Pods; workload identity and network policy are least-privilege; 
 
 **Preserve first:** ServiceAccount/workload identity binding, RBAC `can-i`, Pod security context, and admission policy.
 
-**Discriminate:** container metrics. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** container metrics. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For OOMKilled, throttling, node pressure, or eviction, correlate that observation to the exact Kubernetes target, revision, request/job, and UTC interval; compare ServiceAccount/workload identity binding, RBAC `can-i`, Pod security context, and admission policy with one healthy peer or baseline.
 
-**Native action:** `kubectl auth can-i --as=system:serviceaccount:<ns>:<sa> <verb> <resource>`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `kubectl auth can-i --as=system:serviceaccount:<ns>:<sa> <verb> <resource>`. Start in the safest Kubernetes read-only or dry-run mode available. Before changing the controller-managed workload, Service, policy, autoscaler, disruption budget, or GitOps release, name which of OOMKilled, throttling, node pressure, or eviction and Service/EndpointSlice/DNS/NetworkPolicy path failure the action distinguishes.
 
 **Root-cause direction:** Container exceeds its memory limit or node experiences pressure.
 
 **Correction:** Profile working set and leaks; set evidence-based requests and limits.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `OOMKilled` reproduction, verify the OOMKilled, throttling, node pressure, or eviction signal cleared in container metrics. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Profile working set and leaks; set evidence-based requests and limits. restored the intended Kubernetes behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Revert the Git revision or use `kubectl rollout undo` only when controller history and schema compatibility are verified; never patch Pods, and pause rollout before collecting failed Pod events and previous logs.
 
@@ -104,15 +104,15 @@ Controllers own Pods; workload identity and network policy are least-privilege; 
 
 **Preserve first:** requests/limits, node pressure, HPA signals, PDB, topology spread, and eviction events.
 
-**Discriminate:** EndpointSlice and ephemeral debug container. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** EndpointSlice and ephemeral debug container. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For Service/EndpointSlice/DNS/NetworkPolicy path failure, correlate that observation to the exact Kubernetes target, revision, request/job, and UTC interval; compare requests/limits, node pressure, HPA signals, PDB, topology spread, and eviction events with one healthy peer or baseline.
 
-**Native action:** `kubectl rollout status deployment/<name> -n <ns> --timeout=<budget>`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `kubectl rollout status deployment/<name> -n <ns> --timeout=<budget>`. Start in the safest Kubernetes read-only or dry-run mode available. Before changing the controller-managed workload, Service, policy, autoscaler, disruption budget, or GitOps release, name which of Service/EndpointSlice/DNS/NetworkPolicy path failure and CrashLoopBackOff, probe failure, or bad configuration the action distinguishes.
 
 **Root-cause direction:** Selector, endpoints, port mapping, policy, or DNS is wrong.
 
 **Correction:** Trace DNS to Service to EndpointSlice to Pod from the caller.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Service unreachable` reproduction, verify the Service/EndpointSlice/DNS/NetworkPolicy path failure signal cleared in EndpointSlice and ephemeral debug container. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Trace DNS to Service to EndpointSlice to Pod from the caller. restored the intended Kubernetes behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Revert the Git revision or use `kubectl rollout undo` only when controller history and schema compatibility are verified; never patch Pods, and pause rollout before collecting failed Pod events and previous logs.
 

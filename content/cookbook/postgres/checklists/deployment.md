@@ -20,7 +20,7 @@ Capture `server_version`, client version, extensions, parameter settings, manage
 
 ## Tradeoffs
 
-The PostgreSQL deployment gate adds manual and target-environment checks that slow promotion. It reduces the chance that version, topology, state, or rollback assumptions reach production.
+Promotion waits for "record server major, extensions, parameter constraints, table sizes, replica state, and backup/restore status" and "run migration in a production-like clone and measure lock level, duration, WAL, disk, and replica lag". Those PostgreSQL target checks slow release but directly bound deadlock or long lock wait and make this rollback executable: Stop the migration runner and application feature, release locks, and revert only additive/compatible DDL; for destructive or data-rewriting steps use a tested forward fix or point-in-time recovery, never an improvised down migration.
 
 ## Anti-patterns
 

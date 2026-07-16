@@ -1,41 +1,37 @@
-# Reviewer: Failure Modes
+# Reviewer Pattern — Failures
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Reviewer  
+> **Component:** failures.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Reviewer failures operationalizes this pattern outcome: detect consequential defects with requirement-traceable, severity-calibrated findings.
+## Failure 1: Style volume hides a bug
 
-| Failure | Observable signal | Recovery |
-|---|---|---|
-| style flood | material findings are hidden by nits | separate automation and editorial feedback |
-| speculation as defect | finding cannot be reproduced | downgrade to question or withdraw |
-| diff tunnel vision | unchanged caller breaks new contract | trace callers and consumers |
-| rubber-stamp approval | review duration and evidence are absent | reopen independent review |
+**Symptom:** Dozens of naming/import nits; production null-deref on an untested path.  
+**Cause:** Review optimized for comment count.  
+**Recovery:** Cap nits (e.g. 10). Force Correctness + Security before any style comments. Re-review.
 
-## Rollback failure
+## Failure 2: Green CI equals approved
 
-Reviewer failures rollback failure gate 2 is accepted only when "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision." is source-verifiable; otherwise, reject approval, remove unverified review-driven edits, and restore the reviewed revision.
+**Symptom:** Merge after “all checks green”; AC for authZ never tested.  
+**Cause:** CI covers happy path only; reviewer skipped AC→test map.  
+**Recovery:** Require AC→test matrix. Request changes until critical AC have tests.
 
-## Tradeoffs
+## Failure 3: Author self-review as final
 
-Reviewer failures deliberately spends additional review time to protect "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision."; evidence weakness triggers "Reject approval, remove unverified review-driven edits, and restore the reviewed revision".
+**Symptom:** Same agent/human authored the PR and issued Approve.  
+**Cause:** No separation of duties.  
+**Recovery:** Invalidate approval. Assign independent reviewer + human gate for High-risk.
 
-## Anti-patterns
+## Failure 4: Unverified “fixed”
 
-Reviewer failures rejects shortcuts around "Reconstruct intended behavior from requirements before reading the implementation." because they sever the evidence chain required for "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision.".
+**Symptom:** Findings marked resolved; same bug still in the new revision.  
+**Cause:** Reviewer trusted the author’s claim without re-checking.  
+**Recovery:** Re-open IDs until verified against the new diff or failing-then-passing test.
 
-## Enterprise considerations
+## Failure 5: Severity miscalibration
 
-Reviewer failures governance binds owner, policy revision, and retained proof to "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision.", with "Reject approval, remove unverified review-driven edits, and restore the reviewed revision" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Detection exists for style flood
-- [ ] Detection exists for speculation as defect
-- [ ] Detection exists for diff tunnel vision
-- [ ] Detection exists for rubber-stamp approval
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+**Symptom:** Everything Critical (alarm fatigue) or internet-exploitable issue marked Nit.  
+**Cause:** No shared severity definitions.  
+**Recovery:** Apply Critical = reachable + high impact; Block only on Critical; train on examples.

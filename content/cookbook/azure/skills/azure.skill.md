@@ -45,7 +45,7 @@ Infrastructure is declarative; identities are credentialless and least-privilege
 
 ## Verification
 
-The evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. For manual checks, record environment, operator, exact steps, and result.
+The Azure evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. It must also retain Bicep/ARM source, parameter provenance, compiled template, and What-If result. For manual subscription workload, Bicep module, managed identity, private endpoint, or release pipeline checks, record environment, operator, exact steps, and result.
 
 ## Failure recovery
 
@@ -61,7 +61,7 @@ Report the Azure boundary, facts, hypotheses, commands actually run, changed art
 
 ## Termination criteria
 
-Finish when native validation, all applicable review/deployment gates, and recovery signals pass, or when a named owner accepts a documented blocker through the repository's risk process.
+Finish the Azure workflow only when native validation, applicable review/deployment gates, and recovery signals for management-plane authorization or policy denial and ARM/Bicep dependency or API-version deployment failure pass. Otherwise record a named owner and the exact missing Azure evidence; risk acceptance does not convert a failed native check into a pass.
 
 ## Version-aware caution
 
@@ -69,7 +69,7 @@ Capture Azure CLI/Bicep versions, resource-provider API versions, and service SK
 
 ## Tradeoffs
 
-This skill spends time fingerprinting Azure and collecting native evidence before editing. It reduces throughput for trivial changes but prevents incorrect commands, unsupported APIs, and state-destructive rollback.
+This skill fingerprints Azure through Bicep/ARM source, parameter provenance, compiled template, and What-If result before editing and retains private endpoint, subnet, route, NSG, private DNS zone links, and caller-side DNS resolution before recovery. The added work is warranted when management-plane authorization or policy denial could make Reapply the last approved Bicep/parameter artifact or route traffic to the prior deployment slot; never delete stateful resources to force convergence, and restore access changes through reviewed RBAC/policy state.
 
 ## Anti-patterns
 

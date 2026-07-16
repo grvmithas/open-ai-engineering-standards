@@ -77,6 +77,9 @@ Overbroad role, public endpoint, DNS break, resource replacement, regional unsup
 ## Verification
 Run bicep build/lint, az deployment what-if or terraform validate/plan, policy and role review, health/restore checks.
 
+## Domain Recovery Playbook
+Do not deploy a suspect what-if result; if an approved change partially executed, preserve activity logs and use the reviewed deployment rollback or resource recovery runbook.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

@@ -1,41 +1,37 @@
-# Enterprise: Failure Modes
+# Enterprise Pattern — Failures
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Enterprise  
+> **Component:** failures.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Enterprise failures operationalizes this pattern outcome: operate ai capabilities with enforceable governance across tenants, jurisdictions, and risk tiers.
+## Failure 1: Policy PDF as control
 
-| Failure | Observable signal | Recovery |
-|---|---|---|
-| policy PDF | controls are descriptive but unenforced | move decisions to gateway policy |
-| model-only evaluation | workflow harms are missed | test end-to-end use case |
-| one-time approval | vendor/model drift escapes review | subscribe to changes and reevaluate |
-| global default | jurisdiction and tenant needs conflict | apply scoped policy bundles |
+**Symptom:** Auditor asks how tool X is blocked; team opens a Confluence page.  
+**Cause:** Controls never bound at the gateway/runtime.  
+**Recovery:** BLOCK expansion; bind deny-by-default allowlist; re-run disable drill; attach gateway version to inventory.
 
-## Rollback failure
+## Failure 2: Shadow tools / debug bypass
 
-Enterprise failures rollback failure gate 2 is accepted only when "inventory completeness = 100%" is source-verifiable; otherwise, disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle.
+**Symptom:** Traces show MCP servers or APIs not on the allowlist.  
+**Cause:** “Temporary” debug mode or local agent config leaked to prod.  
+**Recovery:** Revoke credentials; force gateway allowlist; alert on unknown tool names; treat as security incident if data exfil possible.
 
-## Tradeoffs
+## Failure 3: Inventory drift
 
-Enterprise failures deliberately spends additional review time to protect "inventory completeness = 100%"; evidence weakness triggers "Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle".
+**Symptom:** Incident commander finds a second model endpoint mid-outage.  
+**Cause:** Inventory updated at launch, never at material change.  
+**Recovery:** Reconcile from gateway logs and cloud accounts; make inventory ID a release gate; schedule recurring drift scan.
 
-## Anti-patterns
+## Failure 4: Immortal exceptions
 
-Enterprise failures rejects shortcuts around "Register use case, owner, model, purpose, users, and prohibited uses." because they sever the evidence chain required for "inventory completeness = 100%".
+**Symptom:** High-tier use case runs for months under a “temporary” waiver.  
+**Cause:** Exception lacked expiry or owner accountability.  
+**Recovery:** Expire immediately; either meet controls or disable; require new time-boxed exception with executive sponsor if truly needed.
 
-## Enterprise considerations
+## Failure 5: Unrehearsed kill switch
 
-Enterprise failures governance binds owner, policy revision, and retained proof to "inventory completeness = 100%", with "Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Detection exists for policy PDF
-- [ ] Detection exists for model-only evaluation
-- [ ] Detection exists for one-time approval
-- [ ] Detection exists for global default
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+**Symptom:** On-call cannot disable during a harmful-output incident.  
+**Cause:** Disable path existed only in the author’s head.  
+**Recovery:** Write runbook steps; drill quarterly; fail go-live hooks until drill log exists.

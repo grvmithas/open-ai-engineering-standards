@@ -45,7 +45,7 @@ Rendering stays pure; state has one owner; Effects synchronize only with externa
 
 ## Verification
 
-The evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. For manual checks, record environment, operator, exact steps, and result.
+The React evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. It must also retain `package.json` plus the lockfile entries for React, renderer, router, state, and test libraries. For manual component, Hook, context boundary, or route UI checks, record environment, operator, exact steps, and result.
 
 ## Failure recovery
 
@@ -61,7 +61,7 @@ Report the React boundary, facts, hypotheses, commands actually run, changed art
 
 ## Termination criteria
 
-Finish when native validation, all applicable review/deployment gates, and recovery signals pass, or when a named owner accepts a documented blocker through the repository's risk process.
+Finish the React workflow only when native validation, applicable review/deployment gates, and recovery signals for Rules of Hooks violations and stale closures and effect feedback loops pass. Otherwise record a named owner and the exact missing React evidence; risk acceptance does not convert a failed native check into a pass.
 
 ## Version-aware caution
 
@@ -69,7 +69,7 @@ Read the installed `react` and `react-dom` versions from the lockfile. Concurren
 
 ## Tradeoffs
 
-This skill spends time fingerprinting React and collecting native evidence before editing. It reduces throughput for trivial changes but prevents incorrect commands, unsupported APIs, and state-destructive rollback.
+This skill fingerprints React through `package.json` plus the lockfile entries for React, renderer, router, state, and test libraries before editing and retains the nearest component, test, CSS, and Storybook conventions before recovery. The added work is warranted when Rules of Hooks violations could make Disable the owning feature flag first; otherwise redeploy the previous immutable client assets while preserving API compatibility for already-cached bundles.
 
 ## Anti-patterns
 

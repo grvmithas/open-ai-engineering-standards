@@ -8,11 +8,11 @@ Review a MongoDB change using native configuration, failure, and operational evi
 
 ## Why
 
-Documents match atomic access patterns; validators enforce shape; explain evidence drives indexes; shard keys distribute both writes and queries. This prompt requires native MongoDB artifacts instead of substituting a generic incident or code-generation checklist.
+Documents match atomic access patterns; validators enforce shape; explain evidence drives indexes; shard keys distribute both writes and queries. The review decision is accepted only when `getCollectionInfos`, `$jsonSchema` validator, indexes, collection stats, and sampled document-size distribution supports it; generic review advice cannot establish that MongoDB state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized MongoDB evidence for the document model, collection validator, query, aggregation, index, transaction, or shard key. Apply the invariant "Documents match atomic access patterns; validators enforce shape; explain evidence drives indexes; shard keys distribute both writes and queries." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Capture server/FCV, driver, topology, storage engine, Atlas/managed tier, and fe
 
 ## Tradeoffs
 
-MongoDB review takes longer because configuration and runtime state must be correlated with source. It eliminates generic style findings and prioritizes defects that can change production behavior.
+MongoDB review correlates source with `getCollectionInfos`, `$jsonSchema` validator, indexes, collection stats, and sampled document-size distribution and `explain('executionStats')` including examined/returned ratio, sort/spill, and shard targeting. The cost is a deeper review; the benefit is direct evidence for "embed values updated/read atomically and reference independent or unbounded aggregates" and "document growth remains below the BSON limit with explicit array/cardinality bounds" instead of generic style findings.
 
 ## Anti-patterns
 

@@ -1,47 +1,73 @@
-# Debug: Lifecycle Hooks
+# Debug Pattern — Hooks
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Debug  
+> **Component:** hooks.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Enforce debug gates outside model discretion.
-
-| Hook | Enforced condition | Failure behavior |
-|---|---|---|
-| preflight | capture environment fingerprint before mutation | fail closed without creating an effect |
-| domain-gate | reject fixes without a pre-fix failing test | fail closed without creating an effect |
-| closure | remove diagnostic flags and PII before closure | revert probes and fix, restore the locked environment, and preserve diagnostic artifacts |
+## `pre-debug.hook.sh`
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-: "${TASK_ID:?required}" "${MANIFEST_HASH:?required}" "${RISK_TIER:?required}". For the Debug hooks contract, gate 1 is evidenced by "reproduction rate before fix is recorded"; failure invokes this domain recovery: Revert probes and fix, restore the locked environment, and preserve diagnostic artifacts.
-# oaies-debug: evaluate the three versioned policy rules documented above.
-policy_check --pattern "debug" --task "$TASK_ID" --manifest "$MANIFEST_HASH" --risk "$RISK_TIER"
+
+echo "Checking debug prerequisites..."
+
+if [[ -z "${SYMPTOM_FILE:-}" || ! -f "$SYMPTOM_FILE" ]]; then
+  echo "ERROR: SYMPTOM_FILE missing. Capture expected/actual before debugging."
+  exit 1
+fi
+
+if ! grep -qiE 'expected|actual|error|fail' "$SYMPTOM_FILE"; then
+  echo "ERROR: SYMPTOM_FILE must describe expected/actual or error text."
+  exit 1
+fi
+
+if [[ -z "${ENV_NAME:-}" ]]; then
+  echo "ERROR: ENV_NAME unset (dev|staging|prod|test)."
+  exit 1
+fi
+
+echo "Prerequisites satisfied. Debugging can begin."
 ```
 
-## Verification
+## `post-debug.hook.sh`
 
-Debug hooks verification records raw evidence for "reproduction rate before fix is recorded" and invokes "Revert probes and fix, restore the locked environment, and preserve diagnostic artifacts" when the threshold is not demonstrated.
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-## Tradeoffs
+REPORT="${1:-}"
+if [[ -z "$REPORT" || ! -f "$REPORT" ]]; then
+  echo "ERROR: Usage: post-debug.hook.sh <debug-report-file>"
+  exit 1
+fi
 
-Debug hooks deliberately spends additional review time to protect "reproduction rate before fix is recorded"; evidence weakness triggers "Revert probes and fix, restore the locked environment, and preserve diagnostic artifacts".
+echo "Validating debug report..."
 
-## Anti-patterns
+for key in "Root cause" "Hypothesis" "Fix" "Regression"; do
+  if ! grep -qi "$key" "$REPORT"; then
+    echo "ERROR: Report missing required section/keyword: $key"
+    exit 1
+  fi
+done
 
-Debug hooks rejects shortcuts around "Write a deterministic symptom statement without assigning cause." because they sever the evidence chain required for "reproduction rate before fix is recorded".
+# Require at least 3 hypothesis rows (markdown table heuristics)
+HCOUNT=$(grep -cE '^\| *[0-9]+ *\|' "$REPORT" || true)
+if (( HCOUNT < 3 )); then
+  echo "ERROR: Need at least 3 numbered hypothesis rows in the report table."
+  exit 1
+fi
 
-## Enterprise considerations
+if ! grep -qiE 'regression test|test that fails|fails before' "$REPORT"; then
+  echo "ERROR: Report must reference a regression test."
+  exit 1
+fi
 
-Debug hooks governance binds owner, policy revision, and retained proof to "reproduction rate before fix is recorded", with "Revert probes and fix, restore the locked environment, and preserve diagnostic artifacts" as the recorded recovery authority.
+echo "Debug report validated."
+```
 
-## Checklist
+## CI integration note
 
-- [ ] Automated test proves: capture environment fingerprint before mutation
-- [ ] Automated test proves: reject fixes without a pre-fix failing test
-- [ ] Automated test proves: remove diagnostic flags and PII before closure
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+For fix PRs tagged `bug`, require `post-debug.hook.sh` on the attached report path, or embed the same sections in the PR body and grep that file.

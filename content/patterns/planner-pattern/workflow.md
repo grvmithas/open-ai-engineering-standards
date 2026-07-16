@@ -1,67 +1,48 @@
-# Planner: Workflow
+# Planner Pattern — Workflow
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Planner  
+> **Component:** workflow.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Apply the domain workflow to turn ambiguous engineering work into a decision-complete execution contract.
+## End-to-end flow
 
 ```mermaid
 flowchart TD
-  S1[1. Classify ambiguity and list decisions execution must not make] --> S2
-  S2[2. Map affected components, owners, contracts, and dependency edges] --> S3
-  S3[3. Generate viable designs and reject those violating hard constraints] --> S4
-  S4[4. Record the chosen design and rejected alternatives in an ADR] --> S5
-  S5[5. Sequence vertical increments by dependency and reversibility] --> S6
-  S6[6. Attach tests, observability, rollout, and rollback to each increment] --> S7
-  S7[7. Run a pre-mortem with security, operations, and domain owners] --> S8
-  S8[8. Freeze the approved plan; route deviations through replanning]
-  S8 --> V{Domain metrics pass?}
-  V -->|No| R[stop implementation, revert partial increments, and return to the last approved plan revision]
-  V -->|Yes| C[Retain evidence and close]
+    A[Input: Story / Task] --> B[Planner Agent Activated]
+    B --> C[Context Assembly]
+    C --> D[Codebase Analysis]
+    D --> E[Architecture Design]
+    E --> F[Plan Generation]
+    F --> G{Human Review}
+    G -->|Revisions needed| E
+    G -->|Approved| H[Coder Agent Activated]
+    H --> I[Implementation]
+    I --> J[Self Review]
+    J --> K[Reviewer Agent]
+    K --> L{Review Passed?}
+    L -->|No| I
+    L -->|Yes| M[Implementation Complete]
 ```
 
-## Procedure
+## Step procedure
 
-1. **Classify ambiguity and.** Classify ambiguity and list decisions execution must not make.
-2. **Map affected components,.** Map affected components, owners, contracts, and dependency edges.
-3. **Generate viable designs.** Generate viable designs and reject those violating hard constraints.
-4. **Record the chosen.** Record the chosen design and rejected alternatives in an ADR.
-5. **Sequence vertical increments.** Sequence vertical increments by dependency and reversibility.
-6. **Attach tests, observability,.** Attach tests, observability, rollout, and rollback to each increment.
-7. **Run a pre-mortem.** Run a pre-mortem with security, operations, and domain owners.
-8. **Freeze the approved.** Freeze the approved plan; route deviations through replanning.
+| Step | Actor | Action | Exit criteria |
+|------|-------|--------|---------------|
+| 1 | Human / Story prompt | Freeze acceptance criteria and out-of-scope | Story is reviewable |
+| 2 | Context Assembler | Collect paths, schemas, ADRs, constraints | Context ≥ relevant files, not “whole repo” |
+| 3 | Planner | Analyze dependencies and blast radius | Dependency list exists |
+| 4 | Planner | Choose one design; reject alternatives with reason | ADR-quality decision recorded in plan |
+| 5 | Planner | Emit plan: Mermaid diagram, file list, sequence, tests, rollback | All required sections present (hooks validate) |
+| 6 | Human | Review for understanding; resolve blocking questions | Named approver + date |
+| 7 | Coder | Implement **only** what the plan authorizes | Diff matches planned paths (or replans) |
+| 8 | Reviewer | Check plan conformance + defect severity | Checklist green |
 
-## Verification
+## Deviation rule
 
-- decision completeness = 100%
-- unplanned file-change rate < 10%
-- plan-driven rework < 10%
-- all critical-path owners acknowledge
+If implementation discovers a missing file, API break, or schema change not in the plan: **stop coding**, return to step 4, revise the plan, re-approve. Silent deviation voids the audit trail.
 
-## Tradeoffs
+## Parallelism rule
 
-Planner workflow deliberately spends additional review time to protect "decision completeness = 100%"; evidence weakness triggers "Stop implementation, revert partial increments, and return to the last approved plan revision".
-
-## Anti-patterns
-
-Planner workflow rejects shortcuts around "Classify ambiguity and list decisions execution must not make." because they sever the evidence chain required for "decision completeness = 100%".
-
-## Enterprise considerations
-
-Planner workflow governance binds owner, policy revision, and retained proof to "decision completeness = 100%", with "Stop implementation, revert partial increments, and return to the last approved plan revision" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Classify ambiguity and list decisions execution must not make
-- [ ] Map affected components, owners, contracts, and dependency edges
-- [ ] Generate viable designs and reject those violating hard constraints
-- [ ] Record the chosen design and rejected alternatives in an ADR
-- [ ] Sequence vertical increments by dependency and reversibility
-- [ ] Attach tests, observability, rollout, and rollback to each increment
-- [ ] Run a pre-mortem with security, operations, and domain owners
-- [ ] Freeze the approved plan; route deviations through replanning
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+Implementation sequence is ordered by dependency. Parallel work is allowed only for increments the plan marks independent. Do not “parallelize” a migration and its dual-write consumers without an explicit plan step.

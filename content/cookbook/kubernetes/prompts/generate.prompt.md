@@ -8,11 +8,11 @@ Generate a production-ready controller-managed workload, Service, policy, autosc
 
 ## Why
 
-Controllers own Pods; workload identity and network policy are least-privilege; probes, resources, topology, disruption, and rollout are explicit desired state. This prompt requires native Kubernetes artifacts instead of substituting a generic incident or code-generation checklist.
+Controllers own Pods; workload identity and network policy are least-privilege; probes, resources, topology, disruption, and rollout are explicit desired state. The generate decision is accepted only when rendered manifests plus Git revision, field manager, server-side dry-run, diff, and admission result supports it; generic generate advice cannot establish that Kubernetes state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Kubernetes evidence for the controller-managed workload, Service, policy, autoscaler, disruption budget, or GitOps release. Apply the invariant "Controllers own Pods; workload identity and network policy are least-privilege; probes, resources, topology, disruption, and rollout are explicit desired state." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Capture server and kubectl versions, API discovery, node OS/runtime, CNI/CSI, ad
 
 ## Tradeoffs
 
-The prompt rejects fast code generation when Kubernetes version, configuration, or target evidence is absent. That delay prevents plausible output from crossing an unsupported controller-managed workload, Service, policy, autoscaler, disruption budget, or GitOps release boundary.
+Generation waits for rendered manifests plus Git revision, field manager, server-side dry-run, diff, and admission result and Deployment/StatefulSet status, ReplicaSets, Pod conditions, events, previous logs, and termination state. That extra Kubernetes discovery is justified because the output must prove "Pods are owned by Deployment, StatefulSet, Job, or another appropriate controller" and survive CrashLoopBackOff, probe failure, or bad configuration rather than merely compile.
 
 ## Anti-patterns
 

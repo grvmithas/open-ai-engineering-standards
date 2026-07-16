@@ -1,47 +1,77 @@
-# Architecture: Lifecycle Hooks
+# Architecture Pattern — Hooks
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Architecture  
+> **Component:** hooks.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Enforce architecture gates outside model discretion.
-
-| Hook | Enforced condition | Failure behavior |
-|---|---|---|
-| preflight | reject ADRs without alternatives and measurable consequences | fail closed without creating an effect |
-| domain-gate | run dependency and boundary fitness functions | fail closed without creating an effect |
-| closure | reopen decisions when documented assumptions expire | supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture |
+## `pre-architecture.hook.sh`
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-: "${TASK_ID:?required}" "${MANIFEST_HASH:?required}" "${RISK_TIER:?required}". For the Architecture hooks contract, gate 1 is evidenced by "all priority scenarios have measurable responses"; failure invokes this domain recovery: Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture.
-# oaies-architecture: evaluate the three versioned policy rules documented above.
-policy_check --pattern "architecture" --task "$TASK_ID" --manifest "$MANIFEST_HASH" --risk "$RISK_TIER"
+
+echo "Checking architecture prerequisites..."
+
+if [[ -z "${DRIVERS_FILE:-}" || ! -f "$DRIVERS_FILE" ]]; then
+  echo "ERROR: DRIVERS_FILE missing. Write problem/forces before architecture work."
+  exit 1
+fi
+
+if ! grep -qiE 'driver|force|constraint|quality|scenario|non-?goal' "$DRIVERS_FILE"; then
+  echo "ERROR: DRIVERS_FILE lacks drivers/constraints/QA language."
+  exit 1
+fi
+
+if [[ -z "${RISK_LEVEL:-}" ]]; then
+  echo "ERROR: RISK_LEVEL unset (Low|Medium|High)."
+  exit 1
+fi
+
+if [[ "$RISK_LEVEL" == "High" && -z "${REVIEWER_ID:-}" ]]; then
+  echo "ERROR: High risk requires REVIEWER_ID (independent of author)."
+  exit 1
+fi
+
+echo "Prerequisites satisfied."
 ```
 
-## Verification
+## `post-architecture.hook.sh`
 
-Architecture hooks verification records raw evidence for "all priority scenarios have measurable responses" and invokes "Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture" when the threshold is not demonstrated.
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-## Tradeoffs
+ADR="${1:-}"
+if [[ -z "$ADR" || ! -f "$ADR" ]]; then
+  echo "ERROR: Usage: post-architecture.hook.sh <adr-file>"
+  exit 1
+fi
 
-Architecture hooks deliberately spends additional review time to protect "all priority scenarios have measurable responses"; evidence weakness triggers "Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture".
+echo "Validating ADR structure..."
 
-## Anti-patterns
+for key in "Context" "Decision" "Consequences" "Alternatives"; do
+  if ! grep -qi "$key" "$ADR"; then
+    echo "ERROR: ADR missing required section: $key"
+    exit 1
+  fi
+done
 
-Architecture hooks rejects shortcuts around "Name stakeholders and express quality attributes as stimulus-response scenarios." because they sever the evidence chain required for "all priority scenarios have measurable responses".
+if ! grep -qi "mermaid" "$ADR"; then
+  echo "ERROR: ADR must include a Mermaid diagram."
+  exit 1
+fi
 
-## Enterprise considerations
+ALT_ROWS=$(grep -cE '^\|.*\|.*\|' "$ADR" || true)
+if (( ALT_ROWS < 3 )); then
+  echo "WARNING: Alternatives table may be too thin (want header + ≥2 options)."
+fi
 
-Architecture hooks governance binds owner, policy revision, and retained proof to "all priority scenarios have measurable responses", with "Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture" as the recorded recovery authority.
+if ! grep -qiE 'failure|trust|tenancy|degraded' "$ADR"; then
+  echo "ERROR: ADR missing trust/failure analysis language."
+  exit 1
+fi
 
-## Checklist
-
-- [ ] Automated test proves: reject ADRs without alternatives and measurable consequences
-- [ ] Automated test proves: run dependency and boundary fitness functions
-- [ ] Automated test proves: reopen decisions when documented assumptions expire
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+echo "ADR structure validated. Ready for review."
+```

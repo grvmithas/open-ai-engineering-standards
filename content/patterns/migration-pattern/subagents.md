@@ -1,39 +1,32 @@
-# Migration: Subagents
+# Migration Pattern — Subagents
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Migration  
+> **Component:** subagents.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Migration subagents operationalizes this pattern outcome: transition data or services while preserving invariants and a tested return path.
+| Subagent | Role | When invoked | Output |
+|----------|------|--------------|--------|
+| Consumer Inventory | Finds services, jobs, BI, partners using the surface | Start | Owned consumer table |
+| Reconciler | Writes and runs count/semantic comparisons | Before cutover | Gate pass/fail + samples |
+| Rollback Author | Specifies rollback per phase | During plan | Rollback steps + scripts refs |
 
-| Subagent | Mandate | Required output |
-|---|---|---|
-| Data profiler | classifies shape and anomalies | data profiler artifact with source IDs, uncertainty, and stop status |
-| Compatibility engineer | designs coexistence contracts | compatibility engineer artifact with source IDs, uncertainty, and stop status |
-| Reconciliation auditor | independently proves equivalence | reconciliation auditor artifact with source IDs, uncertainty, and stop status |
+## Consumer Inventory contract
 
-## Delegation protocol
+- Include sync APIs, async consumers, batch jobs, reverse ETL, partner feeds
+- Each row needs owner and “breakage mode”
+- “Unknown” is not acceptable for High risk without explicit accept risk
 
-Migration specialists receive only sources needed for "Define invariants, loss tolerance, RPO, RTO, and abort thresholds."; the parent retains effect approval and accountability for "record and monetary reconciliation = 100%".
+## Reconciler contract
 
-## Tradeoffs
+- At least one global count check and one semantic sample check
+- Thresholds numeric (e.g. mismatch < 0.01%)
+- Fail closed: no cutover on red gates
 
-Migration subagents deliberately spends additional review time to protect "record and monetary reconciliation = 100%"; evidence weakness triggers "Stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events".
+## Rollback Author contract
 
-## Anti-patterns
-
-Migration subagents rejects shortcuts around "Define invariants, loss tolerance, RPO, RTO, and abort thresholds." because they sever the evidence chain required for "record and monetary reconciliation = 100%".
-
-## Enterprise considerations
-
-Migration subagents governance binds owner, policy revision, and retained proof to "record and monetary reconciliation = 100%", with "Stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Data profiler returned its required evidence
-- [ ] Compatibility engineer returned its required evidence
-- [ ] Reconciliation auditor returned its required evidence
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- Expand rollback: usually leave additive objects
+- Dual rollback: stop dual-write; keep expand
+- Cutover rollback: flip primary back
+- Contract rollback: often impossible — mark PONR

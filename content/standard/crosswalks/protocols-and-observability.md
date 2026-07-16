@@ -1,6 +1,6 @@
 # MCP, A2A, and GenAI Observability Crosswalk
 
-**Version:** 1.0.0  
+**Version:** 1.0.1  
 **Date:** 2026-07-16  
 **Status:** Informative
 
@@ -108,6 +108,10 @@ Sources accessed 2026-07-16. The deployment record must pin the exact protocol a
 - [ ] No protocol-conformance or endorsement claim is inferred from OAIES validation
 
 ## Changelog
+
+### 1.0.1 — 2026-07-16
+
+- Narrowed protocol and telemetry mappings to evidence support, partial coverage, or no mapping.
 
 ### 1.0.0 — 2026-07-16
 

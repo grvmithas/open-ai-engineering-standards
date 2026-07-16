@@ -77,6 +77,9 @@ Long blocking DDL, data truncation, dual-write divergence, table bloat, replica 
 ## Verification
 Run engine-specific syntax, plan, lock-timeout, migration up/down where valid, reconciliation, and restore tests in a disposable clone.
 
+## Domain Recovery Playbook
+Cancel unsafe work within the engine's documented semantics, stop resumable backfills at a checkpoint, inspect locks and replicas, reconcile partial data, then choose tested rollback or forward recovery.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

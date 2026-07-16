@@ -1,6 +1,6 @@
 # OAuth 2.1 for MCP Servers
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative OAIES implementation profile
 
@@ -21,7 +21,7 @@ Use for remote MCP servers and user-delegated tools.
 5. Bind authorization at each tool invocation and log consent.
 
 ## Evidence contract
-The decision record is the **MCP authorization conformance report**. It records resource metadata; issuer; client registration; PKCE; state; resource indicator; audience; scopes; token storage; revocation. The MCP service owner owns completeness; the evidence is invalid when authorization server, MCP endpoint, or client registration method changes. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+The decision record is the **MCP authorization conformance report**. It records resource metadata; issuer; client registration; PKCE; state; resource indicator; audience; scopes; token storage; revocation. The MCP service owner owns completeness; the evidence is invalid when authorization server, MCP endpoint, or client registration method changes. Security evidence contains target digest, threat assumptions, exact test steps, exploit preconditions, observed result, remediation, and independent retest.
 
 ## Failure response and recovery
 **Trigger:** issuer/audience mismatch or token disclosure is detected.
@@ -29,7 +29,7 @@ The decision record is the **MCP authorization conformance report**. It records 
 **Immediate response:** reject tokens, revoke sessions, rotate client material, and disable the MCP route. Preserve the MCP authorization conformance report, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to oauth 2.1 for mcp servers.
 
 ## Decision authority
-The **MCP service owner** accepts the operational decision. The **identity security architect** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+The **MCP service owner** accepts the operational decision. The **identity security architect** provides independent challenge for high-risk scope, failed gates, or exceptions. Preventive controls may block requests and revoke capability; security and service owners command containment, disclosure, and restoration.
 
 ## Tradeoffs
 | Choice | Benefit | Cost |
@@ -45,12 +45,12 @@ The **MCP service owner** accepts the operational decision. The **identity secur
 - Require administrative consent where policy demands.
 
 ## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+The **OAuth 2.1 for MCP Servers** guidance is bounded by its threat model and target release. Successful verification demonstrates tested controls, not the absence of undiscovered attack paths.
 
 | Source | Relationship for OAuth 2.1 for MCP Servers | Boundary |
 |---|---|---|
-| NIST AI RMF | MANAGE 2.2 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clause 8.1 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| NIST AI RMF | MANAGE 2.2 | Map only applicable NIST outcomes to the tested architecture and threat scenario. |
+| ISO/IEC 42001 | 42001 clause 8.1 | Management-system evidence cannot substitute for technical verification of this control. |
 | Domain threat/control source | LLM06 and credential disclosure | Test only the threats applicable to the documented system and release |
 
 ## Checklist

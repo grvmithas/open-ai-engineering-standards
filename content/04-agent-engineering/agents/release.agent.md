@@ -77,6 +77,9 @@ Wrong artifact, stale approval, hidden migration, partial rollout, weak rollback
 ## Verification
 Verify digest at every stage, deployment status, synthetic transactions, error/latency/business SLIs, and rollback artifact viability.
 
+## Domain Recovery Playbook
+Pause rollout at the current cohort, verify the failing threshold, restore the prior immutable digest, and keep the release open until rollback health and data compatibility are proven.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

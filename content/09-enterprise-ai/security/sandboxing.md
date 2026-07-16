@@ -1,6 +1,6 @@
 # Agent Tool Sandboxing
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative OAIES implementation profile
 
@@ -21,7 +21,7 @@ Use for code execution, browsing, file processing, and extensible tools.
 5. Destroy environment and preserve security telemetry.
 
 ## Evidence contract
-The decision record is the **sandbox policy and escape-test report**. It records image digest; runtime; UID; mounts; seccomp; capabilities; egress; resources; credentials; destruction evidence. The compute isolation owner owns completeness; the evidence is invalid when runtime, base image, kernel, or isolation policy changes. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+The decision record is the **sandbox policy and escape-test report**. It records image digest; runtime; UID; mounts; seccomp; capabilities; egress; resources; credentials; destruction evidence. The compute isolation owner owns completeness; the evidence is invalid when runtime, base image, kernel, or isolation policy changes. Security evidence contains target digest, threat assumptions, exact test steps, exploit preconditions, observed result, remediation, and independent retest.
 
 ## Failure response and recovery
 **Trigger:** escape, cross-tenant read, or unauthorized egress is observed.
@@ -29,7 +29,7 @@ The decision record is the **sandbox policy and escape-test report**. It records
 **Immediate response:** terminate the pool, revoke credentials, quarantine artifacts, and rotate clean workers. Preserve the sandbox policy and escape-test report, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to agent tool sandboxing.
 
 ## Decision authority
-The **compute isolation owner** accepts the operational decision. The **offensive security reviewer** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+The **compute isolation owner** accepts the operational decision. The **offensive security reviewer** provides independent challenge for high-risk scope, failed gates, or exceptions. Preventive controls may block requests and revoke capability; security and service owners command containment, disclosure, and restoration.
 
 ## Tradeoffs
 | Choice | Benefit | Cost |
@@ -45,12 +45,12 @@ The **compute isolation owner** accepts the operational decision. The **offensiv
 - Patch base images and scan dependencies.
 
 ## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+The **Agent Tool Sandboxing** guidance is bounded by its threat model and target release. Successful verification demonstrates tested controls, not the absence of undiscovered attack paths.
 
 | Source | Relationship for Agent Tool Sandboxing | Boundary |
 |---|---|---|
-| NIST AI RMF | MANAGE 2.2 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clause 8.1 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| NIST AI RMF | MANAGE 2.2 | Map only applicable NIST outcomes to the tested architecture and threat scenario. |
+| ISO/IEC 42001 | 42001 clause 8.1 | Management-system evidence cannot substitute for technical verification of this control. |
 | Domain threat/control source | LLM05 Improper Output Handling and LLM06 | Test only the threats applicable to the documented system and release |
 
 ## Checklist

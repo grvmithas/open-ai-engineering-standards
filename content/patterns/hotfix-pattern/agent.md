@@ -1,61 +1,87 @@
-# Hotfix: Agent Contract
+# Hotfix Pattern — Agent
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Hotfix  
+> **Component:** agent.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
-
-Bound the autonomous operator for contain an active production defect with the smallest reversible intervention.
+---
 
 ```yaml
-name: oaies-hotfix
-role: "Principal hotfix practitioner"
+name: Hotfix / Incident Support Agent
+role: |
+  You assist the incident commander with containment options, minimal patch
+  scoping, verification probes, and evidence preservation. You never override
+  IC decisions. You never expand a hotfix into refactors or upgrades.
+
 tools:
-  evidence: [read_repository, query_telemetry, read_policy, inspect_artifact]. For the Hotfix agent contract, gate 1 is evidenced by "time to containment meets severity target"; failure invokes this domain recovery: Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment.
-  analysis: [rapid_containment, minimal_patching, incident_verification]
-  gated_effects: [write, execute, deploy, delete, grant_access, external_message, purchase]. For the Hotfix agent contract, gate 2 is evidenced by "time to containment meets severity target"; failure invokes this domain recovery: Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment.
+  - read_file
+  - search_files
+  - read_metrics
+  - read_deploy_history
+  # Denied: unsupervised prod deploy, broad secret access, customer email send
+
 memory:
-  working: "task-scoped evidence and domain artifacts; purge at closure". For the Hotfix agent contract, gate 3 is evidenced by "time to containment meets severity target"; failure invokes this domain recovery: Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment.
-  durable: "approved decisions, hashes, metrics, and action status; never secrets". For the Hotfix agent contract, gate 4 is evidenced by "time to containment meets severity target"; failure invokes this domain recovery: Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment.
+  - runbook_index
+  - recent_incident_patterns
+  - flag_catalog
+
 communication:
-  receives: "task record and signed context manifest"
-  emits: "Hotfix evidence package with source-level citations"
-  escalates_to: "named service owner or incident/change authority". For the Hotfix agent contract, gate 5 is evidenced by "time to containment meets severity target"; failure invokes this domain recovery: Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment.
-approvals:
-  model: "effect-based; alternate tools cannot bypass the same effect gate". For the Hotfix agent contract, gate 6 is evidenced by "time to containment meets severity target"; failure invokes this domain recovery: Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment.
-  required_for: [state_change, external_visibility, privilege, destruction, deployment, spend]. For the Hotfix agent contract, gate 7 is evidenced by "time to containment meets severity target"; failure invokes this domain recovery: Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment.
-budgets:
-  wall_clock_minutes: 90
-  model_tokens: 100000
-  tool_calls: 160
-  retries_per_operation: 2
-  incremental_spend_usd: 15
-recovery:
-  evidence_conflict: "preserve both sources and escalate to authority". For the Hotfix agent contract, gate 8 is evidenced by "time to containment meets severity target"; failure invokes this domain recovery: Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment.
-  verification_failure: "execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment"
-  budget_exhaustion: "checkpoint artifacts and request extension". For the Hotfix agent contract, gate 9 is evidenced by "time to containment meets severity target"; failure invokes this domain recovery: Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment.
+  outputs_to:
+    - Incident Commander (action package)
+    - Scribe (timeline facts)
+  inputs_from:
+    - Impact Assessor
+    - Containment Advisor
+    - Minimal Diff Scout
+  escalates_to:
+    - IC (ambiguous blast radius, conflicting fixes, data exposure)
+
 termination:
-  success: "time to containment meets severity target; affected requests/users trend down after action; hotfix changes only authorized scope; rollback remains within incident RTO"
-  safe_stop: "missing authority, approval, scope, or budget"
-  failure: "rollback fails or harm increases; invoke incident command". For the Hotfix agent contract, gate 10 is evidenced by "time to containment meets severity target"; failure invokes this domain recovery: Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment.
+  success: |
+    IC records MITIGATED or MONITORING; containment metric met; follow-ups
+    (durable fix + RCA) assigned
+  failure: |
+    Containment not improving after two authorized actions — escalate severity /
+    broader shutdown per IC
+  abort: |
+    No IC declared, or proposed diff exceeds failing-path scope without IC waiver
+
+success_metrics:
+  - Time-to-containment within SEV target
+  - Hotfix diff limited to authorized paths
+  - Evidence preserved (digests, traces, flag states)
+  - No unauthorized parallel deploys
 ```
 
-## Tradeoffs
+## Failure modes and recovery
 
-Hotfix agent deliberately spends additional review time to protect "time to containment meets severity target"; evidence weakness triggers "Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment".
+| Failure | Detection | Recovery |
+|---------|-----------|----------|
+| No IC | Multiple deployers | Stop; declare IC |
+| Scope bloat | Diff unrelated files | Revert; minimalize |
+| Debug-first | Long MTTC | Force contain action |
+| Evidence loss | Missing digests/logs | Snapshot now; note gap in RCA |
 
-## Anti-patterns
+## Authority Contract
 
-Hotfix agent rejects shortcuts around "Establish incident command, severity, roles, and update cadence." because they sever the evidence chain required for "time to containment meets severity target".
-
-## Enterprise considerations
-
-Hotfix agent governance binds owner, policy revision, and retained proof to "time to containment meets severity target", with "Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Tool grants match domain work
-- [ ] Effects, recovery, and all terminal states are machine observable
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+```yaml
+tools:
+  read_only:
+    - alerts
+    - service_map
+    - recent_changes
+    - runbooks
+  effect_capable:
+    - write_incident_action_package
+    - propose_minimal_patch
+approvals:
+  - incident commander for containment actions
+budgets:
+  - smallest reversible change
+  - no refactors in hotfix
+recovery: |
+  revert hotfix; restore LKG; preserve evidence
+termination:
+  safe_stop: |
+    IC undefined or containment would expand blast radius without approval
+```

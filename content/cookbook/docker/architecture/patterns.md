@@ -70,11 +70,11 @@ Container governance approves base-image families, enforces digest promotion and
 
 ## Checklist
 
-- [ ] Dependency and compile stages consume pinned inputs; runtime receives only required artifacts..
-- [ ] Secrets use BuildKit mounts and never become layer contents..
-- [ ] The runtime stage declares non-root identity, stop signal, health behavior, and explicit writable paths..
-- [ ] Registry promotion is by digest with provenance and SBOM attached..
-- [ ] Persistent state lives outside the container filesystem..
+- [ ] Dependency and compile stages consume pinned inputs; runtime receives only required artifacts.
+- [ ] Secrets use BuildKit mounts and never become layer contents.
+- [ ] The runtime stage declares non-root identity, stop signal, health behavior, and explicit writable paths.
+- [ ] Registry promotion is by digest with provenance and SBOM attached.
+- [ ] Persistent state lives outside the container filesystem.
 - [ ] Diagram matches deployed topology rather than an aspirational target.
 - [ ] Rollback path preserves state and mixed-version contracts.
 

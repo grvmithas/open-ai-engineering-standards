@@ -1,50 +1,90 @@
-# Planner: Worked Production Example
+# Planner Pattern — Example: Feature Addition
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Planner  
+> **Component:** examples/example.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16  
+> **Scenario:** Add `POST /api/v1/reports` with a new `reports` table and a React form
 
-## Scenario and artifacts
+---
 
-Split invoice generation from a billing monolith. Artifacts: ADR-042, graph billing-dag.mmd, contracts/invoice-v2.yaml, plan PLAN-318. Sequence: shadow read, dual-write, reconcile 10,000 invoices, move 5% traffic, then retire the old path.
+## Summary
 
-## Execution
+Build an authenticated report-creation API and UI. Use expand/contract for the schema. Dual-write is not required; single new table with nullable future columns avoided.
 
-1. Classify ambiguity and list decisions execution must not make; the record attaches the resulting artifact to the example's primary change or incident ID.
-2. Map affected components, owners, contracts, and dependency edges; the record attaches the resulting artifact to the example's primary change or incident ID.
-3. Generate viable designs and reject those violating hard constraints; the record attaches the resulting artifact to the example's primary change or incident ID.
-4. Record the chosen design and rejected alternatives in an ADR; the record attaches the resulting artifact to the example's primary change or incident ID.
-5. Sequence vertical increments by dependency and reversibility; the record attaches the resulting artifact to the example's primary change or incident ID.
-6. Attach tests, observability, rollout, and rollback to each increment; the record attaches the resulting artifact to the example's primary change or incident ID.
-7. Run a pre-mortem with security, operations, and domain owners; the record attaches the resulting artifact to the example's primary change or incident ID.
-8. Freeze the approved plan; route deviations through replanning; the record attaches the resulting artifact to the example's primary change or incident ID.
+## Architecture diagram
 
-## Verification
+```mermaid
+flowchart LR
+  UI[React ReportForm] --> API[POST /api/v1/reports]
+  API --> Auth[AuthZ: reports:create]
+  API --> Svc[ReportService]
+  Svc --> DB[(reports table)]
+  API --> Obs[OpenTelemetry span]
+```
 
-- The owner records raw evidence that decision completeness = 100%.
-- The owner records raw evidence that unplanned file-change rate < 10%.
-- The owner records raw evidence that plan-driven rework < 10%.
-- The owner records raw evidence that all critical-path owners acknowledge.
+## Proposed changes
 
-## Rollback exercise
+### Database
 
-Planner examples/example rollback exercise gate 1 is accepted only when "decision completeness = 100%" is source-verifiable; otherwise, stop implementation, revert partial increments, and return to the last approved plan revision.
+| Change | Type | Migration | Backward compatible |
+|--------|------|-----------|---------------------|
+| `reports` table | ADD | Yes — expand only | Yes (new table) |
+| index `(org_id, created_at)` | ADD | Yes | Yes |
 
-## Tradeoffs
+### Backend
 
-Planner examples/example deliberately spends additional review time to protect "decision completeness = 100%"; evidence weakness triggers "Stop implementation, revert partial increments, and return to the last approved plan revision".
+| File | Change | Description |
+|------|--------|-------------|
+| `db/migrations/20260716_reports.sql` | CREATE | Table + index |
+| `src/services/reportService.ts` | CREATE | Create/list with org scoping |
+| `src/routes/reports.ts` | CREATE | POST handler + validation |
+| `src/auth/permissions.ts` | MODIFY | Add `reports:create` |
 
-## Anti-patterns
+### Frontend
 
-Planner examples/example rejects shortcuts around "Classify ambiguity and list decisions execution must not make." because they sever the evidence chain required for "decision completeness = 100%".
+| File | Change | Description |
+|------|--------|-------------|
+| `src/components/ReportForm.tsx` | CREATE | Accessible form, client validation |
+| `src/api/reports.ts` | CREATE | Typed client for POST |
 
-## Enterprise considerations
+### API contract
 
-Planner examples/example governance binds owner, policy revision, and retained proof to "decision completeness = 100%", with "Stop implementation, revert partial increments, and return to the last approved plan revision" as the recorded recovery authority.
+| Endpoint | Change | Breaking |
+|----------|--------|----------|
+| `POST /api/v1/reports` | NEW | No |
 
-## Checklist
+## Implementation sequence
 
-- [ ] Every stated artifact has an owner and storage location in the system of record
-- [ ] Reported outcomes come from executed checks
+1. Migration (expand) — deployable alone  
+2. `ReportService` + unit tests  
+3. Route + auth permission + integration tests  
+4. Frontend form + component tests  
+5. Observability attributes on the handler  
+6. Docs / OpenAPI update  
 
-## Changelog
+## Test plan
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+| Type | Coverage |
+|------|----------|
+| Unit | `ReportService` validation, org scoping |
+| Integration | POST happy path, 401/403, validation 400 |
+| E2E | Authenticated user submits form; row appears for their org only |
+
+## Rollback plan
+
+1. Feature-flag off the UI route  
+2. Remove reverse proxy route to POST if needed  
+3. Keep table (expand/contract) — drop only in a later contract migration after idle  
+
+## Open questions (blocking)
+
+- [x] Max attachment size? → 5 MB, enforced in API (resolved 2026-07-15)
+
+## Human approval
+
+```text
+Approver: A. Chen  Date: 2026-07-15
+Notes: Org scoping must be DB-enforced, not only UI-filtered.
+```
+
+This example is the artifact — not a claim that a separate file exists elsewhere.

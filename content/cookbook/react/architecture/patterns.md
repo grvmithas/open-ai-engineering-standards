@@ -69,11 +69,11 @@ For React estates, govern design-system packages, browser support, telemetry con
 
 ## Checklist
 
-- [ ] Route and feature boundaries own orchestration; leaf components receive typed data and events..
-- [ ] A custom Hook owns one synchronization concern and exposes no renderer-specific side effects..
-- [ ] Error and Suspense boundaries are placed at independently recoverable UI regions..
-- [ ] Server state remains in the data cache; transient interaction state remains local..
-- [ ] The design system owns semantic primitives and focus behavior..
+- [ ] Route and feature boundaries own orchestration; leaf components receive typed data and events.
+- [ ] A custom Hook owns one synchronization concern and exposes no renderer-specific side effects.
+- [ ] Error and Suspense boundaries are placed at independently recoverable UI regions.
+- [ ] Server state remains in the data cache; transient interaction state remains local.
+- [ ] The design system owns semantic primitives and focus behavior.
 - [ ] Diagram matches deployed topology rather than an aspirational target.
 - [ ] Rollback path preserves state and mixed-version contracts.
 

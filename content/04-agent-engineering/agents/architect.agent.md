@@ -76,6 +76,9 @@ Distributed consistency error, hidden coupling, unavailable dependency, cost blo
 ## Verification
 Walk dependency/region/overload scenarios; validate interface error contracts and capacity formulas; threat-model changed boundaries.
 
+## Domain Recovery Playbook
+Preserve the approved ADR as current, issue a superseding draft for failed assumptions, and return any irreversible migration or quality-attribute conflict to the accountable owner.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

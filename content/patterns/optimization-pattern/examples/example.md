@@ -1,50 +1,75 @@
-# Optimization: Worked Production Example
+# Optimization Pattern — Example: Checkout p99 via Redis batching
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Optimization  
+> **Component:** examples/example.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16  
+> **Scenario:** `POST /checkout` p99 above SLO; N+1 Redis GETs on cart lines
 
-## Scenario and artifacts
+---
 
-Reduce catalog p99 from 840ms under 2k RPS. Flame graph PROF-118 assigns 61% CPU to JSON schema compilation. Revision opt-77 caches 500 bounded schemas; 30-run benchmark shows p99 412±18ms, zero oracle mismatch, and memory +96MiB below 128MiB guardrail.
+## Spec (intake)
 
-## Execution
+| Field | Value |
+|-------|-------|
+| Service | `checkout-api` |
+| Target metric | `http_server_duration_p99_ms{route=/checkout}` |
+| SLO | p99 ≤ 400 ms over 5m |
+| Min useful effect | ≥20% p99 reduction (≤320 ms) |
+| Flag | `checkout.redis_mget_cart` |
+| Workload ID | `wl-checkout-peak-2026-07` |
+| Oracle | Cart total + tax match golden fixtures; idempotent checkout key intact |
 
-1. Define target metric, guardrails, workload, and minimum useful effect; the record attaches the resulting artifact to the example's primary change or incident ID.
-2. Measure a statistically sound baseline including variance; the record attaches the resulting artifact to the example's primary change or incident ID.
-3. Profile end-to-end and attribute dominant cost; the record attaches the resulting artifact to the example's primary change or incident ID.
-4. Form a mechanism-specific optimization hypothesis; the record attaches the resulting artifact to the example's primary change or incident ID.
-5. Benchmark one change against control with warmup and confidence interval; the record attaches the resulting artifact to the example's primary change or incident ID.
-6. Inspect shifted cost, tail behavior, correctness, and saturation; the record attaches the resulting artifact to the example's primary change or incident ID.
-7. Canary under representative production load; the record attaches the resulting artifact to the example's primary change or incident ID.
-8. Keep only if effect size and guardrails pass; document capacity headroom; the record attaches the resulting artifact to the example's primary change or incident ID.
+### Abort criteria (pre-declared)
 
-## Verification
+- p99 > 450 ms for 5 consecutive minutes on canary cohort  
+- error_rate > baseline + 0.1%  
+- Redis CPU > 70% on primary  
+- Oracle probe failure
 
-- The owner records raw evidence that approved effect size reached with confidence interval.
-- The owner records raw evidence that correctness oracle has zero regression.
-- The owner records raw evidence that p99 and saturation guardrails remain within SLO.
-- The owner records raw evidence that unit cost is measured end-to-end.
+## Baseline (inline artifact)
 
-## Rollback exercise
+Workload: 60% 3-line carts, 30% 10-line, 10% 30-line; 200 RPS; warm-up 2m; n=40 one-minute windows.
 
-Optimization examples/example rollback exercise gate 1 is accepted only when "approved effect size reached with confidence interval" is source-verifiable; otherwise, disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark.
+| Metric | Baseline |
+|--------|----------|
+| p50 | 120 ms |
+| p95 | 310 ms |
+| p99 | 520 ms |
+| error_rate | 0.12% |
+| Redis cmds / checkout | ~31 GETs |
 
-## Tradeoffs
+Profiler attribution: 48% of critical-path time in sequential `GET cart:line:*`.
 
-Optimization examples/example deliberately spends additional review time to protect "approved effect size reached with confidence interval"; evidence weakness triggers "Disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark".
+## Hypothesis
 
-## Anti-patterns
+Replace per-line `GET` with one `MGET` (+ pipeline for writes) behind `checkout.redis_mget_cart`. Single mechanism; no schema change.
 
-Optimization examples/example rejects shortcuts around "Define target metric, guardrails, workload, and minimum useful effect." because they sever the evidence chain required for "approved effect size reached with confidence interval".
+## Candidate results (inline)
 
-## Enterprise considerations
+| Metric | Baseline | Candidate | Delta |
+|--------|----------|-----------|-------|
+| p50 | 120 ms | 95 ms | −21% |
+| p95 | 310 ms | 240 ms | −23% |
+| p99 | 520 ms | 280 ms | −46% |
+| error_rate | 0.12% | 0.11% | flat |
+| Redis cmds / checkout | 31 | 3 | −90% |
+| Oracle | — | PASS (120/120) | — |
 
-Optimization examples/example governance binds owner, policy revision, and retained proof to "approved effect size reached with confidence interval", with "Disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark" as the recorded recovery authority.
+## Canary
 
-## Checklist
+| Stage | % | Hold | Result |
+|-------|---|------|--------|
+| 1 | 1% | 30m | No abort |
+| 2 | 5% | 2h | No abort |
+| 3 | 25% | 24h | No abort |
 
-- [ ] Every stated artifact has an owner and storage location in the system of record
-- [ ] Reported outcomes come from executed checks
+## Human decision
 
-## Changelog
+```text
+Approver: M. Okonkwo  Date: 2026-07-14
+Decision: KEEP
+Notes: Promote to 100% after 48h at 25%; watch Redis CPU dashboard.
+Capacity headroom: ~340 RPS until Redis CPU soft limit 65%.
+```
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+This example **is** the artifact — numbers are illustrative of the required shape, not a claim about a live system.

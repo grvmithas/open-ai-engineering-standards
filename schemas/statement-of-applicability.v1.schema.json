@@ -73,7 +73,7 @@
   },
   "allOf": [
     {"if": {"properties": {"status": {"const": "approved"}}, "required": ["status"]}, "then": {"required": ["approvedAt"]}},
-    {"if": {"properties": {"impactLevel": {"const": "I3"}}, "required": ["impactLevel"]}, "then": {"properties": {"workloadProfiles": {"contains": {"const": "P6"}}}}}
+    {"if": {"properties": {"impactLevel": {"const": "I3"}}, "required": ["impactLevel"]}, "then": {"properties": {"workloadProfiles": {"type": "array", "contains": {"const": "P6"}}}}}
   ],
   "additionalProperties": false,
   "$defs": {

@@ -1,6 +1,6 @@
 # LLMOps Dashboard Standard
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative OAIES implementation profile
 
@@ -21,7 +21,7 @@ Use for on-call, product, platform, and risk reviews.
 5. Link every panel to definition, owner, and drill-down trace.
 
 ## Evidence contract
-The decision record is the **dashboard-as-code release**. It records panel query; metric version; owner; audience; refresh; threshold; trace drill-down; access policy. The observability experience owner owns completeness; the evidence is invalid when a panel has no definition or mixes incompatible releases. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+The decision record is the **dashboard-as-code release**. It records panel query; metric version; owner; audience; refresh; threshold; trace drill-down; access policy. The observability experience owner owns completeness; the evidence is invalid when a panel has no definition or mixes incompatible releases. Persist schema, instrumentation, collector, query, dashboard, and alert revisions so operational conclusions remain reproducible.
 
 ## Failure response and recovery
 **Trigger:** a decision panel is stale or its query fails validation.
@@ -29,7 +29,7 @@ The decision record is the **dashboard-as-code release**. It records panel query
 **Immediate response:** mark the view invalid, route responders to source queries, and roll back dashboard revision. Preserve the dashboard-as-code release, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to llmops dashboard standard.
 
 ## Decision authority
-The **observability experience owner** accepts the operational decision. The **on-call lead** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+The **observability experience owner** accepts the operational decision. The **on-call lead** provides independent challenge for high-risk scope, failed gates, or exceptions. Telemetry can trigger declared alerts or rollback; service and incident owners judge impact, restoration, and invalid measurement windows.
 
 ## Tradeoffs
 | Choice | Benefit | Cost |
@@ -45,12 +45,12 @@ The **observability experience owner** accepts the operational decision. The **o
 - Retain snapshots for high-risk release evidence.
 
 ## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+**LLMOps Dashboard Standard** defines informative diagnosability evidence. Sampling and mutable operational telemetry do not replace required action or records-management logs.
 
 | Source | Relationship for LLMOps Dashboard Standard | Boundary |
 |---|---|---|
-| NIST AI RMF | MEASURE 3.1 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clause 9.1 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| NIST AI RMF | MEASURE 3.1 | Evaluate monitoring coverage against known failure modes and sampling limitations. |
+| ISO/IEC 42001 | 42001 clause 9.1 | Performance-evaluation evidence remains subject to data quality, access, retention, and internal-audit scope. |
 | Domain threat/control source | Exposure-aware operational reporting | Test only the threats applicable to the documented system and release |
 
 ## Checklist
@@ -59,8 +59,8 @@ This profile is informative. It helps implement the following relationships and 
 - [ ] Drill-down verified.
 
 ## References
-- OpenTelemetry, [Generative AI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/) (accessed 2026-07-16); pin the convention version because portions remain Development.
-- OpenTelemetry, [Trace semantic conventions](https://opentelemetry.io/docs/specs/semconv/general/trace/) (accessed 2026-07-16).
+- OpenTelemetry, [GenAI semantic conventions repository](https://github.com/open-telemetry/semantic-conventions-genai) (accessed 2026-07-16); dashboard queries pin the adopted attribute contract.
+- Grafana, [Dashboard best practices](https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/best-practices/) (accessed 2026-07-16).
 
 ## Changelog
 | Version | Date | Change |

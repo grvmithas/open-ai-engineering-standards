@@ -77,6 +77,9 @@ Accidental destroy/replace, unstable count index, secret in state, provider drif
 ## Verification
 Run terraform fmt -check, init -backend=false when viable, validate, tflint, policy checks, and show -json plan classification.
 
+## Domain Recovery Playbook
+Discard a suspect saved plan, never edit state directly, release locks only through the backend procedure, and use reviewed moved/import/recovery operations for drift or partial effects.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

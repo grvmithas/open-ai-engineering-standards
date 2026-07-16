@@ -32,15 +32,15 @@ DI lifetimes are valid; CancellationToken reaches I/O; one scoped DbContext owns
 
 **Preserve first:** solution/project files, `global.json`, lock files, target frameworks, and package graph.
 
-**Discriminate:** DI validation. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** DI validation. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For invalid DI lifetime or missing registration, correlate that observation to the exact .NET target, revision, request/job, and UTC interval; compare solution/project files, `global.json`, lock files, target frameworks, and package graph with one healthy peer or baseline.
 
-**Native action:** `dotnet --info`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `dotnet --info`. Start in the safest .NET read-only or dry-run mode available. Before changing the ASP.NET Core endpoint, hosted service, EF Core unit of work, or application slice, name which of invalid DI lifetime or missing registration and concurrent or overlong DbContext use the action distinguishes.
 
 **Root-cause direction:** Dependency injection lifetimes are incompatible.
 
 **Correction:** Create an explicit scope per operation or correct the consumer lifetime.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Cannot consume scoped service from singleton` reproduction, verify the invalid DI lifetime or missing registration signal cleared in DI validation. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Create an explicit scope per operation or correct the consumer lifetime. restored the intended .NET behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop new background work, drain hosted services within the host shutdown timeout, then redeploy the previous published artifact after checking EF migration compatibility.
 
@@ -50,15 +50,15 @@ DI lifetimes are valid; CancellationToken reaches I/O; one scoped DbContext owns
 
 **Preserve first:** DI registrations, options binding/validation, middleware order, and endpoint metadata.
 
-**Discriminate:** EF Core logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** EF Core logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For concurrent or overlong DbContext use, correlate that observation to the exact .NET target, revision, request/job, and UTC interval; compare DI registrations, options binding/validation, middleware order, and endpoint metadata with one healthy peer or baseline.
 
-**Native action:** `dotnet restore --locked-mode` when lock files are enabled. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `dotnet restore --locked-mode` when lock files are enabled. Start in the safest .NET read-only or dry-run mode available. Before changing the ASP.NET Core endpoint, hosted service, EF Core unit of work, or application slice, name which of concurrent or overlong DbContext use and query translation, N+1, or serialization cycle the action distinguishes.
 
 **Root-cause direction:** Concurrent work shares one DbContext.
 
 **Correction:** Await each operation or create independent scopes.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `A second operation was started on this context` reproduction, verify the concurrent or overlong DbContext use signal cleared in EF Core logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Await each operation or create independent scopes. restored the intended .NET behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop new background work, drain hosted services within the host shutdown timeout, then redeploy the previous published artifact after checking EF migration compatibility.
 
@@ -68,15 +68,15 @@ DI lifetimes are valid; CancellationToken reaches I/O; one scoped DbContext owns
 
 **Preserve first:** EF Core generated SQL, query plan, change tracker, and pool metrics.
 
-**Discriminate:** ASP.NET Core logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** ASP.NET Core logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For query translation, N+1, or serialization cycle, correlate that observation to the exact .NET target, revision, request/job, and UTC interval; compare EF Core generated SQL, query plan, change tracker, and pool metrics with one healthy peer or baseline.
 
-**Native action:** `dotnet build --no-restore -warnaserror`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `dotnet build --no-restore -warnaserror`. Start in the safest .NET read-only or dry-run mode available. Before changing the ASP.NET Core endpoint, hosted service, EF Core unit of work, or application slice, name which of query translation, N+1, or serialization cycle and request cancellation versus upstream timeout the action distinguishes.
 
 **Root-cause direction:** API serialization traverses cyclic entity graphs.
 
 **Correction:** Map entities to bounded response DTOs.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Possible object cycle detected` reproduction, verify the query translation, N+1, or serialization cycle signal cleared in ASP.NET Core logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Map entities to bounded response DTOs. restored the intended .NET behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop new background work, drain hosted services within the host shutdown timeout, then redeploy the previous published artifact after checking EF migration compatibility.
 
@@ -86,15 +86,15 @@ DI lifetimes are valid; CancellationToken reaches I/O; one scoped DbContext owns
 
 **Preserve first:** dotnet-counters, dotnet-trace, dotnet-dump, and distributed traces.
 
-**Discriminate:** distributed trace. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** distributed trace. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For request cancellation versus upstream timeout, correlate that observation to the exact .NET target, revision, request/job, and UTC interval; compare dotnet-counters, dotnet-trace, dotnet-dump, and distributed traces with one healthy peer or baseline.
 
-**Native action:** `dotnet test --no-build`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `dotnet test --no-build`. Start in the safest .NET read-only or dry-run mode available. Before changing the ASP.NET Core endpoint, hosted service, EF Core unit of work, or application slice, name which of request cancellation versus upstream timeout and thread-pool, connection-pool, or GC saturation the action distinguishes.
 
 **Root-cause direction:** Request cancellation and upstream timeout are conflated.
 
 **Correction:** Inspect the caller token and classify timeout separately.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `TaskCanceledException` reproduction, verify the request cancellation versus upstream timeout signal cleared in distributed trace. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Inspect the caller token and classify timeout separately. restored the intended .NET behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop new background work, drain hosted services within the host shutdown timeout, then redeploy the previous published artifact after checking EF migration compatibility.
 
@@ -104,15 +104,15 @@ DI lifetimes are valid; CancellationToken reaches I/O; one scoped DbContext owns
 
 **Preserve first:** solution/project files, `global.json`, lock files, target frameworks, and package graph.
 
-**Discriminate:** startup logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** startup logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For thread-pool, connection-pool, or GC saturation, correlate that observation to the exact .NET target, revision, request/job, and UTC interval; compare solution/project files, `global.json`, lock files, target frameworks, and package graph with one healthy peer or baseline.
 
-**Native action:** `dotnet list package --vulnerable --include-transitive` and review applicability. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `dotnet list package --vulnerable --include-transitive` and review applicability. Start in the safest .NET read-only or dry-run mode available. Before changing the ASP.NET Core endpoint, hosted service, EF Core unit of work, or application slice, name which of thread-pool, connection-pool, or GC saturation and invalid DI lifetime or missing registration the action distinguishes.
 
 **Root-cause direction:** Options were not bound or validated.
 
 **Correction:** Bind one options object and ValidateOnStart.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Configuration value is null` reproduction, verify the thread-pool, connection-pool, or GC saturation signal cleared in startup logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Bind one options object and ValidateOnStart. restored the intended .NET behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop new background work, drain hosted services within the host shutdown timeout, then redeploy the previous published artifact after checking EF migration compatibility.
 

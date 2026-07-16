@@ -1,52 +1,106 @@
-# Root Cause: Worked Production Example
+# Root Cause Pattern — Example: INC-2841 checkout empty discount
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Root Cause  
+> **Component:** examples/example.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16  
+> **Scenario:** Follows hotfix example; blameless RCA with inline artifacts
 
-## Scenario and artifacts
+---
 
-INC-447 delayed payroll for 18,204 employees. Timeline TL-447 reconciles NTP offsets across deploy d-993, queue q-payroll, and alert a-81. Graph CG-447 shows malformed tenant config plus non-idempotent retry and a disabled saturation alert; replay CF-12 proves removing either retry defect or config bypass prevents impact. Actions eliminate bypass, enforce idempotency, isolate tenant queues, and restore alert coverage.
+# Root Cause Analysis: Checkout 500s on empty discount code
 
-## Execution
+**Incident ID:** INC-2841  
+**Date:** 2026-07-17  
+**Authors:** K. Liu (scribe), A. Mensah (IC), D. Ortiz (checkout)  
+**Severity:** SEV1  
+**Status:** FINAL  
 
-1. Set a blameless charter: explain system conditions, not individual fault; the record attaches the resulting artifact to the example's primary change or incident ID.
-2. Reconstruct a UTC timeline from independent sources and mark uncertainty; the record attaches the resulting artifact to the example's primary change or incident ID.
-3. Build a causal graph from initiating event through mechanisms to impact; the record attaches the resulting artifact to the example's primary change or incident ID.
-4. Distinguish root mechanisms, contributing conditions, and latent controls; the record attaches the resulting artifact to the example's primary change or incident ID.
-5. Test each causal edge against evidence and alternative explanations; the record attaches the resulting artifact to the example's primary change or incident ID.
-6. Use five-whys only as an interview prompt; branch the graph when causes diverge; the record attaches the resulting artifact to the example's primary change or incident ID.
-7. Run counterfactual tests: remove each condition and predict whether impact persists; the record attaches the resulting artifact to the example's primary change or incident ID.
-8. Prioritize actions: eliminate hazard, add prevention, reduce blast radius, improve detection, then procedure/training; the record attaches the resulting artifact to the example's primary change or incident ID.
-9. Assign owners, dates, leading indicators, and effectiveness review; the record attaches the resulting artifact to the example's primary change or incident ID.
-10. Publish factual narrative; revisit after actions demonstrate sustained effectiveness; the record attaches the resulting artifact to the example's primary change or incident ID.
+## Incident Summary
 
-## Verification
+From 13:55–14:16Z on 2026-07-16, `POST /checkout` returned HTTP 500 for carts submitting an empty discount string after promo parser v2 deployed. Impact peaked near 18% of checkouts. Contained by disabling `checkout.promo_parser_v2`, then mitigated with a null-guard hotfix.
 
-- The owner records raw evidence that 100% causal edges cite evidence.
-- The owner records raw evidence that timeline uncertainty is explicit.
-- The owner records raw evidence that actions favor engineered controls over reminders.
-- The owner records raw evidence that effectiveness reviewed at 30/60/90 days.
+**Impact:**
+- Users affected: ~18% of checkout attempts for 21 minutes  
+- Revenue impact: estimated checkout GMV dip during window (finance ticket FIN-902)  
+- Duration: detect 6m; contain 4m after declare; full mitigate ~53m from deploy  
+- SLA breach: Yes — availability SLO monthly error budget burn accelerated  
 
-## Rollback exercise
+## Timeline
 
-Root Cause examples/example rollback exercise gate 1 is accepted only when "100% causal edges cite evidence" is source-verifiable; otherwise, withdraw unsupported causal claims, preserve the draft, and reopen timeline or experiment collection.
+| Time (UTC) | Event | Who |
+|-----------|-------|-----|
+| 13:55 | Deploy promo parser v2 `sha256:aa11…` | CD |
+| 14:01 | Alert `checkout_error_rate > 2%` | Monitor |
+| 14:07 | Customer reports spike | Support |
+| 14:12 | SEV1 declared; IC A. Mensah | On-call |
+| 14:14 | Flag `checkout.promo_parser_v2=off` | IC |
+| 14:16 | Probes recover ≥99% | Verify |
+| 14:45–15:05 | Hotfix null guard + staged flag on | Eng |
 
-## Tradeoffs
+## Root Cause
 
-Root Cause examples/example deliberately spends additional review time to protect "100% causal edges cite evidence"; evidence weakness triggers "Withdraw unsupported causal claims, preserve the draft, and reopen timeline or experiment collection".
+**Root cause (one sentence):**  
+Empty discount strings were not in the promo parser’s contract tests or canary abort signals, so a parser that assumed non-empty codes could reach 100% traffic without failing a quality gate.
 
-## Anti-patterns
+### 5 Whys Analysis
 
-Root Cause examples/example rejects shortcuts around "Set a blameless charter: explain system conditions, not individual fault." because they sever the evidence chain required for "100% causal edges cite evidence".
+| Why # | Question | Answer |
+|-------|---------|--------|
+| Why 1 | Why did checkout 500? | NPE in promo parser on `""` discount |
+| Why 2 | Why did empty string reach parser? | Client sends `""` when field cleared; API did not normalize |
+| Why 3 | Why wasn’t this caught in tests? | Contract tests only covered `null` and valid codes — not empty string |
+| Why 4 | Why did canary not stop it? | Abort watched infrastructure errors broadly but not checkout success by discount-present cohort |
+| Why 5 | Why was that gap allowed? | Release checklist had no input-boundary cases for promo fields — systemic test/canary gap |
 
-## Enterprise considerations
+## Contributing Factors
 
-Root Cause examples/example governance binds owner, policy revision, and retained proof to "100% causal edges cite evidence", with "Withdraw unsupported causal claims, preserve the draft, and reopen timeline or experiment collection" as the recorded recovery authority.
+| Factor | Category | How It Contributed |
+|--------|---------|-------------------|
+| Rapid flag-on after deploy | Process | Shortened soak at low % |
+| Client sends `""` not `null` | Technical | Unexpected wire value |
+| No golden case for empty discount | Technical | Eval/test gap |
 
-## Checklist
+## Detection Gap Analysis
 
-- [ ] Every stated artifact has an owner and storage location in the system of record
-- [ ] Reported outcomes come from executed checks
+**Time to detection:** ~6 minutes (deploy → alert)  
+**How detected:** Alert + customer reports  
 
-## Changelog
+**Why wasn’t this caught earlier?**
+- [x] No monitoring for this failure mode (cohort-specific success)  
+- [ ] Alert existed but threshold was wrong  
+- [ ] Alert fired but was ignored  
+- [ ] This was caught (detection was adequate)  
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+Alert existed for global error rate — adequate for SEV declare, inadequate for **pre-prod/canary** prevention.
+
+## Remediation
+
+### Immediate Actions (Already Done)
+- [x] Flag disable — IC — 14:14Z  
+- [x] Null-guard hotfix — Eng — 14:45Z  
+
+### Short-Term Actions (Within 1 Sprint)
+- [ ] Add contract tests: `null`, `""`, whitespace, valid codes — **Owner:** D. Ortiz — **Due:** 2026-07-18 — **Prevents:** parser NPE on empty  
+- [ ] Canary abort: `checkout_success_probe < 99%` for 3m at any stage — **Owner:** J. Klein — **Due:** 2026-07-22 — **Prevents:** silent 100% promote  
+
+### Long-Term Actions (Within 1 Quarter)
+- [ ] Input-boundary checklist item on release template for form-backed APIs — **Owner:** S. Rahman — **Due:** 2026-08-30  
+
+## Lessons Learned
+
+**What went well:** Fast IC declare; flag containment in 4 minutes  
+**What could be improved:** Canary quality abort; empty-string fixtures  
+**What surprised us:** Clients send `""` more often than `null`  
+
+## Prevention Summary
+
+This incident WILL NOT recur when:
+- [ ] Contract tests for empty discount are green in CI  
+- [ ] Canary aborts on checkout_success_probe threshold above  
+- [ ] Release template includes input-boundary checklist item  
+
+```text
+Reviewed by: L. Cho  Date: 2026-07-17
+```
+
+This example **is** the RCA artifact shape required by the pattern and SDLC prompt.

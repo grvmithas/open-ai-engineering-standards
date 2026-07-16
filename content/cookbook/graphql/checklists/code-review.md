@@ -20,7 +20,7 @@ Record GraphQL specification assumptions, server/framework, client, federation/d
 
 ## Tradeoffs
 
-The GraphQL review gate requires runtime/configuration evidence beyond a source diff. It increases reviewer effort but catches defects static style review cannot observe.
+Review must prove "field and type names model domain capabilities rather than database tables" using canonical SDL, generated schema, registry/composition result, and breaking-change report. That GraphQL evidence costs more than diff inspection but exposes non-null propagation and partial response before merge.
 
 ## Anti-patterns
 

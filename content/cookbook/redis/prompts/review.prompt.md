@@ -8,11 +8,11 @@ Review a Redis change using native configuration, failure, and operational evide
 
 ## Why
 
-Every keyspace defines type, cardinality, TTL, memory policy, atomicity, durability, topology, and behavior when Redis is unavailable. This prompt requires native Redis artifacts instead of substituting a generic incident or code-generation checklist.
+Every keyspace defines type, cardinality, TTL, memory policy, atomicity, durability, topology, and behavior when Redis is unavailable. The review decision is accepted only when `CONFIG GET` for maxmemory/policy, persistence, timeout, and output-buffer settings under approved access supports it; generic review advice cannot establish that Redis state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Redis evidence for the keyspace, cache, session store, rate limiter, stream consumer, or Redis topology. Apply the invariant "Every keyspace defines type, cardinality, TTL, memory policy, atomicity, durability, topology, and behavior when Redis is unavailable." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Capture `redis_version`, mode, persistence, replication/cluster state, client li
 
 ## Tradeoffs
 
-Redis review takes longer because configuration and runtime state must be correlated with source. It eliminates generic style findings and prioritizes defects that can change production behavior.
+Redis review correlates source with `CONFIG GET` for maxmemory/policy, persistence, timeout, and output-buffer settings under approved access and `SLOWLOG GET`, `LATENCY DOCTOR`, commandstats, keyspace stats, and sampled `MEMORY USAGE`. The cost is a deeper review; the benefit is direct evidence for "key format includes bounded namespace, tenant scope, schema version, and collision-safe identifier" and "data type and maximum cardinality are chosen from access pattern, not convenience" instead of generic style findings.
 
 ## Anti-patterns
 

@@ -1,6 +1,6 @@
 # AI Service Runbook Template
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative implementation template; replace every `{{...}}` field or state `Not applicable — <reason>`.
 
@@ -11,10 +11,10 @@ Give operators tested procedures for diagnosis, containment, recovery, and escal
 Operators need exact, tested actions under pressure, including safe degradation and evidence preservation.
 
 ## How
-1. Assign the accountable owner and classification before authoring.
-2. Complete service map, SLOs, signals, exact controls, access prerequisites, validation, escalation, rollback.
-3. Link objective source evidence; screenshots and model assertions are supporting material only.
-4. Capture dissent, approval identity/date, expiry or review trigger, and recovery path.
+1. Name service, on-call role, prerequisites, permissions, dependencies, and SLOs.
+2. Tie each symptom to exact diagnostic queries and bounded actions.
+3. Provide safe degradation, rollback, data reconciliation, and escalation procedures.
+4. Exercise the runbook and record the last successful game-day release.
 
 ## Decision authority
 On-call owns execution; service and incident owners approve restoration after consequential failure.
@@ -45,24 +45,23 @@ On-call owns execution; service and incident owners approve restoration after co
 | Proportionate abbreviated record | Lower low-risk overhead | Requires an explicit tailoring rationale |
 
 ## Anti-patterns
-- Approving a record that still contains unresolved template fields.
-- Linking evidence that can change in place without recording a digest or version.
-- Using the template itself as proof of legal compliance, control operation, or certification.
+- Using screenshots instead of executable queries.
+- Requiring credentials or access not held by on-call.
+- Saying ‘restart service’ without impact and validation.
 
 ## Enterprise considerations
-- Apply records classification, access, retention, legal hold, and regional storage to the completed RUNBOOK.
-- Record the applicable operator, controller/processor, and supplier roles when AI or personal data is involved.
-- This is implementation support, not legal advice, a conformity assessment, or an ISO certification claim.
+- Store privileged commands in the approved operational system with access logs.
+- Regional, privacy, and records restrictions apply to diagnostic data.
+- Runbook changes follow service change control and game-day verification.
 
 ## Checklist
-- [ ] Service map, slos, signals, exact controls, access prerequisites, validation, escalation, rollback are complete.
-- [ ] Evidence links are immutable or versioned.
-- [ ] Decision authority, date, and review trigger are recorded.
-- [ ] Failure, rollback, escalation, or supersession path is executable.
+- [ ] Every trigger maps to an action and expected observation.
+- [ ] Commands are safe to copy and identify environment.
+- [ ] Rollback and reconciliation are tested.
+- [ ] Escalation contacts and last exercise date are current.
 
 ## References
-- NIST, [AI Risk Management Framework 1.0](https://doi.org/10.6028/NIST.AI.100-1) and [Generative AI Profile](https://doi.org/10.6028/NIST.AI.600-1) (accessed 2026-07-16).
-- ISO, [ISO/IEC 42001:2023](https://www.iso.org/standard/81230.html) and [ISO/IEC 23894:2023](https://www.iso.org/standard/77304.html) (accessed 2026-07-16). Mapping indicates control alignment only; it is not a certification claim.
+- Google, [Site Reliability Engineering — Emergency Response](https://sre.google/sre-book/emergency-response/) (accessed 2026-07-16).
 
 ## Changelog
 | Version | Date | Change |

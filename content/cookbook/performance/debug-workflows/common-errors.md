@@ -32,15 +32,15 @@ Optimization starts from a reproducible workload and user-impact metric; profile
 
 **Preserve first:** SLI/SLO definition, histogram boundaries, trace sampling, RUM attribution, and business-impact cohort.
 
-**Discriminate:** distributed traces and histograms. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** distributed traces and histograms. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For tail latency hidden by averages, correlate that observation to the exact Performance Engineering target, revision, request/job, and UTC interval; compare SLI/SLO definition, histogram boundaries, trace sampling, RUM attribution, and business-impact cohort with one healthy peer or baseline.
 
-**Native action:** run the repository's load test with a versioned scenario and export raw results. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** run the repository's load test with a versioned scenario and export raw results. Start in the safest Performance Engineering read-only or dry-run mode available. Before changing the SLO, workload model, benchmark, profile, capacity plan, Web Vital budget, or regression gate, name which of tail latency hidden by averages and benchmark/production workload mismatch the action distinguishes.
 
 **Root-cause direction:** A tail cohort, queue, retry, or dependency dominates rare requests.
 
 **Correction:** Segment traces by route, dependency, region, and payload; remove the tail cause.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `High p99 with normal average` reproduction, verify the tail latency hidden by averages signal cleared in distributed traces and histograms. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Segment traces by route, dependency, region, and payload; remove the tail cause. restored the intended Performance Engineering behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Shift traffic or artifact to the measured baseline when user-impact guardrails regress; retain candidate telemetry and profiles so rollback does not erase causal evidence.
 
@@ -50,15 +50,15 @@ Optimization starts from a reproducible workload and user-impact metric; profile
 
 **Preserve first:** workload script, request/data distribution, concurrency/arrival model, warmup, repetitions, and raw results.
 
-**Discriminate:** profile comparison. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** profile comparison. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For benchmark/production workload mismatch, correlate that observation to the exact Performance Engineering target, revision, request/job, and UTC interval; compare workload script, request/data distribution, concurrency/arrival model, warmup, repetitions, and raw results with one healthy peer or baseline.
 
-**Native action:** `npx lighthouse <url> --output=json --output-path=lighthouse.json` for controlled web lab evidence. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `npx lighthouse <url> --output=json --output-path=lighthouse.json` for controlled web lab evidence. Start in the safest Performance Engineering read-only or dry-run mode available. Before changing the SLO, workload model, benchmark, profile, capacity plan, Web Vital budget, or regression gate, name which of benchmark/production workload mismatch and CPU, event-loop, thread-pool, or lock saturation the action distinguishes.
 
 **Root-cause direction:** Synthetic workload omits the production bottleneck or cache state.
 
 **Correction:** Rebuild the workload from production distributions and validate with telemetry.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Benchmark improves but production does not` reproduction, verify the benchmark/production workload mismatch signal cleared in profile comparison. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Rebuild the workload from production distributions and validate with telemetry. restored the intended Performance Engineering behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Shift traffic or artifact to the measured baseline when user-impact guardrails regress; retain candidate telemetry and profiles so rollback does not erase causal evidence.
 
@@ -68,15 +68,15 @@ Optimization starts from a reproducible workload and user-impact metric; profile
 
 **Preserve first:** CPU, allocation/heap, I/O, lock, network, database, and browser trace aligned to one run.
 
-**Discriminate:** sampling profiler. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** sampling profiler. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For CPU, event-loop, thread-pool, or lock saturation, correlate that observation to the exact Performance Engineering target, revision, request/job, and UTC interval; compare CPU, allocation/heap, I/O, lock, network, database, and browser trace aligned to one run with one healthy peer or baseline.
 
-**Native action:** `node --prof` / JFR / `dotnet-trace` / `py-spy` only when matching the measured runtime. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `node --prof` / JFR / `dotnet-trace` / `py-spy` only when matching the measured runtime. Start in the safest Performance Engineering read-only or dry-run mode available. Before changing the SLO, workload model, benchmark, profile, capacity plan, Web Vital budget, or regression gate, name which of CPU, event-loop, thread-pool, or lock saturation and heap retention, allocation pressure, or GC pause the action distinguishes.
 
 **Root-cause direction:** Concurrency exceeds compute capacity or hot code consumes excessive cycles.
 
 **Correction:** Profile on representative load, optimize the hot path, then cap concurrency.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `CPU saturation` reproduction, verify the CPU, event-loop, thread-pool, or lock saturation signal cleared in sampling profiler. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Profile on representative load, optimize the hot path, then cap concurrency. restored the intended Performance Engineering behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Shift traffic or artifact to the measured baseline when user-impact guardrails regress; retain candidate telemetry and profiles so rollback does not erase causal evidence.
 
@@ -86,15 +86,15 @@ Optimization starts from a reproducible workload and user-impact metric; profile
 
 **Preserve first:** baseline/candidate confidence, effect size, noise controls, capacity saturation, and cost per operation.
 
-**Discriminate:** heap profiler. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** heap profiler. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For heap retention, allocation pressure, or GC pause, correlate that observation to the exact Performance Engineering target, revision, request/job, and UTC interval; compare baseline/candidate confidence, effect size, noise controls, capacity saturation, and cost per operation with one healthy peer or baseline.
 
-**Native action:** capture Chrome DevTools Performance trace with production build and defined network/CPU conditions. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** capture Chrome DevTools Performance trace with production build and defined network/CPU conditions. Start in the safest Performance Engineering read-only or dry-run mode available. Before changing the SLO, workload model, benchmark, profile, capacity plan, Web Vital budget, or regression gate, name which of heap retention, allocation pressure, or GC pause and LCP, INP, or CLS field regression the action distinguishes.
 
 **Root-cause direction:** Objects, caches, listeners, or native allocations are retained.
 
 **Correction:** Compare heap snapshots by retaining path and bound cache ownership.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Memory growth` reproduction, verify the heap retention, allocation pressure, or GC pause signal cleared in heap profiler. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Compare heap snapshots by retaining path and bound cache ownership. restored the intended Performance Engineering behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Shift traffic or artifact to the measured baseline when user-impact guardrails regress; retain candidate telemetry and profiles so rollback does not erase causal evidence.
 
@@ -104,15 +104,15 @@ Optimization starts from a reproducible workload and user-impact metric; profile
 
 **Preserve first:** SLI/SLO definition, histogram boundaries, trace sampling, RUM attribution, and business-impact cohort.
 
-**Discriminate:** CrUX/RUM and browser trace. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** CrUX/RUM and browser trace. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For LCP, INP, or CLS field regression, correlate that observation to the exact Performance Engineering target, revision, request/job, and UTC interval; compare SLI/SLO definition, histogram boundaries, trace sampling, RUM attribution, and business-impact cohort with one healthy peer or baseline.
 
-**Native action:** query production histograms and traces by release/cohort; never average percentiles. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** query production histograms and traces by release/cohort; never average percentiles. Start in the safest Performance Engineering read-only or dry-run mode available. Before changing the SLO, workload model, benchmark, profile, capacity plan, Web Vital budget, or regression gate, name which of LCP, INP, or CLS field regression and tail latency hidden by averages the action distinguishes.
 
 **Root-cause direction:** A release changed critical rendering, interaction, or layout behavior.
 
 **Correction:** Use field data to isolate template/device cohorts, then reproduce in lab.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Core Web Vital regression` reproduction, verify the LCP, INP, or CLS field regression signal cleared in CrUX/RUM and browser trace. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Use field data to isolate template/device cohorts, then reproduce in lab. restored the intended Performance Engineering behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Shift traffic or artifact to the measured baseline when user-impact guardrails regress; retain candidate telemetry and profiles so rollback does not erase causal evidence.
 

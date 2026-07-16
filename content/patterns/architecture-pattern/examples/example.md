@@ -1,50 +1,77 @@
-# Architecture: Worked Production Example
+# Architecture Pattern — Example: Order read model
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Architecture  
+> **Component:** examples/example.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16  
+> **Decision:** How should the Storefront read order status without coupling to Orders DB?
 
-## Scenario and artifacts
+---
 
-Choose ingestion topology for 120k events/s. ADR-088 compares Kafka, Pub/Sub, and current queue against p99<2s, regional RTO 15m, and $38/TB. Prototype ARC-P7 falsifies ordering assumptions; Kafka is selected with partition-skew fitness test.
+## ADR-0142: Storefront order status via projected read model (artifact)
 
-## Execution
+**Status:** Accepted  
+**Risk:** Medium
 
-1. Name stakeholders and express quality attributes as stimulus-response scenarios; the record attaches the resulting artifact to the example's primary change or incident ID.
-2. Separate hard constraints from preferences; the record attaches the resulting artifact to the example's primary change or incident ID.
-3. Model workload, growth, failure domains, and trust boundaries; the record attaches the resulting artifact to the example's primary change or incident ID.
-4. Develop at least two viable options and a baseline; the record attaches the resulting artifact to the example's primary change or incident ID.
-5. Evaluate options with scenario walkthroughs and prototypes; the record attaches the resulting artifact to the example's primary change or incident ID.
-6. Choose one option; record tradeoffs and rejected alternatives in an ADR; the record attaches the resulting artifact to the example's primary change or incident ID.
-7. Define fitness functions for architectural claims; the record attaches the resulting artifact to the example's primary change or incident ID.
-8. Review the ADR when assumptions or thresholds change; the record attaches the resulting artifact to the example's primary change or incident ID.
+### Context
 
-## Verification
+Storefront needs near-real-time order status. Orders service owns writes. Direct DB reads would couple deploy cycles and break tenancy isolation goals.
 
-- The owner records raw evidence that all priority scenarios have measurable responses.
-- The owner records raw evidence that prototype validates highest-risk assumption.
-- The owner records raw evidence that fitness functions run in CI or operations.
-- The owner records raw evidence that ADR review date and owner are current.
+### Decision drivers
 
-## Rollback exercise
+- p99 status read < 150ms  
+- Orders deploy independent of Storefront  
+- Tenant isolation enforced in read path  
+- Eventual consistency ≤ 5s acceptable for status UI  
 
-Architecture examples/example rollback exercise gate 1 is accepted only when "all priority scenarios have measurable responses" is source-verifiable; otherwise, supersede the adr, disable the new topology at its seam, and restore the prior approved architecture.
+### Alternatives
 
-## Tradeoffs
+| Option | Summary | Fit to QA | Reject reason |
+|--------|---------|-----------|---------------|
+| A. Sync REST to Orders | Storefront calls Orders API | Simple; adds Orders load | Couples availability; spikes on flash sales |
+| B. Shared Orders DB read | Storefront SQL views | Fast | **Rejected** — breaks service boundary + tenancy ownership |
+| C. Event-projected read model | Orders emits events; projector fills `order_status_rm` | Meets latency + decoupling | Chosen |
 
-Architecture examples/example deliberately spends additional review time to protect "all priority scenarios have measurable responses"; evidence weakness triggers "Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture".
+### Decision
 
-## Anti-patterns
+Use option C: Orders publishes `OrderStatusChanged`; projector updates `order_status_rm`; Storefront reads only the read model with `org_id` predicate.
 
-Architecture examples/example rejects shortcuts around "Name stakeholders and express quality attributes as stimulus-response scenarios." because they sever the evidence chain required for "all priority scenarios have measurable responses".
+### Architecture diagrams
 
-## Enterprise considerations
+```mermaid
+flowchart LR
+  SF[Storefront API] --> RM[(order_status_rm)]
+  ORD[Orders service] -->|OrderStatusChanged| BUS[Event bus]
+  BUS --> PROJ[Status projector]
+  PROJ --> RM
+```
 
-Architecture examples/example governance binds owner, policy revision, and retained proof to "all priority scenarios have measurable responses", with "Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture" as the recorded recovery authority.
+### Trust & failure analysis
 
-## Checklist
+| Scenario | Impact | Mitigation |
+|----------|--------|------------|
+| Event bus delay > 5s | Stale status | Show “updating…”; alert on lag p99 |
+| Projector down | Reads stale | Page on consumer lag; scale projector |
+| Poison event | Projector crash loop | DLQ + skip with metric |
+| Missing org_id filter | Cross-tenant read | DB policy + integration test |
 
-- [ ] Every stated artifact has an owner and storage location in the system of record
-- [ ] Reported outcomes come from executed checks
+### Consequences
 
-## Changelog
+- Positive: Orders deploy decoupled; Storefront read p99 ~40ms in soak  
+- Negative: Temporary inconsistency; ops owns lag alerts  
+- Follow-ups: ADR for archive/TTL of read model rows  
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+### Re-review triggers
+
+- Consistency SLO tightens below 1s  
+- Multi-region active-active for Orders  
+
+### Approval
+
+```text
+Reviewer: K. Ndlovu (independent)  Date: 2026-07-11
+Decision: APPROVE WITH CONDITIONS
+Conditions: Lag alert + tenant isolation test must land before Storefront cutover.
+Author: A. Chen — not approver (SoD OK)
+```
+
+This example **is** the artifact — not a pointer elsewhere.

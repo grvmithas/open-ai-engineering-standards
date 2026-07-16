@@ -45,7 +45,7 @@ Accounts and cells bound blast radius; role credentials are short-lived; infrast
 
 ## Verification
 
-The evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. For manual checks, record environment, operator, exact steps, and result.
+The AWS evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. It must also retain template/CDK source, synthesized CloudFormation, change set, stack events, and drift status. For manual account workload, CloudFormation/CDK stack, IAM role, VPC path, Lambda function, or release checks, record environment, operator, exact steps, and result.
 
 ## Failure recovery
 
@@ -61,7 +61,7 @@ Report the AWS boundary, facts, hypotheses, commands actually run, changed artif
 
 ## Termination criteria
 
-Finish when native validation, all applicable review/deployment gates, and recovery signals pass, or when a named owner accepts a documented blocker through the repository's risk process.
+Finish the AWS workflow only when native validation, applicable review/deployment gates, and recovery signals for policy-chain AccessDenied and CloudFormation create/update/rollback failure pass. Otherwise record a named owner and the exact missing AWS evidence; risk acceptance does not convert a failed native check into a pass.
 
 ## Version-aware caution
 
@@ -69,7 +69,7 @@ Capture AWS CLI/CDK/CloudFormation transform versions, partition, region, servic
 
 ## Tradeoffs
 
-This skill spends time fingerprinting AWS and collecting native evidence before editing. It reduces throughput for trivial changes but prevents incorrect commands, unsupported APIs, and state-destructive rollback.
+This skill fingerprints AWS through template/CDK source, synthesized CloudFormation, change set, stack events, and drift status before editing and retains VPC route tables, security groups, NACLs, endpoints, DNS, and Flow Logs before recovery. The added work is warranted when policy-chain AccessDenied could make Shift weighted traffic or aliases to the prior immutable version/cell, then use CloudFormation rollback for infrastructure; do not delete a failed stack when retained data or forensic events are required.
 
 ## Anti-patterns
 

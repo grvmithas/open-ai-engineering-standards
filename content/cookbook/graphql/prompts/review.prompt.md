@@ -8,11 +8,11 @@ Review a GraphQL change using native configuration, failure, and operational evi
 
 ## Why
 
-Schema exposes domain capabilities; authorization is enforced at trusted resolver/service boundaries; data access is batched per request; operations have resource budgets. This prompt requires native GraphQL artifacts instead of substituting a generic incident or code-generation checklist.
+Schema exposes domain capabilities; authorization is enforced at trusted resolver/service boundaries; data access is batched per request; operations have resource budgets. The review decision is accepted only when validated operation document, variables, auth context, depth/complexity/cost, and persisted-operation ID supports it; generic review advice cannot establish that GraphQL state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized GraphQL evidence for the schema, resolver, request DataLoader, gateway, persisted operation, or federated subgraph. Apply the invariant "Schema exposes domain capabilities; authorization is enforced at trusted resolver/service boundaries; data access is batched per request; operations have resource budgets." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Record GraphQL specification assumptions, server/framework, client, federation/d
 
 ## Tradeoffs
 
-GraphQL review takes longer because configuration and runtime state must be correlated with source. It eliminates generic style findings and prioritizes defects that can change production behavior.
+GraphQL review correlates source with validated operation document, variables, auth context, depth/complexity/cost, and persisted-operation ID and resolver trace tree, per-field errors, downstream query count, DataLoader batch/cache evidence. The cost is a deeper review; the benefit is direct evidence for "field and type names model domain capabilities rather than database tables" and "nullability communicates real absence and error propagation semantics" instead of generic style findings.
 
 ## Anti-patterns
 

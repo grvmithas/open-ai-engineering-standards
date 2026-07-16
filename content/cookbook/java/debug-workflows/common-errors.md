@@ -32,15 +32,15 @@ Transactions wrap use cases; transport DTOs do not leak persistence entities; po
 
 **Preserve first:** `pom.xml` or Gradle catalogs, wrapper version, toolchain, BOM, and dependency tree.
 
-**Discriminate:** Spring condition report. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** Spring condition report. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For bean graph or configuration binding failure, correlate that observation to the exact Java target, revision, request/job, and UTC interval; compare `pom.xml` or Gradle catalogs, wrapper version, toolchain, BOM, and dependency tree with one healthy peer or baseline.
 
-**Native action:** `./mvnw verify` or `./gradlew check` selected from the checked-in wrapper. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `./mvnw verify` or `./gradlew check` selected from the checked-in wrapper. Start in the safest Java read-only or dry-run mode available. Before changing the Spring controller, application service, JPA aggregate, message consumer, or JVM process, name which of bean graph or configuration binding failure and transaction/lazy-loading boundary failure the action distinguishes.
 
 **Root-cause direction:** Spring beans form a circular dependency.
 
 **Correction:** Refactor shared behavior behind a lower-level port; do not enable circular references.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `BeanCurrentlyInCreationException` reproduction, verify the bean graph or configuration binding failure signal cleared in Spring condition report. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Refactor shared behavior behind a lower-level port; do not enable circular references. restored the intended Java behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Pause message admission and traffic, drain transactions, then restore the previous JVM artifact only after verifying Flyway/Liquibase and serialized-event backward compatibility.
 
@@ -50,15 +50,15 @@ Transactions wrap use cases; transport DTOs do not leak persistence entities; po
 
 **Preserve first:** Spring condition report, bean graph, active profiles, and validated configuration properties.
 
-**Discriminate:** Hibernate SQL logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** Hibernate SQL logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For transaction/lazy-loading boundary failure, correlate that observation to the exact Java target, revision, request/job, and UTC interval; compare Spring condition report, bean graph, active profiles, and validated configuration properties with one healthy peer or baseline.
 
-**Native action:** `./mvnw dependency:tree` or `./gradlew dependencies`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `./mvnw dependency:tree` or `./gradlew dependencies`. Start in the safest Java read-only or dry-run mode available. Before changing the Spring controller, application service, JPA aggregate, message consumer, or JVM process, name which of transaction/lazy-loading boundary failure and thread or connection pool starvation the action distinguishes.
 
 **Root-cause direction:** A lazy association is accessed after its persistence context closes.
 
 **Correction:** Fetch the use-case projection inside the transaction.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `LazyInitializationException` reproduction, verify the transaction/lazy-loading boundary failure signal cleared in Hibernate SQL logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Fetch the use-case projection inside the transaction. restored the intended Java behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Pause message admission and traffic, drain transactions, then restore the previous JVM artifact only after verifying Flyway/Liquibase and serialized-event backward compatibility.
 
@@ -68,15 +68,15 @@ Transactions wrap use cases; transport DTOs do not leak persistence entities; po
 
 **Preserve first:** JFR recording, GC logs, thread dump, heap dump, and connection-pool metrics.
 
-**Discriminate:** transaction trace logging. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** transaction trace logging. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For thread or connection pool starvation, correlate that observation to the exact Java target, revision, request/job, and UTC interval; compare JFR recording, GC logs, thread dump, heap dump, and connection-pool metrics with one healthy peer or baseline.
 
-**Native action:** `jcmd <pid> Thread.print` and `jcmd <pid> VM.flags`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `jcmd <pid> Thread.print` and `jcmd <pid> VM.flags`. Start in the safest Java read-only or dry-run mode available. Before changing the Spring controller, application service, JPA aggregate, message consumer, or JVM process, name which of thread or connection pool starvation and deadlock or blocked monitor the action distinguishes.
 
 **Root-cause direction:** A write runs outside an active transaction.
 
 **Correction:** Place the transaction on the public use-case method.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `TransactionRequiredException` reproduction, verify the thread or connection pool starvation signal cleared in transaction trace logging. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Place the transaction on the public use-case method. restored the intended Java behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Pause message admission and traffic, drain transactions, then restore the previous JVM artifact only after verifying Flyway/Liquibase and serialized-event backward compatibility.
 
@@ -86,15 +86,15 @@ Transactions wrap use cases; transport DTOs do not leak persistence entities; po
 
 **Preserve first:** DDL/migration scripts plus generated SQL and transaction traces.
 
-**Discriminate:** JFR and pool metrics. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** JFR and pool metrics. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For deadlock or blocked monitor, correlate that observation to the exact Java target, revision, request/job, and UTC interval; compare DDL/migration scripts plus generated SQL and transaction traces with one healthy peer or baseline.
 
-**Native action:** `jcmd <pid> JFR.start name=incident settings=profile duration=60s filename=incident.jfr`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `jcmd <pid> JFR.start name=incident settings=profile duration=60s filename=incident.jfr`. Start in the safest Java read-only or dry-run mode available. Before changing the Spring controller, application service, JPA aggregate, message consumer, or JVM process, name which of deadlock or blocked monitor and heap, metaspace, direct-memory, or GC pressure the action distinguishes.
 
 **Root-cause direction:** Transactions are slow, leaked, or pool sizing mismatches load.
 
 **Correction:** Measure hold time, close resources, and bound concurrency.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Connection pool timeout` reproduction, verify the deadlock or blocked monitor signal cleared in JFR and pool metrics. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Measure hold time, close resources, and bound concurrency. restored the intended Java behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Pause message admission and traffic, drain transactions, then restore the previous JVM artifact only after verifying Flyway/Liquibase and serialized-event backward compatibility.
 
@@ -104,15 +104,15 @@ Transactions wrap use cases; transport DTOs do not leak persistence entities; po
 
 **Preserve first:** `pom.xml` or Gradle catalogs, wrapper version, toolchain, BOM, and dependency tree.
 
-**Discriminate:** JFR and heap dump. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** JFR and heap dump. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For heap, metaspace, direct-memory, or GC pressure, correlate that observation to the exact Java target, revision, request/job, and UTC interval; compare `pom.xml` or Gradle catalogs, wrapper version, toolchain, BOM, and dependency tree with one healthy peer or baseline.
 
-**Native action:** `jcmd <pid> GC.heap_dump /approved/path/heap.hprof` only under incident policy. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `jcmd <pid> GC.heap_dump /approved/path/heap.hprof` only under incident policy. Start in the safest Java read-only or dry-run mode available. Before changing the Spring controller, application service, JPA aggregate, message consumer, or JVM process, name which of heap, metaspace, direct-memory, or GC pressure and bean graph or configuration binding failure the action distinguishes.
 
 **Root-cause direction:** Heap, metaspace, direct memory, or native resources are exhausted.
 
 **Correction:** Capture the correct dump and fix retention before changing limits.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `OutOfMemoryError` reproduction, verify the heap, metaspace, direct-memory, or GC pressure signal cleared in JFR and heap dump. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Capture the correct dump and fix retention before changing limits. restored the intended Java behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Pause message admission and traffic, drain transactions, then restore the previous JVM artifact only after verifying Flyway/Liquibase and serialized-event backward compatibility.
 

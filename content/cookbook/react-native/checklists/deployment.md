@@ -20,7 +20,7 @@ Read React Native, React, navigation, native dependency, Gradle/AGP/Kotlin, Xcod
 
 ## Tradeoffs
 
-The React Native deployment gate adds manual and target-environment checks that slow promotion. It reduces the chance that version, topology, state, or rollback assumptions reach production.
+Promotion waits for "React Native/native dependency compatibility and platform toolchains match CI evidence" and "signed release builds, symbol/source-map artifacts, privacy manifests, permissions, and store metadata are complete". Those React Native target checks slow release but directly bound native module missing/unlinked or architecture incompatible and make this rollback executable: Stop phased rollout or select the previous OTA bundle only when its native-module ABI matches installed binaries; otherwise ship a corrective store build and preserve migrated local data.
 
 ## Anti-patterns
 

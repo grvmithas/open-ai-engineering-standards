@@ -7,6 +7,19 @@ mkdir -p "$tmp/repo"
 pass=0
 ok() { "$@" >/dev/null 2>&1 || { printf 'FAIL expected success: %s\n' "$*" >&2; exit 1; }; pass=$((pass + 1)); }
 bad() { if "$@" >/dev/null 2>&1; then printf 'FAIL expected failure: %s\n' "$*" >&2; exit 1; fi; pass=$((pass + 1)); }
+expect_code() {
+  expected=$1
+  shift
+  set +e
+  "$@" >/dev/null 2>&1
+  actual=$?
+  set -e
+  [ "$actual" -eq "$expected" ] || {
+    printf 'FAIL expected exit %s, got %s: %s\n' "$expected" "$actual" "$*" >&2
+    exit 1
+  }
+  pass=$((pass + 1))
+}
 file() { printf '%s\n' "$2" > "$tmp/$1"; }
 
 file requirements 'requirement=approved'
@@ -66,6 +79,9 @@ ok env OAIES_HEALTH_EVIDENCE="$tmp/health" sh "$here/post-deployment.hook.sh"
 ok env OAIES_BUDGET_PROFILE=small OAIES_BUDGET_REMAINING=1 sh "$here/budget-guard.hook.sh"
 bad env OAIES_BUDGET_PROFILE=small OAIES_BUDGET_REMAINING=0 sh "$here/budget-guard.hook.sh"
 bad env OAIES_BUDGET_PROFILE=small OAIES_BUDGET_REMAINING=x sh "$here/budget-guard.hook.sh"
+expect_code 64 env OAIES_BUDGET_REMAINING=1 sh "$here/budget-guard.hook.sh"
+expect_code 65 env OAIES_BUDGET_PROFILE=small OAIES_BUDGET_REMAINING=x sh "$here/budget-guard.hook.sh"
+expect_code 70 env OAIES_BUDGET_PROFILE=small OAIES_BUDGET_REMAINING=0 sh "$here/budget-guard.hook.sh"
 
 (
   cd "$tmp/repo"

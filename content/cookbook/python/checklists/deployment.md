@@ -20,7 +20,7 @@ Read `requires-python`, lock/constraint files, environment metadata, and framewo
 
 ## Tradeoffs
 
-The Python deployment gate adds manual and target-environment checks that slow promotion. It reduces the chance that version, topology, state, or rollback assumptions reach production.
+Promotion waits for "artifact is built once and installed into a clean environment with locked dependencies" and "deployed Python minor and native-wheel platform match build evidence". Those Python target checks slow release but directly bound environment or import resolution mismatch and make this rollback executable: Stop producers before reverting consumers when task schemas changed; deploy the previous wheel/image only after confirming database and serialized payload compatibility.
 
 ## Anti-patterns
 

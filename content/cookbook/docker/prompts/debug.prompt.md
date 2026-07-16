@@ -8,11 +8,11 @@ Diagnose a Docker incident by testing platform-specific failure classes before m
 
 ## Why
 
-Images are minimal, immutable, reproducible, non-root, secret-free, multi-architecture aware, and terminate correctly. This prompt requires native Docker artifacts instead of substituting a generic incident or code-generation checklist.
+Images are minimal, immutable, reproducible, non-root, secret-free, multi-architecture aware, and terminate correctly. The debug decision is accepted only when runtime user, capabilities, seccomp, mounts, ports, environment, healthcheck, and stop signal supports it; generic debug advice cannot establish that Docker state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Docker evidence for the Dockerfile, BuildKit build, OCI image, Compose service, or container release. Apply the invariant "Images are minimal, immutable, reproducible, non-root, secret-free, multi-architecture aware, and terminate correctly." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>

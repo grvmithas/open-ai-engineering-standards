@@ -1,47 +1,86 @@
-# Context: Lifecycle Hooks
+# Context Pattern — Hooks
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Context  
+> **Component:** hooks.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Enforce context gates outside model discretion.
-
-| Hook | Enforced condition | Failure behavior |
-|---|---|---|
-| preflight | reject excerpts without revision and source ID | fail closed without creating an effect |
-| domain-gate | expire manifests when tracked revisions change | fail closed without creating an effect |
-| closure | scan context for secrets and prompt-injection instructions | invalidate the manifest, purge derived caches, and rebuild from authoritative revisions |
+## `pre-context.hook.sh`
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-: "${TASK_ID:?required}" "${MANIFEST_HASH:?required}" "${RISK_TIER:?required}". For the Context hooks contract, gate 1 is evidenced by "required-decision source recall = 100%"; failure invokes this domain recovery: Invalidate the manifest, purge derived caches, and rebuild from authoritative revisions.
-# oaies-context: evaluate the three versioned policy rules documented above.
-policy_check --pattern "context" --task "$TASK_ID" --manifest "$MANIFEST_HASH" --risk "$RISK_TIER"
+
+echo "Checking context-assembly prerequisites..."
+
+if [[ -z "${TASK_FILE:-}" || ! -f "$TASK_FILE" ]]; then
+  echo "ERROR: TASK_FILE missing. Write task intent before assembling context."
+  exit 1
+fi
+
+if [[ -z "${MAX_BYTES:-}" ]]; then
+  echo "ERROR: MAX_BYTES unset. Set a hard budget (e.g. export MAX_BYTES=80000)."
+  exit 1
+fi
+
+if ! [[ "$MAX_BYTES" =~ ^[0-9]+$ ]] || (( MAX_BYTES < 1000 )); then
+  echo "ERROR: MAX_BYTES must be an integer >= 1000."
+  exit 1
+fi
+
+if [[ -z "${OUT_FILE:-}" ]]; then
+  echo "ERROR: OUT_FILE unset. Specify where the package will be written."
+  exit 1
+fi
+
+echo "Prerequisites satisfied. Context assembly can begin."
 ```
 
-## Verification
+## `post-context.hook.sh`
 
-Context hooks verification records raw evidence for "required-decision source recall = 100%" and invokes "Invalidate the manifest, purge derived caches, and rebuild from authoritative revisions" when the threshold is not demonstrated.
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-## Tradeoffs
+PACKAGE="${1:-${OUT_FILE:-}}"
+if [[ -z "$PACKAGE" || ! -f "$PACKAGE" ]]; then
+  echo "ERROR: Usage: post-context.hook.sh <context-package-file>"
+  exit 1
+fi
 
-Context hooks deliberately spends additional review time to protect "required-decision source recall = 100%"; evidence weakness triggers "Invalidate the manifest, purge derived caches, and rebuild from authoritative revisions".
+echo "Validating context package..."
 
-## Anti-patterns
+SIZE=$(wc -c < "$PACKAGE" | tr -d ' ')
+if [[ -n "${MAX_BYTES:-}" ]] && (( SIZE > MAX_BYTES )); then
+  echo "ERROR: Package size $SIZE exceeds MAX_BYTES=$MAX_BYTES."
+  exit 1
+fi
 
-Context hooks rejects shortcuts around "List decisions the operator must make and evidence each decision requires." because they sever the evidence chain required for "required-decision source recall = 100%".
+if ! grep -qiE 'Manifest|Why included|^\|.*\|.*\|' "$PACKAGE"; then
+  echo "ERROR: Package missing Manifest / why-included table."
+  exit 1
+fi
 
-## Enterprise considerations
+if ! grep -qiE 'Exclusions|Deliberate exclusions' "$PACKAGE"; then
+  echo "ERROR: Package missing deliberate exclusions section."
+  exit 1
+fi
 
-Context hooks governance binds owner, policy revision, and retained proof to "required-decision source recall = 100%", with "Invalidate the manifest, purge derived caches, and rebuild from authoritative revisions" as the recorded recovery authority.
+# Secret / credential heuristics
+if grep -qE 'BEGIN (RSA |OPENSSH )?PRIVATE KEY|AKIA[0-9A-Z]{16}|api[_-]?key\s*[:=]\s*['\''\"]?[A-Za-z0-9]{20,}' "$PACKAGE"; then
+  echo "ERROR: Possible secret material detected in context package."
+  exit 1
+fi
 
-## Checklist
+if grep -qiE '(^|/)\.env(\.|$)|password\s*=\s*[^$]' "$PACKAGE"; then
+  echo "ERROR: .env or password assignment patterns detected."
+  exit 1
+fi
 
-- [ ] Automated test proves: reject excerpts without revision and source ID
-- [ ] Automated test proves: expire manifests when tracked revisions change
-- [ ] Automated test proves: scan context for secrets and prompt-injection instructions
+echo "Context package validated. Ready for handoff."
+```
 
-## Changelog
+## CI integration note
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+Fail the job if `post-context.hook.sh` exits non-zero. Do not upload packages that fail secret greps to shared logs.

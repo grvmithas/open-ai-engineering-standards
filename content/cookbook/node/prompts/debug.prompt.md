@@ -8,11 +8,11 @@ Diagnose a Node.js incident by testing platform-specific failure classes before 
 
 ## Why
 
-The event loop remains non-blocking; concurrency is bounded; AbortSignal, errors, and shutdown propagate through every I/O boundary. This prompt requires native Node.js artifacts instead of substituting a generic incident or code-generation checklist.
+The event loop remains non-blocking; concurrency is bounded; AbortSignal, errors, and shutdown propagate through every I/O boundary. The debug decision is accepted only when event-loop delay, heap, CPU profile, active handles, and request trace supports it; generic debug advice cannot establish that Node.js state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Node.js evidence for the HTTP handler, worker, stream pipeline, package, or process lifecycle. Apply the invariant "The event loop remains non-blocking; concurrency is bounded; AbortSignal, errors, and shutdown propagate through every I/O boundary." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -73,7 +73,7 @@ Node service governance pins runtime and package-manager lines, reviews install 
 
 - [Node.js API](https://nodejs.org/docs/latest/api/)
 - [Don't block the event loop](https://nodejs.org/en/learn/asynchronous-work/dont-block-the-event-loop)
-- [Node.js diagnostics](https://nodejs.org/en/learn/diagnostics)
+- [Node.js diagnostics](https://nodejs.org/en/learn/diagnostics/user-journey)
 - [OWASP Node.js security](https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html)
 
 ## Checklist

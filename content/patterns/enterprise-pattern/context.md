@@ -1,46 +1,48 @@
-# Enterprise: Context Contract
+# Enterprise Pattern — Context
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Enterprise  
+> **Component:** context.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Make the evidence needed to operate AI capabilities with enforceable governance across tenants, jurisdictions, and risk tiers authoritative, bounded, and reproducible.
+## Preconditions (must be true before activation)
 
-| Required input | Acceptance test |
-|---|---|
-| AI system inventory | owner, revision, retrieval time, and authority recorded for AI system inventory |
-| use-case risk assessment | owner, revision, retrieval time, and authority recorded for use-case risk assessment |
-| data flow and classification | owner, revision, retrieval time, and authority recorded for data flow and classification |
-| model/vendor evaluation | owner, revision, retrieval time, and authority recorded for model/vendor evaluation |
-| control map, SLOs, and incident obligations | owner, revision, retrieval time, and authority recorded for control map, SLOs, and incident obligations |
+- [ ] Named business owner and technical owner for the use case
+- [ ] Data classes in scope identified (and “none / synthetic only” is explicit if true)
+- [ ] Jurisdictions / residency constraints known
+- [ ] Risk-tier rubric exists (or this engagement adopts the org standard)
+- [ ] There is a policy enforcement point (API gateway, AI gateway, agent runtime allowlist)
+- [ ] Logging destination capable of retaining prompts/tool calls per retention policy (redaction rules included)
 
-## Assembly procedure
+## Trigger conditions (apply the pattern)
 
-1. Tie each source to a trigger or workflow decision.
-2. Resolve conflicting authority before analysis; preserve both revisions and the resolution.
-3. Hash the accepted manifest and set expiry from the fastest-changing source.
-4. Exclude unrelated material and redact secrets without removing decision-relevant constraints.
+Apply when **any** of the following hold:
 
-## Tradeoffs
+- Production or production-like data will be processed
+- AI output influences access, money, health, safety, employment, or legal rights
+- Multi-tenant or multi-region shared platform
+- Agents/tools can mutate external systems
+- Executive or risk asks for a go-live gate with evidence
 
-Enterprise context deliberately spends additional review time to protect "inventory completeness = 100%"; evidence weakness triggers "Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle".
+## Do not apply when
 
-## Anti-patterns
+- Throwaway prototype on synthetic data, no production path planned
+- Offline analysis with no automated action and no customer exposure
+- Use case already has a current inventory entry — **update** it via this pattern’s workflow rather than creating a duplicate system
+- SEV containment in progress — disable first, govern after
 
-Enterprise context rejects shortcuts around "Register use case, owner, model, purpose, users, and prohibited uses." because they sever the evidence chain required for "inventory completeness = 100%".
+## Required inputs
 
-## Enterprise considerations
+| Input | Source | Minimum quality |
+|-------|--------|-----------------|
+| Use-case description | Product / eng | Users, actions, success metric |
+| Data flow | Security / privacy | Classes, stores, processors, regions |
+| Model/vendor list | Platform | Versions, regions, DPA status |
+| Tool/MCP catalog | Platform | Allowlist + auth mode |
+| Risk rubric | Risk / AI governance | Tier definitions + required controls |
+| Incident contacts | On-call roster | 24×7 path for high tier |
 
-Enterprise context governance binds owner, policy revision, and retained proof to "inventory completeness = 100%", with "Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle" as the recorded recovery authority.
+## Authority boundary
 
-## Checklist
-
-- [ ] AI system inventory is present and provenance-bearing
-- [ ] use-case risk assessment is present and provenance-bearing
-- [ ] data flow and classification is present and provenance-bearing
-- [ ] model/vendor evaluation is present and provenance-bearing
-- [ ] control map, SLOs, and incident obligations is present and provenance-bearing
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+The governance agent **drafts the go-live package**. Risk/privacy/security humans assign tier acceptance. Platform humans bind the gateway. Nobody “self-certifies” high-risk enablement from a markdown file alone.

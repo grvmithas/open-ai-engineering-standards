@@ -1,46 +1,50 @@
-# Release: Context Contract
+# Release Pattern — Context
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Release  
+> **Component:** context.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Make the evidence needed to promote a signed artifact through progressive exposure with objective abort criteria authoritative, bounded, and reproducible.
+## Preconditions (must be true before activation)
 
-| Required input | Acceptance test |
-|---|---|
-| signed artifact and provenance | owner, revision, retrieval time, and authority recorded for signed artifact and provenance |
-| test and security results | owner, revision, retrieval time, and authority recorded for test and security results |
-| SBOM and dependency policy | owner, revision, retrieval time, and authority recorded for SBOM and dependency policy |
-| change record and release notes | owner, revision, retrieval time, and authority recorded for change record and release notes |
-| SLO baseline and rollback rehearsal | owner, revision, retrieval time, and authority recorded for SLO baseline and rollback rehearsal |
+- [ ] Artifact identified by **digest** (not mutable tag alone)
+- [ ] Provenance / attestation available for the digest
+- [ ] Required gates green for **this** digest (tests, security, SBOM policy)
+- [ ] Change ticket / release notes identify risk tier and window
+- [ ] Feature flag or traffic splitter configured for progressive exposure
+- [ ] Abort criteria written with metric, threshold, window, and owner
+- [ ] Rollback command rehearsed in staging (or last drill date recorded)
+- [ ] Named go/no-go human for medium/high risk
 
-## Assembly procedure
+## Trigger conditions (apply the pattern)
 
-1. Tie each source to a trigger or workflow decision.
-2. Resolve conflicting authority before analysis; preserve both revisions and the resolution.
-3. Hash the accepted manifest and set expiry from the fastest-changing source.
-4. Exclude unrelated material and redact secrets without removing decision-relevant constraints.
+Apply when **any** of the following hold:
 
-## Tradeoffs
+- Production or customer-facing environment will run new bits
+- Schema/data migration accompanies the release
+- Model/prompt/tool bundle changes in an AI path
+- SLO-sensitive service or payments/identity/data plane
+- Organizational policy requires progressive delivery
 
-Release context deliberately spends additional review time to protect "artifact-to-runtime digest match = 100%"; evidence weakness triggers "Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health".
+## Do not apply when
 
-## Anti-patterns
+- No runtime artifact changes
+- Hotfix under incident commander using emergency path ([hotfix-pattern](../hotfix-pattern/README.md))
+- Artifact is unsigned/unattested and policy forbids it — **fix attestation**, do not “release anyway”
+- Canary infrastructure is down — fix delivery platform first or explicitly accept big-bang with executive risk acceptance (recorded)
 
-Release context rejects shortcuts around "Freeze artifact digest, configuration, migrations, and release evidence." because they sever the evidence chain required for "artifact-to-runtime digest match = 100%".
+## Required inputs
 
-## Enterprise considerations
+| Input | Source | Minimum quality |
+|-------|--------|-----------------|
+| Artifact digest | CI / registry | Immutable digest |
+| Gate results | CI / security | Linked to digest |
+| SBOM / deps policy | Supply chain job | Policy pass/fail |
+| Runbook | Ops | Rollback steps |
+| SLO baseline | APM | Pre-canary window |
+| Flag / split key | Flag service | Killable in <5m |
 
-Release context governance binds owner, policy revision, and retained proof to "artifact-to-runtime digest match = 100%", with "Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health" as the recorded recovery authority.
+## Authority boundary
 
-## Checklist
-
-- [ ] signed artifact and provenance is present and provenance-bearing
-- [ ] test and security results is present and provenance-bearing
-- [ ] SBOM and dependency policy is present and provenance-bearing
-- [ ] change record and release notes is present and provenance-bearing
-- [ ] SLO baseline and rollback rehearsal is present and provenance-bearing
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+The release agent **drafts the go/no-go package**. Humans decide Go/No-Go. Canary Controller may auto-abort on pre-declared criteria; it may not silently raise thresholds.

@@ -1,53 +1,42 @@
-# Optimization: Quality Gate
+# Optimization Pattern — Checklist
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Optimization  
+> **Component:** checklist.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Applicability
+---
 
-- [ ] Trigger evidenced: an SLO or unit-cost target is missed
-- [ ] Trigger evidenced: profiling identifies a dominant resource
-- [ ] Trigger evidenced: expected growth exhausts capacity
+**Gate:** Do not promote the flag to 100% until every item is checked or waived with a named owner and expiry.
 
-## Evidence package
+## Intake
 
-- [ ] representative workload has authority, revision, timestamp, and owner
-- [ ] profiles and traces has authority, revision, timestamp, and owner
-- [ ] latency/throughput/cost baseline has authority, revision, timestamp, and owner
-- [ ] correctness oracle has authority, revision, timestamp, and owner
-- [ ] capacity and saturation signals has authority, revision, timestamp, and owner
+- [ ] Target metric and owner named
+- [ ] Minimum useful effect size written
+- [ ] Guardrails and abort criteria pre-declared (not renegotiated mid-canary)
+- [ ] Workload ID frozen and checked in
+- [ ] Kill-switch feature flag exists and is tested disableable
 
-## Domain execution
+## Evidence
 
-- [ ] Define target metric, guardrails, workload, and minimum useful effect
-- [ ] Measure a statistically sound baseline including variance
-- [ ] Profile end-to-end and attribute dominant cost
-- [ ] Form a mechanism-specific optimization hypothesis
-- [ ] Benchmark one change against control with warmup and confidence interval
-- [ ] Inspect shifted cost, tail behavior, correctness, and saturation
-- [ ] Canary under representative production load
-- [ ] Keep only if effect size and guardrails pass; document capacity headroom
+- [ ] Baseline includes warm-up, sample count, p50/p95/p99, and timestamp
+- [ ] Dominant cost attributed (≥30% or explicit stop)
+- [ ] Exactly one hypothesis in scope
+- [ ] Candidate vs control under identical workload ID
+- [ ] Confidence interval or noise band stated
+- [ ] Correctness oracle ran with zero failures
+- [ ] Unit cost measured end-to-end when cost is in scope
+- [ ] Shifted bottleneck inspected after the change
 
-## Measured verification
+## Canary & promotion
 
-- [ ] Evidence demonstrates approved effect size reached with confidence interval
-- [ ] Evidence demonstrates correctness oracle has zero regression
-- [ ] Evidence demonstrates p99 and saturation guardrails remain within SLO
-- [ ] Evidence demonstrates unit cost is measured end-to-end
+- [ ] Progressive stages defined (e.g. 1% → 5% → 25%)
+- [ ] Abort watcher named and on-call aware
+- [ ] No concurrent conflicting optimizations on the same path
+- [ ] Human recorded KEEP/KILL/REVISE with date
+- [ ] If KEEP: capacity headroom documented
 
-## Recovery and closure
+## Aftercare
 
-- [ ] Rehearsed rollback can disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark
-- [ ] Residual risks and follow-ups have owners and dates
-- [ ] Artifact hashes, effect approvals, and raw checks are retained
-
-## Anti-patterns
-
-Optimization checklist rejects shortcuts around "Define target metric, guardrails, workload, and minimum useful effect." because they sever the evidence chain required for "approved effect size reached with confidence interval".
-
-## Enterprise considerations
-
-Optimization checklist governance binds owner, policy revision, and retained proof to "approved effect size reached with confidence interval", with "Disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark" as the recorded recovery authority.
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- [ ] Flag default updated only after soak window
+- [ ] Dashboards/alerts updated for new saturation shape if needed
+- [ ] Failed hypotheses recorded so the team does not retry blindly

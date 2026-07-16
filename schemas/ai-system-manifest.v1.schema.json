@@ -64,7 +64,7 @@
     "updatedAt": {"type": "string", "format": "date-time"}
   },
   "allOf": [
-    {"if": {"properties": {"impactLevel": {"const": "I3"}}}, "then": {"properties": {"workloadProfiles": {"contains": {"const": "P6"}}}, "required": ["accountableExecutive"]}},
+    {"if": {"properties": {"impactLevel": {"const": "I3"}}}, "then": {"properties": {"workloadProfiles": {"type": "array", "contains": {"const": "P6"}}}, "required": ["accountableExecutive"]}},
     {"if": {"properties": {"autonomyLevel": {"const": "A4"}}}, "then": {"required": ["accountableExecutive", "humanOversight"]}}
   ],
   "additionalProperties": false,

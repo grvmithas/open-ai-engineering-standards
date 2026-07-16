@@ -8,11 +8,11 @@ Diagnose a Performance Engineering incident by testing platform-specific failure
 
 ## Why
 
-Optimization starts from a reproducible workload and user-impact metric; profiles identify the limiting resource; CI and production enforce budgets. This prompt requires native Performance Engineering artifacts instead of substituting a generic incident or code-generation checklist.
+Optimization starts from a reproducible workload and user-impact metric; profiles identify the limiting resource; CI and production enforce budgets. The debug decision is accepted only when CPU, allocation/heap, I/O, lock, network, database, and browser trace aligned to one run supports it; generic debug advice cannot establish that Performance Engineering state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Performance Engineering evidence for the SLO, workload model, benchmark, profile, capacity plan, Web Vital budget, or regression gate. Apply the invariant "Optimization starts from a reproducible workload and user-impact metric; profiles identify the limiting resource; CI and production enforce budgets." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>

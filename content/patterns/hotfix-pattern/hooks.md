@@ -1,47 +1,79 @@
-# Hotfix: Lifecycle Hooks
+# Hotfix Pattern — Hooks
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Hotfix  
+> **Component:** hooks.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Enforce hotfix gates outside model discretion.
-
-| Hook | Enforced condition | Failure behavior |
-|---|---|---|
-| preflight | require incident ID and commander for emergency merge | fail closed without creating an effect |
-| domain-gate | enforce file/scope allowlist and two-person review | fail closed without creating an effect |
-| closure | open RCA and expiry issue when hotfix deploys | execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment |
+## `pre-hotfix.hook.sh`
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-: "${TASK_ID:?required}" "${MANIFEST_HASH:?required}" "${RISK_TIER:?required}". For the Hotfix hooks contract, gate 1 is evidenced by "time to containment meets severity target"; failure invokes this domain recovery: Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment.
-# oaies-hotfix: evaluate the three versioned policy rules documented above.
-policy_check --pattern "hotfix" --task "$TASK_ID" --manifest "$MANIFEST_HASH" --risk "$RISK_TIER"
+
+echo "Checking hotfix lane prerequisites..."
+
+: "${INCIDENT_FILE:?ERROR: set INCIDENT_FILE to the action package or incident doc}"
+: "${IC_NAME:?ERROR: set IC_NAME}"
+: "${SEVERITY:?ERROR: set SEVERITY (SEV1|SEV2|SEV3|SEV4)}"
+
+if [[ ! -f "$INCIDENT_FILE" ]]; then
+  echo "ERROR: INCIDENT_FILE not found: $INCIDENT_FILE"
+  exit 1
+fi
+
+if ! grep -q "$IC_NAME" "$INCIDENT_FILE"; then
+  echo "ERROR: IC_NAME not recorded in incident file."
+  exit 1
+fi
+
+if ! grep -qiE "SEV|severity" "$INCIDENT_FILE"; then
+  echo "ERROR: Severity not recorded."
+  exit 1
+fi
+
+if ! grep -qiE 'contain|flag|rollback|LKG|last known' "$INCIDENT_FILE"; then
+  echo "ERROR: No containment action documented — contain before code hotfix."
+  exit 1
+fi
+
+echo "Hotfix prerequisites OK (IC=$IC_NAME $SEVERITY)."
 ```
 
-## Verification
+## `post-hotfix-diff.hook.sh`
 
-Hotfix hooks verification records raw evidence for "time to containment meets severity target" and invokes "Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment" when the threshold is not demonstrated.
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-## Tradeoffs
+ALLOWED_LIST="${1:-}"
+DIFF_STAT="${2:-}"
 
-Hotfix hooks deliberately spends additional review time to protect "time to containment meets severity target"; evidence weakness triggers "Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment".
+if [[ -z "$ALLOWED_LIST" || ! -f "$ALLOWED_LIST" || -z "$DIFF_STAT" || ! -f "$DIFF_STAT" ]]; then
+  echo "ERROR: Usage: post-hotfix-diff.hook.sh <allowed-paths.txt> <git-diff-name-only.txt>"
+  exit 1
+fi
 
-## Anti-patterns
+echo "Validating hotfix diff scope..."
 
-Hotfix hooks rejects shortcuts around "Establish incident command, severity, roles, and update cadence." because they sever the evidence chain required for "time to containment meets severity target".
+while IFS= read -r path; do
+  [[ -z "$path" || "$path" =~ ^# ]] && continue
+  if ! grep -Fxq "$path" "$ALLOWED_LIST"; then
+    echo "ERROR: Path not on allowed list: $path"
+    exit 1
+  fi
+done < "$DIFF_STAT"
 
-## Enterprise considerations
+# Block obvious drive-bys
+if grep -qiE 'package-lock|pnpm-lock|yarn.lock|go.sum|Cargo.lock' "$DIFF_STAT"; then
+  echo "ERROR: Lockfile changes are not allowed on the hotfix lane."
+  exit 1
+fi
 
-Hotfix hooks governance binds owner, policy revision, and retained proof to "time to containment meets severity target", with "Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment" as the recorded recovery authority.
+echo "Diff scope OK."
+```
 
-## Checklist
+## CI integration note
 
-- [ ] Automated test proves: require incident ID and commander for emergency merge
-- [ ] Automated test proves: enforce file/scope allowlist and two-person review
-- [ ] Automated test proves: open RCA and expiry issue when hotfix deploys
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+Emergency pipelines must require `INCIDENT_ID`, `IC_NAME`, and an allowed-path list artifact. Reject PRs titled “hotfix” that lack an incident ID.

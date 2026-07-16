@@ -45,7 +45,7 @@ Transactions wrap use cases; transport DTOs do not leak persistence entities; po
 
 ## Verification
 
-The evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. For manual checks, record environment, operator, exact steps, and result.
+The Java evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. It must also retain `pom.xml` or Gradle catalogs, wrapper version, toolchain, BOM, and dependency tree. For manual Spring controller, application service, JPA aggregate, message consumer, or JVM process checks, record environment, operator, exact steps, and result.
 
 ## Failure recovery
 
@@ -61,7 +61,7 @@ Report the Java boundary, facts, hypotheses, commands actually run, changed arti
 
 ## Termination criteria
 
-Finish when native validation, all applicable review/deployment gates, and recovery signals pass, or when a named owner accepts a documented blocker through the repository's risk process.
+Finish the Java workflow only when native validation, applicable review/deployment gates, and recovery signals for bean graph or configuration binding failure and transaction/lazy-loading boundary failure pass. Otherwise record a named owner and the exact missing Java evidence; risk acceptance does not convert a failed native check into a pass.
 
 ## Version-aware caution
 
@@ -69,7 +69,7 @@ Read the Maven/Gradle toolchain, wrapper, Spring dependency management, and runt
 
 ## Tradeoffs
 
-This skill spends time fingerprinting Java and collecting native evidence before editing. It reduces throughput for trivial changes but prevents incorrect commands, unsupported APIs, and state-destructive rollback.
+This skill fingerprints Java through `pom.xml` or Gradle catalogs, wrapper version, toolchain, BOM, and dependency tree before editing and retains JFR recording, GC logs, thread dump, heap dump, and connection-pool metrics before recovery. The added work is warranted when bean graph or configuration binding failure could make Pause message admission and traffic, drain transactions, then restore the previous JVM artifact only after verifying Flyway/Liquibase and serialized-event backward compatibility.
 
 ## Anti-patterns
 

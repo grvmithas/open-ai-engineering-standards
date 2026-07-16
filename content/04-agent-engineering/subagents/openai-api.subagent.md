@@ -77,6 +77,9 @@ Unvalidated model output, duplicate effect on retry, prompt injection, data leak
 ## Verification
 Run mocked transport tests, schema-invalid/refusal/timeout/rate-limit cases, tool-approval tests, and frozen eval suite with usage capture.
 
+## Domain Recovery Playbook
+Disable effectful tools or route to the prior prompt/model configuration, preserve redacted traces and request IDs, reconcile retried effects, and rerun the failed eval slice.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

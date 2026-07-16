@@ -20,7 +20,7 @@ Capture shell, bundler/module-federation plugin, framework, router, browser targ
 
 ## Tradeoffs
 
-The Microfrontends review gate requires runtime/configuration evidence beyond a source diff. It increases reviewer effort but catches defects static style review cannot observe.
+Review must prove "slice maps to one durable business capability and accountable team" using domain ownership, route manifest, shell API/event contracts, and compatibility matrix. That Microfrontends evidence costs more than diff inspection but exposes eager shared-module consumption or share-scope initialization before merge.
 
 ## Anti-patterns
 

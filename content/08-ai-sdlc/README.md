@@ -1,132 +1,150 @@
 # Level 8: AI SDLC
 
-> **Version:** 1.0.0
-> **Last updated:** 2026-07-16
-> **Status:** Informative OAIES implementation profile
+> **Prerequisites:** Levels 0-7
+> **Goal:** Operate a complete, auditable AI-enhanced software development lifecycle
 
-## Purpose
-Preserve the complete 26-stage v1.0 lifecycle while applying a mandatory baseline and risk-based control depth.
+---
 
-## Why
-A rigid 26-stage ceremony wastes low-risk effort, while stage skipping removes evidence. Tailoring changes depth, independence, and cadence—not accountability.
+## The Standard
 
-## When
-Use for every software or AI change.
+This is the OAIES workflow. **Every feature follows this flow. No shortcuts. No exceptions.**
 
-## How
-1. Run the baseline: intake and outcome; testable requirements; risk classification; plan; implementation; review; verification; controlled release; monitoring; learning and closure.
-2. Map the baseline to the original stages: 1–6 intake/context, 7–10 plan/approve, 11–13 build/review, 14–19 verify/document, 20–22 release/operate, 23–26 learn/close.
-3. Low risk may combine artifacts and use peer approval. Medium risk requires independent security/evaluation review and canary. High risk requires domain, security/privacy/risk approvals, human oversight, red team, rollback drill, and enhanced monitoring.
-4. Never remove stages 9 human accountability, 14 verification, 16 security disposition, 20 controlled release, 21 monitoring, or 23–25 incident learning; record not-applicable decisions with rationale.
-5. Use the prompt and quality-standard catalogs below.
+Teams that skip stages don't move faster. They move to production faster and to incidents faster.
 
-## v1.0 stage map
-| Stage | Original scope | Baseline workstream | Required evidence |
-|---|---|---|---|
-| 1 | Idea | Intake and outcome | Problem and outcome statement |
-| 2 | Research | Intake and outcome | Source and feasibility evidence |
-| 3 | Requirements | Requirements and risk | Testable requirements |
-| 4 | Story kickoff | Requirements and risk | Approved story |
-| 5 | Context collection | Requirements and risk | Context inventory and provenance |
-| 6 | Knowledge gathering | Requirements and risk | Assumptions and knowledge gaps |
-| 7 | Planning | Plan and approve | Implementation plan |
-| 8 | Architecture | Plan and approve | Architecture decision and threat model |
-| 9 | Human approval | Plan and approve | Named decision, date, and conditions |
-| 10 | Prompt generation | Plan and approve | Versioned prompt artifact and tests |
-| 11 | Coding | Build and review | Reviewable change set |
-| 12 | Self review | Build and review | Author checklist and test evidence |
-| 13 | Agent review | Build and review | Independent automated findings with human disposition |
-| 14 | Testing | Verify and document | Deterministic test report |
-| 15 | Evaluation | Verify and document | Versioned evaluation report |
-| 16 | Security | Verify and document | Security findings and disposition |
-| 17 | Performance | Verify and document | Baseline comparison and capacity evidence |
-| 18 | Accessibility | Verify and document | Accessibility verification |
-| 19 | Documentation | Verify and document | User, operator, API, and decision updates |
-| 20 | Deployment | Release and operate | Go/no-go, canary, and rollback record |
-| 21 | Monitoring | Release and operate | SLO, trace, dashboard, and alert validation |
-| 22 | Continuous improvement | Release and operate | Production-review and backlog loop |
-| 23 | Postmortem | Learn and close | Incident analysis when triggered; otherwise release review |
-| 24 | Lessons learned | Learn and close | Verified lessons and action owners |
-| 25 | Knowledge base update | Learn and close | Searchable decisions, runbooks, and regression cases |
-| 26 | Feature complete | Learn and close | Definition-of-Done approval |
+---
 
-## Risk-based tailoring
-| Risk | Permitted tailoring | Mandatory depth |
-|---|---|---|
-| Low | Combine related stage artifacts; peer approval; sampled post-release review | Baseline criteria, security disposition, tests, rollback, monitoring, and closure evidence |
-| Medium | Combine only intake or documentation artifacts | Independent security/evaluation review, canary, explicit human release approval, and incident drill |
-| High | No combined decision gates | Domain, security, privacy, and risk approval; red team; human action oversight; rollback exercise; enhanced monitoring and appeal |
+## The 26-Stage OAIES SDLC
 
-## Prompt catalog
-- [Story Kickoff](./prompts/story-kickoff.prompt.md)
-- [Implementation Plan](./prompts/implementation-plan.prompt.md)
-- [Architecture Review](./prompts/architecture-review.prompt.md)
-- [Coding](./prompts/coding.prompt.md)
-- [Refactoring](./prompts/refactoring.prompt.md)
-- [Security Review](./prompts/security-review.prompt.md)
-- [Performance Review](./prompts/performance-review.prompt.md)
-- [Test Generation](./prompts/test-generation.prompt.md)
-- [Documentation](./prompts/documentation.prompt.md)
-- [Release](./prompts/release.prompt.md)
-- [Incident](./prompts/incident.prompt.md)
-- [Root Cause Analysis](./prompts/root-cause-analysis.prompt.md)
-- [Migration](./prompts/migration.prompt.md)
-- [Technical Debt](./prompts/technical-debt.prompt.md)
-- [Knowledge Capture](./prompts/knowledge-capture.prompt.md)
+```mermaid
+flowchart TD
+    A[💡 1. Idea] --> B[🔍 2. Research]
+    B --> C[📋 3. Requirements]
+    C --> D[🚀 4. Story Kickoff]
+    D --> E[📦 5. Context Collection]
+    E --> F[🧠 6. Knowledge Gathering]
+    F --> G[📐 7. Planning]
+    G --> H[🏗️ 8. Architecture]
+    H --> I{✅ 9. Human Approval}
+    I -->|Rejected| G
+    I -->|Approved| J[⚡ 10. Prompt Generation]
+    J --> K[💻 11. Coding]
+    K --> L[🔎 12. Self Review]
+    L --> M[🤖 13. Agent Review]
+    M --> N[🧪 14. Testing]
+    N --> O[📊 15. Evaluation]
+    O --> P[🔒 16. Security]
+    P --> Q[⚡ 17. Performance]
+    Q --> R[♿ 18. Accessibility]
+    R --> S[📝 19. Documentation]
+    S --> T[🚀 20. Deployment]
+    T --> U[📡 21. Monitoring]
+    U --> V[🔄 22. Continuous Improvement]
+    V --> W[📉 23. Postmortem]
+    W --> X[📚 24. Lessons Learned]
+    X --> Y[🗄️ 25. Knowledge Base Update]
+    Y --> Z[✅ 26. Feature Complete]
+```
 
-## Quality standards
-- [Definition of Ready](./quality-standards/definition-of-ready.md)
-- [Definition of Done](./quality-standards/definition-of-done.md)
-- [Prompt Quality](./quality-standards/prompt-quality-standard.md)
-- [Agent Quality](./quality-standards/agent-quality-standard.md)
-- [Code Quality](./quality-standards/code-quality-standard.md)
+---
 
-## Evidence contract
-The decision record is the **lifecycle evidence index**. It records risk tier; tailored stage map; artifact links; approvals; release; monitoring; learning closure. The delivery accountable executive owns completeness; the evidence is invalid when a stage is marked not applicable without rationale and owner. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+## Stage Prompts
 
-## Failure response and recovery
-**Trigger:** mandatory baseline evidence is absent at release.
+Each stage has a dedicated production prompt. Use them.
 
-**Immediate response:** block deployment or reopen the work item until the evidence chain is complete. Preserve the lifecycle evidence index, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to level 8: ai sdlc.
+| Stage | Prompt File |
+|-------|-------------|
+| Story Kickoff | [story-kickoff.prompt.md](./prompts/story-kickoff.prompt.md) |
+| Implementation Plan | [implementation-plan.prompt.md](./prompts/implementation-plan.prompt.md) |
+| Architecture Review | [architecture-review.prompt.md](./prompts/architecture-review.prompt.md) |
+| Coding | [coding.prompt.md](./prompts/coding.prompt.md) |
+| Refactoring | [refactoring.prompt.md](./prompts/refactoring.prompt.md) |
+| Security Review | [security-review.prompt.md](./prompts/security-review.prompt.md) |
+| Performance Review | [performance-review.prompt.md](./prompts/performance-review.prompt.md) |
+| Test Generation | [test-generation.prompt.md](./prompts/test-generation.prompt.md) |
+| Documentation | [documentation.prompt.md](./prompts/documentation.prompt.md) |
+| Release | [release.prompt.md](./prompts/release.prompt.md) |
+| Incident | [incident.prompt.md](./prompts/incident.prompt.md) |
+| Root Cause Analysis | [root-cause-analysis.prompt.md](./prompts/root-cause-analysis.prompt.md) |
+| Migration | [migration.prompt.md](./prompts/migration.prompt.md) |
+| Technical Debt | [technical-debt.prompt.md](./prompts/technical-debt.prompt.md) |
+| Knowledge Capture | [knowledge-capture.prompt.md](./prompts/knowledge-capture.prompt.md) |
 
-## Decision authority
-The **delivery accountable executive** accepts the operational decision. The **independent assurance lead** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+---
 
-## Tradeoffs
-| Choice | Benefit | Cost |
-|---|---|---|
-| Risk tailoring | Proportional effort | Classification governance |
-| Uniform depth | Simple | Waste or insufficient control |
+## Quality Standards
 
-## Anti-patterns
-- Calling tailoring stage skipping.
-- Classifying risk after implementation.
+| Standard | Definition |
+|----------|-----------|
+| [Definition of Ready](./quality-standards/definition-of-ready.md) | What must be true before coding starts |
+| [Definition of Done](./quality-standards/definition-of-done.md) | What must be true before release |
+| [Prompt Quality](./quality-standards/prompt-quality-standard.md) | Minimum bar for all prompts |
+| [Agent Quality](./quality-standards/agent-quality-standard.md) | Minimum bar for all agents |
+| [Code Quality](./quality-standards/code-quality-standard.md) | Minimum bar for all code |
 
-## Enterprise considerations
-- High-risk decisions retain genuine human review and appeal.
-- Tailoring records are retained with the release evidence and reviewed by the accountable owner.
-- Provider or model changes trigger evaluation and provider requalification before promotion.
+---
 
-## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+## Stage Details
 
-| Source | Relationship for Level 8: AI SDLC | Boundary |
-|---|---|---|
-| NIST AI RMF | GOVERN 1.3; MANAGE 1 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clauses 6–10 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
-| Domain threat/control source | SSDF lifecycle practices | Test only the threats applicable to the documented system and release |
+### Stage 4: Story Kickoff (Critical)
 
-## Checklist
-- [ ] All 26 stages are mapped.
-- [ ] Tailoring rationale approved.
-- [ ] Incident loop is operational.
+This is the most important stage. A poor kickoff creates compounding waste in every subsequent stage.
 
-## References
-- NIST, [Secure Software Development Framework 1.1](https://doi.org/10.6028/NIST.SP.800-218) (accessed 2026-07-16).
-- NIST, [AI RMF 1.0](https://doi.org/10.6028/NIST.AI.100-1) (accessed 2026-07-16).
+A kickoff must produce:
+1. Clear acceptance criteria (testable, unambiguous)
+2. Technical approach outline (not detailed, but directional)
+3. Risk identification (what could go wrong)
+4. Context list (what information the agent needs)
+5. Estimation (rough complexity, not precise hours)
 
-## Changelog
-| Version | Date | Change |
-|---|---|---|
-| 1.1.0 | 2026-07-16 | Replaced generic assurance text with the lifecycle evidence index, failure trigger, accountable decision, and scoped framework relationships for level 8: ai sdlc. |
-| 1.0.0 | 2026-07-16 | Initial complete profile. |
+Use [story-kickoff.prompt.md](./prompts/story-kickoff.prompt.md).
+
+### Stage 9: Human Approval (Non-Negotiable)
+
+The architecture and implementation plan MUST be approved by a human before coding starts. This is the primary quality gate. No exceptions for "small features" — the most dangerous bugs are in "small features" with unchecked assumptions.
+
+**What human approval requires:**
+- Reviewer must be able to explain the plan back in their own words
+- Reviewer must explicitly approve by name and date
+- Rejection must include specific concerns — "looks fine" is not rejection criteria
+
+### Stage 12: Self Review (Before Any Human Review)
+
+The agent reviews its own output before any human looks at it. This is not a courtesy — it catches 40-60% of issues that would otherwise require a human review cycle.
+
+Self review checklist:
+- [ ] Does the code do what the requirements specified?
+- [ ] Are all edge cases handled?
+- [ ] Is error handling complete?
+- [ ] Are there security concerns?
+- [ ] Is the code readable without comments?
+- [ ] Do tests cover the new behavior?
+
+### Stage 25: Knowledge Base Update (Often Skipped — Never Should Be)
+
+Every completed feature produces institutional knowledge. The only question is whether you capture it deliberately (in your knowledge base) or accidentally (in your team's memory, which is lossy).
+
+The knowledge capture prompt extracts: decisions made, problems encountered, solutions found, patterns to reuse, patterns to avoid.
+
+---
+
+## Enterprise Considerations
+
+- **Audit trail:** Every stage must produce a documented artifact (plan, review, test report). The audit trail is not optional — it's your compliance evidence.
+- **Human approval gates:** In regulated industries, stages 9, 16 (Security), and 20 (Deployment) require named human sign-offs.
+- **Stage skipping:** Never permitted. If a stage seems unnecessary for a small change, you have misunderstood the change or misunderstood the standard.
+
+---
+
+## Anti-Patterns
+
+### ❌ "We'll write tests after the feature ships"
+Stage 14 (Testing) comes before Stage 20 (Deployment). This is not negotiable. Shipping untested code is shipping known risk.
+
+### ❌ "The architecture review is just documentation"
+Stage 9 (Human Approval) is a decision gate. It is not documentation. If the reviewer doesn't push back, they didn't review — they rubber-stamped.
+
+### ❌ "The agent will catch any issues"
+Stage 13 (Agent Review) improves quality. It does not guarantee quality. Stage 12 (Self Review) + Stage 13 (Agent Review) + Stage 14 (Testing) all exist because no single layer is sufficient.
+
+### ❌ "Knowledge capture isn't worth the time"
+Teams that skip Stage 25 repeat the same mistakes in identical situations 3 months later with zero memory of having solved them before. The knowledge capture prompt takes 5 minutes.

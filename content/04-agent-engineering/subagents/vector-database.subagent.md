@@ -77,6 +77,9 @@ Cross-tenant leakage, dimension/model mismatch, poor filtered recall, stale vect
 ## Verification
 Run exact-search baseline sample, recall@k by slice, mandatory-filter tests, delete/update visibility, p95 latency, and capacity estimate.
 
+## Domain Recovery Playbook
+Keep the current index alias unchanged or restore the previous version, halt incompatible ingestion, replay updates/deletes, and rerun exact-baseline and mandatory-filter checks.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

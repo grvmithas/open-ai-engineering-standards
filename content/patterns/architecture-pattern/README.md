@@ -1,56 +1,188 @@
 # Architecture Pattern
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Architecture  
+> **Category:** Design Decision & Review  
+> **Maturity:** Stable v1.1  
+> **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Choose and govern a system design against quantified quality-attribute scenarios.
+## Overview
 
-## Applicability
+The Architecture Pattern solves the most common failure before large builds: **diagrams that are never challenged, alternatives never recorded, and irreversible choices made without failure-mode or trust-boundary analysis**. Teams then discover tenancy, blast radius, and operability problems in production.
 
-- a decision is expensive to reverse
-- quality attributes conflict
-- multiple teams depend on a stable boundary
+This pattern enforces ADR-quality decisions with explicit alternatives, quality-attribute scenarios, threat/failure walks, and independent review for High-risk designs.
 
-## Evidence
+## When to Apply
 
-- quality-attribute scenarios
-- workload and failure model
-- threat model
-- cost and capacity model
-- ADRs and organizational constraints
+Apply this pattern when:
+- A new service, store, or trust boundary is introduced
+- Quality attributes conflict (latency vs consistency vs cost)
+- Cross-team contracts or multi-region topology are in play
+- Data classification / tenancy / AI tool boundaries change
+- Reversibility is low (hard to undo after six months)
 
-## Components
+Do NOT apply this pattern to:
+- Local refactors with no new boundary or store
+- Choosing library X vs Y with identical architecture
+- Ticket-sized bugfixes
+- UI copy or CSS-only work
 
-Architecture README components gate 1 is accepted only when "all priority scenarios have measurable responses" is source-verifiable; otherwise, supersede the adr, disable the new topology at its seam, and restore the prior approved architecture.
+---
 
-README is component thirteen.
+## Problem
 
-## Outcome measures
+```
+architecture-pattern/problem.md
+```
 
-- all priority scenarios have measurable responses
-- prototype validates highest-risk assumption
-- fitness functions run in CI or operations
-- ADR review date and owner are current
+**Statement:** Systems ship with unchallenged topology: missing failure modes, unclear tenancy, irreversible coupling, and no recorded rejected alternatives — so “architecture” is a slide, not a decision.
 
-## Rollback
+**Measurable symptom:** Major incidents or rewrite programs traceable to unreviewed early topology choices.
 
-Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture.
+**Root cause:** Design review is skipped or rubber-stamped; ADRs omit alternatives and operability; AI agents invent structures without quality-attribute analysis.
 
-## Tradeoffs
+---
 
-Architecture README deliberately spends additional review time to protect "all priority scenarios have measurable responses"; evidence weakness triggers "Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture".
+## Context Requirements
 
-## Anti-patterns
+Before applying this pattern:
+- [ ] Problem / drivers written (not “use Kubernetes”)
+- [ ] Quality-attribute scenarios listed
+- [ ] Current-state constraints known
+- [ ] Independent reviewer available for High risk
+- [ ] Decision will be recorded as ADR
 
-Architecture README rejects shortcuts around "Name stakeholders and express quality attributes as stimulus-response scenarios." because they sever the evidence chain required for "all priority scenarios have measurable responses".
+---
 
-## Citations
+## Workflow
 
-- [ISO/IEC/IEEE 42010 overview](https://www.iso.org/standard/74393.html)
-- [SEI ATAM](https://insights.sei.cmu.edu/library/architecture-tradeoff-analysis-method-collection/)
-- [Thoughtworks fitness functions](https://www.thoughtworks.com/insights/books/building-evolutionary-architectures)
+```mermaid
+flowchart TD
+    A[Input: drivers + constraints + QA scenarios] --> B[Architect Agent Activated]
+    B --> C[Clarify forces and non-goals]
+    C --> D[Generate ≥2 real alternatives]
+    D --> E[Evaluate vs quality attributes]
+    E --> F[Walk trust boundaries + failure modes]
+    F --> G[Draft ADR + diagrams]
+    G --> H{Independent review}
+    H -->|Reject / conditions| D
+    H -->|Approve| I[ADR accepted]
+    I --> J[Planner/coder may implement within ADR]
+```
 
-## Changelog
+---
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+## Prompt
+
+See [prompt.md](./prompt.md) — grounded in [`architecture-review.prompt.md`](../../08-ai-sdlc/prompts/architecture-review.prompt.md).
+
+---
+
+## Agent Definition
+
+```yaml
+name: Architect Agent
+role: |
+  You produce ADR-quality architecture decisions with alternatives,
+  quality-attribute evaluation, and failure/trust-boundary analysis.
+  You do not write feature code. You do not self-approve High-risk ADRs.
+
+tools:
+  - read_file
+  - search_files
+  - list_directory
+  # Denied: merge, deploy, silent ADR approve for High risk
+
+memory:
+  - existing_adrs
+  - quality_attribute_scenarios
+  - incident_lessons
+
+termination:
+  success: ADR drafted; alternatives recorded; review decision issued
+  failure: Drivers unclear after 2 clarifications — escalate
+```
+
+---
+
+## Subagents
+
+| Subagent | Role | When Invoked |
+|----------|------|--------------|
+| Alternatives Generator | Forces ≥2 viable options | Early design |
+| Failure Walker | Degraded dependency scenarios | Before review |
+| Threat Boundary Mapper | Trust/data/identity edges | Before review |
+
+---
+
+## Skills Required
+
+- Architecture / ADR writing
+- Architecture review prompt
+- Security boundary analysis for external trust edges
+
+---
+
+## Hooks
+
+See [hooks.md](./hooks.md): require drivers + alternatives; block ADR without decision and consequences.
+
+---
+
+## Checklist
+
+- [ ] Drivers and non-goals clear
+- [ ] ≥2 real alternatives with reject reasons
+- [ ] Quality attributes evaluated
+- [ ] Failure + trust walks done
+- [ ] Mermaid diagrams match interfaces
+- [ ] Independent review for High risk
+- [ ] ADR stored and linked
+
+---
+
+## Examples
+
+See [examples/example.md](./examples/example.md) for ADR choosing event-driven order projection vs sync read-from-orders.
+
+| Component | File |
+|-----------|------|
+| Problem | [problem.md](./problem.md) |
+| Context | [context.md](./context.md) |
+| Workflow | [workflow.md](./workflow.md) |
+| Prompt | [prompt.md](./prompt.md) |
+| Agent | [agent.md](./agent.md) |
+| Subagents | [subagents.md](./subagents.md) |
+| Skills | [skills.md](./skills.md) |
+| Hooks | [hooks.md](./hooks.md) |
+| Checklist | [checklist.md](./checklist.md) |
+| Failures | [failures.md](./failures.md) |
+| Enterprise | [enterprise-notes.md](./enterprise-notes.md) |
+
+---
+
+## Common Failures
+
+### Failure 1: Slide-only architecture
+**Symptom:** Pretty boxes; no ADR; implementers invent contracts.  
+**Cause:** Review never forced a decision record.  
+**Recovery:** Write ADR; freeze interfaces before coding.
+
+### Failure 2: Single alternative
+**Symptom:** “We will use Kafka” with no comparison.  
+**Cause:** Solution shopping.  
+**Recovery:** Force two options scored on QA scenarios.
+
+### Failure 3: Self-approved High risk
+**Symptom:** Author approved own multi-region data design.  
+**Cause:** No SoD.  
+**Recovery:** Invalidate; independent review.
+
+---
+
+## Enterprise Notes
+
+- **Audit trail:** ADRs with approver identity linked to change programs.
+- **SoD:** Author ≠ sole approver for High-risk topology.
+- **Anti-claim:** An approved ADR is not a compliance certification.

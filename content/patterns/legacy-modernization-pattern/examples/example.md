@@ -1,50 +1,74 @@
-# Legacy Modernization: Worked Production Example
+# Legacy Modernization Pattern — Example: Strangle quote pricing
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Legacy Modernization  
+> **Component:** examples/example.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16  
+> **Capability slice:** Price customer quote
 
-## Scenario and artifacts
+---
 
-Modernize COBOL credit-limit calculation. MOD-73 records 2,400 golden cases from sanitized production, exposes /limits/v2 behind route flag limit-v2, shadows for 14 days with zero cent-level mismatch, then canaries internal analysts before customers.
+## Modernization slice plan (artifact)
 
-## Execution
+### Boundary
 
-1. Inventory business capabilities, consumers, and operational pain; the record attaches the resulting artifact to the example's primary change or incident ID.
-2. Capture golden-master and characterization tests before refactoring; the record attaches the resulting artifact to the example's primary change or incident ID.
-3. Create seams around time, I/O, state, and external dependencies; the record attaches the resulting artifact to the example's primary change or incident ID.
-4. Select a vertical capability by value, coupling, and reversibility; the record attaches the resulting artifact to the example's primary change or incident ID.
-5. Place a strangler route with shadow comparison; the record attaches the resulting artifact to the example's primary change or incident ID.
-6. Implement the replacement behind contract tests; the record attaches the resulting artifact to the example's primary change or incident ID.
-7. Shift traffic gradually and compare business outcomes; the record attaches the resulting artifact to the example's primary change or incident ID.
-8. Delete the legacy slice only after consumer and rollback expiry; the record attaches the resulting artifact to the example's primary change or incident ID.
+- **In scope:** Synchronous quote price for product family A via API  
+- **Out of scope:** Billing invoices, UI redesign, product families B/C
 
-## Verification
+### Legacy map
 
-- The owner records raw evidence that characterized critical behavior = 100%.
-- The owner records raw evidence that contract mismatch rate = 0.
-- The owner records raw evidence that change lead time improves by target.
-- The owner records raw evidence that legacy attack surface decreases each tranche.
+| Entry / job / table | Behavior | Owner SME |
+|---------------------|----------|-----------|
+| `COBOL PRICEJOB` nightly + online CICS | Base + discount tiers | M. Singh |
+| Monolith `PricingController` | Calls mainframe bridge | Platform |
+| Table `LEGACY.DISCOUNTS` | Tier tables | Finance eng |
 
-## Rollback exercise
+### Seam
 
-Legacy Modernization examples/example rollback exercise gate 1 is accepted only when "characterized critical behavior = 100%" is source-verifiable; otherwise, flip the strangler route to the legacy implementation and replay buffered work after reconciliation.
+Type: Edge proxy on `/api/quotes/price` → new `pricing-service`, fallback to legacy bridge.
 
-## Tradeoffs
+```mermaid
+flowchart LR
+  Client --> Proxy[/api/quotes/price]
+  Proxy -->|flag new| New[pricing-service]
+  Proxy -->|flag legacy| Bridge[mainframe bridge]
+  New --> DB[(discounts v2)]
+  Bridge --> MF[(LEGACY.DISCOUNTS)]
+```
 
-Legacy Modernization examples/example deliberately spends additional review time to protect "characterized critical behavior = 100%"; evidence weakness triggers "Flip the strangler route to the legacy implementation and replay buffered work after reconciliation".
+### Parity suite
 
-## Anti-patterns
+| Case | Legacy oracle | New assertion | Tolerance |
+|------|---------------|---------------|-----------|
+| Standard tier 2 | PRICEJOB fixture #1044 | equal money fields | $0.00 |
+| Max discount cap | fixture #1090 | equal | $0.00 |
+| Unknown SKU | legacy 404 body | same code | exact |
 
-Legacy Modernization examples/example rejects shortcuts around "Inventory business capabilities, consumers, and operational pain." because they sever the evidence chain required for "characterized critical behavior = 100%".
+### Traffic shift
 
-## Enterprise considerations
+| Step | % | Duration | Abort if |
+|------|---|----------|----------|
+| Shadow | 0 (compare only) | 7d | mismatch > 0.1% |
+| Canary | 1% | 3d | 5xx > 0.5% or mismatch |
+| Ramp | 10% → 50% | 4d each | conversion −2pp |
+| Full | 100% | 14d idle legacy | any SEV |
 
-Legacy Modernization examples/example governance binds owner, policy revision, and retained proof to "characterized critical behavior = 100%", with "Flip the strangler route to the legacy implementation and replay buffered work after reconciliation" as the recorded recovery authority.
+### Sample parity result (shadow week)
 
-## Checklist
+| Metric | Value |
+|--------|-------|
+| Compared quotes | 182_440 |
+| Mismatch rate | 0.02% (investigated: leap-year promo — fixed) |
+| After fix | 0.00% over 48h |
 
-- [ ] Every stated artifact has an owner and storage location in the system of record
-- [ ] Reported outcomes come from executed checks
+### Retirement checklist
 
-## Changelog
+- [x] 100% traffic on new for 14d  
+- [x] Bridge flag removed for family A  
+- [ ] `PRICEJOB` online path disabled for family A (scheduled)  
+- [ ] Next slice: product family B
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+```text
+Business parity signer: L. Cho  Eng lead: R. Gomez  Date: 2026-07-12
+```
+
+This example **is** the artifact — not a pointer elsewhere.

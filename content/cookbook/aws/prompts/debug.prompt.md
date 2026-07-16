@@ -8,11 +8,11 @@ Diagnose a AWS incident by testing platform-specific failure classes before muta
 
 ## Why
 
-Accounts and cells bound blast radius; role credentials are short-lived; infrastructure, quotas, retries, and failure isolation are explicit. This prompt requires native AWS artifacts instead of substituting a generic incident or code-generation checklist.
+Accounts and cells bound blast radius; role credentials are short-lived; infrastructure, quotas, retries, and failure isolation are explicit. The debug decision is accepted only when VPC route tables, security groups, NACLs, endpoints, DNS, and Flow Logs supports it; generic debug advice cannot establish that AWS state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized AWS evidence for the account workload, CloudFormation/CDK stack, IAM role, VPC path, Lambda function, or release. Apply the invariant "Accounts and cells bound blast radius; role credentials are short-lived; infrastructure, quotas, retries, and failure isolation are explicit." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>

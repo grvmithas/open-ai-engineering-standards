@@ -8,11 +8,11 @@ Diagnose a Accessibility Engineering incident by testing platform-specific failu
 
 ## Why
 
-Native semantics come first; every operation is keyboard-complete; focus is deterministic; assistive-technology testing supplements automated WCAG checks. This prompt requires native Accessibility Engineering artifacts instead of substituting a generic incident or code-generation checklist.
+Native semantics come first; every operation is keyboard-complete; focus is deterministic; assistive-technology testing supplements automated WCAG checks. The debug decision is accepted only when screen-reader transcript across the supported browser/AT matrix supports it; generic debug advice cannot establish that Accessibility Engineering state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Accessibility Engineering evidence for the semantic component, keyboard flow, focus transition, WCAG audit, remediation, or conformance release. Apply the invariant "Native semantics come first; every operation is keyboard-complete; focus is deterministic; assistive-technology testing supplements automated WCAG checks." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>

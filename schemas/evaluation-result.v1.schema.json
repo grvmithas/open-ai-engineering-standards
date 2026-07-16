@@ -26,7 +26,7 @@
       "additionalProperties": false
     },
     "suite": {"$ref": "#/$defs/versionedArtifact"},
-    "environment": {"enum": ["development", "ci", "staging", "production", "offline-lab"]},
+    "environment": {"enum": ["development", "test", "ci", "staging", "production", "offline-lab"]},
     "dataset": {"$ref": "#/$defs/versionedArtifact"},
     "startedAt": {"type": "string", "format": "date-time"},
     "completedAt": {"type": "string", "format": "date-time"},

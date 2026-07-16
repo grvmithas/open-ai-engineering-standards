@@ -1,47 +1,107 @@
-# Root Cause: Lifecycle Hooks
+# Root Cause Pattern — Hooks
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Root Cause  
+> **Component:** hooks.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Enforce root cause gates outside model discretion.
-
-| Hook | Enforced condition | Failure behavior |
-|---|---|---|
-| preflight | reject causal claims without evidence IDs | fail closed without creating an effect |
-| domain-gate | flag person-blaming language and single-chain five-whys | fail closed without creating an effect |
-| closure | block closure without action owner, due date, indicator, and review date | withdraw unsupported causal claims, preserve the draft, and reopen timeline or experiment collection |
+## `pre-rca.hook.sh`
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-: "${TASK_ID:?required}" "${MANIFEST_HASH:?required}" "${RISK_TIER:?required}". For the Root Cause hooks contract, gate 1 is evidenced by "100% causal edges cite evidence"; failure invokes this domain recovery: Withdraw unsupported causal claims, preserve the draft, and reopen timeline or experiment collection.
-# oaies-root-cause: evaluate the three versioned policy rules documented above.
-policy_check --pattern "root-cause" --task "$TASK_ID" --manifest "$MANIFEST_HASH" --risk "$RISK_TIER"
+
+echo "Checking RCA prerequisites..."
+
+: "${INCIDENT_ID:?ERROR: set INCIDENT_ID}"
+: "${TIMELINE_FILE:?ERROR: set TIMELINE_FILE}"
+: "${STATUS:?ERROR: set STATUS to mitigated|monitoring}"
+
+if [[ "$STATUS" != "mitigated" && "$STATUS" != "monitoring" ]]; then
+  echo "ERROR: RCA starts after containment (STATUS=mitigated|monitoring). Got: $STATUS"
+  exit 1
+fi
+
+if [[ ! -f "$TIMELINE_FILE" ]]; then
+  echo "ERROR: TIMELINE_FILE not found: $TIMELINE_FILE"
+  exit 1
+fi
+
+if ! grep -qiE '[0-9]{2}:[0-9]{2}|UTC|Z' "$TIMELINE_FILE"; then
+  echo "ERROR: Timeline appears to lack timestamps."
+  exit 1
+fi
+
+echo "RCA prerequisites OK for $INCIDENT_ID."
 ```
 
-## Verification
+## `post-rca.hook.sh`
 
-Root Cause hooks verification records raw evidence for "100% causal edges cite evidence" and invokes "Withdraw unsupported causal claims, preserve the draft, and reopen timeline or experiment collection" when the threshold is not demonstrated.
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-## Tradeoffs
+RCA_FILE="${1:-}"
+if [[ -z "$RCA_FILE" || ! -f "$RCA_FILE" ]]; then
+  echo "ERROR: Usage: post-rca.hook.sh <rca-file>"
+  exit 1
+fi
 
-Root Cause hooks deliberately spends additional review time to protect "100% causal edges cite evidence"; evidence weakness triggers "Withdraw unsupported causal claims, preserve the draft, and reopen timeline or experiment collection".
+echo "Validating RCA structure..."
 
-## Anti-patterns
+REQUIRED_SECTIONS=(
+  "Incident Summary"
+  "Timeline"
+  "Root Cause"
+  "5 Whys"
+  "Detection Gap"
+  "Remediation"
+  "Prevention Summary"
+)
 
-Root Cause hooks rejects shortcuts around "Set a blameless charter: explain system conditions, not individual fault." because they sever the evidence chain required for "100% causal edges cite evidence".
+for section in "${REQUIRED_SECTIONS[@]}"; do
+  if ! grep -qi "$section" "$RCA_FILE"; then
+    echo "ERROR: RCA missing required section: $section"
+    exit 1
+  fi
+done
 
-## Enterprise considerations
+# Count "Root cause" sentences — soft check for multiple root headings
+ROOT_HITS=$(grep -ciE '^\*\*Root cause|## Root Cause' "$RCA_FILE" || true)
+if (( ROOT_HITS < 1 )); then
+  echo "ERROR: Root cause statement missing."
+  exit 1
+fi
 
-Root Cause hooks governance binds owner, policy revision, and retained proof to "100% causal edges cite evidence", with "Withdraw unsupported causal claims, preserve the draft, and reopen timeline or experiment collection" as the recorded recovery authority.
+if grep -qiE 'improve monitoring|better documentation|be more careful' "$RCA_FILE"; then
+  if ! grep -qiE 'alert|threshold|runbook for|Owner:' "$RCA_FILE"; then
+    echo "ERROR: Vague prevention language without specifics/owners."
+    exit 1
+  fi
+fi
 
-## Checklist
+# Open actions should show Owner and Due nearby — heuristic
+if grep -qiE 'Short-Term Actions|Long-Term Actions' "$RCA_FILE"; then
+  if ! grep -qiE 'Owner:' "$RCA_FILE"; then
+    echo "ERROR: Remediation actions missing Owner fields."
+    exit 1
+  fi
+  if ! grep -qiE 'Due:' "$RCA_FILE"; then
+    echo "ERROR: Remediation actions missing Due fields."
+    exit 1
+  fi
+fi
 
-- [ ] Automated test proves: reject causal claims without evidence IDs
-- [ ] Automated test proves: flag person-blaming language and single-chain five-whys
-- [ ] Automated test proves: block closure without action owner, due date, indicator, and review date
+# Blame heuristic — not perfect, blocks common anti-patterns
+if grep -qiE 'human error by|negligen|careless(ness)? of' "$RCA_FILE"; then
+  echo "ERROR: Blame-oriented language detected; rewrite systemically."
+  exit 1
+fi
 
-## Changelog
+echo "RCA structure validated."
+```
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+## CI integration note
+
+Track RCA FINAL links from the incident ticket. Fail a “incident closed” automation if `post-rca.hook.sh` has not passed for SEV1/SEV2.

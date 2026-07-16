@@ -77,6 +77,9 @@ pull_request_target code execution, expression injection, overbroad token, cache
 ## Verification
 Run actionlint, zizmor or approved policy scanner, SHA-pin check, permissions diff, and non-privileged test event.
 
+## Domain Recovery Playbook
+Disable the affected workflow or privileged job, revoke exposed tokens or cloud sessions, invalidate poisoned caches/artifacts, and restore the last pinned workflow revision.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

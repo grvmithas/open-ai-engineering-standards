@@ -1,41 +1,37 @@
-# Architecture: Failure Modes
+# Architecture Pattern — Failures
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Architecture  
+> **Component:** failures.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Architecture failures operationalizes this pattern outcome: choose and govern a system design against quantified quality-attribute scenarios.
+## Failure 1: Slide-only architecture
 
-| Failure | Observable signal | Recovery |
-|---|---|---|
-| diagram as architecture | boxes lack decisions and measures | write scenarios and ADRs |
-| best-practice cargo cult | pattern ignores workload | test options against actual model |
-| premature distribution | operational burden exceeds need | retain modular monolith baseline |
-| frozen ADR | assumptions changed silently | trigger scheduled and event review |
+**Symptom:** Implementers invent APIs; diagrams contradict code.  
+**Cause:** No ADR decision record.  
+**Recovery:** Write ADR; freeze interfaces; replan.
 
-## Rollback failure
+## Failure 2: Single alternative / tool shopping
 
-Architecture failures rollback failure gate 2 is accepted only when "all priority scenarios have measurable responses" is source-verifiable; otherwise, supersede the adr, disable the new topology at its seam, and restore the prior approved architecture.
+**Symptom:** “Use Kafka” with no comparison to sync or queue alternatives.  
+**Cause:** Solution-first thinking.  
+**Recovery:** Score ≥2 options against QA scenarios; record rejects.
 
-## Tradeoffs
+## Failure 3: Self-approved High risk
 
-Architecture failures deliberately spends additional review time to protect "all priority scenarios have measurable responses"; evidence weakness triggers "Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture".
+**Symptom:** Author approved multi-region PII design alone.  
+**Cause:** Missing SoD.  
+**Recovery:** Invalidate acceptance; independent review.
 
-## Anti-patterns
+## Failure 4: No failure walk
 
-Architecture failures rejects shortcuts around "Name stakeholders and express quality attributes as stimulus-response scenarios." because they sever the evidence chain required for "all priority scenarios have measurable responses".
+**Symptom:** First dependency outage cascades globally.  
+**Cause:** Happy-path-only design.  
+**Recovery:** Run Failure Walker; add mitigations; amend ADR.
 
-## Enterprise considerations
+## Failure 5: Silent implementation drift
 
-Architecture failures governance binds owner, policy revision, and retained proof to "all priority scenarios have measurable responses", with "Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Detection exists for diagram as architecture
-- [ ] Detection exists for best-practice cargo cult
-- [ ] Detection exists for premature distribution
-- [ ] Detection exists for frozen ADR
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+**Symptom:** Services share a DB though ADR forbade it.  
+**Cause:** Coding without ADR conformance check.  
+**Recovery:** Stop feature work; amend or revert to ADR; re-approve.

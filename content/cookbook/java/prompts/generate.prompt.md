@@ -8,11 +8,11 @@ Generate a production-ready Spring controller, application service, JPA aggregat
 
 ## Why
 
-Transactions wrap use cases; transport DTOs do not leak persistence entities; pools are bounded and JVM evidence drives tuning. This prompt requires native Java artifacts instead of substituting a generic incident or code-generation checklist.
+Transactions wrap use cases; transport DTOs do not leak persistence entities; pools are bounded and JVM evidence drives tuning. The generate decision is accepted only when `pom.xml` or Gradle catalogs, wrapper version, toolchain, BOM, and dependency tree supports it; generic generate advice cannot establish that Java state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Java evidence for the Spring controller, application service, JPA aggregate, message consumer, or JVM process. Apply the invariant "Transactions wrap use cases; transport DTOs do not leak persistence entities; pools are bounded and JVM evidence drives tuning." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Read the Maven/Gradle toolchain, wrapper, Spring dependency management, and runt
 
 ## Tradeoffs
 
-The prompt rejects fast code generation when Java version, configuration, or target evidence is absent. That delay prevents plausible output from crossing an unsupported Spring controller, application service, JPA aggregate, message consumer, or JVM process boundary.
+Generation waits for `pom.xml` or Gradle catalogs, wrapper version, toolchain, BOM, and dependency tree and Spring condition report, bean graph, active profiles, and validated configuration properties. That extra Java discovery is justified because the output must prove "controllers map validated DTOs and do not expose JPA entities" and survive bean graph or configuration binding failure rather than merely compile.
 
 ## Anti-patterns
 

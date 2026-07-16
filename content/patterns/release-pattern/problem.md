@@ -1,39 +1,36 @@
-# Release: Problem
+# Release Pattern — Problem
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Release  
+> **Component:** problem.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Release problem operationalizes this pattern outcome: promote a signed artifact through progressive exposure with objective abort criteria.
+## Statement
 
-## Observable problem
+Shipping a green CI build to 100% of production without digest pinning, progressive exposure, and pre-declared abort criteria produces outages that exceed rollback RTO and destroy trust in the delivery pipeline.
 
-1. When a verified artifact is ready for production, an undocumented assumption can become a production decision.
-2. When customer behavior or data can change, an undocumented assumption can become a production decision.
-3. When rollback must meet an operational RTO, an undocumented assumption can become a production decision.
+## Measurable symptoms
 
-## Quality boundary
+| Symptom | How you detect it |
+|---------|-------------------|
+| Digest drift | Runtime image digest ≠ release record |
+| Big-bang expose | Traffic jumps 0→100% with no canary hold |
+| Soft abort | Thresholds rewritten after alerts fire |
+| Rollback theater | “Rollback” is undocumented or never rehearsed |
+| Flag absence | No kill switch short of redeploy |
 
-Release problem quality boundary gate 2 is accepted only when "artifact-to-runtime digest match = 100%" is source-verifiable; otherwise, halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health.
+## Root cause
 
-## Tradeoffs
+Teams conflate **build verification** with **exposure control**. Verification answers “is this artifact acceptable?” Exposure control answers “how much blast radius do we accept right now, and when do we stop?”
 
-Release problem deliberately spends additional review time to protect "artifact-to-runtime digest match = 100%"; evidence weakness triggers "Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health".
+## Non-goals of this pattern
 
-## Anti-patterns
+- Not a substitute for product QA ownership of acceptance tests
+- Not an incident process (see hotfix + RCA patterns)
+- Not permission to waive security gates casually
+- Not required for docs-only changes with no runtime artifact
 
-Release problem rejects shortcuts around "Freeze artifact digest, configuration, migrations, and release evidence." because they sever the evidence chain required for "artifact-to-runtime digest match = 100%".
+## Related failure modes
 
-## Enterprise considerations
-
-Release problem governance binds owner, policy revision, and retained proof to "artifact-to-runtime digest match = 100%", with "Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Trigger and affected population are quantified
-- [ ] Baseline and desired outcome are distinguishable
-- [ ] Scope and non-goals have named owners
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+See [failures.md](./failures.md).

@@ -1,47 +1,106 @@
-# Enterprise: Lifecycle Hooks
+# Enterprise Pattern — Hooks
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Enterprise  
+> **Component:** hooks.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Enforce enterprise gates outside model discretion.
+## `pre-enterprise-golive.hook.sh`
 
-| Hook | Enforced condition | Failure behavior |
-|---|---|---|
-| preflight | block unregistered model or use-case identifiers | fail closed without creating an effect |
-| domain-gate | enforce data-class and regional routing policy | fail closed without creating an effect |
-| closure | trip kill switch on prohibited output or control failure | disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle |
+Runs before pilot enablement. Verifies inventory, tier, bundle, and kill-switch evidence.
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-: "${TASK_ID:?required}" "${MANIFEST_HASH:?required}" "${RISK_TIER:?required}". For the Enterprise hooks contract, gate 1 is evidenced by "inventory completeness = 100%"; failure invokes this domain recovery: Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle.
-# oaies-enterprise: evaluate the three versioned policy rules documented above.
-policy_check --pattern "enterprise" --task "$TASK_ID" --manifest "$MANIFEST_HASH" --risk "$RISK_TIER"
+
+echo "Checking enterprise go-live prerequisites..."
+
+: "${PACKAGE_FILE:?ERROR: set PACKAGE_FILE to the go-live package markdown}"
+: "${INVENTORY_ID:?ERROR: set INVENTORY_ID}"
+: "${KILL_SWITCH_DRILL_LOG:?ERROR: set KILL_SWITCH_DRILL_LOG}"
+
+if [[ ! -f "$PACKAGE_FILE" ]]; then
+  echo "ERROR: PACKAGE_FILE not found: $PACKAGE_FILE"
+  exit 1
+fi
+
+if ! grep -q "$INVENTORY_ID" "$PACKAGE_FILE"; then
+  echo "ERROR: Package does not reference INVENTORY_ID=$INVENTORY_ID"
+  exit 1
+fi
+
+if ! grep -qiE 'risk[[:space:]]*tier|RISK_TIER' "$PACKAGE_FILE"; then
+  echo "ERROR: Risk tier missing from package."
+  exit 1
+fi
+
+if ! grep -qiE 'control map|enforcement' "$PACKAGE_FILE"; then
+  echo "ERROR: Control map / enforcement section missing."
+  exit 1
+fi
+
+if ! grep -qiE 'kill.?switch|disable procedure' "$PACKAGE_FILE"; then
+  echo "ERROR: Kill-switch / disable procedure missing."
+  exit 1
+fi
+
+# Reject certification-substitution language as sole evidence
+if grep -qiE 'certified (compliant|under)|iso[[:space:]]*42001 certified|eu ai act certified' "$PACKAGE_FILE"; then
+  echo "ERROR: Certification claims are not acceptable as control evidence in this package."
+  exit 1
+fi
+
+if [[ ! -f "$KILL_SWITCH_DRILL_LOG" ]]; then
+  echo "ERROR: Kill-switch drill log missing: $KILL_SWITCH_DRILL_LOG"
+  exit 1
+fi
+
+if ! grep -qiE 'disabled|deny|blocked|kill' "$KILL_SWITCH_DRILL_LOG"; then
+  echo "ERROR: Drill log does not show a successful disable action."
+  exit 1
+fi
+
+echo "Prerequisites satisfied for go-live review."
 ```
 
-## Verification
+## `post-enterprise-bind.hook.sh`
 
-Enterprise hooks verification records raw evidence for "inventory completeness = 100%" and invokes "Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle" when the threshold is not demonstrated.
+Runs after gateway bind. Verifies policy version appears in the package and bind receipt.
 
-## Tradeoffs
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-Enterprise hooks deliberately spends additional review time to protect "inventory completeness = 100%"; evidence weakness triggers "Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle".
+PACKAGE_FILE="${1:-}"
+BIND_RECEIPT="${2:-}"
 
-## Anti-patterns
+if [[ -z "$PACKAGE_FILE" || ! -f "$PACKAGE_FILE" || -z "$BIND_RECEIPT" || ! -f "$BIND_RECEIPT" ]]; then
+  echo "ERROR: Usage: post-enterprise-bind.hook.sh <package> <bind-receipt>"
+  exit 1
+fi
 
-Enterprise hooks rejects shortcuts around "Register use case, owner, model, purpose, users, and prohibited uses." because they sever the evidence chain required for "inventory completeness = 100%".
+echo "Validating gateway bind..."
 
-## Enterprise considerations
+BUNDLE_VER=$(grep -iE 'policy bundle version' "$PACKAGE_FILE" | head -n1 | sed 's/.*://;s/[[:space:]]*//g' || true)
+if [[ -z "$BUNDLE_VER" ]]; then
+  echo "ERROR: Could not parse policy bundle version from package."
+  exit 1
+fi
 
-Enterprise hooks governance binds owner, policy revision, and retained proof to "inventory completeness = 100%", with "Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle" as the recorded recovery authority.
+if ! grep -q "$BUNDLE_VER" "$BIND_RECEIPT"; then
+  echo "ERROR: Bind receipt does not contain bundle version $BUNDLE_VER"
+  exit 1
+fi
 
-## Checklist
+if ! grep -qiE 'Human Approval|Risk approver' "$PACKAGE_FILE"; then
+  echo "ERROR: Package missing human approval footer."
+  exit 1
+fi
 
-- [ ] Automated test proves: block unregistered model or use-case identifiers
-- [ ] Automated test proves: enforce data-class and regional routing policy
-- [ ] Automated test proves: trip kill switch on prohibited output or control failure
+echo "Bind validated for version $BUNDLE_VER."
+```
 
-## Changelog
+## CI integration note
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+Block deploy pipelines that enable AI routes without `INVENTORY_ID` and a matching gateway policy version. Treat missing kill-switch drill as a failed gate for high tier.

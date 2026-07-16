@@ -77,6 +77,9 @@ Accidental dynamic rendering, stale cache, middleware overmatch, secret serializ
 ## Verification
 Run installed-version type/lint/build; inspect route output; probe cache headers/invalidation, redirects, not-found, and auth.
 
+## Domain Recovery Playbook
+Restore the prior route and cache configuration, invalidate only documented keys/tags, preserve build diagnostics, and probe static/dynamic, auth, and error behavior again.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

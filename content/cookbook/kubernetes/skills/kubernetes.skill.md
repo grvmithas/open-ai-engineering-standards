@@ -45,7 +45,7 @@ Controllers own Pods; workload identity and network policy are least-privilege; 
 
 ## Verification
 
-The evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. For manual checks, record environment, operator, exact steps, and result.
+The Kubernetes evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. It must also retain rendered manifests plus Git revision, field manager, server-side dry-run, diff, and admission result. For manual controller-managed workload, Service, policy, autoscaler, disruption budget, or GitOps release checks, record environment, operator, exact steps, and result.
 
 ## Failure recovery
 
@@ -61,7 +61,7 @@ Report the Kubernetes boundary, facts, hypotheses, commands actually run, change
 
 ## Termination criteria
 
-Finish when native validation, all applicable review/deployment gates, and recovery signals pass, or when a named owner accepts a documented blocker through the repository's risk process.
+Finish the Kubernetes workflow only when native validation, applicable review/deployment gates, and recovery signals for CrashLoopBackOff, probe failure, or bad configuration and ImagePullBackOff or architecture/registry identity failure pass. Otherwise record a named owner and the exact missing Kubernetes evidence; risk acceptance does not convert a failed native check into a pass.
 
 ## Version-aware caution
 
@@ -69,7 +69,7 @@ Capture server and kubectl versions, API discovery, node OS/runtime, CNI/CSI, ad
 
 ## Tradeoffs
 
-This skill spends time fingerprinting Kubernetes and collecting native evidence before editing. It reduces throughput for trivial changes but prevents incorrect commands, unsupported APIs, and state-destructive rollback.
+This skill fingerprints Kubernetes through rendered manifests plus Git revision, field manager, server-side dry-run, diff, and admission result before editing and retains Service, EndpointSlice, NetworkPolicy, DNS, routes, and caller-side connectivity before recovery. The added work is warranted when CrashLoopBackOff, probe failure, or bad configuration could make Revert the Git revision or use `kubectl rollout undo` only when controller history and schema compatibility are verified; never patch Pods, and pause rollout before collecting failed Pod events and previous logs.
 
 ## Anti-patterns
 

@@ -70,11 +70,11 @@ MongoDB governance owns database/collection naming, validator enforcement, encry
 
 ## Checklist
 
-- [ ] Driver topology discovery and pools are shared per process and bounded..
-- [ ] Document aggregate boundaries contain atomic invariants and bounded arrays..
-- [ ] Collection validators make schema expectations observable during evolution..
-- [ ] Indexes are derived from measured query shapes and shard targeting..
-- [ ] Shard zones and balancer policy align data locality and failure domains..
+- [ ] Driver topology discovery and pools are shared per process and bounded.
+- [ ] Document aggregate boundaries contain atomic invariants and bounded arrays.
+- [ ] Collection validators make schema expectations observable during evolution.
+- [ ] Indexes are derived from measured query shapes and shard targeting.
+- [ ] Shard zones and balancer policy align data locality and failure domains.
 - [ ] Diagram matches deployed topology rather than an aspirational target.
 - [ ] Rollback path preserves state and mixed-version contracts.
 

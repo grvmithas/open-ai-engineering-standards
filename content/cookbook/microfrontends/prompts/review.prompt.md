@@ -8,11 +8,11 @@ Review a Microfrontends change using native configuration, failure, and operatio
 
 ## Why
 
-Slices follow durable business domains, integrate through versioned shell contracts, fail locally, and prove independent build and deployment. This prompt requires native Microfrontends artifacts instead of substituting a generic incident or code-generation checklist.
+Slices follow durable business domains, integrate through versioned shell contracts, fail locally, and prove independent build and deployment. The review decision is accepted only when host/remote build metadata, remote entry URL/digest, share scope, singleton/range resolution, and CSP/CORS headers supports it; generic review advice cannot establish that Microfrontends state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Microfrontends evidence for the domain slice, shell contract, route, federated remote, shared package, or independent frontend release. Apply the invariant "Slices follow durable business domains, integrate through versioned shell contracts, fail locally, and prove independent build and deployment." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Capture shell, bundler/module-federation plugin, framework, router, browser targ
 
 ## Tradeoffs
 
-Microfrontends review takes longer because configuration and runtime state must be correlated with source. It eliminates generic style findings and prioritizes defects that can change production behavior.
+Microfrontends review correlates source with host/remote build metadata, remote entry URL/digest, share scope, singleton/range resolution, and CSP/CORS headers and independent test/deploy pipeline, asset cache policy, rollback manifest, and fallback behavior. The cost is a deeper review; the benefit is direct evidence for "slice maps to one durable business capability and accountable team" and "shell owns authentication context, navigation, layout, global error boundaries, and observability contract" instead of generic style findings.
 
 ## Anti-patterns
 

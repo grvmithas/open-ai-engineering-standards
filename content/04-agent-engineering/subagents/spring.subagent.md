@@ -77,6 +77,9 @@ Self-invocation bypassing transaction/security, N+1 query, bean cycle, secret co
 ## Verification
 Run Maven/Gradle tests, context load, security matrix, transaction rollback, query count, and actuator readiness.
 
+## Domain Recovery Playbook
+Roll back the scoped configuration or service revision, verify transaction completion and connection cleanup, preserve thread/query evidence, and restart only after context health passes.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

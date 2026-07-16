@@ -1,67 +1,59 @@
-# Optimization: Workflow
+# Optimization Pattern — Workflow
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Optimization  
+> **Component:** workflow.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Apply the domain workflow to improve a profiled bottleneck while protecting correctness and downstream guardrails.
+## End-to-end flow
 
 ```mermaid
 flowchart TD
-  S1[1. Define target metric, guardrails, workload, and minimum useful effect] --> S2
-  S2[2. Measure a statistically sound baseline including variance] --> S3
-  S3[3. Profile end-to-end and attribute dominant cost] --> S4
-  S4[4. Form a mechanism-specific optimization hypothesis] --> S5
-  S5[5. Benchmark one change against control with warmup and confidence interval] --> S6
-  S6[6. Inspect shifted cost, tail behavior, correctness, and saturation] --> S7
-  S7[7. Canary under representative production load] --> S8
-  S8[8. Keep only if effect size and guardrails pass; document capacity headroom]
-  S8 --> V{Domain metrics pass?}
-  V -->|No| R[disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark]
-  V -->|Yes| C[Retain evidence and close]
+    A[Define metric, min effect, guardrails] --> B[Freeze workload definition]
+    B --> C[Measure baseline with warm-up + variance]
+    C --> D[Profile / trace end-to-end]
+    D --> E{Dominant cost ≥30%?}
+    E -->|No| F[Stop or expand profile scope]
+    E -->|Yes| G[Write one-change hypothesis]
+    G --> H[Implement behind feature flag]
+    H --> I[A/B bench: control vs candidate]
+    I --> J{Effect size + oracle OK?}
+    J -->|No| K[Discard; re-attribute]
+    J -->|Yes| L[Canary: 1% → 5% → 25%]
+    L --> M{Abort metric tripped?}
+    M -->|Yes| N[Disable flag; restore baseline]
+    M -->|No| O[Promote; record capacity headroom]
 ```
 
-## Procedure
+## Step procedure
 
-1. **Define target metric,.** Define target metric, guardrails, workload, and minimum useful effect.
-2. **Measure a statistically.** Measure a statistically sound baseline including variance.
-3. **Profile end-to-end and.** Profile end-to-end and attribute dominant cost.
-4. **Form a mechanism-specific.** Form a mechanism-specific optimization hypothesis.
-5. **Benchmark one change.** Benchmark one change against control with warmup and confidence interval.
-6. **Inspect shifted cost,.** Inspect shifted cost, tail behavior, correctness, and saturation.
-7. **Canary under representative.** Canary under representative production load.
-8. **Keep only if.** Keep only if effect size and guardrails pass; document capacity headroom.
+| Step | Actor | Action | Exit criteria |
+|------|-------|--------|---------------|
+| 1 | Human / Perf owner | Freeze metric, min effect, guardrails, abort thresholds | Written success/fail definition |
+| 2 | Workload Curator | Check in load profile + fixtures | Versioned workload ID |
+| 3 | Benchmark Runner | Baseline: warm-up, n samples, p50/p95/p99 + CI | Baseline artifact stored |
+| 4 | Profiler | Attribute CPU/IO/alloc/lock/token cost on critical path | Dominant frame/span named |
+| 5 | Optimization Agent | One hypothesis; reject multi-change bundles | Single mechanism stated |
+| 6 | Coder | Implement behind flag only | Diff limited to hypothesis + tests |
+| 7 | Benchmark Runner | Candidate vs control under identical load | Effect size ± CI; oracle green |
+| 8 | Canary Observer | Progressive exposure; watch abort metrics | Hold times met or abort |
+| 9 | Human | Promote or kill; document capacity note | Flag state + headroom recorded |
 
-## Verification
+## Abort criteria (must be pre-declared)
 
-- approved effect size reached with confidence interval
-- correctness oracle has zero regression
-- p99 and saturation guardrails remain within SLO
-- unit cost is measured end-to-end
+Abort canary and disable flag if **any** hold for the configured window (e.g. 10 minutes):
 
-## Tradeoffs
+- Target metric regresses vs baseline beyond noise band
+- Guardrail: error rate > baseline + absolute delta (e.g. +0.1%)
+- Guardrail: p99 > SLO or saturation (CPU/mem/queue) > soft limit
+- Oracle failures in synthetic probes
+- Neighbor-tenant latency unfairness alert fires
 
-Optimization workflow deliberately spends additional review time to protect "approved effect size reached with confidence interval"; evidence weakness triggers "Disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark".
+## Parallelism rule
 
-## Anti-patterns
+Never run two optimization hypotheses on the same critical path concurrently. Confounded A/B results are not evidence. Serialize changes; keep one flag per hypothesis.
 
-Optimization workflow rejects shortcuts around "Define target metric, guardrails, workload, and minimum useful effect." because they sever the evidence chain required for "approved effect size reached with confidence interval".
+## Deviation rule
 
-## Enterprise considerations
-
-Optimization workflow governance binds owner, policy revision, and retained proof to "approved effect size reached with confidence interval", with "Disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Define target metric, guardrails, workload, and minimum useful effect
-- [ ] Measure a statistically sound baseline including variance
-- [ ] Profile end-to-end and attribute dominant cost
-- [ ] Form a mechanism-specific optimization hypothesis
-- [ ] Benchmark one change against control with warmup and confidence interval
-- [ ] Inspect shifted cost, tail behavior, correctness, and saturation
-- [ ] Canary under representative production load
-- [ ] Keep only if effect size and guardrails pass; document capacity headroom
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+If implementation discovers the bottleneck moved or the change needs a second mechanism: **stop**, re-profile, open a new hypothesis. Do not silently widen scope behind the same flag.

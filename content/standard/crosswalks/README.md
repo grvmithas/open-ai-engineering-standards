@@ -1,6 +1,6 @@
 # OAIES Standards Crosswalks
 
-**Version:** 1.0.0  
+**Version:** 1.0.1  
 **Date:** 2026-07-16  
 **Status:** Informative
 
@@ -94,6 +94,10 @@ The control owner must approve mappings, Legal must determine regulatory implica
 - [ ] No equivalence, endorsement, or certification claim is implied
 
 ## Changelog
+
+### 1.0.1 — 2026-07-16
+
+- Replaced broad relationship labels with conservative evidence-support mappings.
 
 ### 1.0.0 — 2026-07-16
 

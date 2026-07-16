@@ -77,6 +77,9 @@ Unsound assertion, any leakage, type/runtime mismatch, module-resolution break, 
 ## Verification
 Run repository tsc --noEmit or -b, lint, tests, package build, and API Extractor/type tests if configured.
 
+## Domain Recovery Playbook
+Restore the prior public declaration or export map, remove unsound assertions instead of relaxing strictness, and rerun downstream type/API compatibility tests.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

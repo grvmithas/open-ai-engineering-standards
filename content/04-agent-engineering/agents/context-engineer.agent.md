@@ -77,6 +77,9 @@ Truncating critical constraints, stale authority, cross-tenant context, injected
 ## Verification
 Measure required-fact recall, unsupported claims, stale-source use, citation accuracy, and tokens by source class.
 
+## Domain Recovery Playbook
+Restore the prior context manifest, remove untrusted or cross-tenant chunks, preserve source-conflict metadata, and rerun answerability and injection cases.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

@@ -69,11 +69,11 @@ Java governance aligns JDK, Spring, Jakarta, Hibernate, and build-plugin baselin
 
 ## Checklist
 
-- [ ] Controllers terminate HTTP concerns and map DTOs..
-- [ ] Application services own transaction, authorization, and orchestration..
-- [ ] Aggregates protect invariants without Spring or JPA behavior dependencies..
-- [ ] Repositories load an explicit aggregate or projection for one use case..
-- [ ] Outbox publication follows committed state rather than dual writes..
+- [ ] Controllers terminate HTTP concerns and map DTOs.
+- [ ] Application services own transaction, authorization, and orchestration.
+- [ ] Aggregates protect invariants without Spring or JPA behavior dependencies.
+- [ ] Repositories load an explicit aggregate or projection for one use case.
+- [ ] Outbox publication follows committed state rather than dual writes.
 - [ ] Diagram matches deployed topology rather than an aspirational target.
 - [ ] Rollback path preserves state and mixed-version contracts.
 

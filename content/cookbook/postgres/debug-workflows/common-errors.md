@@ -32,15 +32,15 @@ Constraints enforce invariants; actual plans justify indexes; transactions are s
 
 **Preserve first:** `\conninfo`, `SELECT version()`, extension inventory, relevant `SHOW` settings, and topology.
 
-**Discriminate:** log_lock_waits and pg_stat_activity. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** log_lock_waits and pg_stat_activity. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For deadlock or long lock wait, correlate that observation to the exact PostgreSQL target, revision, request/job, and UTC interval; compare `\conninfo`, `SELECT version()`, extension inventory, relevant `SHOW` settings, and topology with one healthy peer or baseline.
 
-**Native action:** `psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1`. Start in the safest PostgreSQL read-only or dry-run mode available. Before changing the schema, migration, query, index, transaction, replication path, or recovery runbook, name which of deadlock or long lock wait and connection exhaustion or pool leak the action distinguishes.
 
 **Root-cause direction:** Transactions lock the same resources in inconsistent order.
 
 **Correction:** Standardize lock order, shorten transactions, and retry the whole transaction.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `deadlock detected` reproduction, verify the deadlock or long lock wait signal cleared in log_lock_waits and pg_stat_activity. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Standardize lock order, shorten transactions, and retry the whole transaction. restored the intended PostgreSQL behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop the migration runner and application feature, release locks, and revert only additive/compatible DDL; for destructive or data-rewriting steps use a tested forward fix or point-in-time recovery, never an improvised down migration.
 
@@ -50,15 +50,15 @@ Constraints enforce invariants; actual plans justify indexes; transactions are s
 
 **Preserve first:** `EXPLAIN (ANALYZE, BUFFERS, WAL, SETTINGS, FORMAT JSON)` from a safe representative environment.
 
-**Discriminate:** pg_stat_activity. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** pg_stat_activity. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For connection exhaustion or pool leak, correlate that observation to the exact PostgreSQL target, revision, request/job, and UTC interval; compare `EXPLAIN (ANALYZE, BUFFERS, WAL, SETTINGS, FORMAT JSON)` from a safe representative environment with one healthy peer or baseline.
 
-**Native action:** `psql ... -c 'SELECT version(), current_setting(''server_version_num'');'`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `psql ... -c 'SELECT version(), current_setting(''server_version_num'');'`. Start in the safest PostgreSQL read-only or dry-run mode available. Before changing the schema, migration, query, index, transaction, replication path, or recovery runbook, name which of connection exhaustion or pool leak and statement timeout from plan or blocker the action distinguishes.
 
 **Root-cause direction:** Clients exceed connection capacity or leak sessions.
 
 **Correction:** Use bounded pools, find leaks, and reserve operator access.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `remaining connection slots are reserved` reproduction, verify the connection exhaustion or pool leak signal cleared in pg_stat_activity. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Use bounded pools, find leaks, and reserve operator access. restored the intended PostgreSQL behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop the migration runner and application feature, release locks, and revert only additive/compatible DDL; for destructive or data-rewriting steps use a tested forward fix or point-in-time recovery, never an improvised down migration.
 
@@ -68,15 +68,15 @@ Constraints enforce invariants; actual plans justify indexes; transactions are s
 
 **Preserve first:** `pg_stat_activity`, `pg_locks`, blockers, wait events, transaction age, and statement fingerprints.
 
-**Discriminate:** pg_stat_activity and EXPLAIN. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** pg_stat_activity and EXPLAIN. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For statement timeout from plan or blocker, correlate that observation to the exact PostgreSQL target, revision, request/job, and UTC interval; compare `pg_stat_activity`, `pg_locks`, blockers, wait events, transaction age, and statement fingerprints with one healthy peer or baseline.
 
-**Native action:** `psql ... -c 'SELECT pid, state, wait_event_type, wait_event, xact_start, query FROM pg_stat_activity;'`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `psql ... -c 'SELECT pid, state, wait_event_type, wait_event, xact_start, query FROM pg_stat_activity;'`. Start in the safest PostgreSQL read-only or dry-run mode available. Before changing the schema, migration, query, index, transaction, replication path, or recovery runbook, name which of statement timeout from plan or blocker and unique/FK/check constraint conflict under concurrency the action distinguishes.
 
 **Root-cause direction:** Query plan or lock wait exceeds its budget.
 
 **Correction:** Separate execution from lock time, inspect blockers and actual plan.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `canceling statement due to statement timeout` reproduction, verify the statement timeout from plan or blocker signal cleared in pg_stat_activity and EXPLAIN. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Separate execution from lock time, inspect blockers and actual plan. restored the intended PostgreSQL behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop the migration runner and application feature, release locks, and revert only additive/compatible DDL; for destructive or data-rewriting steps use a tested forward fix or point-in-time recovery, never an improvised down migration.
 
@@ -86,15 +86,15 @@ Constraints enforce invariants; actual plans justify indexes; transactions are s
 
 **Preserve first:** schema-only dump, constraints, indexes, statistics, bloat, migration history, and table size.
 
-**Discriminate:** constraint metadata. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** constraint metadata. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For unique/FK/check constraint conflict under concurrency, correlate that observation to the exact PostgreSQL target, revision, request/job, and UTC interval; compare schema-only dump, constraints, indexes, statistics, bloat, migration history, and table size with one healthy peer or baseline.
 
-**Native action:** `pg_dump --schema-only --no-owner --no-privileges <database> > schema.sql`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `pg_dump --schema-only --no-owner --no-privileges <database> > schema.sql`. Start in the safest PostgreSQL read-only or dry-run mode available. Before changing the schema, migration, query, index, transaction, replication path, or recovery runbook, name which of unique/FK/check constraint conflict under concurrency and WAL, replication slot, replica lag, backup, or storage pressure the action distinguishes.
 
 **Root-cause direction:** Concurrency or idempotency violates a declared uniqueness invariant.
 
 **Correction:** Use an atomic upsert or return the existing idempotent result.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `duplicate key violates unique constraint` reproduction, verify the unique/FK/check constraint conflict under concurrency signal cleared in constraint metadata. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Use an atomic upsert or return the existing idempotent result. restored the intended PostgreSQL behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop the migration runner and application feature, release locks, and revert only additive/compatible DDL; for destructive or data-rewriting steps use a tested forward fix or point-in-time recovery, never an improvised down migration.
 
@@ -104,15 +104,15 @@ Constraints enforce invariants; actual plans justify indexes; transactions are s
 
 **Preserve first:** WAL generation, replication slots, replay lag, backup status, restore evidence, and RPO/RTO.
 
-**Discriminate:** pg_stat_replication. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** pg_stat_replication. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For WAL, replication slot, replica lag, backup, or storage pressure, correlate that observation to the exact PostgreSQL target, revision, request/job, and UTC interval; compare WAL generation, replication slots, replay lag, backup status, restore evidence, and RPO/RTO with one healthy peer or baseline.
 
-**Native action:** `pg_isready -d <database>` for reachability only, not correctness. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `pg_isready -d <database>` for reachability only, not correctness. Start in the safest PostgreSQL read-only or dry-run mode available. Before changing the schema, migration, query, index, transaction, replication path, or recovery runbook, name which of WAL, replication slot, replica lag, backup, or storage pressure and deadlock or long lock wait the action distinguishes.
 
 **Root-cause direction:** Replay cannot keep up because of write volume, I/O, conflicts, or long queries.
 
 **Correction:** Measure WAL generation/replay and remove the limiting cause.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `replica lag` reproduction, verify the WAL, replication slot, replica lag, backup, or storage pressure signal cleared in pg_stat_replication. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Measure WAL generation/replay and remove the limiting cause. restored the intended PostgreSQL behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop the migration runner and application feature, release locks, and revert only additive/compatible DDL; for destructive or data-rewriting steps use a tested forward fix or point-in-time recovery, never an improvised down migration.
 

@@ -1,32 +1,28 @@
-# XML-Structured Prompting — OAIES Authoring Convention
+# XML-Structured Prompting — The OAIES Standard
 
-> **OAIES repository prompt artifacts use this convention; adopter runtimes may use tested equivalent structures.**
-> **Version:** 1.2.0  
-> **Last updated:** 2026-07-16
+> **This is the only prompt format the OAIES standard uses.**
 
 ---
 
 ## Purpose
 
-Establish a single convention for prompt artifacts authored in the OAIES repository while defining how equivalent runtime representations can preserve the same semantics.
+Establish a single, unambiguous prompt format that works across all frontier models, produces consistent outputs, and is parseable by both humans and code.
 
 ---
 
 ## Why XML
 
-OAIES uses XML in repository-authored prompt files for three operational reasons:
+Three reasons that override all personal preferences:
 
-1. **Repository consistency.** One structure reduces review ambiguity and enables shared tooling. It does not guarantee better performance than every other format.
+1. **Model training alignment.** Claude, GPT-4, and Gemini are all trained on structured data with XML-like markup. XML section boundaries produce more reliable instruction-following than markdown headers or prose.
 
-2. **Explicit boundaries.** Tags distinguish sections for readers and parsers. They do not eliminate long-context degradation or prompt injection.
+2. **"Lost in the middle" resistance.** XML tags mark section boundaries explicitly. Models can locate the `<constraints>` section even in long prompts without losing context of other sections.
 
-3. **Programmatic parseability.** Repository tooling can extract known sections with a standard XML parser. Other delimiters and provider-native structured APIs are conformant when tests show that they preserve the same boundaries and output contract.
+3. **Programmatic parseability.** Your harness layer can extract `<output_format>` sections, validate compliance, and strip metadata automatically. Markdown headers cannot be parsed as reliably.
 
 ---
 
-## How
-
-Use the complete template below for OAIES-authored prompt artifacts, remove irrelevant optional content, resolve every variable, and validate the instantiated XML before evaluation. At runtime, map these sections to the provider's supported message and structured-output primitives when that representation performs at least as well on the workload gate.
+## The Complete Template
 
 ```xml
 <role>
@@ -51,11 +47,12 @@ Your outputs are [quality bar — how good they must be].
 </context>
 
 <instructions>
-Analyze the task internally before responding. Do not reveal private chain-of-thought.
+Think step by step inside <thinking></thinking> tags before responding.
 
-1. [Task-derived action — specific and imperative]
-2. [Additional action when required]
-3. [Verification required by the acceptance criteria]
+1. [First action — specific, imperative]
+2. [Second action — specific, imperative]
+3. [Third action — specific, imperative]
+4. [Verify your output against the constraints before responding]
 </instructions>
 
 <output_format>
@@ -67,10 +64,12 @@ Example:
 
 <constraints>
 MUST:
-- [Each required action or property derived from task or policy]
+- [Required action or property]
+- [Required action or property]
 
 MUST NOT:
-- [Each prohibited action or property derived from task or policy]
+- [Forbidden action]
+- [Forbidden content or pattern]
 
 QUALITY:
 - [Minimum quality threshold]
@@ -79,19 +78,24 @@ QUALITY:
 
 ---
 
-## Planning and Verification
+## Thinking / Scratchpad
 
-When ambiguity, irreversibility, blast radius, cost, or decision authority crosses a defined risk threshold, request a concise plan or verification artifact without requesting private reasoning:
+For complex tasks, always require explicit thinking before output:
 
 ```xml
 <instructions>
-1. Return a concise plan listing inputs, edge cases, risks, and verification.
-2. Analyze privately; do not expose chain-of-thought.
-3. Return the final result with evidence and verification outcomes.
+First, reason through the problem inside <thinking></thinking> tags.
+In your thinking:
+- Identify all inputs and their types
+- Enumerate edge cases
+- Consider failure modes
+- Outline your approach
+
+Then provide your final response outside the thinking tags.
 </instructions>
 ```
 
-**Why:** A visible plan is an intentional work product that can be reviewed. Private reasoning is not a stable or complete debugging surface.
+**Why:** Reasoning before committing to an answer measurably improves accuracy on multi-step tasks. The `<thinking>` block is also a debugging surface — you can see exactly why the model produced a given output.
 
 ---
 
@@ -116,7 +120,7 @@ AVOID: Using passive voice in user-facing content.
 ### Quality thresholds
 Minimum acceptable quality bar.
 ```xml
-QUALITY: Code examples must satisfy [TASK_DERIVED_EXECUTABILITY_REQUIREMENTS].
+QUALITY: Every code example must be complete and runnable without modification.
 ```
 
 ---
@@ -130,9 +134,13 @@ When consistency is critical, embed examples directly:
 <example id="1">
 <input>Create a button component</input>
 <output>
-export const Button = ({ label, onClick }: ButtonProps) =&gt; (
-  &lt;button onClick={onClick}&gt;{label}&lt;/button&gt;
+```typescript
+export const Button = ({ label, onClick, variant = 'primary' }: ButtonProps) => (
+  <button className={styles[variant]} onClick={onClick}>
+    {label}
+  </button>
 );
+```
 </output>
 </example>
 
@@ -145,14 +153,14 @@ export const Button = ({ label, onClick }: ButtonProps) =&gt; (
 </examples>
 ```
 
-**Rule:** Use the smallest evaluated example set that covers representative and boundary cases. No universal example count applies.
+**Rule:** Use 2-3 examples. More than 5 dilutes attention. Less than 2 is insufficient for complex format requirements.
 
 ---
 
 ## Anti-Patterns
 
 ### ❌ Prose instructions
-```xml
+```
 # Wrong
 "Please analyze the code and let me know if there are any issues, 
 focusing on security and performance if possible."
@@ -166,22 +174,22 @@ focusing on security and performance if possible."
 ```
 
 ### ❌ Implicit output format
-```xml
+```
 # Wrong — what format? length? structure?
 "Tell me about the architecture"
 
 # Correct
 <output_format>
 Return an architecture assessment as:
-## Summary
-## Strengths relevant to the decision
+## Summary (2-3 sentences)
+## Strengths (bullet list, max 5)
 ## Concerns (bullet list with severity)
 ## Recommendations (numbered, prioritized)
 </output_format>
 ```
 
 ### ❌ Role description that describes the user, not the model
-```xml
+```
 # Wrong — this describes what the USER wants, not who the MODEL is
 <role>You are helping a developer who wants to improve their code</role>
 
@@ -193,22 +201,6 @@ You do NOT rewrite code unprompted — you identify issues and explain fixes.
 </role>
 ```
 
-## When
-
-Use XML for OAIES repository prompt artifacts. Runtime integrations may use tested equivalent delimiters, separate message fields, or provider-native structured APIs. Escape or encode inserted values correctly, and treat all inserted untrusted content as data.
-
-## Tradeoffs
-
-| Benefit | Cost |
-|---|---|
-| Consistent prompt review | More verbose than compact formats |
-| Programmatic parsing | Requires correct escaping |
-| Explicit section ownership | Does not enforce model behavior |
-
-## Enterprise Considerations
-
-Version prompt schemas, prohibit secrets in templates, classify examples, and validate that XML parsers disable unsafe external entity behavior. Authorization and data isolation remain harness responsibilities.
-
 ---
 
 ## Checklist
@@ -217,13 +209,7 @@ Version prompt schemas, prohibit secrets in templates, classify examples, and va
 - [ ] Context is complete and noise-free
 - [ ] Instructions are numbered and imperative (not suggestions)
 - [ ] Output format is explicit with a concrete example
-- [ ] Applicable constraints are derived from task, policy, and consumer requirements
-- [ ] Plan or approval is included only when a defined risk trigger applies
+- [ ] At least 3 hard constraints specified
+- [ ] Thinking/planning step included for complex tasks
 - [ ] Prompt tested with adversarial input
 - [ ] Prompt versioned with changelog entry
-- [ ] Equivalent runtime representation passes the same workload gate
-
-## Changelog
-
-- 1.2.0 (2026-07-16): Scoped XML to repository authoring, allowed tested equivalent runtime structures, and removed arbitrary counts.
-- 1.1.0 (2026-07-16): Removed exposed reasoning requirements and unsupported universal XML claims.

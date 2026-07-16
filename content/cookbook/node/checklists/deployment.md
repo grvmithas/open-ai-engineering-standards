@@ -20,7 +20,7 @@ Read `engines.node`, `.nvmrc`/toolchain files, the lockfile, and the runtime ima
 
 ## Tradeoffs
 
-The Node.js deployment gate adds manual and target-environment checks that slow promotion. It reduces the chance that version, topology, state, or rollback assumptions reach production.
+Promotion waits for "runtime image and `engines.node` agree on the exact major line" and "lockfile install succeeds without lifecycle surprises and production dependency audit is reviewed". Those Node.js target checks slow release but directly bound unhandled promise rejection or uncaught exception and make this rollback executable: Stop new admission, drain workers and keep idempotency records, then route to the previous image; do not kill consumers while acknowledgements or writes are in flight.
 
 ## Anti-patterns
 
@@ -36,7 +36,7 @@ Node service governance pins runtime and package-manager lines, reviews install 
 
 - [Node.js API](https://nodejs.org/docs/latest/api/)
 - [Don't block the event loop](https://nodejs.org/en/learn/asynchronous-work/dont-block-the-event-loop)
-- [Node.js diagnostics](https://nodejs.org/en/learn/diagnostics)
+- [Node.js diagnostics](https://nodejs.org/en/learn/diagnostics/user-journey)
 - [OWASP Node.js security](https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html)
 
 ## Checklist

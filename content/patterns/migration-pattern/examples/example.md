@@ -1,50 +1,66 @@
-# Migration: Worked Production Example
+# Migration Pattern — Example: Split email into contacts table
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Migration  
+> **Component:** examples/example.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16  
+> **Scenario:** Move `users.email` to `user_contacts.email` under live traffic
 
-## Scenario and artifacts
+---
 
-Move 48,219,771 ledger rows from PostgreSQL to Spanner. MIG-204 defines sum(amount) by currency and account as invariants; backfill checkpoint cp-188; comparator rec-91 reports zero value mismatch; 1/10/50/100% reads each hold 60 minutes.
+## Migration plan (artifact)
 
-## Execution
+### Compatibility matrix
 
-1. Define invariants, loss tolerance, RPO, RTO, and abort thresholds; the record attaches the resulting artifact to the example's primary change or incident ID.
-2. Profile source data including malformed and orphaned records; the record attaches the resulting artifact to the example's primary change or incident ID.
-3. Design expand-migrate-contract compatibility phases; the record attaches the resulting artifact to the example's primary change or incident ID.
-4. Backfill idempotently with checkpoints and dead-letter handling; the record attaches the resulting artifact to the example's primary change or incident ID.
-5. Dual-read or shadow-read and compare semantic results; the record attaches the resulting artifact to the example's primary change or incident ID.
-6. Canary writes; reconcile counts, hashes, money, and referential integrity; the record attaches the resulting artifact to the example's primary change or incident ID.
-7. Shift traffic in measured stages with hold periods; the record attaches the resulting artifact to the example's primary change or incident ID.
-8. Contract old paths only after rollback expiry and restore proof; the record attaches the resulting artifact to the example's primary change or incident ID.
+| Consumer | Current dependency | Required change | Owner |
+|----------|--------------------|-----------------|-------|
+| `api-users` | reads/writes `users.email` | dual-write; then read contacts | Platform |
+| `billing-worker` | reads `users.email` | switch read after cutover | Billing |
+| `support-export` | SQL on `users.email` | update query | Support eng |
 
-## Verification
+### Phases
 
-- The owner records raw evidence that record and monetary reconciliation = 100%.
-- The owner records raw evidence that unclassified mismatch count = 0.
-- The owner records raw evidence that error-budget burn stays below abort threshold.
-- The owner records raw evidence that restore completes within RTO.
+| Phase | Change | Gate | Rollback | PONR? |
+|-------|--------|------|----------|-------|
+| Expand | Create `user_contacts`; backfill | backfill 100%; null email=0 | Keep table | No |
+| Dual | App writes both; read still users | mismatch < 0.01% / 24h | Stop dual-write | No |
+| Cutover | Primary read from contacts | p99 + error SLO 48h soak | Flip read back to users | No |
+| Contract | Stop writing `users.email`; drop column later | no readers in inventory | **Irreversible drop** | **Yes** |
 
-## Rollback exercise
+### Reconciliation
 
-Migration examples/example rollback exercise gate 1 is accepted only when "record and monetary reconciliation = 100%" is source-verifiable; otherwise, stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events.
+```sql
+-- counts
+SELECT
+  (SELECT count(*) FROM users WHERE email IS NOT NULL) AS u,
+  (SELECT count(*) FROM user_contacts WHERE type='email') AS c;
 
-## Tradeoffs
+-- semantic sample
+SELECT u.id
+FROM users u
+LEFT JOIN user_contacts c ON c.user_id=u.id AND c.type='email'
+WHERE u.email IS DISTINCT FROM c.value
+LIMIT 100;
+```
 
-Migration examples/example deliberately spends additional review time to protect "record and monetary reconciliation = 100%"; evidence weakness triggers "Stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events".
+### Observability
 
-## Anti-patterns
+| Signal | Threshold | Action |
+|--------|-----------|--------|
+| Dual mismatch rate | < 0.01% over 24h | Block cutover |
+| API 5xx on `/users` | < 0.1% | Rollback cutover |
+| Backfill lag | 0 remaining | Block dual start |
 
-Migration examples/example rejects shortcuts around "Define invariants, loss tolerance, RPO, RTO, and abort thresholds." because they sever the evidence chain required for "record and monetary reconciliation = 100%".
+### Sample gate result (before cutover)
 
-## Enterprise considerations
+| Check | Result |
+|-------|--------|
+| Count u vs c | 1_204_332 vs 1_204_332 |
+| Semantic sample | 0 rows |
+| 24h mismatch metric | 0.002% |
 
-Migration examples/example governance binds owner, policy revision, and retained proof to "record and monetary reconciliation = 100%", with "Stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events" as the recorded recovery authority.
+```text
+Cutover approver: J. Patel (SSO)  Date: 2026-07-14
+Notes: Contract DROP deferred 14 days after soak.
+```
 
-## Checklist
-
-- [ ] Every stated artifact has an owner and storage location in the system of record
-- [ ] Reported outcomes come from executed checks
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+This example **is** the artifact — not a pointer elsewhere.

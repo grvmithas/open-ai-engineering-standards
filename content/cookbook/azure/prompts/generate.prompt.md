@@ -8,11 +8,11 @@ Generate a production-ready subscription workload, Bicep module, managed identit
 
 ## Why
 
-Infrastructure is declarative; identities are credentialless and least-privilege; private connectivity, policy, diagnostics, and cost ownership are explicit. This prompt requires native Azure artifacts instead of substituting a generic incident or code-generation checklist.
+Infrastructure is declarative; identities are credentialless and least-privilege; private connectivity, policy, diagnostics, and cost ownership are explicit. The generate decision is accepted only when Bicep/ARM source, parameter provenance, compiled template, and What-If result supports it; generic generate advice cannot establish that Azure state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Azure evidence for the subscription workload, Bicep module, managed identity, private endpoint, or release pipeline. Apply the invariant "Infrastructure is declarative; identities are credentialless and least-privilege; private connectivity, policy, diagnostics, and cost ownership are explicit." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Capture Azure CLI/Bicep versions, resource-provider API versions, and service SK
 
 ## Tradeoffs
 
-The prompt rejects fast code generation when Azure version, configuration, or target evidence is absent. That delay prevents plausible output from crossing an unsupported subscription workload, Bicep module, managed identity, private endpoint, or release pipeline boundary.
+Generation waits for Bicep/ARM source, parameter provenance, compiled template, and What-If result and tenant, subscription, resource-group, principal object ID, role assignments, deny assignments, and policy state. That extra Azure discovery is justified because the output must prove "Bicep uses explicit supported API versions and deterministic names/scopes" and survive management-plane authorization or policy denial rather than merely compile.
 
 ## Anti-patterns
 

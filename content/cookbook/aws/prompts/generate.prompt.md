@@ -8,11 +8,11 @@ Generate a production-ready account workload, CloudFormation/CDK stack, IAM role
 
 ## Why
 
-Accounts and cells bound blast radius; role credentials are short-lived; infrastructure, quotas, retries, and failure isolation are explicit. This prompt requires native AWS artifacts instead of substituting a generic incident or code-generation checklist.
+Accounts and cells bound blast radius; role credentials are short-lived; infrastructure, quotas, retries, and failure isolation are explicit. The generate decision is accepted only when template/CDK source, synthesized CloudFormation, change set, stack events, and drift status supports it; generic generate advice cannot establish that AWS state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized AWS evidence for the account workload, CloudFormation/CDK stack, IAM role, VPC path, Lambda function, or release. Apply the invariant "Accounts and cells bound blast radius; role credentials are short-lived; infrastructure, quotas, retries, and failure isolation are explicit." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Capture AWS CLI/CDK/CloudFormation transform versions, partition, region, servic
 
 ## Tradeoffs
 
-The prompt rejects fast code generation when AWS version, configuration, or target evidence is absent. That delay prevents plausible output from crossing an unsupported account workload, CloudFormation/CDK stack, IAM role, VPC path, Lambda function, or release boundary.
+Generation waits for template/CDK source, synthesized CloudFormation, change set, stack events, and drift status and caller identity, IAM identity/resource policies, permission boundaries, session policy, SCP, and explicit denies. That extra AWS discovery is justified because the output must prove "IAM statements constrain action, resource, condition, and principal without wildcard shortcuts" and survive policy-chain AccessDenied rather than merely compile.
 
 ## Anti-patterns
 

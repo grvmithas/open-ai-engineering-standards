@@ -1,41 +1,37 @@
-# Planner: Failure Modes
+# Planner Pattern — Failures
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Planner  
+> **Component:** failures.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Planner failures operationalizes this pattern outcome: turn ambiguous engineering work into a decision-complete execution contract.
+## Failure 1: Plan too high-level
 
-| Failure | Observable signal | Recovery |
-|---|---|---|
-| task-list masquerading as a plan | coder must still choose architecture | replan around interfaces and decisions |
-| false precision | line-level steps describe code not contracts | raise detail to behavior and boundaries |
-| dependency inversion | later work is required by an earlier step | recompute the DAG |
-| approval theater | reviewer cannot explain the design | repeat review with teach-back |
+**Symptom:** Coder invents Redis vs in-memory vs CDN for “add a caching layer.”  
+**Cause:** Plan stated outcomes without choosing mechanisms.  
+**Recovery:** Return to planning. Enumerate options, pick one, record rejected alternatives. Re-approve.
 
-## Rollback failure
+## Failure 2: Plan too low-level
 
-Planner failures rollback failure gate 2 is accepted only when "decision completeness = 100%" is source-verifiable; otherwise, stop implementation, revert partial increments, and return to the last approved plan revision.
+**Symptom:** Plan contains full method bodies; human approval is meaningless.  
+**Cause:** Planner overstepped into coder role.  
+**Recovery:** Strip to interfaces, data models, sequences, and tests. Keep code out of the plan.
 
-## Tradeoffs
+## Failure 3: Rubber-stamp approval
 
-Planner failures deliberately spends additional review time to protect "decision completeness = 100%"; evidence weakness triggers "Stop implementation, revert partial increments, and return to the last approved plan revision".
+**Symptom:** Implementation diverges; reviewer says they never understood the plan.  
+**Cause:** Approval without comprehension.  
+**Recovery:** Enforce the understanding test — approver restates the plan in their own words. Invalidate prior approval.
 
-## Anti-patterns
+## Failure 4: Silent mid-flight deviation
 
-Planner failures rejects shortcuts around "Classify ambiguity and list decisions execution must not make." because they sever the evidence chain required for "decision completeness = 100%".
+**Symptom:** PR touches unplanned paths or breaks an unlisted contract.  
+**Cause:** Coder “just fixed it” without replanning.  
+**Recovery:** Freeze merge. Diff against plan. Replan deltas. Re-approve. Treat as process defect in retro.
 
-## Enterprise considerations
+## Failure 5: No rollback
 
-Planner failures governance binds owner, policy revision, and retained proof to "decision completeness = 100%", with "Stop implementation, revert partial increments, and return to the last approved plan revision" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Detection exists for task-list masquerading as a plan
-- [ ] Detection exists for false precision
-- [ ] Detection exists for dependency inversion
-- [ ] Detection exists for approval theater
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+**Symptom:** Bad deploy has no documented revert; team improvises under pressure.  
+**Cause:** Plan omitted rollback or waved it as “redeploy previous.”  
+**Recovery:** Add stage-specific rollback (including data expansion/contraction). Block release until present.

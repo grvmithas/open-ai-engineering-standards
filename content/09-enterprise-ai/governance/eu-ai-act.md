@@ -1,6 +1,6 @@
 # EU AI Act Engineering Control Map
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative OAIES implementation profile
 
@@ -33,7 +33,11 @@ As of **2026-07-16**, the principal Article 113 timeline is:
 | 2026-08-02 | Most remaining provisions apply | This date is near; release plans must work backward from conformity and evidence lead time |
 | 2027-08-02 | Article 6(1) classification and corresponding obligations apply | Applies to specified product-safety-component/product categories; verify exact Article 113(c) scope |
 
-Do not encode this table as legal logic. Store an `applicability_reviewed_at`, `legal_source_version`, and `next_review_at`; require counsel to update the decision when authoritative interpretation changes.
+The Commission’s AI Act policy page, last updated 2026-07-07, reports a **political agreement** on an AI Omnibus that would move certain Annex III high-risk dates to 2027-12-02 and high-risk systems embedded in regulated products to 2028-08-02. A political agreement or policy summary is not a substitute for an enacted amending regulation in the Official Journal. Counsel must track the legislative act and use the legally effective text on the decision date.
+
+For GPAI, Commission guidance states: obligations apply from 2025-08-02 for models placed on the market from that date; Commission enforcement powers apply from 2026-08-02; providers of GPAI models placed on the market before 2025-08-02 must comply by 2027-08-02 under the transitional rule. Verify the specific model’s placement date and current guidance.
+
+Do not encode any date in this section as permanent legal logic. Store `applicability_reviewed_at`, `official_journal_version`, `pending_amendments_reviewed`, and `next_review_at`; require counsel to update the decision when a binding amendment or authoritative interpretation changes.
 
 ## Operator-role map
 One organization can hold several roles for the same value chain. Record each role independently.
@@ -106,7 +110,7 @@ Do not use the `10^25` FLOP presumption in Article 51 as the only systemic-risk 
 - **EA-07 Change control:** substantial-modification and intended-purpose triggers are implemented in release intake.
 
 ## Evidence contract
-The decision record is the **EU AI Act applicability and evidence file**. It records provider/deployer/importer/distributor/GPAI roles; territory; intended purpose; Article/Annex basis; dates; controls; counsel decision. The EU AI Act compliance owner owns completeness; the evidence is invalid when intended purpose, model role, or value-chain contract changes. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+The decision record is the **EU AI Act applicability and evidence file**. It records provider/deployer/importer/distributor/GPAI roles; territory; intended purpose; Article/Annex basis; dates; controls; counsel decision. The EU AI Act compliance owner owns completeness; the evidence is invalid when intended purpose, model role, or value-chain contract changes. Preserve legal/applicability decisions, system and data facts, contracts, evidence versions, approvals, and next-review triggers in the system record.
 
 ## Failure response and recovery
 **Trigger:** a prohibited-practice signal or missed high-risk duty is found.
@@ -114,7 +118,7 @@ The decision record is the **EU AI Act applicability and evidence file**. It rec
 **Immediate response:** stop the affected use, preserve logs, notify legal/compliance, and apply required incident/conformity processes. Preserve the EU AI Act applicability and evidence file, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to eu ai act engineering control map.
 
 ## Decision authority
-The **EU AI Act compliance owner** accepts the operational decision. The **qualified legal counsel** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+The **EU AI Act compliance owner** accepts the operational decision. The **qualified legal counsel** provides independent challenge for high-risk scope, failed gates, or exceptions. Policy engines can enforce approved boundaries; accountable operators, counsel, privacy, risk, and business owners decide applicability and residual risk.
 
 ## Tradeoffs
 | Choice | Benefit | Cost |
@@ -130,12 +134,12 @@ The **EU AI Act compliance owner** accepts the operational decision. The **quali
 - Do not claim conformity or certification without formal assessment.
 
 ## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+For **EU AI Act Engineering Control Map**, this profile translates governance questions into engineering records. Qualified authorities still decide legal duties, conformity, and risk acceptance.
 
 | Source | Relationship for EU AI Act Engineering Control Map | Boundary |
 |---|---|---|
-| NIST AI RMF | GOVERN 1.1 and MAP 1.5 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 may support evidence but does not establish EU conformity | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| NIST AI RMF | GOVERN 1.1 and MAP 1.5 | Framework mappings organize evidence but do not determine legal obligations. |
+| ISO/IEC 42001 | 42001 may support evidence but does not establish EU conformity | Certification, where pursued, is scoped to a management system and does not certify each AI output or legal compliance. |
 | Domain threat/control source | Regulation-specific security duties remain in Articles 15 and 55 | Test only the threats applicable to the documented system and release |
 
 ## Checklist
@@ -152,7 +156,7 @@ This profile is informative. It helps implement the following relationships and 
 ## References
 - European Union, [Regulation (EU) 2024/1689, Official Journal text](https://eur-lex.europa.eu/eli/reg/2024/1689/oj) (accessed 2026-07-16).
 - European Commission, [Regulatory framework for AI](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai) (accessed 2026-07-16). Use guidance only with the binding Regulation and current implementing/delegated acts.
-- European Commission, [General-purpose AI models](https://digital-strategy.ec.europa.eu/en/policies/general-purpose-ai) (accessed 2026-07-16).
+- European Commission, [Guidelines for providers of general-purpose AI models](https://digital-strategy.ec.europa.eu/en/policies/guidelines-gpai-providers) (accessed 2026-07-16).
 - NIST, [AI RMF 1.0](https://doi.org/10.6028/NIST.AI.100-1), GOVERN and MAP (accessed 2026-07-16); cross-framework implementation aid only.
 - ISO, [ISO/IEC 42001:2023](https://www.iso.org/standard/81230.html) (accessed 2026-07-16); certification does not establish EU AI Act conformity.
 

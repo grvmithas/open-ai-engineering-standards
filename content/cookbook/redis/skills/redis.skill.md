@@ -45,7 +45,7 @@ Every keyspace defines type, cardinality, TTL, memory policy, atomicity, durabil
 
 ## Verification
 
-The evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. For manual checks, record environment, operator, exact steps, and result.
+The Redis evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. It must also retain `INFO server`, `INFO memory`, `INFO persistence`, `INFO replication`, and `INFO cluster`. For manual keyspace, cache, session store, rate limiter, stream consumer, or Redis topology checks, record environment, operator, exact steps, and result.
 
 ## Failure recovery
 
@@ -61,7 +61,7 @@ Report the Redis boundary, facts, hypotheses, commands actually run, changed art
 
 ## Termination criteria
 
-Finish when native validation, all applicable review/deployment gates, and recovery signals pass, or when a named owner accepts a documented blocker through the repository's risk process.
+Finish the Redis workflow only when native validation, applicable review/deployment gates, and recovery signals for maxmemory/OOM or unsafe eviction and WRONGTYPE or key-schema collision pass. Otherwise record a named owner and the exact missing Redis evidence; risk acceptance does not convert a failed native check into a pass.
 
 ## Version-aware caution
 
@@ -69,7 +69,7 @@ Capture `redis_version`, mode, persistence, replication/cluster state, client li
 
 ## Tradeoffs
 
-This skill spends time fingerprinting Redis and collecting native evidence before editing. It reduces throughput for trivial changes but prevents incorrect commands, unsupported APIs, and state-destructive rollback.
+This skill fingerprints Redis through `INFO server`, `INFO memory`, `INFO persistence`, `INFO replication`, and `INFO cluster` before editing and retains `SLOWLOG GET`, `LATENCY DOCTOR`, commandstats, keyspace stats, and sampled `MEMORY USAGE` before recovery. The added work is warranted when maxmemory/OOM or unsafe eviction could make Disable writes to the new versioned key prefix and revert clients; let disposable keys expire or delete them with bounded SCAN/UNLINK jobs—never use FLUSHDB on a shared instance.
 
 ## Anti-patterns
 

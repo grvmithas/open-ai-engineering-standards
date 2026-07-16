@@ -21,9 +21,9 @@ Human-readable policies do not provide deterministic field presence, controlled 
 6. Run `node schemas/validate-instances.mjs` to compile every schema and test its valid/invalid fixture pair with Ajv Draft 2020-12.
 7. Store the schema `$id`, artifact digest, approver, and evidence references with each release.
 
-`validate-instances.mjs` pins `ajv-cli@5.0.0` and obtains it through `npx --yes`; it does not modify `package.json` or install a repository dependency. Environments that prohibit network access MUST mirror that exact package in their approved npm registry or pre-populate the npm cache. The structural validator uses only the Node.js standard library but is not a substitute for Draft 2020-12 instance validation.
+`validate-instances.mjs` pins `ajv-cli@5.0.0` and `ajv-formats@3.0.1` and obtains them through `npx --yes`; it does not modify `package.json` or install a repository dependency. Environments that prohibit network access MUST mirror those exact packages in their approved npm registry or pre-populate the npm cache. The structural validator uses only the Node.js standard library but is not a substitute for Draft 2020-12 instance validation.
 
-Fixtures are aggregated in `fixtures/valid.v1.json` and `fixtures/invalid.v1.json`, keyed by schema filename. Every contract has one accepted and one rejected instance.
+Fixtures are aggregated in `fixtures/valid.v1.json` and `fixtures/invalid.v1.json`, keyed by schema filename. Every contract has one accepted and one rejected instance. The instance validator also reconciles fixture control references and kernel classifications and checks lifecycle chronology that JSON Schema cannot compare.
 
 | Contract | File | Primary system of record |
 |---|---|---|
@@ -75,6 +75,10 @@ Protect artifacts according to their `dataClassification`; apply immutable reten
 - [ ] No secret or unnecessary personal data is embedded
 
 ## Changelog
+
+### 1.0.1 — 2026-07-16
+
+- Aligned contracts with the OAIES kernel, added paired fixtures, and added full Draft 2020-12 instance and semantic validation.
 
 ### 1.0.0 — 2026-07-16
 

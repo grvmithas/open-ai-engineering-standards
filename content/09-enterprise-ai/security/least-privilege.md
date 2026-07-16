@@ -1,6 +1,6 @@
 # Least Privilege for AI Agents
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative OAIES implementation profile
 
@@ -21,7 +21,7 @@ Use for every retrieval, model, and tool interaction.
 5. Revoke automatically and review usage.
 
 ## Evidence contract
-The decision record is the **agent capability grant ledger**. It records delegator; agent; audience; tenant; scopes; resources; expiry; approval; use; revocation. The resource service owner owns completeness; the evidence is invalid when standing or wildcard privilege appears. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+The decision record is the **agent capability grant ledger**. It records delegator; agent; audience; tenant; scopes; resources; expiry; approval; use; revocation. The resource service owner owns completeness; the evidence is invalid when standing or wildcard privilege appears. Security evidence contains target digest, threat assumptions, exact test steps, exploit preconditions, observed result, remediation, and independent retest.
 
 ## Failure response and recovery
 **Trigger:** an action occurs outside the approved task capability.
@@ -29,7 +29,7 @@ The decision record is the **agent capability grant ledger**. It records delegat
 **Immediate response:** revoke the grant, stop the agent, and reconcile downstream side effects. Preserve the agent capability grant ledger, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to least privilege for ai agents.
 
 ## Decision authority
-The **resource service owner** accepts the operational decision. The **PAM/IAM assurance** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+The **resource service owner** accepts the operational decision. The **PAM/IAM assurance** provides independent challenge for high-risk scope, failed gates, or exceptions. Preventive controls may block requests and revoke capability; security and service owners command containment, disclosure, and restoration.
 
 ## Tradeoffs
 | Choice | Benefit | Cost |
@@ -45,12 +45,12 @@ The **resource service owner** accepts the operational decision. The **PAM/IAM a
 - Monitor unused and anomalous permissions.
 
 ## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+The **Least Privilege for AI Agents** guidance is bounded by its threat model and target release. Successful verification demonstrates tested controls, not the absence of undiscovered attack paths.
 
 | Source | Relationship for Least Privilege for AI Agents | Boundary |
 |---|---|---|
-| NIST AI RMF | GOVERN 2.3; MANAGE 2.2 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clause 8.1 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| NIST AI RMF | GOVERN 2.3; MANAGE 2.2 | Map only applicable NIST outcomes to the tested architecture and threat scenario. |
+| ISO/IEC 42001 | 42001 clause 8.1 | Management-system evidence cannot substitute for technical verification of this control. |
 | Domain threat/control source | LLM06 Excessive Agency | Test only the threats applicable to the documented system and release |
 
 ## Checklist

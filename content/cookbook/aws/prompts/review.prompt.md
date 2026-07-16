@@ -8,11 +8,11 @@ Review a AWS change using native configuration, failure, and operational evidenc
 
 ## Why
 
-Accounts and cells bound blast radius; role credentials are short-lived; infrastructure, quotas, retries, and failure isolation are explicit. This prompt requires native AWS artifacts instead of substituting a generic incident or code-generation checklist.
+Accounts and cells bound blast radius; role credentials are short-lived; infrastructure, quotas, retries, and failure isolation are explicit. The review decision is accepted only when caller identity, IAM identity/resource policies, permission boundaries, session policy, SCP, and explicit denies supports it; generic review advice cannot establish that AWS state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized AWS evidence for the account workload, CloudFormation/CDK stack, IAM role, VPC path, Lambda function, or release. Apply the invariant "Accounts and cells bound blast radius; role credentials are short-lived; infrastructure, quotas, retries, and failure isolation are explicit." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Capture AWS CLI/CDK/CloudFormation transform versions, partition, region, servic
 
 ## Tradeoffs
 
-AWS review takes longer because configuration and runtime state must be correlated with source. It eliminates generic style findings and prioritizes defects that can change production behavior.
+AWS review correlates source with caller identity, IAM identity/resource policies, permission boundaries, session policy, SCP, and explicit denies and VPC route tables, security groups, NACLs, endpoints, DNS, and Flow Logs. The cost is a deeper review; the benefit is direct evidence for "IAM statements constrain action, resource, condition, and principal without wildcard shortcuts" and "account, region, partition, and environment are explicit stack inputs" instead of generic style findings.
 
 ## Anti-patterns
 

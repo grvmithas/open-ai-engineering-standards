@@ -1,6 +1,6 @@
 # Evaluation Metrics Catalog
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative OAIES implementation profile
 
@@ -21,7 +21,7 @@ Use when specifying evaluation plans and dashboards.
 5. Report numerator, denominator, abstentions, confidence interval, slice results, judge version, and threshold rationale.
 
 ## Evidence contract
-The decision record is the **metric specification registry**. It records metric ID; unit; numerator; denominator; abstention rule; severity weighting; confidence method; owner. The measurement owner owns completeness; the evidence is invalid when an implementation changes without a metric-version change. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+The decision record is the **metric specification registry**. It records metric ID; unit; numerator; denominator; abstention rule; severity weighting; confidence method; owner. The measurement owner owns completeness; the evidence is invalid when an implementation changes without a metric-version change. Dataset, annotation, rubric, scorer, and run identifiers are content-addressed so a disputed result can be replayed.
 
 ## Failure response and recovery
 **Trigger:** denominator integrity fails or a severe error is averaged away.
@@ -29,7 +29,7 @@ The decision record is the **metric specification registry**. It records metric 
 **Immediate response:** invalidate the report and recompute from claim-level annotations. Preserve the metric specification registry, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to evaluation metrics catalog.
 
 ## Decision authority
-The **measurement owner** accepts the operational decision. The **domain risk reviewer** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+The **measurement owner** accepts the operational decision. The **domain risk reviewer** provides independent challenge for high-risk scope, failed gates, or exceptions. Evaluation automation enforces the approved statistical rule; the evaluation and domain owners decide ambiguity, severe-case disposition, and residual uncertainty.
 
 ## Tradeoffs
 | Choice | Benefit | Cost |
@@ -47,12 +47,12 @@ The **measurement owner** accepts the operational decision. The **domain risk re
 - Provide human appeal for consequential outcomes.
 
 ## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+For **Evaluation Metrics Catalog**, this informative profile governs measurement evidence for the stated decision only; it neither makes an evaluator authoritative nor transfers fitness decisions to a framework.
 
 | Source | Relationship for Evaluation Metrics Catalog | Boundary |
 |---|---|---|
-| NIST AI RMF | MEASURE 2.5 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clause 9.1 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| NIST AI RMF | MEASURE 2.5 | Interpret outcomes against the documented use case, sampling frame, and uncertainty. |
+| ISO/IEC 42001 | 42001 clause 9.1 | Use management-system evidence only within the organization’s declared scope and independent assessment process. |
 | Domain threat/control source | Misinformation and overreliance metrics | Test only the threats applicable to the documented system and release |
 
 ## Checklist

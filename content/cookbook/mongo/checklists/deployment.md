@@ -20,7 +20,7 @@ Capture server/FCV, driver, topology, storage engine, Atlas/managed tier, and fe
 
 ## Tradeoffs
 
-The MongoDB deployment gate adds manual and target-environment checks that slow promotion. It reduces the chance that version, topology, state, or rollback assumptions reach production.
+Promotion waits for "record server, FCV, driver, topology, oplog window, balancer, chunk distribution, and backups" and "introduce validator changes with compatible validation level/action before enforcement". Those MongoDB target checks slow release but directly bound E11000 unique-index conflict and make this rollback executable: Disable writers for the new schema, restore dual-shape readers, and keep additive indexes/fields until old clients are stable; do not mass-update documents back without a resumable, audited migration.
 
 ## Anti-patterns
 

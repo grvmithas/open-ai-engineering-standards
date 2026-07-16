@@ -1,39 +1,38 @@
-# Hotfix: Subagents
+# Hotfix Pattern — Subagents
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Hotfix  
+> **Component:** subagents.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Hotfix subagents operationalizes this pattern outcome: contain an active production defect with the smallest reversible intervention.
+| Subagent | Role | When invoked | Output |
+|----------|------|--------------|--------|
+| Impact Assessor | Quantifies who/what is hurt | After SEV declare | Impact statement + success metric |
+| Containment Advisor | Orders flag/route/LKG options | Immediately | Ranked containment table |
+| Minimal Diff Scout | Finds smallest safe code change | If code required | Allowed path list + patch sketch |
+| Verification Runner | Runs probes and abort watches | After each action | Pass/fail with timestamps |
 
-| Subagent | Mandate | Required output |
-|---|---|---|
-| Incident commander | owns priorities, decisions, and communication | incident commander artifact with source IDs, uncertainty, and stop status |
-| Hotfix implementer | creates the minimal change | hotfix implementer artifact with source IDs, uncertainty, and stop status |
-| Safety reviewer | independently checks blast radius and rollback | safety reviewer artifact with source IDs, uncertainty, and stop status |
+## Impact Assessor contract
 
-## Delegation protocol
+- Prefer numbers: error rate, users, regions, $ if known
+- Define the metric that means “contained”
+- Separate confirmed impact from speculation
 
-Hotfix specialists receive only sources needed for "Establish incident command, severity, roles, and update cadence."; the parent retains effect approval and accountability for "time to containment meets severity target".
+## Containment Advisor contract
 
-## Tradeoffs
+- Prefer faster reversible actions over clever fixes
+- Always include flag-off and LKG redeploy if they exist
+- Estimate ETA honestly; escalate if ETA > SEV budget
 
-Hotfix subagents deliberately spends additional review time to protect "time to containment meets severity target"; evidence weakness triggers "Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment".
+## Minimal Diff Scout contract
 
-## Anti-patterns
+- Allowed paths only; explicit forbidden list (fmt, deps, refactors)
+- No drive-by tests unrelated to the failure unless required to unlock CI
+- Call out if minimal patch is unsafe — recommend contain-only
 
-Hotfix subagents rejects shortcuts around "Establish incident command, severity, roles, and update cadence." because they sever the evidence chain required for "time to containment meets severity target".
+## Verification Runner contract
 
-## Enterprise considerations
-
-Hotfix subagents governance binds owner, policy revision, and retained proof to "time to containment meets severity target", with "Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Incident commander returned its required evidence
-- [ ] Hotfix implementer returned its required evidence
-- [ ] Safety reviewer returned its required evidence
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- Use pre-agreed probes; do not invent success
+- Watch abort criteria for the hotfix deploy
+- On fail, recommend return to containment, not another speculative patch

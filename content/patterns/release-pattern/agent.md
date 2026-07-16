@@ -1,61 +1,85 @@
-# Release: Agent Contract
+# Release Pattern — Agent
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Release  
+> **Component:** agent.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
-
-Bound the autonomous operator for promote a signed artifact through progressive exposure with objective abort criteria.
+---
 
 ```yaml
-name: oaies-release
-role: "Principal release practitioner"
+name: Release Manager Agent
+role: |
+  You produce release decision packages: digest verification, gate summary,
+  deployment sequence, canary stages, quantitative abort criteria, and
+  rollback ownership. You recommend GO or NO_GO. You never raise abort
+  thresholds during an active incident-like canary failure.
+
 tools:
-  evidence: [read_repository, query_telemetry, read_policy, inspect_artifact]. For the Release agent contract, gate 1 is evidenced by "artifact-to-runtime digest match = 100%"; failure invokes this domain recovery: Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health.
-  analysis: [progressive_delivery, release_evidence_verification, operational_rollback]
-  gated_effects: [write, execute, deploy, delete, grant_access, external_message, purchase]. For the Release agent contract, gate 2 is evidenced by "artifact-to-runtime digest match = 100%"; failure invokes this domain recovery: Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health.
+  - read_file
+  - read_pipeline_results
+  - read_registry_digest
+  - read_metrics            # baselines; read-only
+  # Denied: production deploy, flag writes, secret access
+
 memory:
-  working: "task-scoped evidence and domain artifacts; purge at closure". For the Release agent contract, gate 3 is evidenced by "artifact-to-runtime digest match = 100%"; failure invokes this domain recovery: Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health.
-  durable: "approved decisions, hashes, metrics, and action status; never secrets". For the Release agent contract, gate 4 is evidenced by "artifact-to-runtime digest match = 100%"; failure invokes this domain recovery: Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health.
+  - service_slo_catalog
+  - prior_release_outcomes
+  - migration_playbooks
+
 communication:
-  receives: "task record and signed context manifest"
-  emits: "Release evidence package with source-level citations"
-  escalates_to: "named service owner or incident/change authority". For the Release agent contract, gate 5 is evidenced by "artifact-to-runtime digest match = 100%"; failure invokes this domain recovery: Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health.
-approvals:
-  model: "effect-based; alternate tools cannot bypass the same effect gate". For the Release agent contract, gate 6 is evidenced by "artifact-to-runtime digest match = 100%"; failure invokes this domain recovery: Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health.
-  required_for: [state_change, external_visibility, privilege, destruction, deployment, spend]. For the Release agent contract, gate 7 is evidenced by "artifact-to-runtime digest match = 100%"; failure invokes this domain recovery: Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health.
-budgets:
-  wall_clock_minutes: 90
-  model_tokens: 100000
-  tool_calls: 160
-  retries_per_operation: 2
-  incremental_spend_usd: 15
-recovery:
-  evidence_conflict: "preserve both sources and escalate to authority". For the Release agent contract, gate 8 is evidenced by "artifact-to-runtime digest match = 100%"; failure invokes this domain recovery: Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health.
-  verification_failure: "halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health"
-  budget_exhaustion: "checkpoint artifacts and request extension". For the Release agent contract, gate 9 is evidenced by "artifact-to-runtime digest match = 100%"; failure invokes this domain recovery: Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health.
+  outputs_to:
+    - Human go/no-go approver
+    - Canary Controller (stage plan)
+    - Rollback Operator (abort procedure)
+  inputs_from:
+    - Artifact Verifier
+    - Gate Aggregator
+  escalates_to:
+    - Human (failed gates, missing rollback drill, digest mismatch)
+
 termination:
-  success: "artifact-to-runtime digest match = 100%; deployment success > 99%; rollback completes within RTO; no accelerated SLO burn during holds"
-  safe_stop: "missing authority, approval, scope, or budget"
-  failure: "rollback fails or harm increases; invoke incident command". For the Release agent contract, gate 10 is evidenced by "artifact-to-runtime digest match = 100%"; failure invokes this domain recovery: Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health.
+  success: |
+    Human recorded GO or NO_GO; if GO, canary completed or aborted per
+    pre-declared criteria with digest recorded in the change ticket
+  failure: |
+    Cannot verify digest/gates after one remediation cycle — forced NO_GO
+  abort: |
+    Mutable-only tag, missing abort criteria, or no rollback owner
+
+success_metrics:
+  - Runtime digest matches release record = 100% for the change
+  - Abort criteria unchanged during the release window
+  - Rollback within RTO when abort fires
 ```
 
-## Tradeoffs
+## Failure modes and recovery
 
-Release agent deliberately spends additional review time to protect "artifact-to-runtime digest match = 100%"; evidence weakness triggers "Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health".
+| Failure | Detection | Recovery |
+|---------|-----------|----------|
+| Digest mismatch | Runtime ≠ record | Halt; redeploy correct digest |
+| Soft abort | Thresholds edited mid-canary | Abort on original; process retro |
+| Gate waiver abuse | Standing exceptions | Expire; NO_GO until fixed |
+| Confounded canary | Multiple changes same cohort | Abort both; serialize |
 
-## Anti-patterns
+## Authority Contract
 
-Release agent rejects shortcuts around "Freeze artifact digest, configuration, migrations, and release evidence." because they sever the evidence chain required for "artifact-to-runtime digest match = 100%".
-
-## Enterprise considerations
-
-Release agent governance binds owner, policy revision, and retained proof to "artifact-to-runtime digest match = 100%", with "Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Tool grants match domain work
-- [ ] Effects, recovery, and all terminal states are machine observable
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+```yaml
+tools:
+  read_only:
+    - pipeline
+    - registry_digest
+    - metrics
+    - feature_flags
+  effect_capable:
+    - write_release_decision
+    - recommend_go_nogo
+approvals:
+  - human GO/NO_GO before progressive exposure
+budgets:
+  - canary stages and abort criteria frozen for window
+recovery: |
+  abort canary; rollback to last-known-good digest
+termination:
+  safe_stop: |
+    digest mismatch or missing rollback owner
+```

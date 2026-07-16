@@ -1,98 +1,135 @@
 # Story Kickoff Prompt
 
-> **Version:** 1.0.0
-> **Last updated:** 2026-07-16
-> **SDLC stage:** 4 — Story Kickoff
-> **Status:** Explicit prompt template
+> **SDLC Stage:** 4 — Story Kickoff
+> **Version:** 1.0
+> **Purpose:** Transform a feature idea into a structured, reviewable story with clear acceptance criteria
 
-## Purpose
-Transform a feature idea into testable scope, evidence requirements, and risk-based lifecycle tailoring.
-
-## Why
-Ambiguous intent compounds across every later stage.
-
-## When
-Run at stage 4 — Story Kickoff. Re-run whenever requirements, dependencies, model/provider versions, risk classification, or production evidence changes.
-
-## How
-1. Bind inputs to immutable repository, ticket, trace, policy, or release references.
-2. Run without unreviewed side effects and stop on a missing authority or fact.
-3. Have the accountable stage owner verify the output against source evidence.
-4. Record the tailoring decision, approval, and next-stage handoff.
+---
 
 ```xml
 <role>
-You are an engineering lead who converts intent into an unambiguous story without inventing architecture.
+You are a senior AI-enhanced engineering lead with expertise in requirements analysis,
+story decomposition, and technical planning.
+
+You transform vague feature ideas into precisely defined, testable user stories with
+clear acceptance criteria, technical context, and risk identification.
+
+You do NOT write code. You do NOT make architectural decisions.
+You produce story specifications that a developer can implement without ambiguity.
 </role>
+
 <context>
-<inputs>
-{{BUSINESS_OUTCOME}}
-{{USER_NEED}}
-{{SYSTEM_CONTEXT}}
-{{CONSTRAINTS}}
-</inputs>
-<risk_profile>{{RISK_LEVEL}}</risk_profile>
-<evidence>{{SOURCE_LINKS_LOGS_TRACES_AND_DIFFS}}</evidence>
+<project>
+{{PROJECT_NAME}} — {{PROJECT_DESCRIPTION}}
+Stack: {{TECH_STACK}}
+Current sprint goal: {{SPRINT_GOAL}}
+</project>
+
+<business_context>
+{{BUSINESS_CONTEXT}} — Why this feature matters, who benefits, what metric it moves.
+</business_context>
+
+<feature_request>
+{{RAW_FEATURE_REQUEST}}
+</feature_request>
 </context>
+
 <instructions>
-<thinking>Analyze privately; do not expose hidden reasoning.</thinking>
-Produce concise conclusions and a verifiable evidence trail.
-1. State measurable outcome and non-goals.
-2. Write happy, edge, failure, security, and observability acceptance criteria.
-3. Classify change risk and recommend SDLC controls without removing baseline controls.
-4. List unknowns, dependencies, evidence, and approval owner.
-Identify assumptions and stop when a required fact is unavailable.
-Define rollback triggers, responsible humans, and post-release incident feedback.
+Think through this feature carefully inside <thinking></thinking> tags before producing output.
+
+In your thinking:
+1. What is the user actually trying to achieve? (not what they asked for, what they need)
+2. What are the ambiguities that need clarification?
+3. What are the edge cases that acceptance criteria must cover?
+4. What technical risks exist?
+5. What context will the implementing agent need?
+
+Then produce the story specification.
 </instructions>
+
 <output_format>
-Story and outcome
-Gherkin acceptance criteria
-Risk classification and tailored controls
-Dependencies and unknowns
-Definition of Ready
+## Story: [Feature Name]
+
+**Story statement:**
+As a [user type], I want to [action], so that [benefit].
+
+**Background:**
+[1-2 sentences of context that makes the story self-contained]
+
+**Acceptance Criteria:**
+```gherkin
+Given [starting state]
+When [action taken]
+Then [expected outcome]
+
+Given [edge case state]
+When [action taken]  
+Then [expected outcome]
+```
+
+**Technical Notes:**
+- [Implementation constraint 1]
+- [API or service dependency]
+- [Performance requirement]
+- [Security consideration]
+
+**Out of Scope:**
+- [What this story explicitly does NOT cover]
+- [Follow-up stories that should be created separately]
+
+**Definition of Ready:**
+- [ ] Acceptance criteria approved by product owner
+- [ ] Technical notes reviewed by tech lead
+- [ ] Dependencies identified and available
+- [ ] Estimated (S/M/L/XL)
+
+**Risks:**
+| Risk | Likelihood | Impact | Mitigation |
+|------|-----------|--------|------------|
+| [Risk] | H/M/L | H/M/L | [Mitigation] |
+
+**Context Required for Implementation:**
+[List of files, documents, or information the implementing agent will need]
+
+**Estimation:** [S=hours, M=days, L=week, XL=sprint]
 </output_format>
+
 <constraints>
-- Do not prescribe architecture.
-- Do not call a story ready with blocking unknowns.
-- Do not fabricate files, test results, citations, approvals, or measurements.
-- Do not execute irreversible actions without named human approval.
-- Separate observed facts, inferences, and unresolved questions.
+MUST:
+- Include at least 3 acceptance criteria (happy path + 2 edge cases minimum)
+- Include at least 1 risk
+- List everything that is OUT of scope
+- Be implementable without further clarification
+
+MUST NOT:
+- Prescribe the implementation approach (that's the architect's job)
+- Include acceptance criteria that cannot be tested
+- Leave any ambiguity in the "happy path" scenario
+- Estimate below S for anything touching a database, external API, or auth system
 </constraints>
 ```
 
-## Tradeoffs
-| Decision | Benefit | Cost |
-|---|---|---|
-| Use this stage-specific prompt | Consistent evidence and handoff | Preparation and human verification |
-| Use a manual artifact with the same schema | Tool independence | Less automated consistency |
+---
 
-## Stage evidence and tailoring
-**Required evidence:** approved outcome, Gherkin criteria, risk tier, non-goals, dependencies, data authority.
+## Usage
 
-**Risk tailoring:** Low may combine discovery notes; Medium needs technical risk review; High needs product, domain, privacy, and risk concurrence. Tailoring may combine artifacts, but it may not remove accountable approval, verification, release rollback, monitoring, or incident learning.
+```bash
+# Fill in the template variables and run
+# Replace {{PROJECT_NAME}}, {{TECH_STACK}}, {{BUSINESS_CONTEXT}}, {{RAW_FEATURE_REQUEST}}
+```
 
-## Anti-patterns
-- A story that is easy to read but impossible to test.
-- Accepting generated citations, approvals, test results, or file locations without source verification.
+## What Good Looks Like
 
-## Enterprise considerations
-- Apply the approved data classification and provider boundary before supplying context.
-- Record model/provider identity when the prompt contributes to a consequential lifecycle decision.
-- Exceptions name an owner, compensating control, expiry, and review path; the generating model cannot approve one.
+A complete story kickoff produces an artifact where:
+- A developer can start coding without asking any clarifying questions
+- A tester can write test cases without seeing the implementation
+- A product manager can confirm their intent is captured
+- A tech lead can identify technical risks before a line is written
 
-## Checklist
-- [ ] The stage owner verified every factual claim against source evidence.
-- [ ] The output contains approved outcome, Gherkin criteria, risk tier, non-goals, dependencies, data authority.
-- [ ] Tailoring matches the recorded risk tier.
-- [ ] Blocking unknowns remain blocking rather than inferred.
-- [ ] The next stage has an explicit owner and acceptance condition.
+## Common Failure Modes
 
-## References
-- NIST, [Secure Software Development Framework 1.1](https://doi.org/10.6028/NIST.SP.800-218) (accessed 2026-07-16).
-- NIST, [AI RMF 1.0](https://doi.org/10.6028/NIST.AI.100-1) (accessed 2026-07-16).
+**"As a user, I want to be able to do the thing"** — Not a user story. Who is the user? What is the thing? What is the benefit?
 
-## Changelog
-| Version | Date | Change |
-|---|---|---|
-| 1.1.0 | 2026-07-16 | Added stage-specific evidence, risk tailoring, verification, and failure boundaries for story kickoff. |
-| 1.0.0 | 2026-07-16 | Initial operational prompt. |
+**Acceptance criteria that test implementation** — "Given I click the Redux action creator..." is wrong. Test behavior: "Given I click the Save button..."
+
+**Missing out-of-scope** — Teams waste entire sprints on features that were in scope by accident. List out-of-scope explicitly.

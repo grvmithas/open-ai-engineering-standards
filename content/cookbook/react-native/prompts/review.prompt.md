@@ -8,11 +8,11 @@ Review a React Native change using native configuration, failure, and operationa
 
 ## Why
 
-Domain logic is shared; platform behavior is explicit; native boundaries are typed; JS/UI threads and lists are measured on representative devices. This prompt requires native React Native artifacts instead of substituting a generic incident or code-generation checklist.
+Domain logic is shared; platform behavior is explicit; native boundaries are typed; JS/UI threads and lists are measured on representative devices. The review decision is accepted only when Metro config/resolution, generated native code/autolinking state, and debug/release build settings supports it; generic review advice cannot establish that React Native state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized React Native evidence for the screen, navigation flow, FlatList, native module, platform adapter, or mobile release. Apply the invariant "Domain logic is shared; platform behavior is explicit; native boundaries are typed; JS/UI threads and lists are measured on representative devices." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Read React Native, React, navigation, native dependency, Gradle/AGP/Kotlin, Xcod
 
 ## Tradeoffs
 
-React Native review takes longer because configuration and runtime state must be correlated with source. It eliminates generic style findings and prioritizes defects that can change production behavior.
+React Native review correlates source with Metro config/resolution, generated native code/autolinking state, and debug/release build settings and JS/UI frame rates, Hermes profile, native Instruments/Perfetto trace, memory, startup, and list metrics. The cost is a deeper review; the benefit is direct evidence for "screen separates shared state from `.ios`/`.android` platform adapters" and "navigation params and deep links are typed, validated, and backward compatible" instead of generic style findings.
 
 ## Anti-patterns
 

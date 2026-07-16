@@ -771,6 +771,7 @@
       "profiles": [],
       "autonomyLevels": [
         "A2",
+        "A3",
         "A4"
       ],
       "impactLevels": [],
@@ -788,6 +789,7 @@
       "profiles": [],
       "autonomyLevels": [
         "A2",
+        "A3",
         "A4"
       ],
       "impactLevels": [],
@@ -805,6 +807,7 @@
       "profiles": [],
       "autonomyLevels": [
         "A2",
+        "A3",
         "A4"
       ],
       "impactLevels": [],
@@ -822,6 +825,7 @@
       "profiles": [],
       "autonomyLevels": [
         "A2",
+        "A3",
         "A4"
       ],
       "impactLevels": [],
@@ -1381,17 +1385,13 @@
     {
       "title": "ISO AI Management, Risk, and Impact Crosswalk",
       "description": "Map OAIES evidence artifacts to the management-system, AI risk-management, and AI system impact-assessment concerns in ISO/IEC 42001, ISO/IEC 23894, and ISO/IEC 42005.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "status": "Informative",
       "published": "2026-07-16",
       "frameworks": [
         "ISO/IEC 42001",
         "ISO/IEC 23894",
-        "ISO/IEC 42005",
-        "MCP",
-        "ISO/IEC 42001:2023",
-        "ISO/IEC 23894:2023",
-        "ISO/IEC 42005:2025"
+        "ISO/IEC 42005"
       ],
       "sourcePath": "content/standard/crosswalks/iso-ai-management-risk-impact.md",
       "sourceSlug": "standard/crosswalks/iso-ai-management-risk-impact"
@@ -1399,22 +1399,12 @@
     {
       "title": "NIST AI Risk Crosswalk",
       "description": "Map OAIES artifacts to NIST AI Risk Management Framework 1.0 functions and the NIST AI 600-1 Generative AI Profile.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "status": "Informative",
       "published": "2026-07-16",
       "frameworks": [
-        "NIST AI Risk Crosswalk",
-        "NIST AI Risk Management Framework 1.0 functions and the NIST AI 600-1 Generative AI Profile",
-        "NIST AI 600-1 applies that structure to generative-AI risks",
-        "NIST AI RMF function/category",
-        "MCP",
-        "NIST AI 600-1 Generative AI Profile crosswalk",
-        "NIST AI 600-1 identifies generative-AI risks and recommended actions. The profile’s risk names should be preserved in the Risk Register rather than replaced with OAIES labels",
-        "NIST AI 600-1 risks using the source risk name and local scenario",
-        "NIST AI RMF and NIST AI 600-1 are voluntary risk-management resources unless another authority makes them mandatory. NIST does not certify implementations against them. OAIES mappings indicate evidence alignment",
-        "NIST compliance",
-        "NIST-certified claim: NIST AI RMF has no NIST certification mechanism",
-        "NIST AI Risk Management Framework 1.0](https://www.nist.gov/itl/ai-risk-management-framework"
+        "NIST AI RMF 1.0",
+        "NIST AI 600-1"
       ],
       "sourcePath": "content/standard/crosswalks/nist-ai-risk.md",
       "sourceSlug": "standard/crosswalks/nist-ai-risk"
@@ -1422,22 +1412,12 @@
     {
       "title": "OWASP LLM and Agentic Security Crosswalk",
       "description": "Map OAIES prevention, detection, and response artifacts to the OWASP Top 10 for LLM Applications 2025 and OWASP Top 10 for Agentic Applications 2026.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "status": "Informative",
       "published": "2026-07-16",
       "frameworks": [
-        "OWASP LLM and Agentic Security Crosswalk",
-        "OWASP Top 10 for LLM Applications 2025 and OWASP Top 10 for Agentic Applications 2026",
-        "OWASP LLM Top 10 crosswalk",
-        "OWASP 2025 risk",
-        "OWASP Agentic Top 10 crosswalk",
-        "OWASP 2026 risk",
-        "MCP",
-        "A2A",
-        "OWASP risk before release and continuously in production",
-        "OWASP Top 10 documents are awareness and risk-prioritization resources",
-        "OWASP Top 10 for Large Language Model Applications](https://genai.owasp.org/llm-top-10",
-        "OWASP Top 10 for Agentic Applications](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026"
+        "OWASP Top 10 for LLM Applications",
+        "OWASP Top 10 for Agentic Applications"
       ],
       "sourcePath": "content/standard/crosswalks/owasp-ai-security.md",
       "sourceSlug": "standard/crosswalks/owasp-ai-security"
@@ -1445,15 +1425,13 @@
     {
       "title": "MCP, A2A, and GenAI Observability Crosswalk",
       "description": "Define how OAIES contracts record security and telemetry evidence for Model Context Protocol authorization, Agent2Agent interoperability, and OpenTelemetry Generative AI semantic conventions.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "status": "Informative",
       "published": "2026-07-16",
       "frameworks": [
-        "MCP",
+        "MCP authorization",
         "A2A",
-        "OpenTelemetry",
-        "a2a",
-        "opentelemetry"
+        "OpenTelemetry GenAI semantic conventions"
       ],
       "sourcePath": "content/standard/crosswalks/protocols-and-observability.md",
       "sourceSlug": "standard/crosswalks/protocols-and-observability"
@@ -1461,22 +1439,14 @@
     {
       "title": "Secure Software and AI Supply-Chain Crosswalk",
       "description": "Map OAIES artifacts to NIST SSDF SP 800-218, applicable NIST SP 800-53 Rev. 5 controls, SLSA, and OpenSSF practices.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "status": "Informative",
       "published": "2026-07-16",
       "frameworks": [
         "NIST SSDF SP 800-218",
-        "NIST SP 800-53 Rev. 5 controls",
+        "NIST SP 800-53 Rev. 5",
         "SLSA",
-        "OpenSSF",
-        "NIST SSDF crosswalk",
-        "NIST SP 800-53 Rev. 5 crosswalk",
-        "MCP",
-        "NIST control baselines",
-        "NIST publications are not certification schemes",
-        "NIST SP 800-218 Secure Software Development Framework 1.1](https://doi.org/10.6028/NIST.SP.800-218",
-        "NIST SP 800-53 Rev. 5](https://doi.org/10.6028/NIST.SP.800-53r5",
-        "NIST SP 800-53A Rev. 5 assessment procedures](https://doi.org/10.6028/NIST.SP.800-53Ar5"
+        "OpenSSF"
       ],
       "sourcePath": "content/standard/crosswalks/secure-software-supply-chain.md",
       "sourceSlug": "standard/crosswalks/secure-software-supply-chain"

@@ -32,15 +32,15 @@ Schema exposes domain capabilities; authorization is enforced at trusted resolve
 
 **Preserve first:** canonical SDL, generated schema, registry/composition result, and breaking-change report.
 
-**Discriminate:** GraphQL error path. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** GraphQL error path. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For non-null propagation and partial response, correlate that observation to the exact GraphQL target, revision, request/job, and UTC interval; compare canonical SDL, generated schema, registry/composition result, and breaking-change report with one healthy peer or baseline.
 
-**Native action:** run the repository's schema generation and validation script from a clean checkout. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** run the repository's schema generation and validation script from a clean checkout. Start in the safest GraphQL read-only or dry-run mode available. Before changing the schema, resolver, request DataLoader, gateway, persisted operation, or federated subgraph, name which of non-null propagation and partial response and N+1 resolver fan-out the action distinguishes.
 
 **Root-cause direction:** Resolver returned null or an error crossed a non-null contract.
 
 **Correction:** Fix the resolver or make nullability accurately represent domain absence.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Cannot return null for non-nullable field` reproduction, verify the non-null propagation and partial response signal cleared in GraphQL error path. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Fix the resolver or make nullability accurately represent domain absence. restored the intended GraphQL behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Route resolvers/subgraphs back to the previous implementation while leaving additive schema visible but safely unavailable/deprecated; remove schema only after registered clients no longer reference it.
 
@@ -50,15 +50,15 @@ Schema exposes domain capabilities; authorization is enforced at trusted resolve
 
 **Preserve first:** validated operation document, variables, auth context, depth/complexity/cost, and persisted-operation ID.
 
-**Discriminate:** resolver spans and query count. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** resolver spans and query count. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For N+1 resolver fan-out, correlate that observation to the exact GraphQL target, revision, request/job, and UTC interval; compare validated operation document, variables, auth context, depth/complexity/cost, and persisted-operation ID with one healthy peer or baseline.
 
-**Native action:** execute the checked-in schema compatibility/composition command against the registry baseline. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** execute the checked-in schema compatibility/composition command against the registry baseline. Start in the safest GraphQL read-only or dry-run mode available. Before changing the schema, resolver, request DataLoader, gateway, persisted operation, or federated subgraph, name which of N+1 resolver fan-out and client/schema validation drift the action distinguishes.
 
 **Root-cause direction:** Nested resolvers load each entity independently.
 
 **Correction:** Batch and cache by key within one request context.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `N+1 query explosion` reproduction, verify the N+1 resolver fan-out signal cleared in resolver spans and query count. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Batch and cache by key within one request context. restored the intended GraphQL behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Route resolvers/subgraphs back to the previous implementation while leaving additive schema visible but safely unavailable/deprecated; remove schema only after registered clients no longer reference it.
 
@@ -68,15 +68,15 @@ Schema exposes domain capabilities; authorization is enforced at trusted resolve
 
 **Preserve first:** resolver trace tree, per-field errors, downstream query count, DataLoader batch/cache evidence.
 
-**Discriminate:** schema validation. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** schema validation. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For client/schema validation drift, correlate that observation to the exact GraphQL target, revision, request/job, and UTC interval; compare resolver trace tree, per-field errors, downstream query count, DataLoader batch/cache evidence with one healthy peer or baseline.
 
-**Native action:** run integration tests with query counting and resolver tracing enabled. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** run integration tests with query counting and resolver tracing enabled. Start in the safest GraphQL read-only or dry-run mode available. Before changing the schema, resolver, request DataLoader, gateway, persisted operation, or federated subgraph, name which of client/schema validation drift and interface/union runtime type resolution the action distinguishes.
 
 **Root-cause direction:** Client operation and deployed schema differ.
 
 **Correction:** Validate operations in CI and use backward-compatible schema evolution.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Unknown field or argument` reproduction, verify the client/schema validation drift signal cleared in schema validation. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Validate operations in CI and use backward-compatible schema evolution. restored the intended GraphQL behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Route resolvers/subgraphs back to the previous implementation while leaving additive schema visible but safely unavailable/deprecated; remove schema only after registered clients no longer reference it.
 
@@ -86,15 +86,15 @@ Schema exposes domain capabilities; authorization is enforced at trusted resolve
 
 **Preserve first:** gateway/subgraph routing, ownership, entity representations, and schema rollout matrix.
 
-**Discriminate:** resolver trace. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** resolver trace. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For interface/union runtime type resolution, correlate that observation to the exact GraphQL target, revision, request/job, and UTC interval; compare gateway/subgraph routing, ownership, entity representations, and schema rollout matrix with one healthy peer or baseline.
 
-**Native action:** send the exact operation with `curl -H 'content-type: application/json' --data @operation.json <endpoint>` using sanitized credentials. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** send the exact operation with `curl -H 'content-type: application/json' --data @operation.json <endpoint>` using sanitized credentials. Start in the safest GraphQL read-only or dry-run mode available. Before changing the schema, resolver, request DataLoader, gateway, persisted operation, or federated subgraph, name which of interface/union runtime type resolution and depth, complexity, alias, batch, or rate budget rejection the action distinguishes.
 
 **Root-cause direction:** Interface or union result lacks a valid runtime type.
 
 **Correction:** Return discriminated domain data and implement deterministic type resolution.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Abstract type resolution failure` reproduction, verify the interface/union runtime type resolution signal cleared in resolver trace. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Return discriminated domain data and implement deterministic type resolution. restored the intended GraphQL behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Route resolvers/subgraphs back to the previous implementation while leaving additive schema visible but safely unavailable/deprecated; remove schema only after registered clients no longer reference it.
 
@@ -104,15 +104,15 @@ Schema exposes domain capabilities; authorization is enforced at trusted resolve
 
 **Preserve first:** canonical SDL, generated schema, registry/composition result, and breaking-change report.
 
-**Discriminate:** complexity report. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** complexity report. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For depth, complexity, alias, batch, or rate budget rejection, correlate that observation to the exact GraphQL target, revision, request/job, and UTC interval; compare canonical SDL, generated schema, registry/composition result, and breaking-change report with one healthy peer or baseline.
 
-**Native action:** capture introspection only where policy permits; production may intentionally disable ad hoc introspection. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** capture introspection only where policy permits; production may intentionally disable ad hoc introspection. Start in the safest GraphQL read-only or dry-run mode available. Before changing the schema, resolver, request DataLoader, gateway, persisted operation, or federated subgraph, name which of depth, complexity, alias, batch, or rate budget rejection and non-null propagation and partial response the action distinguishes.
 
 **Root-cause direction:** Operation exceeds configured resource budget.
 
 **Correction:** Reduce shape, paginate fields, or use an approved persisted operation.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Query rejected for complexity` reproduction, verify the depth, complexity, alias, batch, or rate budget rejection signal cleared in complexity report. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Reduce shape, paginate fields, or use an approved persisted operation. restored the intended GraphQL behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Route resolvers/subgraphs back to the previous implementation while leaving additive schema visible but safely unavailable/deprecated; remove schema only after registered clients no longer reference it.
 

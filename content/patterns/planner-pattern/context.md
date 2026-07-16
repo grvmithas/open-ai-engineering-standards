@@ -1,46 +1,45 @@
-# Planner: Context Contract
+# Planner Pattern — Context
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Planner  
+> **Component:** context.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Make the evidence needed to turn ambiguous engineering work into a decision-complete execution contract authoritative, bounded, and reproducible.
+## Preconditions (must be true before activation)
 
-| Required input | Acceptance test |
-|---|---|
-| acceptance criteria | owner, revision, retrieval time, and authority recorded for acceptance criteria |
-| repository map and owners | owner, revision, retrieval time, and authority recorded for repository map and owners |
-| ADRs and dependency graph | owner, revision, retrieval time, and authority recorded for ADRs and dependency graph |
-| API/schema contracts | owner, revision, retrieval time, and authority recorded for API/schema contracts |
-| delivery and risk constraints | owner, revision, retrieval time, and authority recorded for delivery and risk constraints |
+- [ ] Story or task has testable acceptance criteria (not a one-line wish)
+- [ ] Relevant codebase context is assembled (files, services, schemas, ADRs)
+- [ ] Technical constraints are written down (perf, security, compatibility, compliance)
+- [ ] A human reviewer is available to approve or reject the plan
+- [ ] Success/failure of the plan is defined independently of “looks good”
 
-## Assembly procedure
+## Trigger conditions (apply the pattern)
 
-1. Tie each source to a trigger or workflow decision.
-2. Resolve conflicting authority before analysis; preserve both revisions and the resolution.
-3. Hash the accepted manifest and set expiry from the fastest-changing source.
-4. Exclude unrelated material and redact secrets without removing decision-relevant constraints.
+Apply when **any** of the following hold:
 
-## Tradeoffs
+- Change spans more than three files or more than one service
+- Change crosses an API, schema, auth, or tenancy boundary
+- Multiple valid designs exist with different tradeoffs
+- Wrong implementation would force expensive rework or data migration
+- Ordering constraints exist (migration before dual-write before cutover)
 
-Planner context deliberately spends additional review time to protect "decision completeness = 100%"; evidence weakness triggers "Stop implementation, revert partial increments, and return to the last approved plan revision".
+## Do not apply when
 
-## Anti-patterns
+- Single-file typo or copy change
+- Pure documentation with no runtime effect
+- Configuration flip with no logic and a known rollback
+- Hotfix under active incident containment (use [hotfix-pattern](../hotfix-pattern/README.md); plan the durable fix after)
 
-Planner context rejects shortcuts around "Classify ambiguity and list decisions execution must not make." because they sever the evidence chain required for "decision completeness = 100%".
+## Required inputs
 
-## Enterprise considerations
+| Input | Source | Minimum quality |
+|-------|--------|-----------------|
+| Story | `story-kickoff` output or ticket | Acceptance criteria + out-of-scope |
+| Codebase context | Context assembler / human paste | Paths + excerpts that matter |
+| Architecture | Existing diagrams / ADRs | Current services and data stores |
+| Constraints | Team standards / compliance | Explicit hard limits |
 
-Planner context governance binds owner, policy revision, and retained proof to "decision completeness = 100%", with "Stop implementation, revert partial increments, and return to the last approved plan revision" as the recorded recovery authority.
+## Authority boundary
 
-## Checklist
-
-- [ ] acceptance criteria is present and provenance-bearing
-- [ ] repository map and owners is present and provenance-bearing
-- [ ] ADRs and dependency graph is present and provenance-bearing
-- [ ] API/schema contracts is present and provenance-bearing
-- [ ] delivery and risk constraints is present and provenance-bearing
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+The planner agent **does not write production code**. Its only durable artifact is an approved implementation plan. Coding starts only after named human approval (see workflow step “Human Review”).

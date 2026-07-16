@@ -8,11 +8,11 @@ Review a Python change using native configuration, failure, and operational evid
 
 ## Why
 
-Public boundaries are typed and validated; environments are reproducible; async code contains no blocking I/O and preserves cancellation. This prompt requires native Python artifacts instead of substituting a generic incident or code-generation checklist.
+Public boundaries are typed and validated; environments are reproducible; async code contains no blocking I/O and preserves cancellation. The review decision is accepted only when type-checker, formatter, linter, and test configuration supports it; generic review advice cannot establish that Python state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Python evidence for the package, FastAPI/Django boundary, asyncio task, worker, or library API. Apply the invariant "Public boundaries are typed and validated; environments are reproducible; async code contains no blocking I/O and preserves cancellation." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Read `requires-python`, lock/constraint files, environment metadata, and framewo
 
 ## Tradeoffs
 
-Python review takes longer because configuration and runtime state must be correlated with source. It eliminates generic style findings and prioritizes defects that can change production behavior.
+Python review correlates source with type-checker, formatter, linter, and test configuration and async task dump, traceback with chained causes, profile, and open-resource evidence. The cost is a deeper review; the benefit is direct evidence for "package imports work after installation, not through `sys.path` mutation" and "public functions and data boundaries have useful types without blanket `Any`" instead of generic style findings.
 
 ## Anti-patterns
 

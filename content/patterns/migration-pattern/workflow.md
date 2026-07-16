@@ -1,67 +1,46 @@
-# Migration: Workflow
+# Migration Pattern — Workflow
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Migration  
+> **Component:** workflow.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Apply the domain workflow to transition data or services while preserving invariants and a tested return path.
+## End-to-end flow
 
 ```mermaid
 flowchart TD
-  S1[1. Define invariants, loss tolerance, RPO, RTO, and abort thresholds] --> S2
-  S2[2. Profile source data including malformed and orphaned records] --> S3
-  S3[3. Design expand-migrate-contract compatibility phases] --> S4
-  S4[4. Backfill idempotently with checkpoints and dead-letter handling] --> S5
-  S5[5. Dual-read or shadow-read and compare semantic results] --> S6
-  S6[6. Canary writes; reconcile counts, hashes, money, and referential integrity] --> S7
-  S7[7. Shift traffic in measured stages with hold periods] --> S8
-  S8[8. Contract old paths only after rollback expiry and restore proof]
-  S8 --> V{Domain metrics pass?}
-  V -->|No| R[stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events]
-  V -->|Yes| C[Retain evidence and close]
+    A[Input: source→target + consumers] --> B[Migration Architect Activated]
+    B --> C[Inventory consumers + invariants]
+    C --> D[Design expand phase]
+    D --> E[Dual-write / shadow read]
+    E --> F[Reconciliation gates]
+    F --> G{Gates green?}
+    G -->|No| E
+    G -->|Yes| H[Cutover primary read/write]
+    H --> I{Stable soak?}
+    I -->|No| J[Rollback to prior primary]
+    I -->|Yes| K[Contract: remove old path]
+    K --> L[Migration complete + audit pack]
 ```
 
-## Procedure
+## Step procedure
 
-1. **Define invariants, loss.** Define invariants, loss tolerance, RPO, RTO, and abort thresholds.
-2. **Profile source data.** Profile source data including malformed and orphaned records.
-3. **Design expand-migrate-contract compatibility.** Design expand-migrate-contract compatibility phases.
-4. **Backfill idempotently with.** Backfill idempotently with checkpoints and dead-letter handling.
-5. **Dual-read or shadow-read.** Dual-read or shadow-read and compare semantic results.
-6. **Canary writes; reconcile.** Canary writes; reconcile counts, hashes, money, and referential integrity.
-7. **Shift traffic in.** Shift traffic in measured stages with hold periods.
-8. **Contract old paths.** Contract old paths only after rollback expiry and restore proof.
+| Step | Actor | Action | Exit criteria |
+|------|-------|--------|---------------|
+| 1 | Human | Freeze source/target + SLOs | Spec reviewable |
+| 2 | Consumer Inventory | List all readers/writers | Inventory table complete |
+| 3 | Migration Architect | Expand: additive schema/API | Expand deployable alone |
+| 4 | Migration Architect | Dual-write / shadow read | Both paths observed |
+| 5 | Reconciler | Run count + semantic checks | Gate thresholds met |
+| 6 | Human | Approve cutover | Named + dated |
+| 7 | Ops / release | Flip primary; soak | Error/latency within SLO |
+| 8 | Migration Architect | Contract old path | Old path removed safely |
 
-## Verification
+## Deviation rule
 
-- record and monetary reconciliation = 100%
-- unclassified mismatch count = 0
-- error-budget burn stays below abort threshold
-- restore completes within RTO
+If recon fails or soak burns SLO, **roll back primary** to the previous path. Do not contract. Do not “push through.”
 
-## Tradeoffs
+## Parallelism rule
 
-Migration workflow deliberately spends additional review time to protect "record and monetary reconciliation = 100%"; evidence weakness triggers "Stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events".
-
-## Anti-patterns
-
-Migration workflow rejects shortcuts around "Define invariants, loss tolerance, RPO, RTO, and abort thresholds." because they sever the evidence chain required for "record and monetary reconciliation = 100%".
-
-## Enterprise considerations
-
-Migration workflow governance binds owner, policy revision, and retained proof to "record and monetary reconciliation = 100%", with "Stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Define invariants, loss tolerance, RPO, RTO, and abort thresholds
-- [ ] Profile source data including malformed and orphaned records
-- [ ] Design expand-migrate-contract compatibility phases
-- [ ] Backfill idempotently with checkpoints and dead-letter handling
-- [ ] Dual-read or shadow-read and compare semantic results
-- [ ] Canary writes; reconcile counts, hashes, money, and referential integrity
-- [ ] Shift traffic in measured stages with hold periods
-- [ ] Contract old paths only after rollback expiry and restore proof
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+Consumer teams may migrate readers independently only after expand is live. Writers dual-write until the cutover gate passes.

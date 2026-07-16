@@ -8,11 +8,11 @@ Review a Performance Engineering change using native configuration, failure, and
 
 ## Why
 
-Optimization starts from a reproducible workload and user-impact metric; profiles identify the limiting resource; CI and production enforce budgets. This prompt requires native Performance Engineering artifacts instead of substituting a generic incident or code-generation checklist.
+Optimization starts from a reproducible workload and user-impact metric; profiles identify the limiting resource; CI and production enforce budgets. The review decision is accepted only when workload script, request/data distribution, concurrency/arrival model, warmup, repetitions, and raw results supports it; generic review advice cannot establish that Performance Engineering state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Performance Engineering evidence for the SLO, workload model, benchmark, profile, capacity plan, Web Vital budget, or regression gate. Apply the invariant "Optimization starts from a reproducible workload and user-impact metric; profiles identify the limiting resource; CI and production enforce budgets." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Record hardware, OS/kernel, runtime/browser, build mode, dependency versions, da
 
 ## Tradeoffs
 
-Performance Engineering review takes longer because configuration and runtime state must be correlated with source. It eliminates generic style findings and prioritizes defects that can change production behavior.
+Performance Engineering review correlates source with workload script, request/data distribution, concurrency/arrival model, warmup, repetitions, and raw results and CPU, allocation/heap, I/O, lock, network, database, and browser trace aligned to one run. The cost is a deeper review; the benefit is direct evidence for "target metric maps to a named user journey and SLO" and "baseline and candidate use identical build, hardware, data, cache, and load conditions" instead of generic style findings.
 
 ## Anti-patterns
 

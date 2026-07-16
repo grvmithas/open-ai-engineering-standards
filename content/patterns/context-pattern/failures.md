@@ -1,41 +1,37 @@
-# Context: Failure Modes
+# Context Pattern — Failures
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Context  
+> **Component:** failures.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Context failures operationalizes this pattern outcome: construct a minimal, provenance-bearing information package that preserves decision quality.
+## Failure 1: Whole-repo dump
 
-| Failure | Observable signal | Recovery |
-|---|---|---|
-| repository dump | attention is diluted by irrelevant files | rebuild from decision inventory |
-| summary drift | compression removes exceptions | compare claims to anchored excerpts |
-| authority collision | wiki conflicts with contract | escalate to owner and record resolution |
-| context fossilization | long task uses old revisions | invalidate changed slices |
+**Symptom:** Package is huge; agent ignores the three relevant files.  
+**Cause:** No ranking or hard budget.  
+**Recovery:** Re-run seed→expand→trim with `MAX_BYTES`; delete the dump.
 
-## Rollback failure
+## Failure 2: Missing call sites
 
-Context failures rollback failure gate 2 is accepted only when "required-decision source recall = 100%" is source-verifiable; otherwise, invalidate the manifest, purge derived caches, and rebuild from authoritative revisions.
+**Symptom:** Planner designs a duplicate helper that already exists.  
+**Cause:** Included implementation but not importers/routes.  
+**Recovery:** Expand call sites; add route registration and existing helper to package.
 
-## Tradeoffs
+## Failure 3: Secrets in context
 
-Context failures deliberately spends additional review time to protect "required-decision source recall = 100%"; evidence weakness triggers "Invalidate the manifest, purge derived caches, and rebuild from authoritative revisions".
+**Symptom:** Hook or DLP flags keys; or worse, package already shared.  
+**Cause:** No scrubber / exclusion rules.  
+**Recovery:** Destroy package; rotate credentials if exposed; fix rules; re-assemble.
 
-## Anti-patterns
+## Failure 4: Stale excerpts
 
-Context failures rejects shortcuts around "List decisions the operator must make and evidence each decision requires." because they sever the evidence chain required for "required-decision source recall = 100%".
+**Symptom:** Agent codes against deleted APIs.  
+**Cause:** Cached package from an old branch.  
+**Recovery:** Regenerate from current HEAD; pin package to commit SHA.
 
-## Enterprise considerations
+## Failure 5: Budget theater
 
-Context failures governance binds owner, policy revision, and retained proof to "required-decision source recall = 100%", with "Invalidate the manifest, purge derived caches, and rebuild from authoritative revisions" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Detection exists for repository dump
-- [ ] Detection exists for summary drift
-- [ ] Detection exists for authority collision
-- [ ] Detection exists for context fossilization
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+**Symptom:** Tiny package missing critical schema; agent invents columns.  
+**Cause:** Over-trimmed to look “efficient.”  
+**Recovery:** Raise budget for schema+contracts; never omit the contract surface for data changes.

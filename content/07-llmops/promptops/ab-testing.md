@@ -1,6 +1,6 @@
 # Prompt A/B Testing
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative OAIES implementation profile
 
@@ -21,7 +21,7 @@ Use after offline gates pass and before broad promotion.
 5. Stop, roll back, and investigate on guardrail breach.
 
 ## Evidence contract
-The decision record is the **experiment protocol and analysis packet**. It records hypothesis; assignment unit; seed; power; minimum detectable effect; guardrails; stop rule; exclusions. The experiment owner owns completeness; the evidence is invalid when traffic allocation or primary outcome changes after exposure starts. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+The decision record is the **experiment protocol and analysis packet**. It records hypothesis; assignment unit; seed; power; minimum detectable effect; guardrails; stop rule; exclusions. The experiment owner owns completeness; the evidence is invalid when traffic allocation or primary outcome changes after exposure starts. Store repository commit, built envelope digest, registry version, environment alias, and signer as one release lineage.
 
 ## Failure response and recovery
 **Trigger:** a safety guardrail crosses its alpha-spending boundary.
@@ -29,7 +29,7 @@ The decision record is the **experiment protocol and analysis packet**. It recor
 **Immediate response:** stop assignment, pin all eligible traffic to control, and investigate exposed severe cases. Preserve the experiment protocol and analysis packet, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to prompt a/b testing.
 
 ## Decision authority
-The **experiment owner** accepts the operational decision. The **product safety reviewer** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+The **experiment owner** accepts the operational decision. The **product safety reviewer** provides independent challenge for high-risk scope, failed gates, or exceptions. Promotion services may verify signatures and gates; named release and risk owners decide exceptions and production exposure.
 
 ## Tradeoffs
 | Choice | Benefit | Cost |
@@ -46,12 +46,12 @@ The **experiment owner** accepts the operational decision. The **product safety 
 - Exclude protected or vulnerable cohorts where appropriate.
 
 ## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+**Prompt A/B Testing** is informative prompt-supply-chain guidance. Qualification remains specific to the rendered envelope, model, tools, data, and intended task.
 
 | Source | Relationship for Prompt A/B Testing | Boundary |
 |---|---|---|
-| NIST AI RMF | MEASURE 2.3 and 2.6 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clause 9.1 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| NIST AI RMF | MEASURE 2.3 and 2.6 | Apply governance outcomes to the complete execution envelope, not prompt text alone. |
+| ISO/IEC 42001 | 42001 clause 9.1 | Management-system alignment depends on controlled authoring, approval, distribution, and corrective action. |
 | Domain threat/control source | Overreliance and harmful-output guardrails | Test only the threats applicable to the documented system and release |
 
 ## Checklist

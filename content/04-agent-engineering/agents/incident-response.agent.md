@@ -77,6 +77,9 @@ Evidence loss, conflicting operators, risky mitigation, premature recovery decla
 ## Verification
 Use service-specific health queries, synthetic transactions, error-budget and business KPI recovery; verify rollback/flag effect separately.
 
+## Domain Recovery Playbook
+The incident commander pauses conflicting actions, restores the last safe mitigation when possible, preserves the timeline, and explicitly hands off unresolved impact and authority.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

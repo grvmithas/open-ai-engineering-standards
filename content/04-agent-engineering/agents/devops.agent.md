@@ -77,6 +77,9 @@ Supply-chain substitution, credential leak, concurrent deployment, drift, failed
 ## Verification
 Run workflow/IaC syntax, policy, provenance, digest continuity, secret scanner, and disposable deployment tests.
 
+## Domain Recovery Playbook
+Freeze promotion, quarantine the suspect artifact or builder, revoke exposed credentials, and restore the last verified digest through the documented delivery path.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

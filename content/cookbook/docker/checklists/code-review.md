@@ -20,7 +20,7 @@ Capture Docker Engine, Buildx/BuildKit, Dockerfile syntax directive, Compose spe
 
 ## Tradeoffs
 
-The Docker review gate requires runtime/configuration evidence beyond a source diff. It increases reviewer effort but catches defects static style review cannot observe.
+Review must prove "base image is maintained and pinned by digest with an update mechanism" using Dockerfile, `.dockerignore`, build context list, syntax directive, and BuildKit provenance. That Docker evidence costs more than diff inspection but exposes architecture or entrypoint exec-format mismatch before merge.
 
 ## Anti-patterns
 

@@ -32,15 +32,15 @@ Slices follow durable business domains, integrate through versioned shell contra
 
 **Preserve first:** domain ownership, route manifest, shell API/event contracts, and compatibility matrix.
 
-**Discriminate:** runtime federation logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** runtime federation logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For eager shared-module consumption or share-scope initialization, correlate that observation to the exact Microfrontends target, revision, request/job, and UTC interval; compare domain ownership, route manifest, shell API/event contracts, and compatibility matrix with one healthy peer or baseline.
 
-**Native action:** run each slice's immutable install, type-check, test, and production build independently. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** run each slice's immutable install, type-check, test, and production build independently. Start in the safest Microfrontends read-only or dry-run mode available. Before changing the domain slice, shell contract, route, federated remote, shared package, or independent frontend release, name which of eager shared-module consumption or share-scope initialization and unsatisfied singleton/range or duplicate framework runtime the action distinguishes.
 
 **Root-cause direction:** Federated share configuration and loading mode conflict.
 
 **Correction:** Load the container asynchronously and align share declarations.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Shared module is not available for eager consumption` reproduction, verify the eager shared-module consumption or share-scope initialization signal cleared in runtime federation logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Load the container asynchronously and align share declarations. restored the intended Microfrontends behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Update the runtime manifest or feature flag to the prior immutable remote asset set; keep the shell contract backward compatible until all cached tabs and remote versions age out.
 
@@ -50,15 +50,15 @@ Slices follow durable business domains, integrate through versioned shell contra
 
 **Preserve first:** host/remote build metadata, remote entry URL/digest, share scope, singleton/range resolution, and CSP/CORS headers.
 
-**Discriminate:** federation share scope. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** federation share scope. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For unsatisfied singleton/range or duplicate framework runtime, correlate that observation to the exact Microfrontends target, revision, request/job, and UTC interval; compare host/remote build metadata, remote entry URL/digest, share scope, singleton/range resolution, and CSP/CORS headers with one healthy peer or baseline.
 
-**Native action:** emit and inspect webpack stats (`webpack --profile --json > stats.json`) when Module Federation is used. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** emit and inspect webpack stats (`webpack --profile --json > stats.json`) when Module Federation is used. Start in the safest Microfrontends read-only or dry-run mode available. Before changing the domain slice, shell contract, route, federated remote, shared package, or independent frontend release, name which of unsatisfied singleton/range or duplicate framework runtime and remote entry unavailable, stale, or blocked by CSP/CORS the action distinguishes.
 
 **Root-cause direction:** Host and remote require incompatible singleton ranges.
 
 **Correction:** Set a governed compatibility range and test the deployed matrix.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Unsatisfied shared dependency version` reproduction, verify the unsatisfied singleton/range or duplicate framework runtime signal cleared in federation share scope. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Set a governed compatibility range and test the deployed matrix. restored the intended Microfrontends behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Update the runtime manifest or feature flag to the prior immutable remote asset set; keep the shell contract backward compatible until all cached tabs and remote versions age out.
 
@@ -68,15 +68,15 @@ Slices follow durable business domains, integrate through versioned shell contra
 
 **Preserve first:** independent test/deploy pipeline, asset cache policy, rollback manifest, and fallback behavior.
 
-**Discriminate:** network trace. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** network trace. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For remote entry unavailable, stale, or blocked by CSP/CORS, correlate that observation to the exact Microfrontends target, revision, request/job, and UTC interval; compare independent test/deploy pipeline, asset cache policy, rollback manifest, and fallback behavior with one healthy peer or baseline.
 
-**Native action:** request remote entry and chunks with `curl -I <immutable-asset-url>` to verify cache, CORS, CSP, and content type. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** request remote entry and chunks with `curl -I <immutable-asset-url>` to verify cache, CORS, CSP, and content type. Start in the safest Microfrontends read-only or dry-run mode available. Before changing the domain slice, shell contract, route, federated remote, shared package, or independent frontend release, name which of remote entry unavailable, stale, or blocked by CSP/CORS and shell/slice route collision the action distinguishes.
 
 **Root-cause direction:** URL, CORS, cache, or deployment ordering makes the remote unavailable.
 
 **Correction:** Use immutable remote assets, health-aware resolution, and a local fallback.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Remote entry fails to load` reproduction, verify the remote entry unavailable, stale, or blocked by CSP/CORS signal cleared in network trace. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Use immutable remote assets, health-aware resolution, and a local fallback. restored the intended Microfrontends behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Update the runtime manifest or feature flag to the prior immutable remote asset set; keep the shell contract backward compatible until all cached tabs and remote versions age out.
 
@@ -86,15 +86,15 @@ Slices follow durable business domains, integrate through versioned shell contra
 
 **Preserve first:** RUM segmented by shell/slice versions, route, remote-load failure, and duplicate framework/runtime cost.
 
-**Discriminate:** router diagnostics. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** router diagnostics. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For shell/slice route collision, correlate that observation to the exact Microfrontends target, revision, request/job, and UTC interval; compare RUM segmented by shell/slice versions, route, remote-load failure, and duplicate framework/runtime cost with one healthy peer or baseline.
 
-**Native action:** execute shell contract tests against the current and next remote manifests. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** execute shell contract tests against the current and next remote manifests. Start in the safest Microfrontends read-only or dry-run mode available. Before changing the domain slice, shell contract, route, federated remote, shared package, or independent frontend release, name which of shell/slice route collision and cross-slice event/state contract drift the action distinguishes.
 
 **Root-cause direction:** Shell and slice both claim or rewrite the same route.
 
 **Correction:** Make the shell authoritative for route ownership and publish a route manifest.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Route collision` reproduction, verify the shell/slice route collision signal cleared in router diagnostics. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Make the shell authoritative for route ownership and publish a route manifest. restored the intended Microfrontends behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Update the runtime manifest or feature flag to the prior immutable remote asset set; keep the shell contract backward compatible until all cached tabs and remote versions age out.
 
@@ -104,15 +104,15 @@ Slices follow durable business domains, integrate through versioned shell contra
 
 **Preserve first:** domain ownership, route manifest, shell API/event contracts, and compatibility matrix.
 
-**Discriminate:** contract/event telemetry. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** contract/event telemetry. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For cross-slice event/state contract drift, correlate that observation to the exact Microfrontends target, revision, request/job, and UTC interval; compare domain ownership, route manifest, shell API/event contracts, and compatibility matrix with one healthy peer or baseline.
 
-**Native action:** measure duplicate dependencies and route Web Vitals in the assembled production build. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** measure duplicate dependencies and route Web Vitals in the assembled production build. Start in the safest Microfrontends read-only or dry-run mode available. Before changing the domain slice, shell contract, route, federated remote, shared package, or independent frontend release, name which of cross-slice event/state contract drift and eager shared-module consumption or share-scope initialization the action distinguishes.
 
 **Root-cause direction:** Slices duplicate mutable global state or events lack contracts.
 
 **Correction:** Keep server state authoritative and version the minimal integration events.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Cross-slice state drift` reproduction, verify the cross-slice event/state contract drift signal cleared in contract/event telemetry. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Keep server state authoritative and version the minimal integration events. restored the intended Microfrontends behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Update the runtime manifest or feature flag to the prior immutable remote asset set; keep the shell contract backward compatible until all cached tabs and remote versions age out.
 

@@ -8,11 +8,11 @@ Generate a production-ready ASP.NET Core endpoint, hosted service, EF Core unit 
 
 ## Why
 
-DI lifetimes are valid; CancellationToken reaches I/O; one scoped DbContext owns a unit of work; options fail fast. This prompt requires native .NET artifacts instead of substituting a generic incident or code-generation checklist.
+DI lifetimes are valid; CancellationToken reaches I/O; one scoped DbContext owns a unit of work; options fail fast. The generate decision is accepted only when solution/project files, `global.json`, lock files, target frameworks, and package graph supports it; generic generate advice cannot establish that .NET state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized .NET evidence for the ASP.NET Core endpoint, hosted service, EF Core unit of work, or application slice. Apply the invariant "DI lifetimes are valid; CancellationToken reaches I/O; one scoped DbContext owns a unit of work; options fail fast." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Read `global.json`, target framework monikers, SDK lock, runtime image, and pack
 
 ## Tradeoffs
 
-The prompt rejects fast code generation when .NET version, configuration, or target evidence is absent. That delay prevents plausible output from crossing an unsupported ASP.NET Core endpoint, hosted service, EF Core unit of work, or application slice boundary.
+Generation waits for solution/project files, `global.json`, lock files, target frameworks, and package graph and DI registrations, options binding/validation, middleware order, and endpoint metadata. That extra .NET discovery is justified because the output must prove "singleton services do not capture scoped dependencies" and survive invalid DI lifetime or missing registration rather than merely compile.
 
 ## Anti-patterns
 

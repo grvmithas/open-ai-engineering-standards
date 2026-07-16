@@ -77,6 +77,9 @@ Wildcard IAM, public resource, resource replacement, quota exhaustion, cross-acc
 ## Verification
 Run cfn-lint or terraform validate/plan, IAM Access Analyzer/policy simulation, cost estimate, backup/health checks.
 
+## Domain Recovery Playbook
+Do not apply a suspect plan; if an approved change partially executed, stop further replacement, preserve CloudTrail/change-set evidence, and use the reviewed stack rollback or recovery runbook.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

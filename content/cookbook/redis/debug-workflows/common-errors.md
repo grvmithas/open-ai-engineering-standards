@@ -32,15 +32,15 @@ Every keyspace defines type, cardinality, TTL, memory policy, atomicity, durabil
 
 **Preserve first:** `INFO server`, `INFO memory`, `INFO persistence`, `INFO replication`, and `INFO cluster`.
 
-**Discriminate:** INFO memory. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** INFO memory. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For maxmemory/OOM or unsafe eviction, correlate that observation to the exact Redis target, revision, request/job, and UTC interval; compare `INFO server`, `INFO memory`, `INFO persistence`, `INFO replication`, and `INFO cluster` with one healthy peer or baseline.
 
-**Native action:** `redis-cli -u <redacted-uri> INFO server`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `redis-cli -u <redacted-uri> INFO server`. Start in the safest Redis read-only or dry-run mode available. Before changing the keyspace, cache, session store, rate limiter, stream consumer, or Redis topology, name which of maxmemory/OOM or unsafe eviction and WRONGTYPE or key-schema collision the action distinguishes.
 
 **Root-cause direction:** Memory reached maxmemory and policy cannot evict eligible keys.
 
 **Correction:** Inspect keyspace and policy; bound data and choose policy by durability needs.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `OOM command not allowed` reproduction, verify the maxmemory/OOM or unsafe eviction signal cleared in INFO memory. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Inspect keyspace and policy; bound data and choose policy by durability needs. restored the intended Redis behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable writes to the new versioned key prefix and revert clients; let disposable keys expire or delete them with bounded SCAN/UNLINK jobs—never use FLUSHDB on a shared instance.
 
@@ -50,15 +50,15 @@ Every keyspace defines type, cardinality, TTL, memory policy, atomicity, durabil
 
 **Preserve first:** `CONFIG GET` for maxmemory/policy, persistence, timeout, and output-buffer settings under approved access.
 
-**Discriminate:** TYPE and OBJECT. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** TYPE and OBJECT. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For WRONGTYPE or key-schema collision, correlate that observation to the exact Redis target, revision, request/job, and UTC interval; compare `CONFIG GET` for maxmemory/policy, persistence, timeout, and output-buffer settings under approved access with one healthy peer or baseline.
 
-**Native action:** `redis-cli -u <redacted-uri> INFO memory`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `redis-cli -u <redacted-uri> INFO memory`. Start in the safest Redis read-only or dry-run mode available. Before changing the keyspace, cache, session store, rate limiter, stream consumer, or Redis topology, name which of WRONGTYPE or key-schema collision and MOVED/ASK cluster routing mismatch the action distinguishes.
 
 **Root-cause direction:** A key is reused with an incompatible data structure.
 
 **Correction:** Version and namespace key schemas; verify TYPE during incident diagnosis.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `WRONGTYPE operation` reproduction, verify the WRONGTYPE or key-schema collision signal cleared in TYPE and OBJECT. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Version and namespace key schemas; verify TYPE during incident diagnosis. restored the intended Redis behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable writes to the new versioned key prefix and revert clients; let disposable keys expire or delete them with bounded SCAN/UNLINK jobs—never use FLUSHDB on a shared instance.
 
@@ -68,15 +68,15 @@ Every keyspace defines type, cardinality, TTL, memory policy, atomicity, durabil
 
 **Preserve first:** `SLOWLOG GET`, `LATENCY DOCTOR`, commandstats, keyspace stats, and sampled `MEMORY USAGE`.
 
-**Discriminate:** CLUSTER SLOTS. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** CLUSTER SLOTS. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For MOVED/ASK cluster routing mismatch, correlate that observation to the exact Redis target, revision, request/job, and UTC interval; compare `SLOWLOG GET`, `LATENCY DOCTOR`, commandstats, keyspace stats, and sampled `MEMORY USAGE` with one healthy peer or baseline.
 
-**Native action:** `redis-cli -u <redacted-uri> SLOWLOG GET 20`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `redis-cli -u <redacted-uri> SLOWLOG GET 20`. Start in the safest Redis read-only or dry-run mode available. Before changing the keyspace, cache, session store, rate limiter, stream consumer, or Redis topology, name which of MOVED/ASK cluster routing mismatch and READONLY/failover topology mismatch the action distinguishes.
 
 **Root-cause direction:** Cluster client addressed a slot through the wrong node.
 
 **Correction:** Use a cluster-aware client and refresh slot topology.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `MOVED or ASK` reproduction, verify the MOVED/ASK cluster routing mismatch signal cleared in CLUSTER SLOTS. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Use a cluster-aware client and refresh slot topology. restored the intended Redis behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable writes to the new versioned key prefix and revert clients; let disposable keys expire or delete them with bounded SCAN/UNLINK jobs—never use FLUSHDB on a shared instance.
 
@@ -86,15 +86,15 @@ Every keyspace defines type, cardinality, TTL, memory policy, atomicity, durabil
 
 **Preserve first:** key naming/type/TTL/cardinality specification plus client timeout/retry/pool settings.
 
-**Discriminate:** ROLE and client logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** ROLE and client logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For READONLY/failover topology mismatch, correlate that observation to the exact Redis target, revision, request/job, and UTC interval; compare key naming/type/TTL/cardinality specification plus client timeout/retry/pool settings with one healthy peer or baseline.
 
-**Native action:** `redis-cli -u <redacted-uri> LATENCY DOCTOR`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `redis-cli -u <redacted-uri> LATENCY DOCTOR`. Start in the safest Redis read-only or dry-run mode available. Before changing the keyspace, cache, session store, rate limiter, stream consumer, or Redis topology, name which of READONLY/failover topology mismatch and slow command, big key, fork, persistence, or network latency the action distinguishes.
 
 **Root-cause direction:** Writes are sent to a replica after topology change.
 
 **Correction:** Use topology-aware discovery and retry only idempotent operations.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `READONLY replica` reproduction, verify the READONLY/failover topology mismatch signal cleared in ROLE and client logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Use topology-aware discovery and retry only idempotent operations. restored the intended Redis behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable writes to the new versioned key prefix and revert clients; let disposable keys expire or delete them with bounded SCAN/UNLINK jobs—never use FLUSHDB on a shared instance.
 
@@ -104,15 +104,15 @@ Every keyspace defines type, cardinality, TTL, memory policy, atomicity, durabil
 
 **Preserve first:** `INFO server`, `INFO memory`, `INFO persistence`, `INFO replication`, and `INFO cluster`.
 
-**Discriminate:** LATENCY DOCTOR and SLOWLOG. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** LATENCY DOCTOR and SLOWLOG. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For slow command, big key, fork, persistence, or network latency, correlate that observation to the exact Redis target, revision, request/job, and UTC interval; compare `INFO server`, `INFO memory`, `INFO persistence`, `INFO replication`, and `INFO cluster` with one healthy peer or baseline.
 
-**Native action:** `redis-cli -u <redacted-uri> --latency` from the application network. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `redis-cli -u <redacted-uri> --latency` from the application network. Start in the safest Redis read-only or dry-run mode available. Before changing the keyspace, cache, session store, rate limiter, stream consumer, or Redis topology, name which of slow command, big key, fork, persistence, or network latency and maxmemory/OOM or unsafe eviction the action distinguishes.
 
 **Root-cause direction:** Slow commands, big keys, fork, persistence, or network saturation blocks service.
 
 **Correction:** Correlate latency doctor, slowlog, command stats, and host metrics.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Latency spike` reproduction, verify the slow command, big key, fork, persistence, or network latency signal cleared in LATENCY DOCTOR and SLOWLOG. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Correlate latency doctor, slowlog, command stats, and host metrics. restored the intended Redis behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable writes to the new versioned key prefix and revert clients; let disposable keys expire or delete them with bounded SCAN/UNLINK jobs—never use FLUSHDB on a shared instance.
 

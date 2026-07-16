@@ -1,46 +1,46 @@
-# Hotfix: Context Contract
+# Hotfix Pattern — Context
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Hotfix  
+> **Component:** context.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Make the evidence needed to contain an active production defect with the smallest reversible intervention authoritative, bounded, and reproducible.
+## Preconditions (must be true before activation)
 
-| Required input | Acceptance test |
-|---|---|
-| incident severity and commander | owner, revision, retrieval time, and authority recorded for incident severity and commander |
-| impact and affected scope | owner, revision, retrieval time, and authority recorded for impact and affected scope |
-| live telemetry or reproduction | owner, revision, retrieval time, and authority recorded for live telemetry or reproduction |
-| last known-good artifact | owner, revision, retrieval time, and authority recorded for last known-good artifact |
-| tested rollback command and communication plan | owner, revision, retrieval time, and authority recorded for tested rollback command and communication plan |
+- [ ] Severity (SEV1–SEV4) declared aloud in the incident channel
+- [ ] Incident commander (IC) and scribe named
+- [ ] Working communications channel + update cadence
+- [ ] Last-known-good artifact digest **or** disable flag identified
+- [ ] Impact hypothesis stated (what is broken for whom)
+- [ ] Authorization for emergency deploy path granted by IC (and policy if required)
 
-## Assembly procedure
+## Trigger conditions (apply the pattern)
 
-1. Tie each source to a trigger or workflow decision.
-2. Resolve conflicting authority before analysis; preserve both revisions and the resolution.
-3. Hash the accepted manifest and set expiry from the fastest-changing source.
-4. Exclude unrelated material and redact secrets without removing decision-relevant constraints.
+Apply when **any** of the following hold:
 
-## Tradeoffs
+- Active customer-visible errors, incorrect money/data, auth failures, or safety issues
+- Security exposure requiring immediate mitigation
+- Error-budget burn that will breach SLO before a normal release can ship
+- IC explicitly opens the hotfix lane
 
-Hotfix context deliberately spends additional review time to protect "time to containment meets severity target"; evidence weakness triggers "Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment".
+## Do not apply when
 
-## Anti-patterns
+- Issue is annoying but within normal release tolerance — use [release-pattern](../release-pattern/README.md)
+- Work is cleanup, refactor, or dependency bump without active harm
+- You lack IC — declare roles first; do not freestyle prod
+- Containment already restored service and only analysis remains — stop hotfixing; schedule durable fix
 
-Hotfix context rejects shortcuts around "Establish incident command, severity, roles, and update cadence." because they sever the evidence chain required for "time to containment meets severity target".
+## Required inputs
 
-## Enterprise considerations
+| Input | Source | Minimum quality |
+|-------|--------|-----------------|
+| Alert / report | Monitoring / support | Timestamp + symptom |
+| Service map | Ops | Dependencies on the path |
+| Recent changes | CD / flag history | Digests + deploy times |
+| LKG digest / flag | Registry / flag service | Proven restore path |
+| Runbook | Ops | Containment steps |
 
-Hotfix context governance binds owner, policy revision, and retained proof to "time to containment meets severity target", with "Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment" as the recorded recovery authority.
+## Authority boundary
 
-## Checklist
-
-- [ ] incident severity and commander is present and provenance-bearing
-- [ ] impact and affected scope is present and provenance-bearing
-- [ ] live telemetry or reproduction is present and provenance-bearing
-- [ ] last known-good artifact is present and provenance-bearing
-- [ ] tested rollback command and communication plan is present and provenance-bearing
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+**IC owns decisions.** The hotfix agent proposes containment and minimal diffs. Nobody else deploys without IC ack. External customer communications follow the named communications authority — not the coding agent.

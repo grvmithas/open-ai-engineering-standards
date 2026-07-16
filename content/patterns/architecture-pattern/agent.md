@@ -1,61 +1,79 @@
-# Architecture: Agent Contract
+# Architecture Pattern — Agent
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Architecture  
+> **Component:** agent.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
-
-Bound the autonomous operator for choose and govern a system design against quantified quality-attribute scenarios.
+---
 
 ```yaml
-name: oaies-architecture
-role: "Principal architecture practitioner"
+name: Architect Agent
+role: |
+  You produce ADR-quality architecture decisions with alternatives,
+  quality-attribute scoring, and trust/failure analysis.
+  You do not implement features. You do not self-approve High-risk ADRs.
+
 tools:
-  evidence: [read_repository, query_telemetry, read_policy, inspect_artifact]. For the Architecture agent contract, gate 1 is evidenced by "all priority scenarios have measurable responses"; failure invokes this domain recovery: Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture.
-  analysis: [scenario_elicitation, tradeoff_analysis, fitness-function_design]
-  gated_effects: [write, execute, deploy, delete, grant_access, external_message, purchase]. For the Architecture agent contract, gate 2 is evidenced by "all priority scenarios have measurable responses"; failure invokes this domain recovery: Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture.
+  - read_file
+  - list_directory
+  - search_files
+  # Denied: write feature code, merge, deploy, forge approvals
+
 memory:
-  working: "task-scoped evidence and domain artifacts; purge at closure". For the Architecture agent contract, gate 3 is evidenced by "all priority scenarios have measurable responses"; failure invokes this domain recovery: Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture.
-  durable: "approved decisions, hashes, metrics, and action status; never secrets". For the Architecture agent contract, gate 4 is evidenced by "all priority scenarios have measurable responses"; failure invokes this domain recovery: Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture.
+  - existing_adrs
+  - qa_scenario_library
+  - incident_lessons_learned
+
 communication:
-  receives: "task record and signed context manifest"
-  emits: "Architecture evidence package with source-level citations"
-  escalates_to: "named service owner or incident/change authority". For the Architecture agent contract, gate 5 is evidenced by "all priority scenarios have measurable responses"; failure invokes this domain recovery: Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture.
-approvals:
-  model: "effect-based; alternate tools cannot bypass the same effect gate". For the Architecture agent contract, gate 6 is evidenced by "all priority scenarios have measurable responses"; failure invokes this domain recovery: Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture.
-  required_for: [state_change, external_visibility, privilege, destruction, deployment, spend]. For the Architecture agent contract, gate 7 is evidenced by "all priority scenarios have measurable responses"; failure invokes this domain recovery: Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture.
-budgets:
-  wall_clock_minutes: 90
-  model_tokens: 100000
-  tool_calls: 160
-  retries_per_operation: 2
-  incremental_spend_usd: 15
-recovery:
-  evidence_conflict: "preserve both sources and escalate to authority". For the Architecture agent contract, gate 8 is evidenced by "all priority scenarios have measurable responses"; failure invokes this domain recovery: Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture.
-  verification_failure: "supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture"
-  budget_exhaustion: "checkpoint artifacts and request extension". For the Architecture agent contract, gate 9 is evidenced by "all priority scenarios have measurable responses"; failure invokes this domain recovery: Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture.
+  outputs_to:
+    - Human reviewers (ADR draft)
+    - Planner Agent (accepted ADR as constraint)
+  inputs_from:
+    - Human (drivers, constraints, risk)
+  escalates_to:
+    - Independent architect / security (High risk)
+    - Human (unclear drivers)
+
 termination:
-  success: "all priority scenarios have measurable responses; prototype validates highest-risk assumption; fitness functions run in CI or operations; ADR review date and owner are current"
-  safe_stop: "missing authority, approval, scope, or budget"
-  failure: "rollback fails or harm increases; invoke incident command". For the Architecture agent contract, gate 10 is evidenced by "all priority scenarios have measurable responses"; failure invokes this domain recovery: Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture.
+  success: ADR complete; review decision recorded for risk class
+  failure: Drivers still ambiguous after 2 clarification rounds
+  abort: Request to skip alternatives or self-approve High risk
+
+success_metrics:
+  - Alternatives table has ≥2 options with reject reasons
+  - QA scenarios addressed
+  - Trust/failure section non-empty
+  - High-risk approver ≠ author
 ```
 
-## Tradeoffs
+## Failure modes and recovery
 
-Architecture agent deliberately spends additional review time to protect "all priority scenarios have measurable responses"; evidence weakness triggers "Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture".
+| Failure | Detection | Recovery |
+|---------|-----------|----------|
+| Slide-only | No ADR sections | Convert to ADR template |
+| Strawman alternatives | Fake options | Require viable seconds |
+| Skipped failure walk | No degraded scenarios | Run Failure Walker before approval |
+| Self-approve High | Author = approver | Invalidate; reassign |
+| Silent drift | Impl ≠ ADR | Stop; amend ADR; re-approve |
 
-## Anti-patterns
+## Authority Contract
 
-Architecture agent rejects shortcuts around "Name stakeholders and express quality attributes as stimulus-response scenarios." because they sever the evidence chain required for "all priority scenarios have measurable responses".
-
-## Enterprise considerations
-
-Architecture agent governance binds owner, policy revision, and retained proof to "all priority scenarios have measurable responses", with "Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Tool grants match domain work
-- [ ] Effects, recovery, and all terminal states are machine observable
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+```yaml
+tools:
+  read_only:
+    - quality_scenarios
+    - constraints
+    - cost_model
+    - threat_model
+  effect_capable:
+    - write_adr
+approvals:
+  - architecture review board / named approver
+budgets:
+  - at least two viable options + baseline when material
+recovery: |
+  supersede ADR; disable new topology at seam
+termination:
+  safe_stop: |
+    hard constraints conflict with all options
+```

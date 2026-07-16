@@ -80,8 +80,8 @@
     "status": {"enum": ["draft", "approved", "active", "suspended", "retired"]}
   },
   "allOf": [
-    {"if": {"properties": {"autonomyLevel": {"enum": ["A2", "A3", "A4"]}}, "required": ["autonomyLevel"]}, "then": {"properties": {"authority": {"properties": {"suspensionOutsideModel": {"const": true}}}}}},
-    {"if": {"properties": {"impactLevel": {"const": "I3"}}, "required": ["impactLevel"]}, "then": {"properties": {"workloadProfiles": {"contains": {"const": "P6"}}}}}
+    {"if": {"properties": {"autonomyLevel": {"enum": ["A2", "A3", "A4"]}}, "required": ["autonomyLevel"]}, "then": {"properties": {"authority": {"type": "object", "properties": {"suspensionOutsideModel": {"const": true}}, "additionalProperties": true}}}},
+    {"if": {"properties": {"impactLevel": {"const": "I3"}}, "required": ["impactLevel"]}, "then": {"properties": {"workloadProfiles": {"type": "array", "contains": {"const": "P6"}}}}}
   ],
   "additionalProperties": false
 }

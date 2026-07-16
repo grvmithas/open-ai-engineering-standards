@@ -1,39 +1,36 @@
-# Migration: Problem
+# Migration Pattern — Problem
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Migration  
+> **Component:** problem.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Migration problem operationalizes this pattern outcome: transition data or services while preserving invariants and a tested return path.
+## Statement
 
-## Observable problem
+Schema, API, and data-store changes cause downtime or silent corruption when teams cut over in one step without consumer inventory, expand/contract phases, reconciliation, or phase-specific rollback.
 
-1. When schema, provider, protocol, or platform changes, an undocumented assumption can become a production decision.
-2. When old and new systems must coexist, an undocumented assumption can become a production decision.
-3. When cutover can corrupt or strand data, an undocumented assumption can become a production decision.
+## Measurable symptoms
 
-## Quality boundary
+| Symptom | How you detect it |
+|---------|-------------------|
+| Irreversible deploy | Old column/path removed in same change as cutover |
+| Consumer surprise | Unknown reader breaks after deploy |
+| Silent skew | Row counts or checksums diverge post-cutover |
+| Endless dual-write | Compatibility layer still present quarters later |
+| Backup unproven | Restore never rehearsed before point of no return |
 
-Migration problem quality boundary gate 2 is accepted only when "record and monetary reconciliation = 100%" is source-verifiable; otherwise, stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events.
+## Root cause
 
-## Tradeoffs
+Migrations are scheduled like app deploys. Compatibility is a multi-phase project: expand, dual/shadow, reconcile, cutover, contract — with quantitative gates and an explicit point of no return.
 
-Migration problem deliberately spends additional review time to protect "record and monetary reconciliation = 100%"; evidence weakness triggers "Stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events".
+## Non-goals of this pattern
 
-## Anti-patterns
+- Not a general feature planner (use planner-pattern for product work)
+- Not legacy rewrite strategy (use legacy-modernization-pattern)
+- Not CI database fixture resets
+- Not required for unused additive expand-only columns with no cutover
 
-Migration problem rejects shortcuts around "Define invariants, loss tolerance, RPO, RTO, and abort thresholds." because they sever the evidence chain required for "record and monetary reconciliation = 100%".
+## Related failure modes
 
-## Enterprise considerations
-
-Migration problem governance binds owner, policy revision, and retained proof to "record and monetary reconciliation = 100%", with "Stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Trigger and affected population are quantified
-- [ ] Baseline and desired outcome are distinguishable
-- [ ] Scope and non-goals have named owners
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+See [failures.md](./failures.md).

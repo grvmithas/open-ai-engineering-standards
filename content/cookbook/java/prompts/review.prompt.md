@@ -8,11 +8,11 @@ Review a Java change using native configuration, failure, and operational eviden
 
 ## Why
 
-Transactions wrap use cases; transport DTOs do not leak persistence entities; pools are bounded and JVM evidence drives tuning. This prompt requires native Java artifacts instead of substituting a generic incident or code-generation checklist.
+Transactions wrap use cases; transport DTOs do not leak persistence entities; pools are bounded and JVM evidence drives tuning. The review decision is accepted only when Spring condition report, bean graph, active profiles, and validated configuration properties supports it; generic review advice cannot establish that Java state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Java evidence for the Spring controller, application service, JPA aggregate, message consumer, or JVM process. Apply the invariant "Transactions wrap use cases; transport DTOs do not leak persistence entities; pools are bounded and JVM evidence drives tuning." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Read the Maven/Gradle toolchain, wrapper, Spring dependency management, and runt
 
 ## Tradeoffs
 
-Java review takes longer because configuration and runtime state must be correlated with source. It eliminates generic style findings and prioritizes defects that can change production behavior.
+Java review correlates source with Spring condition report, bean graph, active profiles, and validated configuration properties and JFR recording, GC logs, thread dump, heap dump, and connection-pool metrics. The cost is a deeper review; the benefit is direct evidence for "controllers map validated DTOs and do not expose JPA entities" and "public application-service methods own transaction and authorization boundaries" instead of generic style findings.
 
 ## Anti-patterns
 

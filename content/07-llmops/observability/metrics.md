@@ -1,6 +1,6 @@
 # LLMOps Metrics
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative OAIES implementation profile
 
@@ -21,7 +21,7 @@ Use for service objectives, release gates, capacity, and governance.
 5. Review metric validity quarterly.
 
 ## Evidence contract
-The decision record is the **metric catalog and SLO workbook**. It records instrument; unit; population; labels; aggregation; objective; error budget; owner; exemplar query. The service reliability owner owns completeness; the evidence is invalid when a metric loses denominator or cardinality controls. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+The decision record is the **metric catalog and SLO workbook**. It records instrument; unit; population; labels; aggregation; objective; error budget; owner; exemplar query. The service reliability owner owns completeness; the evidence is invalid when a metric loses denominator or cardinality controls. Persist schema, instrumentation, collector, query, dashboard, and alert revisions so operational conclusions remain reproducible.
 
 ## Failure response and recovery
 **Trigger:** SLO burn or data-quality monitor breaches.
@@ -29,7 +29,7 @@ The decision record is the **metric catalog and SLO workbook**. It records instr
 **Immediate response:** suppress invalid decision automation, repair instrumentation, and recompute the affected window. Preserve the metric catalog and SLO workbook, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to llmops metrics.
 
 ## Decision authority
-The **service reliability owner** accepts the operational decision. The **product quality owner** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+The **service reliability owner** accepts the operational decision. The **product quality owner** provides independent challenge for high-risk scope, failed gates, or exceptions. Telemetry can trigger declared alerts or rollback; service and incident owners judge impact, restoration, and invalid measurement windows.
 
 ## Tradeoffs
 | Choice | Benefit | Cost |
@@ -45,12 +45,12 @@ The **service reliability owner** accepts the operational decision. The **produc
 - Limit access to sensitive slices.
 
 ## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+**LLMOps Metrics** defines informative diagnosability evidence. Sampling and mutable operational telemetry do not replace required action or records-management logs.
 
 | Source | Relationship for LLMOps Metrics | Boundary |
 |---|---|---|
-| NIST AI RMF | MEASURE 2.5 and 3.1 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clause 9.1 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| NIST AI RMF | MEASURE 2.5 and 3.1 | Evaluate monitoring coverage against known failure modes and sampling limitations. |
+| ISO/IEC 42001 | 42001 clause 9.1 | Performance-evaluation evidence remains subject to data quality, access, retention, and internal-audit scope. |
 | Domain threat/control source | Operational indicators for current LLM risks | Test only the threats applicable to the documented system and release |
 
 ## Checklist
@@ -59,8 +59,8 @@ This profile is informative. It helps implement the following relationships and 
 - [ ] Metric owners assigned.
 
 ## References
-- OpenTelemetry, [Generative AI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/) (accessed 2026-07-16); pin the convention version because portions remain Development.
-- OpenTelemetry, [Trace semantic conventions](https://opentelemetry.io/docs/specs/semconv/general/trace/) (accessed 2026-07-16).
+- OpenTelemetry, [GenAI semantic conventions repository](https://github.com/open-telemetry/semantic-conventions-genai) (accessed 2026-07-16); pin a commit/release because the conventions remain Development.
+- OpenTelemetry, [Metrics data model](https://opentelemetry.io/docs/reference/specification/metrics/data-model/) (accessed 2026-07-16).
 
 ## Changelog
 | Version | Date | Change |

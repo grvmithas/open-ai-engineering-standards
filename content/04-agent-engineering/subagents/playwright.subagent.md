@@ -77,6 +77,9 @@ Shared data collision, arbitrary wait, locator ambiguity, hidden retry masking d
 ## Verification
 Run playwright test for target projects, repeat-each, fullyParallel where appropriate, trace inspection, and axe critical-flow checks.
 
+## Domain Recovery Playbook
+Retain traces, video, screenshots, network logs, and fixture identifiers; reset isolated data, reproduce without retries, and classify product, test, or environment failure.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

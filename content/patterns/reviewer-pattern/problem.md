@@ -1,39 +1,36 @@
-# Reviewer: Problem
+# Reviewer Pattern — Problem
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Reviewer  
+> **Component:** problem.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Reviewer problem operationalizes this pattern outcome: detect consequential defects with requirement-traceable, severity-calibrated findings.
+## Statement
 
-## Observable problem
+Pull requests and agent-generated diffs merge with consequential defects because review focuses on style, trusts green CI, or skips requirement tracing and trust-boundary walks. The result is production incidents that were visible in the diff.
 
-1. When an artifact changes runtime behavior, an undocumented assumption can become a production decision.
-2. When a public contract or security boundary changes, an undocumented assumption can become a production decision.
-3. When release evidence needs independent challenge, an undocumented assumption can become a production decision.
+## Measurable symptoms
 
-## Quality boundary
+| Symptom | How you detect it |
+|---------|-------------------|
+| Escaped defects | Post-merge bugs that a severity-calibrated review would have blocked |
+| Nit flooding | >15 Minor comments and zero Critical/High on a behavioral PR |
+| Untested AC | Acceptance criteria with no corresponding test in the PR |
+| Self-approve | Same agent/human authored and gave final Approve on High-risk change |
+| Unverified “fixed” | Finding marked resolved without re-check on the new revision |
 
-Reviewer problem quality boundary gate 2 is accepted only when "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision." is source-verifiable; otherwise, reject approval, remove unverified review-driven edits, and restore the reviewed revision.
+## Root cause
 
-## Tradeoffs
+Reviewers optimize for speed or comment volume. Defect detection requires reconstructing intended behavior, walking trust boundaries, and calibrating severity from reachability × impact — work that is skipped under time pressure or when CI is treated as proof.
 
-Reviewer problem deliberately spends additional review time to protect "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision."; evidence weakness triggers "Reject approval, remove unverified review-driven edits, and restore the reviewed revision".
+## Non-goals of this pattern
 
-## Anti-patterns
+- Not a substitute for automated SAST/DAST (complements them)
+- Not a place to rewrite the feature for the author
+- Not required for docs-only or pure formatting commits
+- Not an architecture redesign session (escalate to architecture-pattern)
 
-Reviewer problem rejects shortcuts around "Reconstruct intended behavior from requirements before reading the implementation." because they sever the evidence chain required for "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision.".
+## Related failure modes
 
-## Enterprise considerations
-
-Reviewer problem governance binds owner, policy revision, and retained proof to "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision.", with "Reject approval, remove unverified review-driven edits, and restore the reviewed revision" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Trigger and affected population are quantified
-- [ ] Baseline and desired outcome are distinguishable
-- [ ] Scope and non-goals have named owners
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+See [failures.md](./failures.md) for recovery when reviews are nit-heavy, CI-blind, self-approved, or severity-miscalibrated.

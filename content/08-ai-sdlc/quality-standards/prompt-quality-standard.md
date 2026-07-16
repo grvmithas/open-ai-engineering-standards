@@ -1,69 +1,60 @@
 # Prompt Quality Standard
 
-> **Version:** 1.0.0
-> **Last updated:** 2026-07-16
-> **Status:** Informative OAIES implementation profile
+> **Applies to:** Every production prompt in this repository and in adopting systems  
+> **Version:** 1.1 | **Updated:** 2026-07-16
+
+---
 
 ## Purpose
-Set the minimum production bar for structured, testable, versioned prompts.
 
-## Why
-Prompt quality is an engineering property established by evidence, not prose review.
+Set the minimum bar so prompts are reviewable, testable, and safe to run under a harness.
 
-## When
-Apply to system, developer, evaluator, and agent prompts.
+## Authoring convention (OAIES repo)
 
-## How
-1. Use XML role, context, instructions, output_format, constraints, and thinking/scratchpad instruction.
-2. State authority boundaries, stop conditions, and at least three constraints.
-3. Version the complete execution envelope.
-4. Test normal, edge, adversarial, multilingual, and malformed inputs.
-5. Define release and rollback gates.
+Production prompts in this repository use XML sections:
 
-## Evidence contract
-The decision record is the **prompt qualification package**. It records XML schema; variables; authority; stop conditions; envelope digest; normal/edge/adversarial results. The prompt owner owns completeness; the evidence is invalid when a tool, schema, policy, or model setting changes outside the prompt version. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+`<role>`, `<context>`, `<instructions>`, `<output_format>`, `<constraints>`
 
-## Failure response and recovery
-**Trigger:** prompt regression or injection control fails.
+This is an **authoring convention for OAIES artifacts**, not a claim that every industry system must emit XML at runtime. Adopters may compile to their platform’s prompt format if the semantic sections survive.
 
-**Immediate response:** withdraw the release alias and restore the prior qualified envelope. Preserve the prompt qualification package, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to prompt quality standard.
+## Minimum bar
 
-## Decision authority
-The **prompt owner** accepts the operational decision. The **security reviewer for tool-capable prompts** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+### Structure
 
-## Tradeoffs
-| Choice | Benefit | Cost |
-|---|---|---|
-| Explicit structure | Predictability | More maintenance |
+- [ ] Role states expertise **and** exclusions (what the model must not do)
+- [ ] Context is complete for the task and free of irrelevant dumps
+- [ ] Instructions are numbered and imperative
+- [ ] Output format is explicit; include a concrete skeleton or example
+- [ ] Constraints include at least three hard MUST / MUST NOT rules
+
+### Safety
+
+- [ ] Untrusted input is clearly delimited from instructions
+- [ ] Tool / side-effect authority is not granted by retrieved text
+- [ ] Secrets are never requested into the prompt
+- [ ] High-impact actions require human approval language when applicable
+
+### Operations
+
+- [ ] Prompt is versioned (semver or content hash) in the change that ships it
+- [ ] At least one evaluation case exists for user-visible prompts
+- [ ] Rollback version identified
+- [ ] Owner named
+
+### Risk-based extras
+
+| Risk | Extra requirement |
+|------|-------------------|
+| Multi-file coding | Planning step or link to Planner Pattern |
+| Security-sensitive | Explicit threat considerations in output |
+| Regulated content | Citation / evidence rules in output format |
 
 ## Anti-patterns
-- Embedding secrets.
-- Relying on prompt text as authorization.
 
-## Enterprise considerations
-- Review data residency.
-- Apply accessible and non-discriminatory language.
+See [prompt anti-patterns](../../01-prompt-engineering/anti-patterns/prompt-anti-patterns.md).
 
-## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+## Related
 
-| Source | Relationship for Prompt Quality Standard | Boundary |
-|---|---|---|
-| NIST AI RMF | MEASURE 2.6 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clauses 8.1 and 8.4 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
-| Domain threat/control source | LLM01, LLM06, and LLM08 | Test only the threats applicable to the documented system and release |
-
-## Checklist
-- [ ] Schema validated.
-- [ ] Injection cases pass.
-- [ ] Fallback defined.
-
-## References
-- NIST, [Secure Software Development Framework 1.1](https://doi.org/10.6028/NIST.SP.800-218) (accessed 2026-07-16).
-- NIST, [AI RMF 1.0](https://doi.org/10.6028/NIST.AI.100-1) (accessed 2026-07-16).
-
-## Changelog
-| Version | Date | Change |
-|---|---|---|
-| 1.1.0 | 2026-07-16 | Replaced generic assurance text with the prompt qualification package, failure trigger, accountable decision, and scoped framework relationships for prompt quality standard. |
-| 1.0.0 | 2026-07-16 | Initial complete profile. |
+- [XML structured pattern](../../01-prompt-engineering/patterns/xml-structured.md)
+- [System prompt template](../../01-prompt-engineering/templates/system-prompt.template.md)
+- [Implementation plan prompt](../prompts/implementation-plan.prompt.md)

@@ -8,11 +8,11 @@ Diagnose a GraphQL incident by testing platform-specific failure classes before 
 
 ## Why
 
-Schema exposes domain capabilities; authorization is enforced at trusted resolver/service boundaries; data access is batched per request; operations have resource budgets. This prompt requires native GraphQL artifacts instead of substituting a generic incident or code-generation checklist.
+Schema exposes domain capabilities; authorization is enforced at trusted resolver/service boundaries; data access is batched per request; operations have resource budgets. The debug decision is accepted only when resolver trace tree, per-field errors, downstream query count, DataLoader batch/cache evidence supports it; generic debug advice cannot establish that GraphQL state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized GraphQL evidence for the schema, resolver, request DataLoader, gateway, persisted operation, or federated subgraph. Apply the invariant "Schema exposes domain capabilities; authorization is enforced at trusted resolver/service boundaries; data access is batched per request; operations have resource budgets." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>

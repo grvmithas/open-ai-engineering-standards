@@ -32,15 +32,15 @@ Public boundaries are typed and validated; environments are reproducible; async 
 
 **Preserve first:** `pyproject.toml`, lock/constraints, interpreter pin, and installed dependency report.
 
-**Discriminate:** python -m pip. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** python -m pip. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For environment or import resolution mismatch, correlate that observation to the exact Python target, revision, request/job, and UTC interval; compare `pyproject.toml`, lock/constraints, interpreter pin, and installed dependency report with one healthy peer or baseline.
 
-**Native action:** `python --version` and `python -m pip check`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `python --version` and `python -m pip check`. Start in the safest Python read-only or dry-run mode available. Before changing the package, FastAPI/Django boundary, asyncio task, worker, or library API, name which of environment or import resolution mismatch and unawaited coroutine or lost cancellation the action distinguishes.
 
 **Root-cause direction:** Interpreter, environment, package layout, or import path is wrong.
 
 **Correction:** Run through the project environment and install the package rather than mutating sys.path.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `ModuleNotFoundError` reproduction, verify the environment or import resolution mismatch signal cleared in python -m pip. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Run through the project environment and install the package rather than mutating sys.path. restored the intended Python behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop producers before reverting consumers when task schemas changed; deploy the previous wheel/image only after confirming database and serialized payload compatibility.
 
@@ -50,15 +50,15 @@ Public boundaries are typed and validated; environments are reproducible; async 
 
 **Preserve first:** type-checker, formatter, linter, and test configuration.
 
-**Discriminate:** asyncio debug mode. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** asyncio debug mode. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For unawaited coroutine or lost cancellation, correlate that observation to the exact Python target, revision, request/job, and UTC interval; compare type-checker, formatter, linter, and test configuration with one healthy peer or baseline.
 
-**Native action:** `python -m pytest -q` with the repository configuration. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `python -m pytest -q` with the repository configuration. Start in the safest Python read-only or dry-run mode available. Before changing the package, FastAPI/Django boundary, asyncio task, worker, or library API, name which of unawaited coroutine or lost cancellation and blocking work in the event loop the action distinguishes.
 
 **Root-cause direction:** An async function was called without awaiting or scheduling it.
 
 **Correction:** Await it within the owning event loop and preserve cancellation.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `coroutine was never awaited` reproduction, verify the unawaited coroutine or lost cancellation signal cleared in asyncio debug mode. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Await it within the owning event loop and preserve cancellation. restored the intended Python behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop producers before reverting consumers when task schemas changed; deploy the previous wheel/image only after confirming database and serialized payload compatibility.
 
@@ -68,15 +68,15 @@ Public boundaries are typed and validated; environments are reproducible; async 
 
 **Preserve first:** async task dump, traceback with chained causes, profile, and open-resource evidence.
 
-**Discriminate:** asyncio task inspection. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** asyncio task inspection. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For blocking work in the event loop, correlate that observation to the exact Python target, revision, request/job, and UTC interval; compare async task dump, traceback with chained causes, profile, and open-resource evidence with one healthy peer or baseline.
 
-**Native action:** `python -m ruff check .` when Ruff is declared. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `python -m ruff check .` when Ruff is declared. Start in the safest Python read-only or dry-run mode available. Before changing the package, FastAPI/Django boundary, asyncio task, worker, or library API, name which of blocking work in the event loop and resource/session leak the action distinguishes.
 
 **Root-cause direction:** Code attempts to nest an event loop.
 
 **Correction:** Expose async APIs and let the host own the loop.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Event loop is already running` reproduction, verify the blocking work in the event loop signal cleared in asyncio task inspection. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Expose async APIs and let the host own the loop. restored the intended Python behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop producers before reverting consumers when task schemas changed; deploy the previous wheel/image only after confirming database and serialized payload compatibility.
 
@@ -86,15 +86,15 @@ Public boundaries are typed and validated; environments are reproducible; async 
 
 **Preserve first:** ASGI/WSGI server, worker count, timeout, and database-pool settings.
 
-**Discriminate:** schema validation output. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** schema validation output. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For resource/session leak, correlate that observation to the exact Python target, revision, request/job, and UTC interval; compare ASGI/WSGI server, worker count, timeout, and database-pool settings with one healthy peer or baseline.
 
-**Native action:** `python -m mypy .` when mypy is declared. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `python -m mypy .` when mypy is declared. Start in the safest Python read-only or dry-run mode available. Before changing the package, FastAPI/Django boundary, asyncio task, worker, or library API, name which of resource/session leak and schema or type contract drift the action distinguishes.
 
 **Root-cause direction:** Untrusted data violates the declared schema.
 
 **Correction:** Return structured field errors; do not weaken the model.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Validation error at boundary` reproduction, verify the resource/session leak signal cleared in schema validation output. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Return structured field errors; do not weaken the model. restored the intended Python behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop producers before reverting consumers when task schemas changed; deploy the previous wheel/image only after confirming database and serialized payload compatibility.
 
@@ -104,15 +104,15 @@ Public boundaries are typed and validated; environments are reproducible; async 
 
 **Preserve first:** `pyproject.toml`, lock/constraints, interpreter pin, and installed dependency report.
 
-**Discriminate:** python -X importtime. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** python -X importtime. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For schema or type contract drift, correlate that observation to the exact Python target, revision, request/job, and UTC interval; compare `pyproject.toml`, lock/constraints, interpreter pin, and installed dependency report with one healthy peer or baseline.
 
-**Native action:** `PYTHONASYNCIODEBUG=1 python -m <module>` for asyncio diagnostics. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `PYTHONASYNCIODEBUG=1 python -m <module>` for asyncio diagnostics. Start in the safest Python read-only or dry-run mode available. Before changing the package, FastAPI/Django boundary, asyncio task, worker, or library API, name which of schema or type contract drift and environment or import resolution mismatch the action distinguishes.
 
 **Root-cause direction:** Modules depend on each other's import-time side effects.
 
 **Correction:** Move shared contracts downward and defer runtime wiring to composition.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Circular import` reproduction, verify the schema or type contract drift signal cleared in python -X importtime. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Move shared contracts downward and defer runtime wiring to composition. restored the intended Python behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop producers before reverting consumers when task schemas changed; deploy the previous wheel/image only after confirming database and serialized payload compatibility.
 

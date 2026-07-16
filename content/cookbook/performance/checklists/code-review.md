@@ -20,7 +20,7 @@ Record hardware, OS/kernel, runtime/browser, build mode, dependency versions, da
 
 ## Tradeoffs
 
-The Performance Engineering review gate requires runtime/configuration evidence beyond a source diff. It increases reviewer effort but catches defects static style review cannot observe.
+Review must prove "target metric maps to a named user journey and SLO" using SLI/SLO definition, histogram boundaries, trace sampling, RUM attribution, and business-impact cohort. That Performance Engineering evidence costs more than diff inspection but exposes tail latency hidden by averages before merge.
 
 ## Anti-patterns
 

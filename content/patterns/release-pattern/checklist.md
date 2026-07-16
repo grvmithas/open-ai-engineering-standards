@@ -1,53 +1,34 @@
-# Release: Quality Gate
+# Release Pattern — Checklist
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Release  
+> **Component:** checklist.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Applicability
+---
 
-- [ ] Trigger evidenced: a verified artifact is ready for production
-- [ ] Trigger evidenced: customer behavior or data can change
-- [ ] Trigger evidenced: rollback must meet an operational RTO
+**Gate:** No production exposure until Go is recorded and abort wiring is live.
 
-## Evidence package
+## Pre-Go
 
-- [ ] signed artifact and provenance has authority, revision, timestamp, and owner
-- [ ] test and security results has authority, revision, timestamp, and owner
-- [ ] SBOM and dependency policy has authority, revision, timestamp, and owner
-- [ ] change record and release notes has authority, revision, timestamp, and owner
-- [ ] SLO baseline and rollback rehearsal has authority, revision, timestamp, and owner
+- [ ] Artifact digests pinned (`sha256:…`)
+- [ ] Provenance/attestation attached
+- [ ] Gates green for those digests (or expiring exception)
+- [ ] SBOM/dependency policy pass
+- [ ] Migrations sequenced expand → app → later contract
+- [ ] Feature flag or traffic split ready and tested
+- [ ] Abort criteria numeric, owner named, dashboards linked
+- [ ] Rollback owner + RTO + rehearsal/drill date
+- [ ] Communications plan for medium/high risk
 
-## Domain execution
+## During
 
-- [ ] Freeze artifact digest, configuration, migrations, and release evidence
-- [ ] Verify provenance, policy, compatibility, and environment readiness
-- [ ] Rehearse rollback and forward-fix against production-like state
-- [ ] Deploy internal or dark with no customer authority
-- [ ] Canary a representative cohort with automatic abort thresholds
-- [ ] Hold and compare SLO, business, security, and support signals
-- [ ] Expand 1/10/25/50/100% with approval at risk boundaries
-- [ ] Close after observation window; preserve artifact and release ledger
+- [ ] Stage holds observed (1% / 5% / 25% / 100% or equivalent)
+- [ ] Abort criteria not edited mid-flight
+- [ ] On abort: flag disabled / prior digest restored within RTO
+- [ ] Recovery verified against baseline
 
-## Measured verification
+## After
 
-- [ ] Evidence demonstrates artifact-to-runtime digest match = 100%
-- [ ] Evidence demonstrates deployment success > 99%
-- [ ] Evidence demonstrates rollback completes within RTO
-- [ ] Evidence demonstrates no accelerated SLO burn during holds
-
-## Recovery and closure
-
-- [ ] Rehearsed rollback can halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health
-- [ ] Residual risks and follow-ups have owners and dates
-- [ ] Artifact hashes, effect approvals, and raw checks are retained
-
-## Anti-patterns
-
-Release checklist rejects shortcuts around "Freeze artifact digest, configuration, migrations, and release evidence." because they sever the evidence chain required for "artifact-to-runtime digest match = 100%".
-
-## Enterprise considerations
-
-Release checklist governance binds owner, policy revision, and retained proof to "artifact-to-runtime digest match = 100%", with "Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health" as the recorded recovery authority.
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- [ ] Observation window completed
+- [ ] Change ticket closed with final digests and decision log
+- [ ] Contract migrations only after soak (if applicable)

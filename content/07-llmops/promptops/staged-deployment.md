@@ -1,6 +1,6 @@
 # Staged Prompt Deployment
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative OAIES implementation profile
 
@@ -21,7 +21,7 @@ Use for every prompt or model-envelope release.
 5. Promote gradually; retain previous release for instant rollback.
 
 ## Evidence contract
-The decision record is the **promotion ledger**. It records manifest digest; environment; gate result; canary cohort; exposure; abort threshold; approver. The release manager owns completeness; the evidence is invalid when staging differs materially from production policy or data contracts. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+The decision record is the **promotion ledger**. It records manifest digest; environment; gate result; canary cohort; exposure; abort threshold; approver. The release manager owns completeness; the evidence is invalid when staging differs materially from production policy or data contracts. Store repository commit, built envelope digest, registry version, environment alias, and signer as one release lineage.
 
 ## Failure response and recovery
 **Trigger:** canary SLO burn or severe-quality threshold breaches.
@@ -29,7 +29,7 @@ The decision record is the **promotion ledger**. It records manifest digest; env
 **Immediate response:** set the production alias to the prior digest and drain in-flight agent work. Preserve the promotion ledger, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to staged prompt deployment.
 
 ## Decision authority
-The **release manager** accepts the operational decision. The **service on-call** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+The **release manager** accepts the operational decision. The **service on-call** provides independent challenge for high-risk scope, failed gates, or exceptions. Promotion services may verify signatures and gates; named release and risk owners decide exceptions and production exposure.
 
 ## Tradeoffs
 | Choice | Benefit | Cost |
@@ -45,12 +45,12 @@ The **release manager** accepts the operational decision. The **service on-call*
 - Keep regional rollout controls.
 
 ## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+**Staged Prompt Deployment** is informative prompt-supply-chain guidance. Qualification remains specific to the rendered envelope, model, tools, data, and intended task.
 
 | Source | Relationship for Staged Prompt Deployment | Boundary |
 |---|---|---|
-| NIST AI RMF | MANAGE 2.4 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clauses 8.1 and 8.4 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| NIST AI RMF | MANAGE 2.4 | Apply governance outcomes to the complete execution envelope, not prompt text alone. |
+| ISO/IEC 42001 | 42001 clauses 8.1 and 8.4 | Management-system alignment depends on controlled authoring, approval, distribution, and corrective action. |
 | Domain threat/control source | Unsafe output and excessive agency | Test only the threats applicable to the documented system and release |
 
 ## Checklist

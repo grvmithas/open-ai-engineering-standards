@@ -77,6 +77,9 @@ Unbounded key cardinality, hot key, O(N) command, stale privilege data, failover
 ## Verification
 Run COMMAND complexity review, MEMORY USAGE sample, slowlog/latency checks, atomicity tests, failover simulation in disposable topology.
 
+## Domain Recovery Playbook
+Bypass or disable the cache, stop expensive commands, preserve latency/memory evidence, reconcile source-of-truth data, and never use FLUSH as automated recovery.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

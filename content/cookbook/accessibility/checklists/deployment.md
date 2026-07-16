@@ -20,7 +20,7 @@ Record the conformance target (for example WCAG 2.2 level), browser/OS/screen-re
 
 ## Tradeoffs
 
-The Accessibility Engineering deployment gate adds manual and target-environment checks that slow promotion. It reduces the chance that version, topology, state, or rollback assumptions reach production.
+Promotion waits for "automated accessibility regression passes with no unreviewed serious/critical rule failures" and "critical flows pass keyboard-only operation including focus visibility, traps, escape, and return". Those Accessibility Engineering target checks slow release but directly bound missing or incorrect accessible name/description and make this rollback executable: Disable the changed component or restore the previous accessible implementation through a feature flag; do not roll back content/data changes in a way that removes labels, alternatives, or user progress.
 
 ## Anti-patterns
 

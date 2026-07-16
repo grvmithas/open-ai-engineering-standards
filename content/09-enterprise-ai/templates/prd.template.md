@@ -1,6 +1,6 @@
 # AI Product Requirements Document Template
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative implementation template; replace every `{{...}}` field or state `Not applicable — <reason>`.
 
@@ -11,10 +11,10 @@ Define user outcome, intended use, measurable requirements, risk, and lifecycle 
 AI product requirements must bind intended use and prohibited use to measurable outcomes and affected-person controls.
 
 ## How
-1. Assign the accountable owner and classification before authoring.
-2. Complete user outcome, intended/prohibited use, risk tier, data/provider flow, evaluation plan, oversight, appeal, retirement.
-3. Link objective source evidence; screenshots and model assertions are supporting material only.
-4. Capture dissent, approval identity/date, expiry or review trigger, and recovery path.
+1. Identify affected users, intended use, prohibited use, and accountable product owner.
+2. Set outcome, quality, safety, oversight, and unit-cost requirements with baselines.
+3. Document data/model/provider flows and affected-person notices or appeal.
+4. Define release, monitoring, rollback, and retirement criteria before approval.
 
 ## Decision authority
 Product owns outcomes; domain and risk reviewers approve high-impact intended use and control sufficiency.
@@ -43,24 +43,23 @@ Product owns outcomes; domain and risk reviewers approve high-impact intended us
 | Proportionate abbreviated record | Lower low-risk overhead | Requires an explicit tailoring rationale |
 
 ## Anti-patterns
-- Approving a record that still contains unresolved template fields.
-- Linking evidence that can change in place without recording a digest or version.
-- Using the template itself as proof of legal compliance, control operation, or certification.
+- Writing model capability as a user outcome.
+- Omitting prohibited uses or affected-person impact.
+- Setting quality targets without populations, denominators, or failure severity.
 
 ## Enterprise considerations
-- Apply records classification, access, retention, legal hold, and regional storage to the completed PRD.
-- Record the applicable operator, controller/processor, and supplier roles when AI or personal data is involved.
-- This is implementation support, not legal advice, a conformity assessment, or an ISO certification claim.
+- Counsel determines legal applicability; the PRD records the decision and engineering obligations.
+- Procurement and data owners approve provider/data boundaries.
+- High-impact products document meaningful oversight, complaint, correction, and retirement capacity.
 
 ## Checklist
-- [ ] User outcome, intended/prohibited use, risk tier, data/provider flow, evaluation plan, oversight, appeal, retirement are complete.
-- [ ] Evidence links are immutable or versioned.
-- [ ] Decision authority, date, and review trigger are recorded.
-- [ ] Failure, rollback, escalation, or supersession path is executable.
+- [ ] Intended and prohibited uses are unambiguous.
+- [ ] Requirements have baseline, target, population, and evidence source.
+- [ ] Data/provider and human-decision flows are diagrammed.
+- [ ] Abort and retirement rules have owners.
 
 ## References
-- NIST, [AI Risk Management Framework 1.0](https://doi.org/10.6028/NIST.AI.100-1) and [Generative AI Profile](https://doi.org/10.6028/NIST.AI.600-1) (accessed 2026-07-16).
-- ISO, [ISO/IEC 42001:2023](https://www.iso.org/standard/81230.html) and [ISO/IEC 23894:2023](https://www.iso.org/standard/77304.html) (accessed 2026-07-16). Mapping indicates control alignment only; it is not a certification claim.
+- NIST, [AI RMF MAP](https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook/Map) (accessed 2026-07-16).
 
 ## Changelog
 | Version | Date | Change |

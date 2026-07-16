@@ -8,11 +8,11 @@ Review a Accessibility Engineering change using native configuration, failure, a
 
 ## Why
 
-Native semantics come first; every operation is keyboard-complete; focus is deterministic; assistive-technology testing supplements automated WCAG checks. This prompt requires native Accessibility Engineering artifacts instead of substituting a generic incident or code-generation checklist.
+Native semantics come first; every operation is keyboard-complete; focus is deterministic; assistive-technology testing supplements automated WCAG checks. The review decision is accepted only when keyboard sequence with visible focus, modal entry/escape/return, route focus, and error focus behavior supports it; generic review advice cannot establish that Accessibility Engineering state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Accessibility Engineering evidence for the semantic component, keyboard flow, focus transition, WCAG audit, remediation, or conformance release. Apply the invariant "Native semantics come first; every operation is keyboard-complete; focus is deterministic; assistive-technology testing supplements automated WCAG checks." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Record the conformance target (for example WCAG 2.2 level), browser/OS/screen-re
 
 ## Tradeoffs
 
-Accessibility Engineering review takes longer because configuration and runtime state must be correlated with source. It eliminates generic style findings and prioritizes defects that can change production behavior.
+Accessibility Engineering review correlates source with keyboard sequence with visible focus, modal entry/escape/return, route focus, and error focus behavior and screen-reader transcript across the supported browser/AT matrix. The cost is a deeper review; the benefit is direct evidence for "native element is used unless a custom interaction has a documented semantic need" and "computed name, role, state, value, description, and relationships match visible behavior" instead of generic style findings.
 
 ## Anti-patterns
 

@@ -8,11 +8,11 @@ Review a Next.js change using native configuration, failure, and operational evi
 
 ## Why
 
-Server Components are the default; client boundaries are minimal; cache and dynamic behavior are declared at the data boundary. This prompt requires native Next.js artifacts instead of substituting a generic incident or code-generation checklist.
+Server Components are the default; client boundaries are minimal; cache and dynamic behavior are declared at the data boundary. The review decision is accepted only when route tree including `layout`, `page`, `loading`, `error`, `not-found`, and Route Handlers supports it; generic review advice cannot establish that Next.js state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Next.js evidence for the App Router route, layout, Server Component, Client Component, or Route Handler. Apply the invariant "Server Components are the default; client boundaries are minimal; cache and dynamic behavior are declared at the data boundary." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Use the locally installed Next.js documentation under `node_modules/next/dist/do
 
 ## Tradeoffs
 
-Next.js review takes longer because configuration and runtime state must be correlated with source. It eliminates generic style findings and prioritizes defects that can change production behavior.
+Next.js review correlates source with route tree including `layout`, `page`, `loading`, `error`, `not-found`, and Route Handlers and build output showing static, dynamic, and route bundle classification. The cost is a deeper review; the benefit is direct evidence for "`use client` appears only at the smallest browser-interactive boundary" and "Server Components do not import browser-only modules and client props are serializable" instead of generic style findings.
 
 ## Anti-patterns
 

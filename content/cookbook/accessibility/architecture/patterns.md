@@ -72,11 +72,11 @@ Accessibility governance owns the WCAG target, supported AT matrix, design-syste
 
 ## Checklist
 
-- [ ] Design tokens encode contrast, focus, target, motion, and forced-color behavior..
-- [ ] Semantic primitives own name/role/state and complex-widget keyboard models..
-- [ ] Product flows own focus transitions, errors, status announcements, and reading order..
-- [ ] Automated checks run continuously; manual AT scripts gate critical journeys..
-- [ ] Conformance claims link to versioned evidence and open exceptions..
+- [ ] Design tokens encode contrast, focus, target, motion, and forced-color behavior.
+- [ ] Semantic primitives own name/role/state and complex-widget keyboard models.
+- [ ] Product flows own focus transitions, errors, status announcements, and reading order.
+- [ ] Automated checks run continuously; manual AT scripts gate critical journeys.
+- [ ] Conformance claims link to versioned evidence and open exceptions.
 - [ ] Diagram matches deployed topology rather than an aspirational target.
 - [ ] Rollback path preserves state and mixed-version contracts.
 

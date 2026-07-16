@@ -20,7 +20,7 @@ Read `global.json`, target framework monikers, SDK lock, runtime image, and pack
 
 ## Tradeoffs
 
-The .NET deployment gate adds manual and target-environment checks that slow promotion. It reduces the chance that version, topology, state, or rollback assumptions reach production.
+Promotion waits for "SDK used to publish matches `global.json` and runtime image compatibility" and "locked restore, build with warnings as errors, tests, and package vulnerability review pass". Those .NET target checks slow release but directly bound invalid DI lifetime or missing registration and make this rollback executable: Stop new background work, drain hosted services within the host shutdown timeout, then redeploy the previous published artifact after checking EF migration compatibility.
 
 ## Anti-patterns
 

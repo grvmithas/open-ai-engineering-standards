@@ -1,46 +1,44 @@
-# Legacy Modernization: Context Contract
+# Legacy Modernization Pattern — Context
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Legacy Modernization  
+> **Component:** context.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Make the evidence needed to replace obsolete internals incrementally while preserving observed business behavior authoritative, bounded, and reproducible.
+## Preconditions (must be true before activation)
 
-| Required input | Acceptance test |
-|---|---|
-| characterization tests | owner, revision, retrieval time, and authority recorded for characterization tests |
-| runtime dependency and call graph | owner, revision, retrieval time, and authority recorded for runtime dependency and call graph |
-| consumer contracts | owner, revision, retrieval time, and authority recorded for consumer contracts |
-| change and incident history | owner, revision, retrieval time, and authority recorded for change and incident history |
-| support/security lifecycle dates | owner, revision, retrieval time, and authority recorded for support/security lifecycle dates |
+- [ ] Capability slice chosen (verb + noun, e.g. “price quote”), not “entire monolith”
+- [ ] Legacy entry points for that slice identified
+- [ ] Business owner who can judge behavioral parity
+- [ ] Dual-run / flagging mechanism available
+- [ ] Retirement is an explicit goal for the slice
 
-## Assembly procedure
+## Trigger conditions (apply the pattern)
 
-1. Tie each source to a trigger or workflow decision.
-2. Resolve conflicting authority before analysis; preserve both revisions and the resolution.
-3. Hash the accepted manifest and set expiry from the fastest-changing source.
-4. Exclude unrelated material and redact secrets without removing decision-relevant constraints.
+Apply when **any** of the following hold:
 
-## Tradeoffs
+- Production legacy must keep running during replacement
+- Rewrite temptation is “stop the world and rebuild”
+- Prior modernization stalled at partial parity
+- Undocumented rules live in batch/monolith/stored procs
 
-Legacy Modernization context deliberately spends additional review time to protect "characterized critical behavior = 100%"; evidence weakness triggers "Flip the strangler route to the legacy implementation and replay buffered work after reconciliation".
+## Do not apply when
 
-## Anti-patterns
+- No production predecessor (greenfield)
+- Change is a normal feature on a modern service
+- Fixing one bug in legacy without replacement intent
+- UI-only restyle with same contracts
 
-Legacy Modernization context rejects shortcuts around "Inventory business capabilities, consumers, and operational pain." because they sever the evidence chain required for "characterized critical behavior = 100%".
+## Required inputs
 
-## Enterprise considerations
+| Input | Source | Minimum quality |
+|-------|--------|-----------------|
+| Capability map | Product + architecture | Sliced backlog |
+| Legacy surface | SME + code/job inventory | Entry points + data stores |
+| Parity fixtures | Golden outputs from legacy | Representative + edge cases |
+| Risk / regulatory | Compliance | What must not regress |
 
-Legacy Modernization context governance binds owner, policy revision, and retained proof to "characterized critical behavior = 100%", with "Flip the strangler route to the legacy implementation and replay buffered work after reconciliation" as the recorded recovery authority.
+## Authority boundary
 
-## Checklist
-
-- [ ] characterization tests is present and provenance-bearing
-- [ ] runtime dependency and call graph is present and provenance-bearing
-- [ ] consumer contracts is present and provenance-bearing
-- [ ] change and incident history is present and provenance-bearing
-- [ ] support/security lifecycle dates is present and provenance-bearing
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+The modernization agent plans seams, parity, and shift. **Business owner** accepts parity. **Traffic 100% and legacy deletion** require named approvals. Agents do not silently retire production systems.

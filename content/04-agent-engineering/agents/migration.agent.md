@@ -77,6 +77,9 @@ Irreversible conversion, hidden consumer, split-brain writes, backfill overload,
 ## Verification
 Run compatibility suites, checksums/counts/domain reconciliation, lag and lock monitoring, synthetic transactions, and restore rehearsal.
 
+## Domain Recovery Playbook
+Halt the current wave, preserve source and target checkpoints, prevent split writes, reconcile copied state, and execute the rehearsed rollback or approved forward-recovery branch.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

@@ -8,11 +8,11 @@ Diagnose a Next.js incident by testing platform-specific failure classes before 
 
 ## Why
 
-Server Components are the default; client boundaries are minimal; cache and dynamic behavior are declared at the data boundary. This prompt requires native Next.js artifacts instead of substituting a generic incident or code-generation checklist.
+Server Components are the default; client boundaries are minimal; cache and dynamic behavior are declared at the data boundary. The debug decision is accepted only when build output showing static, dynamic, and route bundle classification supports it; generic debug advice cannot establish that Next.js state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Next.js evidence for the App Router route, layout, Server Component, Client Component, or Route Handler. Apply the invariant "Server Components are the default; client boundaries are minimal; cache and dynamic behavior are declared at the data boundary." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>

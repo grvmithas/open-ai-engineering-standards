@@ -77,6 +77,9 @@ Prompt injection, schema drift, instruction leakage, example overfitting, and mo
 ## Verification
 Run schema validation and frozen eval suites by slice; inspect traces for forbidden disclosure and tool intent.
 
+## Domain Recovery Playbook
+Route traffic to the prior prompt version, retain failed traces with redaction, add the failure to the held-out set, and recalibrate graders before another candidate comparison.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

@@ -8,11 +8,11 @@ Diagnose a React Native incident by testing platform-specific failure classes be
 
 ## Why
 
-Domain logic is shared; platform behavior is explicit; native boundaries are typed; JS/UI threads and lists are measured on representative devices. This prompt requires native React Native artifacts instead of substituting a generic incident or code-generation checklist.
+Domain logic is shared; platform behavior is explicit; native boundaries are typed; JS/UI threads and lists are measured on representative devices. The debug decision is accepted only when JS/UI frame rates, Hermes profile, native Instruments/Perfetto trace, memory, startup, and list metrics supports it; generic debug advice cannot establish that React Native state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized React Native evidence for the screen, navigation flow, FlatList, native module, platform adapter, or mobile release. Apply the invariant "Domain logic is shared; platform behavior is explicit; native boundaries are typed; JS/UI threads and lists are measured on representative devices." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>

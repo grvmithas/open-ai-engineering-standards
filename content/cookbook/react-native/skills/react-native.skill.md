@@ -45,7 +45,7 @@ Domain logic is shared; platform behavior is explicit; native boundaries are typ
 
 ## Verification
 
-The evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. For manual checks, record environment, operator, exact steps, and result.
+The React Native evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. It must also retain `package.json`/lockfile, Podfile/lock, Gradle catalogs/wrapper, Xcode project, and platform deployment targets. For manual screen, navigation flow, FlatList, native module, platform adapter, or mobile release checks, record environment, operator, exact steps, and result.
 
 ## Failure recovery
 
@@ -61,7 +61,7 @@ Report the React Native boundary, facts, hypotheses, commands actually run, chan
 
 ## Termination criteria
 
-Finish when native validation, all applicable review/deployment gates, and recovery signals pass, or when a named owner accepts a documented blocker through the repository's risk process.
+Finish the React Native workflow only when native validation, applicable review/deployment gates, and recovery signals for native module missing/unlinked or architecture incompatible and app registration/startup exception pass. Otherwise record a named owner and the exact missing React Native evidence; risk acceptance does not convert a failed native check into a pass.
 
 ## Version-aware caution
 
@@ -69,7 +69,7 @@ Read React Native, React, navigation, native dependency, Gradle/AGP/Kotlin, Xcod
 
 ## Tradeoffs
 
-This skill spends time fingerprinting React Native and collecting native evidence before editing. It reduces throughput for trivial changes but prevents incorrect commands, unsupported APIs, and state-destructive rollback.
+This skill fingerprints React Native through `package.json`/lockfile, Podfile/lock, Gradle catalogs/wrapper, Xcode project, and platform deployment targets before editing and retains JS/UI frame rates, Hermes profile, native Instruments/Perfetto trace, memory, startup, and list metrics before recovery. The added work is warranted when native module missing/unlinked or architecture incompatible could make Stop phased rollout or select the previous OTA bundle only when its native-module ABI matches installed binaries; otherwise ship a corrective store build and preserve migrated local data.
 
 ## Anti-patterns
 

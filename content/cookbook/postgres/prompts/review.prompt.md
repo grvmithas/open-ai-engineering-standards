@@ -8,11 +8,11 @@ Review a PostgreSQL change using native configuration, failure, and operational 
 
 ## Why
 
-Constraints enforce invariants; actual plans justify indexes; transactions are short and consistently ordered; migrations use expand/contract. This prompt requires native PostgreSQL artifacts instead of substituting a generic incident or code-generation checklist.
+Constraints enforce invariants; actual plans justify indexes; transactions are short and consistently ordered; migrations use expand/contract. The review decision is accepted only when `EXPLAIN (ANALYZE, BUFFERS, WAL, SETTINGS, FORMAT JSON)` from a safe representative environment supports it; generic review advice cannot establish that PostgreSQL state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized PostgreSQL evidence for the schema, migration, query, index, transaction, replication path, or recovery runbook. Apply the invariant "Constraints enforce invariants; actual plans justify indexes; transactions are short and consistently ordered; migrations use expand/contract." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Capture `server_version`, client version, extensions, parameter settings, manage
 
 ## Tradeoffs
 
-PostgreSQL review takes longer because configuration and runtime state must be correlated with source. It eliminates generic style findings and prioritizes defects that can change production behavior.
+PostgreSQL review correlates source with `EXPLAIN (ANALYZE, BUFFERS, WAL, SETTINGS, FORMAT JSON)` from a safe representative environment and `pg_stat_activity`, `pg_locks`, blockers, wait events, transaction age, and statement fingerprints. The cost is a deeper review; the benefit is direct evidence for "primary keys, foreign keys, unique/check constraints, and nullability encode domain invariants" and "migration uses expand/backfill/contract and avoids table-rewrite or long ACCESS EXCLUSIVE surprises" instead of generic style findings.
 
 ## Anti-patterns
 

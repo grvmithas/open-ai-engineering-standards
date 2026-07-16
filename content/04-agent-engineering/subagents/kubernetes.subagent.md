@@ -77,6 +77,9 @@ Eviction/throttling, broken probes, selector outage, excessive RBAC, secret expo
 ## Verification
 Run helm template or kustomize build, kubeconform, policy tests, server-side dry-run when authorized, and rollout/synthetic checks in non-production.
 
+## Domain Recovery Playbook
+Pause the rollout, inspect events and endpoints before mutation, roll back to the previous ReplicaSet or chart revision when compatible, and verify probes and service traffic.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

@@ -1,47 +1,112 @@
-# Optimization: Lifecycle Hooks
+# Optimization Pattern — Hooks
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Optimization  
+> **Component:** hooks.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Enforce optimization gates outside model discretion.
+## `pre-optimize.hook.sh`
 
-| Hook | Enforced condition | Failure behavior |
-|---|---|---|
-| preflight | reject benchmarks without baseline and workload fingerprint | fail closed without creating an effect |
-| domain-gate | fail CI when correctness or p99 guardrails regress | fail closed without creating an effect |
-| closure | auto-disable canary on saturation or error-budget threshold | disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark |
+Runs before hypothesis implementation. Verifies metric, baseline, oracle, and flag.
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-: "${TASK_ID:?required}" "${MANIFEST_HASH:?required}" "${RISK_TIER:?required}". For the Optimization hooks contract, gate 1 is evidenced by "approved effect size reached with confidence interval"; failure invokes this domain recovery: Disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark.
-# oaies-optimization: evaluate the three versioned policy rules documented above.
-policy_check --pattern "optimization" --task "$TASK_ID" --manifest "$MANIFEST_HASH" --risk "$RISK_TIER"
+
+echo "Checking optimization prerequisites..."
+
+: "${OPT_SPEC_FILE:?ERROR: set OPT_SPEC_FILE to the optimization spec markdown}"
+: "${BASELINE_FILE:?ERROR: set BASELINE_FILE to the baseline report}"
+: "${FEATURE_FLAG:?ERROR: set FEATURE_FLAG to the kill-switch flag name}"
+
+if [[ ! -f "$OPT_SPEC_FILE" ]]; then
+  echo "ERROR: OPT_SPEC_FILE not found: $OPT_SPEC_FILE"
+  exit 1
+fi
+
+if ! grep -qiE 'min(imum)?[[:space:]]*(useful[[:space:]]*)?effect|MIN_EFFECT' "$OPT_SPEC_FILE"; then
+  echo "ERROR: Spec missing minimum useful effect size."
+  exit 1
+fi
+
+if ! grep -qiE 'abort|guardrail' "$OPT_SPEC_FILE"; then
+  echo "ERROR: Spec missing abort criteria / guardrails."
+  exit 1
+fi
+
+if [[ ! -f "$BASELINE_FILE" ]]; then
+  echo "ERROR: Baseline report missing: $BASELINE_FILE"
+  exit 1
+fi
+
+if ! grep -qiE 'p99|p95|percentile' "$BASELINE_FILE"; then
+  echo "ERROR: Baseline must include percentile metrics."
+  exit 1
+fi
+
+if ! grep -qiE 'oracle|golden|correctness' "$OPT_SPEC_FILE"; then
+  echo "ERROR: Spec must define a correctness oracle."
+  exit 1
+fi
+
+if [[ -z "$FEATURE_FLAG" || "$FEATURE_FLAG" == "none" ]]; then
+  echo "ERROR: FEATURE_FLAG must be a real kill-switch name."
+  exit 1
+fi
+
+echo "Prerequisites satisfied. Optimization work may begin (behind $FEATURE_FLAG)."
 ```
 
-## Verification
+## `post-optimize.hook.sh`
 
-Optimization hooks verification records raw evidence for "approved effect size reached with confidence interval" and invokes "Disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark" when the threshold is not demonstrated.
+Runs after the optimization report is generated. Verifies report structure before human decision.
 
-## Tradeoffs
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-Optimization hooks deliberately spends additional review time to protect "approved effect size reached with confidence interval"; evidence weakness triggers "Disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark".
+REPORT_FILE="${1:-}"
+if [[ -z "$REPORT_FILE" || ! -f "$REPORT_FILE" ]]; then
+  echo "ERROR: Usage: post-optimize.hook.sh <optimization-report>"
+  exit 1
+fi
 
-## Anti-patterns
+echo "Validating optimization report..."
 
-Optimization hooks rejects shortcuts around "Define target metric, guardrails, workload, and minimum useful effect." because they sever the evidence chain required for "approved effect size reached with confidence interval".
+REQUIRED_SECTIONS=(
+  "Hypothesis"
+  "Baseline vs Candidate"
+  "Oracle"
+  "Canary Plan"
+  "Recommendation"
+)
 
-## Enterprise considerations
+for section in "${REQUIRED_SECTIONS[@]}"; do
+  if ! grep -qi "$section" "$REPORT_FILE"; then
+    echo "ERROR: Report missing required section: $section"
+    exit 1
+  fi
+done
 
-Optimization hooks governance binds owner, policy revision, and retained proof to "approved effect size reached with confidence interval", with "Disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark" as the recorded recovery authority.
+if ! grep -qiE 'KEEP|KILL|REVISE' "$REPORT_FILE"; then
+  echo "ERROR: Report must recommend KEEP, KILL, or REVISE."
+  exit 1
+fi
 
-## Checklist
+if ! grep -qiE 'p99' "$REPORT_FILE"; then
+  echo "ERROR: Report must include p99 comparison."
+  exit 1
+fi
 
-- [ ] Automated test proves: reject benchmarks without baseline and workload fingerprint
-- [ ] Automated test proves: fail CI when correctness or p99 guardrails regress
-- [ ] Automated test proves: auto-disable canary on saturation or error-budget threshold
+if ! grep -qi "Human Decision" "$REPORT_FILE"; then
+  echo "ERROR: Report missing Human Decision footer."
+  exit 1
+fi
 
-## Changelog
+echo "Report structure validated. Ready for human KEEP/KILL/REVISE."
+```
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+## CI integration note
+
+Wire into the harness or `make optimize-check SPEC=... BASELINE=... REPORT=...`. A green unit-test job is not a substitute for baseline/oracle/flag checks.

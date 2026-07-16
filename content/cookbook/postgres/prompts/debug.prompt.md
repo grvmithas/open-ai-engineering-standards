@@ -8,11 +8,11 @@ Diagnose a PostgreSQL incident by testing platform-specific failure classes befo
 
 ## Why
 
-Constraints enforce invariants; actual plans justify indexes; transactions are short and consistently ordered; migrations use expand/contract. This prompt requires native PostgreSQL artifacts instead of substituting a generic incident or code-generation checklist.
+Constraints enforce invariants; actual plans justify indexes; transactions are short and consistently ordered; migrations use expand/contract. The debug decision is accepted only when `pg_stat_activity`, `pg_locks`, blockers, wait events, transaction age, and statement fingerprints supports it; generic debug advice cannot establish that PostgreSQL state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized PostgreSQL evidence for the schema, migration, query, index, transaction, replication path, or recovery runbook. Apply the invariant "Constraints enforce invariants; actual plans justify indexes; transactions are short and consistently ordered; migrations use expand/contract." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>

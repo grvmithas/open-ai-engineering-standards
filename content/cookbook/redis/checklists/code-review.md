@@ -20,7 +20,7 @@ Capture `redis_version`, mode, persistence, replication/cluster state, client li
 
 ## Tradeoffs
 
-The Redis review gate requires runtime/configuration evidence beyond a source diff. It increases reviewer effort but catches defects static style review cannot observe.
+Review must prove "key format includes bounded namespace, tenant scope, schema version, and collision-safe identifier" using `INFO server`, `INFO memory`, `INFO persistence`, `INFO replication`, and `INFO cluster`. That Redis evidence costs more than diff inspection but exposes maxmemory/OOM or unsafe eviction before merge.
 
 ## Anti-patterns
 

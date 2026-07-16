@@ -1,47 +1,38 @@
-# Reviewer: Enterprise Operations
+# Reviewer Pattern — Enterprise Notes
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Reviewer  
+> **Component:** enterprise-notes.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Reviewer enterprise-notes operationalizes this pattern outcome: detect consequential defects with requirement-traceable, severity-calibrated findings.
+## Audit trail
 
-## Tailored controls
+Store the review report with the change record: verdict, findings IDs, fix verification, reviewer identity, timestamps. Link it from the PR. Retain per your change-management policy.
 
-Code-owner policy enforces independent approval for payment paths. Findings containing customer data are redacted; review evidence is retained with the signed build and mapped to SOX change controls.
+## Separation of duties
 
-## Governance model
+| Role | Allowed | Forbidden on High-risk |
+|------|---------|------------------------|
+| Author | Push fixes | Final Approve |
+| Reviewer | Findings + verdict | Silent merge without report |
+| Deployer / release | Promote after Approve | Override Block without incident commander |
 
-Reviewer enterprise-notes governance binds owner, policy revision, and retained proof to "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision.", with "Reject approval, remove unverified review-driven edits, and restore the reviewed revision" as the recorded recovery authority.
+For regulated changes, final Approve must come from SSO-identified humans, not free-text names alone.
 
-## Metrics and assurance
+## Scale
 
-- Control dashboard reports 100% findings include file/line and reproduction evidence.
-- Control dashboard reports blocking false-positive rate < 5%.
-- Control dashboard reports critical requirement coverage = 100%.
-- Control dashboard reports fix verification performed by reviewer.
+At high PR volume, invest in severity calibration and risk-based review depth — not in requiring every nit on every PR. Route public/PII/payment/AI changes to security-capable reviewers.
 
-Reviewer enterprise-notes metrics and assurance gate 3 is accepted only when "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision." is source-verifiable; otherwise, reject approval, remove unverified review-driven edits, and restore the reviewed revision.
+## Governance mapping
 
-## Tradeoffs
+| Concern | Review artifact that evidences it |
+|---------|-----------------------------------|
+| Independent challenge | Reviewer identity ≠ author |
+| Security oversight | Pass 2 findings or documented N/A |
+| Test accountability | AC→test map |
+| Fix closure | Previous findings verification table |
 
-Reviewer enterprise-notes deliberately spends additional review time to protect "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision."; evidence weakness triggers "Reject approval, remove unverified review-driven edits, and restore the reviewed revision".
+## Anti-claim
 
-## Anti-patterns
-
-Reviewer enterprise-notes rejects shortcuts around "Reconstruct intended behavior from requirements before reading the implementation." because they sever the evidence chain required for "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision.".
-
-## Citations
-
-- [OWASP Code Review Guide](https://owasp.org/www-project-code-review-guide/)
-- [NIST SSDF](https://doi.org/10.6028/NIST.SP.800-218)
-- [Google Engineering Practices review](https://google.github.io/eng-practices/review/)
-
-## Checklist
-
-- [ ] RACI, data flow, threat model, capacity, and recovery are current
-- [ ] Audit evidence can be retrieved within one business day
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+A completed code review is **not** a penetration test, SOC2 control attestation, or legal compliance certification. Map High findings into your existing vulnerability and change processes; do not replace those processes with a markdown report.

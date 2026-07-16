@@ -1,39 +1,38 @@
-# Root Cause: Subagents
+# Root Cause Pattern — Subagents
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Root Cause  
+> **Component:** subagents.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Root Cause subagents operationalizes this pattern outcome: explain why an incident occurred and prioritize controls that prevent or limit recurrence.
+| Subagent | Role | When invoked | Output |
+|----------|------|--------------|--------|
+| Timeline Builder | Builds UTC chronology from primary sources | Start | Timeline table + gap markers |
+| Five Whys Facilitator | Drives questions to systemic condition | After shared timeline | 5 Whys table + one root sentence |
+| Detection Gap Analyst | Explains time-to-detect and missed signals | After root cause | Detection checklist + gaps |
+| Action Scrubber | Rejects vague/ownerless/undated actions | Before FINAL | Pass/fail + rewrite suggestions |
 
-| Subagent | Mandate | Required output |
-|---|---|---|
-| Timeline curator | normalizes clocks and reconciles conflicting events | timeline curator artifact with source IDs, uncertainty, and stop status |
-| Causal analyst | builds and challenges the causal graph | causal analyst artifact with source IDs, uncertainty, and stop status |
-| Action steward | ranks controls and verifies effectiveness | action steward artifact with source IDs, uncertainty, and stop status |
+## Timeline Builder contract
 
-## Delegation protocol
+- Prefer primary sources with timestamps over memory
+- Label inferences separately from observed events
+- Do not delete inconvenient events
 
-Root Cause specialists receive only sources needed for "Set a blameless charter: explain system conditions, not individual fault."; the parent retains effect approval and accountability for "100% causal edges cite evidence".
+## Five Whys Facilitator contract
 
-## Tradeoffs
+- Stop at systemic investment/design/process conditions — not “human error”
+- Enforce single root cause; park extras as contributing factors
+- If stuck on “someone forgot,” ask what system allowed forgetting to matter
 
-Root Cause subagents deliberately spends additional review time to protect "100% causal edges cite evidence"; evidence weakness triggers "Withdraw unsupported causal claims, preserve the draft, and reopen timeline or experiment collection".
+## Detection Gap Analyst contract
 
-## Anti-patterns
+- Compute time-to-detect from first bad signal to human awareness
+- Answer the four monitoring checkboxes from the SDLC prompt
+- Propose concrete alert definitions when gaps exist
 
-Root Cause subagents rejects shortcuts around "Set a blameless charter: explain system conditions, not individual fault." because they sever the evidence chain required for "100% causal edges cite evidence".
+## Action Scrubber contract
 
-## Enterprise considerations
-
-Root Cause subagents governance binds owner, policy revision, and retained proof to "100% causal edges cite evidence", with "Withdraw unsupported causal claims, preserve the draft, and reopen timeline or experiment collection" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Timeline curator returned its required evidence
-- [ ] Causal analyst returned its required evidence
-- [ ] Action steward returned its required evidence
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- Fail any action without owner or due date  
+- Fail “improve monitoring/docs” without specifics  
+- Fail personal blame actions masquerading as remediation

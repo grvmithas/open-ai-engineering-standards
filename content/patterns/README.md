@@ -1,54 +1,62 @@
-# OAIES Pattern Library
+﻿# AI Engineering Patterns
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Browse from the Patterns menu** — twelve operational envelopes for consequential AI-assisted work.  
+> **Version:** 1.2 | **Updated:** 2026-07-16
+
+---
 
 ## Purpose
 
-Provide twelve distinct production methods for consequential AI-assisted engineering. The thirteen files in each pattern are operational specifications, not renamed copies of a universal agent loop.
+Patterns are **runnable specifications**, not essays and not a sidebar dump of thirteen stub files. Open a pattern README, follow its Mermaid workflow, use its prompt, and keep humans at the approval gates.
 
 ## Catalog
 
-| Pattern | Domain outcome | Maturity |
-|---|---|---|
-| [Planner](./planner-pattern/README.md) | Turn ambiguous engineering work into a decision-complete execution contract | Stable 2.0 |
-| [Reviewer](./reviewer-pattern/README.md) | Detect consequential defects with requirement-traceable, severity-calibrated findings | Stable 2.0 |
-| [Context](./context-pattern/README.md) | Construct a minimal, provenance-bearing information package that preserves decision quality | Stable 2.0 |
-| [Debug](./debug-pattern/README.md) | Isolate a software defect through reproducible observations and falsifiable experiments | Stable 2.0 |
-| [Migration](./migration-pattern/README.md) | Transition data or services while preserving invariants and a tested return path | Stable 2.0 |
-| [Legacy Modernization](./legacy-modernization-pattern/README.md) | Replace obsolete internals incrementally while preserving observed business behavior | Stable 2.0 |
-| [Architecture](./architecture-pattern/README.md) | Choose and govern a system design against quantified quality-attribute scenarios | Stable 2.0 |
-| [Optimization](./optimization-pattern/README.md) | Improve a profiled bottleneck while protecting correctness and downstream guardrails | Stable 2.0 |
-| [Enterprise](./enterprise-pattern/README.md) | Operate AI capabilities with enforceable governance across tenants, jurisdictions, and risk tiers | Stable 2.0 |
-| [Release](./release-pattern/README.md) | Promote a signed artifact through progressive exposure with objective abort criteria | Stable 2.0 |
-| [Hotfix](./hotfix-pattern/README.md) | Contain an active production defect with the smallest reversible intervention | Stable 2.0 |
-| [Root Cause](./root-cause-pattern/README.md) | Explain why an incident occurred and prioritize controls that prevent or limit recurrence | Stable 2.0 |
+| Pattern | Outcome | Start here |
+|---------|---------|------------|
+| [Planner](./planner-pattern/README.md) | Decision-complete execution contracts | Multi-file / cross-boundary work |
+| [Reviewer](./reviewer-pattern/README.md) | Severity-calibrated findings | Before merge |
+| [Context](./context-pattern/README.md) | Minimal high-signal packages | Before planning or coding |
+| [Debug](./debug-pattern/README.md) | Hypothesis-driven isolation | Defects with repro |
+| [Migration](./migration-pattern/README.md) | Safe transitions with return path | Data/service moves |
+| [Legacy Modernization](./legacy-modernization-pattern/README.md) | Incremental strangler seams | Behavior-preserving rewrites |
+| [Architecture](./architecture-pattern/README.md) | Scenario-governed design | Material topology choices |
+| [Optimization](./optimization-pattern/README.md) | Profile-guided improvement | Measured bottlenecks |
+| [Enterprise](./enterprise-pattern/README.md) | Governed multi-tenant AI | Policy + jurisdiction |
+| [Release](./release-pattern/README.md) | Progressive exposure + abort | Production promote |
+| [Hotfix](./hotfix-pattern/README.md) | Smallest reversible containment | Active incident |
+| [Root Cause](./root-cause-pattern/README.md) | Evidence-bound learning | After containment |
 
-## Completeness contract
+```mermaid
+flowchart LR
+  Ctx[Context] --> Plan[Planner]
+  Plan -->|human approve| Code[Coder + skills]
+  Code --> Rev[Reviewer]
+  Rev -->|merge| Rel[Release]
+  Rel -->|incident| Hot[Hotfix]
+  Hot --> RCA[Root Cause]
+  RCA --> Plan
+```
 
-Each pattern contains README, problem, context, workflow, prompt, agent, subagents, skills, hooks, checklist, concrete example, failures, and enterprise notes. Run `node validate-pattern-library.mjs` after edits; it verifies structure, local links, placeholders, prompt/agent controls, exact duplicate prose, and pairwise corpus similarity.
+## How to apply
 
-## Selection rule
+1. Match the problem to a pattern trigger (read **When / Do not**).  
+2. Assemble context ([handbook](../handbook/how-to-give-context.md)).  
+3. Follow `workflow.md` — do not skip human gates.  
+4. Use `prompt.md` variables; do not rewrite the contract casually.  
+5. Run hooks + checklist before calling done.
 
-Select from the documented trigger, then execute that pattern's domain workflow. Effect approval is necessary but never substitutes for domain evidence, method, verification, or recovery.
+Component files (`problem.md`, `hooks.md`, …) support the README — they are not meant to flood navigation. Use in-page links from each pattern README.
 
-## Tradeoffs
+## Practitioner handbook
 
-Maintaining distinct methods costs more than a shared template. That cost is required because planning, debugging, migration, incident analysis, and the other domains fail in materially different ways.
+For daily practice (skills vs prompts, HITL, PR review, tokens): [`../handbook/README.md`](../handbook/README.md).
 
-## Anti-patterns
+## Validate
 
-Do not satisfy the library by renaming nouns in generic prose. Repeated substantive lines or high pairwise similarity fail validation.
-
-## Enterprise considerations
-
-Organizations map the pattern-specific artifacts to their control catalog, identity system, evidence retention, jurisdiction, incident process, and separation-of-duties model.
-
-## Checklist
-
-- [ ] Twelve indexed patterns each contain thirteen components
-- [ ] Domain workflows, roles, skills, hooks, failures, examples, citations, and enterprise controls are distinct
-- [ ] Similarity and integrity validation passes
+```bash
+node content/patterns/validate-pattern-library.mjs
+```
 
 ## Changelog
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- 2026-07-16: Restored catalog landing for mega-menu browse; pointed to handbook; demphasized stub-file navigation.

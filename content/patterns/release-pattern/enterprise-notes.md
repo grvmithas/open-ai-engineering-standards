@@ -1,47 +1,27 @@
-# Release: Enterprise Operations
+# Release Pattern — Enterprise Notes
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Release  
+> **Component:** enterprise-notes.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Release enterprise-notes operationalizes this pattern outcome: promote a signed artifact through progressive exposure with objective abort criteria.
+## Separation of duties
 
-## Tailored controls
+For medium/high risk, go/no-go approver should not be the sole author of the change. The agent drafts; humans approve; CD executes.
 
-Release segregation separates build, approval, and production identities. Evidence supports SOX, PCI, customer notices, regional freezes, accessibility attestation, and vendor deployment windows.
+## Evidence retention
 
-## Governance model
+Keep digest, gate matrix, decision package, canary stage logs, and abort/rollback records with the change ticket for the retention period your regulators or customers already require — do not invent a universal day count here.
 
-Release enterprise-notes governance binds owner, policy revision, and retained proof to "artifact-to-runtime digest match = 100%", with "Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health" as the recorded recovery authority.
+## Supply chain
 
-## Metrics and assurance
+Provenance and SBOM policy checks are operational gates. Passing them is not a public “secure software” certification claim.
 
-- Control dashboard reports artifact-to-runtime digest match = 100%.
-- Control dashboard reports deployment success > 99%.
-- Control dashboard reports rollback completes within RTO.
-- Control dashboard reports no accelerated SLO burn during holds.
+## AI / model releases
 
-Release enterprise-notes metrics and assurance gate 3 is accepted only when "artifact-to-runtime digest match = 100%" is source-verifiable; otherwise, halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health.
+Treat model, prompt, and tool-bundle versions as artifacts with digests/versions subject to the same progressive exposure and abort rules as container images when they change user-visible behavior.
 
-## Tradeoffs
+## Anti-claim
 
-Release enterprise-notes deliberately spends additional review time to protect "artifact-to-runtime digest match = 100%"; evidence weakness triggers "Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health".
-
-## Anti-patterns
-
-Release enterprise-notes rejects shortcuts around "Freeze artifact digest, configuration, migrations, and release evidence." because they sever the evidence chain required for "artifact-to-runtime digest match = 100%".
-
-## Citations
-
-- [SLSA](https://slsa.dev/spec/v1.0/)
-- [CISA SBOM](https://www.cisa.gov/sbom)
-- [Google SRE canarying](https://sre.google/workbook/canarying-releases/)
-
-## Checklist
-
-- [ ] RACI, data flow, threat model, capacity, and recovery are current
-- [ ] Audit evidence can be retrieved within one business day
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+A successful canary does not certify legal compliance, accessibility conformance, or security assurance beyond the gates you actually ran.

@@ -8,11 +8,11 @@ Generate a production-ready semantic component, keyboard flow, focus transition,
 
 ## Why
 
-Native semantics come first; every operation is keyboard-complete; focus is deterministic; assistive-technology testing supplements automated WCAG checks. This prompt requires native Accessibility Engineering artifacts instead of substituting a generic incident or code-generation checklist.
+Native semantics come first; every operation is keyboard-complete; focus is deterministic; assistive-technology testing supplements automated WCAG checks. The generate decision is accepted only when semantic DOM and accessibility tree showing computed name, role, value, state, relationships, and landmarks supports it; generic generate advice cannot establish that Accessibility Engineering state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Accessibility Engineering evidence for the semantic component, keyboard flow, focus transition, WCAG audit, remediation, or conformance release. Apply the invariant "Native semantics come first; every operation is keyboard-complete; focus is deterministic; assistive-technology testing supplements automated WCAG checks." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Record the conformance target (for example WCAG 2.2 level), browser/OS/screen-re
 
 ## Tradeoffs
 
-The prompt rejects fast code generation when Accessibility Engineering version, configuration, or target evidence is absent. That delay prevents plausible output from crossing an unsupported semantic component, keyboard flow, focus transition, WCAG audit, remediation, or conformance release boundary.
+Generation waits for semantic DOM and accessibility tree showing computed name, role, value, state, relationships, and landmarks and keyboard sequence with visible focus, modal entry/escape/return, route focus, and error focus behavior. That extra Accessibility Engineering discovery is justified because the output must prove "native element is used unless a custom interaction has a documented semantic need" and survive missing or incorrect accessible name/description rather than merely compile.
 
 ## Anti-patterns
 

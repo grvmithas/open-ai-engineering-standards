@@ -77,6 +77,9 @@ False conformance from scanner, focus regression, custom-widget mismatch, inacce
 ## Verification
 Run axe as detection only; keyboard-only flow; 200/400 percent zoom and reflow; forced colors; named screen-reader/browser task protocol.
 
+## Domain Recovery Playbook
+Restore the last accessible interaction when a remediation regresses a critical flow, preserve criterion-level evidence, and replace unsafe custom behavior with native semantics where possible.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

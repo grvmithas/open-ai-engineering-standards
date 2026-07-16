@@ -71,11 +71,11 @@ Azure governance maps management groups to policy initiatives, centralizes Activ
 
 ## Checklist
 
-- [ ] Landing zones own tenant, subscription, policy, network, logging, and budget controls..
-- [ ] Workloads receive managed identities and data-plane roles at the narrowest resource scope..
-- [ ] Private endpoints and DNS links are deployed as one connectivity contract..
-- [ ] Bicep modules expose stable inputs/outputs and pin explicit API versions..
-- [ ] Safe deployment uses rings, health signals, and deployment history..
+- [ ] Landing zones own tenant, subscription, policy, network, logging, and budget controls.
+- [ ] Workloads receive managed identities and data-plane roles at the narrowest resource scope.
+- [ ] Private endpoints and DNS links are deployed as one connectivity contract.
+- [ ] Bicep modules expose stable inputs/outputs and pin explicit API versions.
+- [ ] Safe deployment uses rings, health signals, and deployment history.
 - [ ] Diagram matches deployed topology rather than an aspirational target.
 - [ ] Rollback path preserves state and mixed-version contracts.
 

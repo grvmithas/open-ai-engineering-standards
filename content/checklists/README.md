@@ -122,21 +122,21 @@ Checklists are not suggestions. They are gates. A stage is not complete until it
 **Gate:** No prompt deployed to production without passing this checklist.
 
 ### Structure
-- [ ] Uses XML structure standard (role, context, instructions, output_format, constraints)
+- [ ] Uses explicit structure (OAIES authoring convention: role, context, instructions, output_format, constraints — or an equivalent that preserves those semantics)
 - [ ] Role definition is specific with explicit exclusions
 - [ ] Context is complete and noise-free (no irrelevant information)
 - [ ] Instructions are numbered and imperative
 - [ ] Output format is explicit with a concrete example
 
 ### Quality
-- [ ] At least 3 hard constraints
-- [ ] Planning/thinking step included for complex tasks
+- [ ] Hard constraints are present and risk-derived (not a ceremonial count)
+- [ ] Planning step included when the task is multi-file or architecturally ambiguous
 - [ ] No implicit assumptions (everything is explicit)
-- [ ] Tested with at least 5 inputs including 2 adversarial ones
+- [ ] Tested with representative inputs including adversarial cases when the prompt is user-facing
 
 ### Operations
-- [ ] Prompt is versioned in registry (Langfuse/PromptLayer/Braintrust)
-- [ ] Evaluation test cases exist and pass
+- [ ] Prompt is versioned with the change that ships it
+- [ ] Evaluation cases exist and pass for user-visible prompts
 - [ ] Changelog entry written for this version
 - [ ] Rollback version identified
 
@@ -199,12 +199,60 @@ Checklists are not suggestions. They are gates. A stage is not complete until it
 
 ---
 
+## Review Checklist
+
+**Gate:** No merge until review items pass or are waived with a named approver.
+
+### Plan and scope
+- [ ] Change matches an approved plan or is within the documented single-file exception
+- [ ] Diff stays within planned paths (or an approved plan revision is linked)
+- [ ] Acceptance criteria are addressed, not just “tests green”
+
+### Defects
+- [ ] Findings are severity-ranked with concrete file/line or behavior evidence
+- [ ] Security-relevant findings are not waived without a security owner
+- [ ] AI-generated code received the same scrutiny as human code
+
+### Tests and ops
+- [ ] New logic has tests; critical paths are not “follow-up”
+- [ ] Rollback / feature-flag abort criteria are clear for production-bound work
+- [ ] Observability is sufficient to detect the failure modes in the plan
+
+---
+
+## Context Checklist
+
+**Gate:** Do not run a planner/coder agent until context is fit for purpose.
+
+- [ ] Relevant source paths included (not the entire monorepo)
+- [ ] Secrets, prod dumps, and credentials excluded
+- [ ] Current contracts (API/schema/ADR) for touched boundaries included
+- [ ] Constraints listed (perf, security, compatibility, compliance)
+- [ ] Each excerpt labeled with path and why it matters
+- [ ] Context size reviewed — enough to decide, not padded with noise
+
+---
+
+## Performance Checklist
+
+**Gate:** No performance sign-off without measurements tied to the change.
+
+- [ ] Baseline metric identified (latency, throughput, memory, cost, or error rate)
+- [ ] Measurement method named (profiler, load test, tracing, prod canary)
+- [ ] Budget / SLO for the change stated
+- [ ] Hot path or allocation regression checked when code is on that path
+- [ ] N+1 / fan-out / unbounded concurrency risks reviewed for data access changes
+- [ ] Cost impact estimated for model- or compute-heavy paths
+- [ ] Abort / rollback criteria defined if the canary regresses
+
+---
+
 ## Architecture Checklist
 
 **Gate:** No architectural change without passing this checklist.
 
 - [ ] ADR created for this decision
-- [ ] At least 3 options considered (documented in ADR)
+- [ ] Viable options considered (documented in ADR) — count is risk-derived, not ceremonial
 - [ ] Decision drivers explicitly listed and ranked
 - [ ] Tradeoffs documented for chosen option
 - [ ] Consequences (positive and negative) documented

@@ -70,11 +70,11 @@ GraphQL governance assigns type/field ownership, schema review, operation regist
 
 ## Checklist
 
-- [ ] Gateway validates operation shape, identity, and cost before execution..
-- [ ] Schema ownership follows domains and additive evolution..
-- [ ] Resolvers remain thin authorization/orchestration boundaries..
-- [ ] DataLoaders batch by datasource and request security context..
-- [ ] Registry checks schema composition and known client operations before rollout..
+- [ ] Gateway validates operation shape, identity, and cost before execution.
+- [ ] Schema ownership follows domains and additive evolution.
+- [ ] Resolvers remain thin authorization/orchestration boundaries.
+- [ ] DataLoaders batch by datasource and request security context.
+- [ ] Registry checks schema composition and known client operations before rollout.
 - [ ] Diagram matches deployed topology rather than an aspirational target.
 - [ ] Rollback path preserves state and mixed-version contracts.
 

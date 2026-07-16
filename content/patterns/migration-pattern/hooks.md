@@ -1,47 +1,93 @@
-# Migration: Lifecycle Hooks
+# Migration Pattern — Hooks
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Migration  
+> **Component:** hooks.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Enforce migration gates outside model discretion.
-
-| Hook | Enforced condition | Failure behavior |
-|---|---|---|
-| preflight | block destructive contract before rollback expiry | fail closed without creating an effect |
-| domain-gate | pause backfill when mismatch or lag thresholds fail | fail closed without creating an effect |
-| closure | require restore drill evidence before first production write | stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events |
+## `pre-migration.hook.sh`
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-: "${TASK_ID:?required}" "${MANIFEST_HASH:?required}" "${RISK_TIER:?required}". For the Migration hooks contract, gate 1 is evidenced by "record and monetary reconciliation = 100%"; failure invokes this domain recovery: Stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events.
-# oaies-migration: evaluate the three versioned policy rules documented above.
-policy_check --pattern "migration" --task "$TASK_ID" --manifest "$MANIFEST_HASH" --risk "$RISK_TIER"
+
+echo "Checking migration prerequisites..."
+
+if [[ -z "${PLAN_DRAFT:-}" || ! -f "$PLAN_DRAFT" ]]; then
+  echo "ERROR: PLAN_DRAFT missing. Start from migration prompt output path."
+  exit 1
+fi
+
+if [[ -z "${CONSUMER_FILE:-}" || ! -f "$CONSUMER_FILE" ]]; then
+  echo "ERROR: CONSUMER_FILE missing. Inventory consumers before migration design."
+  exit 1
+fi
+
+if ! grep -qiE 'owner|service|consumer' "$CONSUMER_FILE"; then
+  echo "ERROR: CONSUMER_FILE does not look like an inventory."
+  exit 1
+fi
+
+ROW_COUNT=$(grep -cE '^\|' "$CONSUMER_FILE" || true)
+if (( ROW_COUNT < 2 )); then
+  echo "ERROR: Consumer inventory appears empty."
+  exit 1
+fi
+
+echo "Prerequisites satisfied."
 ```
 
-## Verification
+## `post-migration-plan.hook.sh`
 
-Migration hooks verification records raw evidence for "record and monetary reconciliation = 100%" and invokes "Stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events" when the threshold is not demonstrated.
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-## Tradeoffs
+PLAN="${1:-}"
+if [[ -z "$PLAN" || ! -f "$PLAN" ]]; then
+  echo "ERROR: Usage: post-migration-plan.hook.sh <migration-plan-file>"
+  exit 1
+fi
 
-Migration hooks deliberately spends additional review time to protect "record and monetary reconciliation = 100%"; evidence weakness triggers "Stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events".
+echo "Validating migration plan..."
 
-## Anti-patterns
+for section in "Expand" "Cutover" "Contract" "Rollback" "Reconciliation"; do
+  if ! grep -qi "$section" "$PLAN"; then
+    echo "ERROR: Plan missing required section/keyword: $section"
+    exit 1
+  fi
+done
 
-Migration hooks rejects shortcuts around "Define invariants, loss tolerance, RPO, RTO, and abort thresholds." because they sever the evidence chain required for "record and monetary reconciliation = 100%".
+if ! grep -qiE 'point of no return|PONR' "$PLAN"; then
+  echo "ERROR: Plan must name the point of no return."
+  exit 1
+fi
 
-## Enterprise considerations
+if grep -qiE 'drop column|DROP TABLE' "$PLAN" && ! grep -qi 'Contract' "$PLAN"; then
+  echo "ERROR: Destructive DDL referenced without Contract phase context."
+  exit 1
+fi
 
-Migration hooks governance binds owner, policy revision, and retained proof to "record and monetary reconciliation = 100%", with "Stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events" as the recorded recovery authority.
+echo "Migration plan structure validated."
+```
 
-## Checklist
+## `pre-contract.hook.sh`
 
-- [ ] Automated test proves: block destructive contract before rollback expiry
-- [ ] Automated test proves: pause backfill when mismatch or lag thresholds fail
-- [ ] Automated test proves: require restore drill evidence before first production write
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-## Changelog
+# Block contract phase unless soak evidence file exists
+if [[ -z "${SOAK_EVIDENCE:-}" || ! -f "$SOAK_EVIDENCE" ]]; then
+  echo "ERROR: SOAK_EVIDENCE file required before contract (metrics + duration)."
+  exit 1
+fi
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+if ! grep -qiE 'error|latency|mismatch|soak|duration' "$SOAK_EVIDENCE"; then
+  echo "ERROR: Soak evidence lacks metrics/duration content."
+  exit 1
+fi
+
+echo "Soak evidence present. Contract phase may proceed pending human approval."
+```

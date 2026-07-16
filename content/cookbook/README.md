@@ -1,97 +1,128 @@
 # AI Cookbook
 
-> Version: 1.0.0 | Updated: 2026-07-16
+> **Immediately useful. Zero setup required. Fork and adapt.**
 
-## Purpose
+---
 
-The AI Cookbook provides 18 production playbooks that constrain AI-assisted engineering with technology-specific invariants, diagnostics, architecture, and release gates.
+## What This Is
 
-## Why
+The AI Cookbook is a collection of technology-specific AI engineering playbooks. Each entry contains everything you need to use AI tools effectively with that technology stack — prompts, agents, skills, hooks, debug workflows, and architecture patterns.
 
-Generic prompts miss runtime-specific failure modes. These cookbooks tie generation and review to official guidance, repository evidence, deterministic validation, and production ownership.
+**Unlike generic AI resources, every cookbook entry is immediately actionable for that specific technology.**
 
-## How
+---
 
-1. Select the cookbook matching the system boundary being changed.
-2. Supply repository and runtime evidence to one of its three XML prompts.
-3. Execute the procedural skill and native validators.
-4. Diagnose observed failures through the evidence-led error workflow.
-5. Block merge and deployment until the corresponding checklists pass.
+## Why a Cookbook
 
-## Complete cookbooks
+AI engineering patterns don't change across technologies. The problems do:
+- React developers hit different failure modes than Python developers
+- Kubernetes debugging requires different context than Postgres optimization
+- Azure deployments have different patterns than AWS
 
-| Technology | Production scope |
-|---|---|
-| [React](./react/README.md) | Components, Hooks, state, accessibility, rendering |
-| [Next.js](./nextjs/README.md) | App Router, server/client boundaries, caching, streaming |
-| [Node.js](./node/README.md) | APIs, async control flow, process lifecycle, observability |
-| [Python](./python/README.md) | Typed services, async boundaries, packaging, diagnostics |
-| [Java](./java/README.md) | Spring, transactions, persistence, JVM operations |
-| [.NET](./dotnet/README.md) | ASP.NET Core, DI, EF Core, cancellation |
-| [Azure](./azure/README.md) | Identity, networking, IaC, policy, reliability |
-| [AWS](./aws/README.md) | IAM, accounts, IaC, reliability, quotas |
-| [Docker](./docker/README.md) | Reproducible images, least privilege, supply chain |
-| [Kubernetes](./kubernetes/README.md) | Controllers, probes, resources, policy, rollouts |
-| [PostgreSQL](./postgres/README.md) | Schemas, plans, transactions, migrations, recovery |
-| [Redis](./redis/README.md) | Cache semantics, data structures, memory, clustering |
-| [MongoDB](./mongo/README.md) | Document models, indexes, aggregation, sharding |
-| [GraphQL](./graphql/README.md) | Schema contracts, resolvers, authorization, budgets |
-| [Microfrontends](./microfrontends/README.md) | Domain ownership, composition, contracts, isolation |
-| [React Native](./react-native/README.md) | Native boundaries, navigation, lists, accessibility |
-| [Performance Engineering](./performance/README.md) | SLOs, profiling, budgets, capacity, regression gates |
-| [Accessibility Engineering](./accessibility/README.md) | WCAG, semantics, keyboard, focus, assistive technology |
+The cookbook adapts the OAIES standard to each technology context so you don't have to.
 
-## Count reconciliation
+---
 
-The previous table contained 19 rows while the repository claimed 18 technology stacks. The 18 directories above are the committed cookbook scope. **SEO remains useful scope but is not counted as a technology cookbook:** it is a cross-cutting discipline that depends on performance, accessibility, content, and framework rendering guidance. A future SEO guide must be added deliberately and the repository-wide count changed to 19; it must not be represented as an incomplete nineteenth cookbook.
+## Available Cookbooks
 
-## Required directory contract
+| Technology | Status | Contents |
+|-----------|--------|---------|
+| [react/](./react/README.md) | ✅ Stable | Components, hooks, state management, testing |
+| nextjs/ | 📋 Planned | Routing, SSR, RSC, streaming, caching |
+| node/ | 📋 Planned | APIs, middleware, async patterns |
+| python/ | 📋 Planned | FastAPI, Django, async, type hints |
+| java/ | 📋 Planned | Spring Boot, microservices, JPA |
+| dotnet/ | 📋 Planned | ASP.NET Core, EF Core, CQRS |
+| azure/ | 📋 Planned | Azure AI, Cognitive Services, APIM |
+| aws/ | 📋 Planned | Bedrock, Lambda, Step Functions |
+| docker/ | 📋 Planned | Dockerfile optimization, compose, multi-stage |
+| kubernetes/ | 📋 Planned | Deployments, scaling, debugging |
+| postgres/ | 📋 Planned | Query optimization, migrations, pgvector |
+| redis/ | 📋 Planned | Caching patterns, sessions, rate limiting |
+| mongo/ | 📋 Planned | Schema design, aggregations, indexing |
+| graphql/ | 📋 Planned | Schema design, resolvers, federation |
+| microfrontends/ | 📋 Planned | Module federation, routing, state sharing |
+| react-native/ | 📋 Planned | Navigation, native modules, performance |
+| performance/ | 📋 Planned | Web vitals, bundle optimization, profiling |
+| accessibility/ | 📋 Planned | WCAG 2.2, ARIA, screen reader testing |
+| seo/ | 📋 Planned | Technical SEO, structured data, Core Web Vitals |
 
-```text
+---
+
+## Each Cookbook Contains
+
+```
 {technology}/
-├── README.md
+├── README.md               ← Overview, when to use, architecture context
 ├── prompts/
-│   ├── generate.prompt.md
-│   ├── review.prompt.md
-│   └── debug.prompt.md
+│   ├── generate.prompt.md  ← Generate new {technology} code
+│   ├── review.prompt.md    ← Review {technology} code
+│   ├── debug.prompt.md     ← Debug {technology} issues
+│   ├── optimize.prompt.md  ← Optimize {technology} performance
+│   └── migrate.prompt.md   ← Migrate {technology} patterns
+├── agents/
+│   ├── {technology}.agent.md         ← Specialist agent
+│   └── {technology}-debug.agent.md  ← Debug agent
 ├── skills/
-│   └── {technology}.skill.md
+│   └── {technology}.skill.md        ← Technology skill (extends base skill)
+├── hooks/
+│   ├── pre-{technology}.hook.sh     ← Pre-task validation
+│   └── post-{technology}.hook.sh    ← Post-task verification
+├── mcps/
+│   └── {related-tool}.mcp.md       ← Relevant MCP integrations
 ├── debug-workflows/
-│   └── common-errors.md
+│   ├── common-errors.md             ← Top 10 errors and solutions
+│   └── performance-issues.md        ← Performance debugging playbook
 ├── architecture/
-│   └── patterns.md
+│   └── patterns.md                  ← Technology-specific architecture patterns
 └── checklists/
-    ├── code-review.md
-    └── deployment.md
+    ├── code-review.md               ← {Technology}-specific review checklist
+    └── deployment.md                ← {Technology}-specific deployment checklist
 ```
 
-Every prompt uses `<role>`, `<context>`, `<instructions>`, `<output_format>`, and `<constraints>`. Every cookbook includes at least five concrete errors and links to official technology guidance.
+---
 
-## Tradeoffs
+## Quick Start
 
-The fixed contract creates repeated structure and requires more maintenance than a loose article collection. It provides predictable discovery, auditable quality gates, and complete operational coverage.
+### React Example
+```bash
+# Install React cookbook skills
+cp cookbook/react/skills/react.skill.md .claude/skills/
 
-## Anti-patterns
+# Use the React generation prompt
+# Paste the contents of cookbook/react/prompts/generate.prompt.md
+# Fill in {{COMPONENT_DESCRIPTION}} and run
+```
 
-- Do not count a roadmap row as a complete cookbook.
-- Do not publish generic prompts with only the technology name changed.
-- Do not cite unofficial summaries when primary specifications or vendor guidance exist.
-- Do not claim support for a version that was not verified from repository or deployment evidence.
+### Kubernetes Example
+```bash
+# Install Kubernetes debugging skill
+cp cookbook/kubernetes/skills/kubernetes.skill.md .claude/skills/
 
-## Enterprise considerations
+# When you have a pod failing, use:
+# cookbook/kubernetes/debug-workflows/common-errors.md
+# Find the error pattern and follow the debugging steps
+```
 
-Teams must apply their data-classification, model-use, retention, and audit policies before sending source or telemetry to an AI system. Cookbook checklists do not replace risk acceptance, separation of duties, or production change controls.
+---
 
-## Checklist
+## Contributing a New Cookbook
 
-- [ ] Exactly 18 linked cookbook directories exist.
-- [ ] Every cookbook contains all nine required files.
-- [ ] Every cookbook has three production XML prompts.
-- [ ] Every debug workflow contains at least five errors.
-- [ ] Every architecture document contains a Mermaid diagram.
-- [ ] Every cookbook cites official guidance.
-- [ ] No roadmap item is represented as complete.
+New cookbooks must include at minimum:
+- README with technology overview and when to use this cookbook
+- At least 3 prompts (generate, review, debug)
+- 1 skill file
+- 1 debug workflow with at least 5 common errors
+- Architecture patterns relevant to that technology
 
-## Changelog
+Missing any of these = PR rejected.
 
-- 1.0.0 (2026-07-16): Completed 18 cookbooks and reconciled the prior 19-row index inconsistency.
+---
+
+## Anti-Patterns
+
+### ❌ Generic Prompts That Ignore the Technology
+A React cookbook prompt must know what hooks are, what state management libraries exist, what patterns are idiomatic. "Write a React component" is not a cookbook entry.
+
+### ❌ Cookbook Entries Without Debug Workflows
+The most valuable part of any cookbook is the debugging section. Real practitioners spend more time debugging than generating. If your cookbook doesn't cover debugging, it's incomplete.

@@ -69,11 +69,11 @@ The architecture introduces explicit .NET boundaries and operational artifacts t
 
 ## Checklist
 
-- [ ] Endpoint metadata declares authentication, authorization, and response contract..
-- [ ] A scoped handler owns one use case and receives CancellationToken..
-- [ ] DbContext is a unit of work, not a singleton or generic repository implementation detail..
-- [ ] Hosted services create a scope per message or iteration..
-- [ ] Options are immutable inputs validated before the host reports ready..
+- [ ] Endpoint metadata declares authentication, authorization, and response contract.
+- [ ] A scoped handler owns one use case and receives CancellationToken.
+- [ ] DbContext is a unit of work, not a singleton or generic repository implementation detail.
+- [ ] Hosted services create a scope per message or iteration.
+- [ ] Options are immutable inputs validated before the host reports ready.
 - [ ] Diagram matches deployed topology rather than an aspirational target.
 - [ ] Rollback path preserves state and mixed-version contracts.
 

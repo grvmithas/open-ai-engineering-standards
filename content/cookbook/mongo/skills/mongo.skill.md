@@ -45,7 +45,7 @@ Documents match atomic access patterns; validators enforce shape; explain eviden
 
 ## Verification
 
-The evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. For manual checks, record environment, operator, exact steps, and result.
+The MongoDB evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. It must also retain `db.version()`, `getParameter featureCompatibilityVersion`, driver version, `hello`, and replica/shard topology. For manual document model, collection validator, query, aggregation, index, transaction, or shard key checks, record environment, operator, exact steps, and result.
 
 ## Failure recovery
 
@@ -61,7 +61,7 @@ Report the MongoDB boundary, facts, hypotheses, commands actually run, changed a
 
 ## Termination criteria
 
-Finish when native validation, all applicable review/deployment gates, and recovery signals pass, or when a named owner accepts a documented blocker through the repository's risk process.
+Finish the MongoDB workflow only when native validation, applicable review/deployment gates, and recovery signals for E11000 unique-index conflict and aggregation memory/spill or blocking stage pass. Otherwise record a named owner and the exact missing MongoDB evidence; risk acceptance does not convert a failed native check into a pass.
 
 ## Version-aware caution
 
@@ -69,7 +69,7 @@ Capture server/FCV, driver, topology, storage engine, Atlas/managed tier, and fe
 
 ## Tradeoffs
 
-This skill spends time fingerprinting MongoDB and collecting native evidence before editing. It reduces throughput for trivial changes but prevents incorrect commands, unsupported APIs, and state-destructive rollback.
+This skill fingerprints MongoDB through `db.version()`, `getParameter featureCompatibilityVersion`, driver version, `hello`, and replica/shard topology before editing and retains `explain('executionStats')` including examined/returned ratio, sort/spill, and shard targeting before recovery. The added work is warranted when E11000 unique-index conflict could make Disable writers for the new schema, restore dual-shape readers, and keep additive indexes/fields until old clients are stable; do not mass-update documents back without a resumable, audited migration.
 
 ## Anti-patterns
 

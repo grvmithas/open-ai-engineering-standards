@@ -70,11 +70,11 @@ Next.js governance must pin hosting behavior, cache ownership, public environmen
 
 ## Checklist
 
-- [ ] Layouts own shared shell and metadata, not mutable feature state..
-- [ ] Server Components fetch close to the data source and pass serializable props to client islands..
-- [ ] Cache policy is attached to each fetch or route, with an owner for invalidation..
-- [ ] Route Handlers are external trust boundaries and do not substitute for internal domain services..
-- [ ] Suspense boundaries align with independent latency and failure regions..
+- [ ] Layouts own shared shell and metadata, not mutable feature state.
+- [ ] Server Components fetch close to the data source and pass serializable props to client islands.
+- [ ] Cache policy is attached to each fetch or route, with an owner for invalidation.
+- [ ] Route Handlers are external trust boundaries and do not substitute for internal domain services.
+- [ ] Suspense boundaries align with independent latency and failure regions.
 - [ ] Diagram matches deployed topology rather than an aspirational target.
 - [ ] Rollback path preserves state and mixed-version contracts.
 

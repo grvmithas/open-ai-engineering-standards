@@ -1,39 +1,38 @@
-# Enterprise: Subagents
+# Enterprise Pattern — Subagents
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Enterprise  
+> **Component:** subagents.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Enterprise subagents operationalizes this pattern outcome: operate ai capabilities with enforceable governance across tenants, jurisdictions, and risk tiers.
+| Subagent | Role | When invoked | Output |
+|----------|------|--------------|--------|
+| Inventory Registrar | Creates or updates the AI system record | Start / material change | `AI-SYS-####` + field set |
+| Data Flow Mapper | Charts data classes, stores, processors, regions | After registration | Data-flow table + residency constraints |
+| Control Mapper | Maps tier-mandatory controls to enforcement points | After tier assigned | Control map with evidence IDs |
+| Gateway Binder | Translates package to gateway policy and verifies version | Before enablement | Bound bundle hash + drill script |
 
-| Subagent | Mandate | Required output |
-|---|---|---|
-| AI risk assessor | tiers use cases and maps harms | ai risk assessor artifact with source IDs, uncertainty, and stop status |
-| Data governance analyst | validates lifecycle and jurisdiction | data governance analyst artifact with source IDs, uncertainty, and stop status |
-| Control assessor | tests design and operating effectiveness | control assessor artifact with source IDs, uncertainty, and stop status |
+## Inventory Registrar contract
 
-## Delegation protocol
+- One inventory ID per use case; no silent duplicates
+- Required fields blocked empty: owners, purpose, data classes, regions, models, tools
+- Material changes bump a revision, not a side conversation
 
-Enterprise specialists receive only sources needed for "Register use case, owner, model, purpose, users, and prohibited uses."; the parent retains effect approval and accountability for "inventory completeness = 100%".
+## Data Flow Mapper contract
 
-## Tradeoffs
+- Label each hop: class, encryption in transit/rest expectation, processor
+- Cross-border hops called out explicitly
+- “We don’t store prompts” must be verified against logging config
 
-Enterprise subagents deliberately spends additional review time to protect "inventory completeness = 100%"; evidence weakness triggers "Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle".
+## Control Mapper contract
 
-## Anti-patterns
+- Every mandatory control → enforcement point (gateway, IdP, runtime, SIEM)
+- Documents may support evidence but cannot be the sole enforcement for musts
+- Exceptions need owner, scope, expiry
 
-Enterprise subagents rejects shortcuts around "Register use case, owner, model, purpose, users, and prohibited uses." because they sever the evidence chain required for "inventory completeness = 100%".
+## Gateway Binder contract
 
-## Enterprise considerations
-
-Enterprise subagents governance binds owner, policy revision, and retained proof to "inventory completeness = 100%", with "Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] AI risk assessor returned its required evidence
-- [ ] Data governance analyst returned its required evidence
-- [ ] Control assessor returned its required evidence
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- Emit machine-readable allowlists (models, prompts, tools, routes)
+- Verify active version hash matches approved package
+- Provide disable procedure that on-call can execute without the author

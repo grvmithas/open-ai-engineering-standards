@@ -20,7 +20,7 @@ Record GraphQL specification assumptions, server/framework, client, federation/d
 
 ## Tradeoffs
 
-The GraphQL deployment gate adds manual and target-environment checks that slow promotion. It reduces the chance that version, topology, state, or rollback assumptions reach production.
+Promotion waits for "publish schema candidate and pass breaking/dangerous change plus federation composition checks" and "validate persisted/registered client operations against the candidate schema". Those GraphQL target checks slow release but directly bound non-null propagation and partial response and make this rollback executable: Route resolvers/subgraphs back to the previous implementation while leaving additive schema visible but safely unavailable/deprecated; remove schema only after registered clients no longer reference it.
 
 ## Anti-patterns
 

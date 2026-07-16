@@ -71,11 +71,11 @@ Microfrontend governance owns shell contracts, route allocation, shared-dependen
 
 ## Checklist
 
-- [ ] The shell exposes a deliberately small versioned API..
-- [ ] Each slice owns complete domain UI and data orchestration behind one route boundary..
-- [ ] Runtime manifests point to immutable assets and support fallback..
-- [ ] Shared packages are limited to platform contracts and design primitives..
-- [ ] Errors, styles, storage, events, and telemetry are namespaced by slice..
+- [ ] The shell exposes a deliberately small versioned API.
+- [ ] Each slice owns complete domain UI and data orchestration behind one route boundary.
+- [ ] Runtime manifests point to immutable assets and support fallback.
+- [ ] Shared packages are limited to platform contracts and design primitives.
+- [ ] Errors, styles, storage, events, and telemetry are namespaced by slice.
 - [ ] Diagram matches deployed topology rather than an aspirational target.
 - [ ] Rollback path preserves state and mixed-version contracts.
 

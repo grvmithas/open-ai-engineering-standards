@@ -32,15 +32,15 @@ Accounts and cells bound blast radius; role credentials are short-lived; infrast
 
 **Preserve first:** template/CDK source, synthesized CloudFormation, change set, stack events, and drift status.
 
-**Discriminate:** CloudTrail and policy simulator. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** CloudTrail and policy simulator. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For policy-chain AccessDenied, correlate that observation to the exact AWS target, revision, request/job, and UTC interval; compare template/CDK source, synthesized CloudFormation, change set, stack events, and drift status with one healthy peer or baseline.
 
-**Native action:** `aws sts get-caller-identity` and `aws configure list`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `aws sts get-caller-identity` and `aws configure list`. Start in the safest AWS read-only or dry-run mode available. Before changing the account workload, CloudFormation/CDK stack, IAM role, VPC path, Lambda function, or release, name which of policy-chain AccessDenied and CloudFormation create/update/rollback failure the action distinguishes.
 
 **Root-cause direction:** Identity policy, resource policy, boundary, SCP, or explicit deny blocks the action.
 
 **Correction:** Evaluate the full policy chain and narrow the required action/resource.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `AccessDenied` reproduction, verify the policy-chain AccessDenied signal cleared in CloudTrail and policy simulator. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Evaluate the full policy chain and narrow the required action/resource. restored the intended AWS behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Shift weighted traffic or aliases to the prior immutable version/cell, then use CloudFormation rollback for infrastructure; do not delete a failed stack when retained data or forensic events are required.
 
@@ -50,15 +50,15 @@ Accounts and cells bound blast radius; role credentials are short-lived; infrast
 
 **Preserve first:** caller identity, IAM identity/resource policies, permission boundaries, session policy, SCP, and explicit denies.
 
-**Discriminate:** stack events. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** stack events. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For CloudFormation create/update/rollback failure, correlate that observation to the exact AWS target, revision, request/job, and UTC interval; compare caller identity, IAM identity/resource policies, permission boundaries, session policy, SCP, and explicit denies with one healthy peer or baseline.
 
-**Native action:** `aws cloudformation validate-template --template-body file://template.yaml`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `aws cloudformation validate-template --template-body file://template.yaml`. Start in the safest AWS read-only or dry-run mode available. Before changing the account workload, CloudFormation/CDK stack, IAM role, VPC path, Lambda function, or release, name which of CloudFormation create/update/rollback failure and Lambda timeout, cold start, or concurrency exhaustion the action distinguishes.
 
 **Root-cause direction:** Rollback could not restore a dependent resource.
 
 **Correction:** Correct the resource cause, continue rollback, then redeploy a reviewed change set.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `CloudFormation UPDATE_ROLLBACK_FAILED` reproduction, verify the CloudFormation create/update/rollback failure signal cleared in stack events. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Correct the resource cause, continue rollback, then redeploy a reviewed change set. restored the intended AWS behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Shift weighted traffic or aliases to the prior immutable version/cell, then use CloudFormation rollback for infrastructure; do not delete a failed stack when retained data or forensic events are required.
 
@@ -68,15 +68,15 @@ Accounts and cells bound blast radius; role credentials are short-lived; infrast
 
 **Preserve first:** VPC route tables, security groups, NACLs, endpoints, DNS, and Flow Logs.
 
-**Discriminate:** X-Ray and CloudWatch Logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** X-Ray and CloudWatch Logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For Lambda timeout, cold start, or concurrency exhaustion, correlate that observation to the exact AWS target, revision, request/job, and UTC interval; compare VPC route tables, security groups, NACLs, endpoints, DNS, and Flow Logs with one healthy peer or baseline.
 
-**Native action:** `aws cloudformation create-change-set ...` then `aws cloudformation describe-change-set ...`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `aws cloudformation create-change-set ...` then `aws cloudformation describe-change-set ...`. Start in the safest AWS read-only or dry-run mode available. Before changing the account workload, CloudFormation/CDK stack, IAM role, VPC path, Lambda function, or release, name which of Lambda timeout, cold start, or concurrency exhaustion and service throttling or quota exhaustion the action distinguishes.
 
 **Root-cause direction:** Work exceeds timeout due to dependency latency, cold start, or unbounded processing.
 
 **Correction:** Trace dependencies, bound work, and set timeout below caller budget.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Lambda task timed out` reproduction, verify the Lambda timeout, cold start, or concurrency exhaustion signal cleared in X-Ray and CloudWatch Logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Trace dependencies, bound work, and set timeout below caller budget. restored the intended AWS behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Shift weighted traffic or aliases to the prior immutable version/cell, then use CloudFormation rollback for infrastructure; do not delete a failed stack when retained data or forensic events are required.
 
@@ -86,15 +86,15 @@ Accounts and cells bound blast radius; role credentials are short-lived; infrast
 
 **Preserve first:** CloudTrail, CloudWatch metrics/logs, X-Ray traces, service quota, and AWS Health events.
 
-**Discriminate:** CloudWatch metrics. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** CloudWatch metrics. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For service throttling or quota exhaustion, correlate that observation to the exact AWS target, revision, request/job, and UTC interval; compare CloudTrail, CloudWatch metrics/logs, X-Ray traces, service quota, and AWS Health events with one healthy peer or baseline.
 
-**Native action:** `aws iam simulate-principal-policy --policy-source-arn <role> --action-names <action>`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `aws iam simulate-principal-policy --policy-source-arn <role> --action-names <action>`. Start in the safest AWS read-only or dry-run mode available. Before changing the account workload, CloudFormation/CDK stack, IAM role, VPC path, Lambda function, or release, name which of service throttling or quota exhaustion and VPC route, security, endpoint-policy, or DNS failure the action distinguishes.
 
 **Root-cause direction:** Concurrency or API rate exceeds a service quota.
 
 **Correction:** Honor backoff, add jitter, cap concurrency, and assess quota evidence.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `ThrottlingException` reproduction, verify the service throttling or quota exhaustion signal cleared in CloudWatch metrics. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Honor backoff, add jitter, cap concurrency, and assess quota evidence. restored the intended AWS behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Shift weighted traffic or aliases to the prior immutable version/cell, then use CloudFormation rollback for infrastructure; do not delete a failed stack when retained data or forensic events are required.
 
@@ -104,15 +104,15 @@ Accounts and cells bound blast radius; role credentials are short-lived; infrast
 
 **Preserve first:** template/CDK source, synthesized CloudFormation, change set, stack events, and drift status.
 
-**Discriminate:** VPC Flow Logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** VPC Flow Logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For VPC route, security, endpoint-policy, or DNS failure, correlate that observation to the exact AWS target, revision, request/job, and UTC interval; compare template/CDK source, synthesized CloudFormation, change set, stack events, and drift status with one healthy peer or baseline.
 
-**Native action:** `aws cloudformation detect-stack-drift --stack-name <stack>`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `aws cloudformation detect-stack-drift --stack-name <stack>`. Start in the safest AWS read-only or dry-run mode available. Before changing the account workload, CloudFormation/CDK stack, IAM role, VPC path, Lambda function, or release, name which of VPC route, security, endpoint-policy, or DNS failure and policy-chain AccessDenied the action distinguishes.
 
 **Root-cause direction:** Routes, security groups, NACLs, endpoint policy, or DNS are inconsistent.
 
 **Correction:** Trace the exact source-destination path and policy layers.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `VPC endpoint/DNS connectivity failure` reproduction, verify the VPC route, security, endpoint-policy, or DNS failure signal cleared in VPC Flow Logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Trace the exact source-destination path and policy layers. restored the intended AWS behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Shift weighted traffic or aliases to the prior immutable version/cell, then use CloudFormation rollback for infrastructure; do not delete a failed stack when retained data or forensic events are required.
 

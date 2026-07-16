@@ -1,39 +1,31 @@
-# Architecture: Subagents
+# Architecture Pattern — Subagents
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Architecture  
+> **Component:** subagents.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Architecture subagents operationalizes this pattern outcome: choose and govern a system design against quantified quality-attribute scenarios.
+| Subagent | Role | When invoked | Output |
+|----------|------|--------------|--------|
+| Alternatives Generator | Forces ≥2 viable designs | After drivers clear | Options table |
+| Failure Walker | Dependency-down and partial-failure scenarios | Before review | Scenario → mitigation table |
+| Threat Boundary Mapper | Identity, data, tenancy, tool edges | Before review | Trust-boundary notes |
 
-| Subagent | Mandate | Required output |
-|---|---|---|
-| Quality-attribute facilitator | turns concerns into testable scenarios | quality-attribute facilitator artifact with source IDs, uncertainty, and stop status |
-| Threat modeler | maps trust boundaries and abuse paths | threat modeler artifact with source IDs, uncertainty, and stop status |
-| Capacity modeler | tests load, cost, and failure assumptions | capacity modeler artifact with source IDs, uncertainty, and stop status |
+## Alternatives Generator contract
 
-## Delegation protocol
+- Options must be implementable under stated constraints
+- No “do nothing” strawman unless it is genuinely viable
+- Each option names primary trade relative to QA scenarios
 
-Architecture specialists receive only sources needed for "Name stakeholders and express quality attributes as stimulus-response scenarios."; the parent retains effect approval and accountability for "all priority scenarios have measurable responses".
+## Failure Walker contract
 
-## Tradeoffs
+- Cover: dependency unavailable, timeout/retry storm, poison message, clock skew, region loss (if multi-region)
+- Each scenario needs detection signal + mitigation
 
-Architecture subagents deliberately spends additional review time to protect "all priority scenarios have measurable responses"; evidence weakness triggers "Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture".
+## Threat Boundary Mapper contract
 
-## Anti-patterns
-
-Architecture subagents rejects shortcuts around "Name stakeholders and express quality attributes as stimulus-response scenarios." because they sever the evidence chain required for "all priority scenarios have measurable responses".
-
-## Enterprise considerations
-
-Architecture subagents governance binds owner, policy revision, and retained proof to "all priority scenarios have measurable responses", with "Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Quality-attribute facilitator returned its required evidence
-- [ ] Threat modeler returned its required evidence
-- [ ] Capacity modeler returned its required evidence
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- Mark where untrusted input enters
+- Mark tenancy enforcement points
+- Mark AI tool allowlists if tools exist
+- Escalate unresolved Critical boundaries — do not approve around them

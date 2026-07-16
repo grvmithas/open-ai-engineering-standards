@@ -32,15 +32,15 @@ Documents match atomic access patterns; validators enforce shape; explain eviden
 
 **Preserve first:** `db.version()`, `getParameter featureCompatibilityVersion`, driver version, `hello`, and replica/shard topology.
 
-**Discriminate:** index metadata. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** index metadata. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For E11000 unique-index conflict, correlate that observation to the exact MongoDB target, revision, request/job, and UTC interval; compare `db.version()`, `getParameter featureCompatibilityVersion`, driver version, `hello`, and replica/shard topology with one healthy peer or baseline.
 
-**Native action:** `mongosh '<redacted-uri>' --eval 'db.version()'`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `mongosh '<redacted-uri>' --eval 'db.version()'`. Start in the safest MongoDB read-only or dry-run mode available. Before changing the document model, collection validator, query, aggregation, index, transaction, or shard key, name which of E11000 unique-index conflict and aggregation memory/spill or blocking stage the action distinguishes.
 
 **Root-cause direction:** A write violates a unique index or races with another writer.
 
 **Correction:** Treat the index as the authority and implement idempotent conflict handling.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `E11000 duplicate key` reproduction, verify the E11000 unique-index conflict signal cleared in index metadata. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Treat the index as the authority and implement idempotent conflict handling. restored the intended MongoDB behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable writers for the new schema, restore dual-shape readers, and keep additive indexes/fields until old clients are stable; do not mass-update documents back without a resumable, audited migration.
 
@@ -50,15 +50,15 @@ Documents match atomic access patterns; validators enforce shape; explain eviden
 
 **Preserve first:** `getCollectionInfos`, `$jsonSchema` validator, indexes, collection stats, and sampled document-size distribution.
 
-**Discriminate:** explain executionStats. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** explain executionStats. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For aggregation memory/spill or blocking stage, correlate that observation to the exact MongoDB target, revision, request/job, and UTC interval; compare `getCollectionInfos`, `$jsonSchema` validator, indexes, collection stats, and sampled document-size distribution with one healthy peer or baseline.
 
-**Native action:** `db.collection.explain('executionStats').find(<representative-filter>).sort(<sort>)`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `db.collection.explain('executionStats').find(<representative-filter>).sort(<sort>)`. Start in the safest MongoDB read-only or dry-run mode available. Before changing the document model, collection validator, query, aggregation, index, transaction, or shard key, name which of aggregation memory/spill or blocking stage and transaction/topology incompatibility or transient abort the action distinguishes.
 
 **Root-cause direction:** A stage requires unbounded in-memory state.
 
 **Correction:** Filter early, use supporting indexes, bound groups/sorts, and assess disk use.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Exceeded memory limit for aggregation` reproduction, verify the aggregation memory/spill or blocking stage signal cleared in explain executionStats. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Filter early, use supporting indexes, bound groups/sorts, and assess disk use. restored the intended MongoDB behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable writers for the new schema, restore dual-shape readers, and keep additive indexes/fields until old clients are stable; do not mass-update documents back without a resumable, audited migration.
 
@@ -68,15 +68,15 @@ Documents match atomic access patterns; validators enforce shape; explain eviden
 
 **Preserve first:** `explain('executionStats')` including examined/returned ratio, sort/spill, and shard targeting.
 
-**Discriminate:** hello command. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** hello command. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For transaction/topology incompatibility or transient abort, correlate that observation to the exact MongoDB target, revision, request/job, and UTC interval; compare `explain('executionStats')` including examined/returned ratio, sort/spill, and shard targeting with one healthy peer or baseline.
 
-**Native action:** `db.collection.getIndexes()` and `db.getCollectionInfos({name:'<collection>'})`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `db.collection.getIndexes()` and `db.getCollectionInfos({name:'<collection>'})`. Start in the safest MongoDB read-only or dry-run mode available. Before changing the document model, collection validator, query, aggregation, index, transaction, or shard key, name which of transaction/topology incompatibility or transient abort and shard-key routing or hotspot failure the action distinguishes.
 
 **Root-cause direction:** Transactions are attempted on unsupported standalone topology.
 
 **Correction:** Use a replica set or redesign around document-level atomicity.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Transaction numbers are only allowed on a replica set` reproduction, verify the transaction/topology incompatibility or transient abort signal cleared in hello command. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Use a replica set or redesign around document-level atomicity. restored the intended MongoDB behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable writers for the new schema, restore dual-shape readers, and keep additive indexes/fields until old clients are stable; do not mass-update documents back without a resumable, audited migration.
 
@@ -86,15 +86,15 @@ Documents match atomic access patterns; validators enforce shape; explain eviden
 
 **Preserve first:** replication lag, oplog window, chunk distribution, balancer, transaction, and connection-pool metrics.
 
-**Discriminate:** sharding metadata. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** sharding metadata. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For shard-key routing or hotspot failure, correlate that observation to the exact MongoDB target, revision, request/job, and UTC interval; compare replication lag, oplog window, chunk distribution, balancer, transaction, and connection-pool metrics with one healthy peer or baseline.
 
-**Native action:** `db.runCommand({collStats:'<collection>'})`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `db.runCommand({collStats:'<collection>'})`. Start in the safest MongoDB read-only or dry-run mode available. Before changing the document model, collection validator, query, aggregation, index, transaction, or shard key, name which of shard-key routing or hotspot failure and server-selection, TLS, DNS, or pool timeout the action distinguishes.
 
 **Root-cause direction:** Write lacks the required key or targets an immutable/routing constraint.
 
 **Correction:** Include the full routing key and redesign key changes as controlled moves.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Shard key update or routing failure` reproduction, verify the shard-key routing or hotspot failure signal cleared in sharding metadata. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Include the full routing key and redesign key changes as controlled moves. restored the intended MongoDB behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable writers for the new schema, restore dual-shape readers, and keep additive indexes/fields until old clients are stable; do not mass-update documents back without a resumable, audited migration.
 
@@ -104,15 +104,15 @@ Documents match atomic access patterns; validators enforce shape; explain eviden
 
 **Preserve first:** `db.version()`, `getParameter featureCompatibilityVersion`, driver version, `hello`, and replica/shard topology.
 
-**Discriminate:** driver topology logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** driver topology logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For server-selection, TLS, DNS, or pool timeout, correlate that observation to the exact MongoDB target, revision, request/job, and UTC interval; compare `db.version()`, `getParameter featureCompatibilityVersion`, driver version, `hello`, and replica/shard topology with one healthy peer or baseline.
 
-**Native action:** `db.adminCommand({replSetGetStatus:1})` where topology and privileges permit. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `db.adminCommand({replSetGetStatus:1})` where topology and privileges permit. Start in the safest MongoDB read-only or dry-run mode available. Before changing the document model, collection validator, query, aggregation, index, transaction, or shard key, name which of server-selection, TLS, DNS, or pool timeout and E11000 unique-index conflict the action distinguishes.
 
 **Root-cause direction:** Driver cannot discover a healthy compatible server.
 
 **Correction:** Check URI, DNS, TLS, firewall, topology, and driver diagnostics.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Server selection timeout` reproduction, verify the server-selection, TLS, DNS, or pool timeout signal cleared in driver topology logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Check URI, DNS, TLS, firewall, topology, and driver diagnostics. restored the intended MongoDB behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable writers for the new schema, restore dual-shape readers, and keep additive indexes/fields until old clients are stable; do not mass-update documents back without a resumable, audited migration.
 

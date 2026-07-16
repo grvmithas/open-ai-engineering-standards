@@ -1,41 +1,37 @@
-# Hotfix: Failure Modes
+# Hotfix Pattern — Failures
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Hotfix  
+> **Component:** failures.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Hotfix failures operationalizes this pattern outcome: contain an active production defect with the smallest reversible intervention.
+## Failure 1: Debug past containment
 
-| Failure | Observable signal | Recovery |
-|---|---|---|
-| emergency refactor | scope exceeds failed invariant | reduce to containment patch |
-| diagnosis before containment | harm continues during analysis | stabilize first |
-| hotfix becomes permanent | temporary bypass persists | assign expiry and durable fix |
-| silent response | stakeholders infer status | follow severity cadence |
+**Symptom:** Long live debugging; error rate flat; customers still failing.  
+**Cause:** Team optimized for understanding over stopping harm.  
+**Recovery:** IC orders flag-off or LKG now; analysis continues after containment.
 
-## Rollback failure
+## Failure 2: Hotfix as refactor
 
-Hotfix failures rollback failure gate 2 is accepted only when "time to containment meets severity target" is source-verifiable; otherwise, execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment.
+**Symptom:** Emergency PR includes formatting, renames, dependency bumps.  
+**Cause:** Scope discipline collapsed under pressure.  
+**Recovery:** Revert; ship path-only patch; open separate cleanup after RCA.
 
-## Tradeoffs
+## Failure 3: No incident commander
 
-Hotfix failures deliberately spends additional review time to protect "time to containment meets severity target"; evidence weakness triggers "Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment".
+**Symptom:** Two engineers deploy conflicting fixes; status messages contradict.  
+**Cause:** Roles never declared.  
+**Recovery:** Stop deploys; declare IC; single-thread changes; reconcile runtime digest.
 
-## Anti-patterns
+## Failure 4: Evidence destroyed
 
-Hotfix failures rejects shortcuts around "Establish incident command, severity, roles, and update cadence." because they sever the evidence chain required for "time to containment meets severity target".
+**Symptom:** Pods recycled / logs expired before capture; RCA starved.  
+**Cause:** Restore actions without snapshot.  
+**Recovery:** Snapshot remaining signals; document gaps; improve runbook preserve-first step.
 
-## Enterprise considerations
+## Failure 5: Parallel cowboy deploys
 
-Hotfix failures governance binds owner, policy revision, and retained proof to "time to containment meets severity target", with "Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Detection exists for emergency refactor
-- [ ] Detection exists for diagnosis before containment
-- [ ] Detection exists for hotfix becomes permanent
-- [ ] Detection exists for silent response
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+**Symptom:** “Helpful” change lands without IC ack and worsens metrics.  
+**Cause:** No enforcement of single change thread.  
+**Recovery:** Roll back unauthorized change; restrict prod credentials to IC-approved pipeline.

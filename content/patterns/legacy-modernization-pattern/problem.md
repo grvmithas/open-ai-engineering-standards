@@ -1,39 +1,36 @@
-# Legacy Modernization: Problem
+# Legacy Modernization Pattern — Problem
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Legacy Modernization  
+> **Component:** problem.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Legacy Modernization problem operationalizes this pattern outcome: replace obsolete internals incrementally while preserving observed business behavior.
+## Statement
 
-## Observable problem
+Legacy replacement programs fail when teams fund a parallel rewrite without strangler seams, characterization/parity evidence, incremental traffic shift, or retirement criteria. The legacy system remains on the critical path while cost doubles.
 
-1. When unsupported technology creates material risk, an undocumented assumption can become a production decision.
-2. When change lead time is dominated by legacy coupling, an undocumented assumption can become a production decision.
-3. When contracts are undocumented but production behavior is relied upon, an undocumented assumption can become a production decision.
+## Measurable symptoms
 
-## Quality boundary
+| Symptom | How you detect it |
+|---------|-------------------|
+| Schedule blowout | Modernization >2× original estimate; legacy still critical |
+| Parity gaps | Production edge cases only in legacy |
+| Dual-run tax | Two stacks serving same capability indefinitely |
+| Big-bang attempt | Single cutover weekend for entire monolith |
+| SME bottleneck | Only one person understands batch rules; no tests |
 
-Legacy Modernization problem quality boundary gate 2 is accepted only when "characterized critical behavior = 100%" is source-verifiable; otherwise, flip the strangler route to the legacy implementation and replay buffered work after reconciliation.
+## Root cause
 
-## Tradeoffs
+Modernization is framed as “build the new system” instead of “shift traffic and retire the old path capability by capability.” Without seams and parity gates, cutover risk stays binary and teams delay forever.
 
-Legacy Modernization problem deliberately spends additional review time to protect "characterized critical behavior = 100%"; evidence weakness triggers "Flip the strangler route to the legacy implementation and replay buffered work after reconciliation".
+## Non-goals of this pattern
 
-## Anti-patterns
+- Not greenfield product design
+- Not a single schema migration (use migration-pattern inside a slice)
+- Not dependency housekeeping on an already-modern service
+- Not an excuse to rewrite working code for taste
 
-Legacy Modernization problem rejects shortcuts around "Inventory business capabilities, consumers, and operational pain." because they sever the evidence chain required for "characterized critical behavior = 100%".
+## Related failure modes
 
-## Enterprise considerations
-
-Legacy Modernization problem governance binds owner, policy revision, and retained proof to "characterized critical behavior = 100%", with "Flip the strangler route to the legacy implementation and replay buffered work after reconciliation" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Trigger and affected population are quantified
-- [ ] Baseline and desired outcome are distinguishable
-- [ ] Scope and non-goals have named owners
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+See [failures.md](./failures.md).

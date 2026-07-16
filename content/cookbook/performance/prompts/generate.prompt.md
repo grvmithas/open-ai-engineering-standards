@@ -8,11 +8,11 @@ Generate a production-ready SLO, workload model, benchmark, profile, capacity pl
 
 ## Why
 
-Optimization starts from a reproducible workload and user-impact metric; profiles identify the limiting resource; CI and production enforce budgets. This prompt requires native Performance Engineering artifacts instead of substituting a generic incident or code-generation checklist.
+Optimization starts from a reproducible workload and user-impact metric; profiles identify the limiting resource; CI and production enforce budgets. The generate decision is accepted only when SLI/SLO definition, histogram boundaries, trace sampling, RUM attribution, and business-impact cohort supports it; generic generate advice cannot establish that Performance Engineering state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Performance Engineering evidence for the SLO, workload model, benchmark, profile, capacity plan, Web Vital budget, or regression gate. Apply the invariant "Optimization starts from a reproducible workload and user-impact metric; profiles identify the limiting resource; CI and production enforce budgets." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Record hardware, OS/kernel, runtime/browser, build mode, dependency versions, da
 
 ## Tradeoffs
 
-The prompt rejects fast code generation when Performance Engineering version, configuration, or target evidence is absent. That delay prevents plausible output from crossing an unsupported SLO, workload model, benchmark, profile, capacity plan, Web Vital budget, or regression gate boundary.
+Generation waits for SLI/SLO definition, histogram boundaries, trace sampling, RUM attribution, and business-impact cohort and workload script, request/data distribution, concurrency/arrival model, warmup, repetitions, and raw results. That extra Performance Engineering discovery is justified because the output must prove "target metric maps to a named user journey and SLO" and survive tail latency hidden by averages rather than merely compile.
 
 ## Anti-patterns
 

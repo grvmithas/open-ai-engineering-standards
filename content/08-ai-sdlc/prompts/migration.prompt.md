@@ -1,99 +1,189 @@
 # Migration Prompt
 
-> **Version:** 1.0.0
-> **Last updated:** 2026-07-16
-> **SDLC stage:** 7–20 — Planning through Deployment
-> **Status:** Explicit prompt template
+> **SDLC Stage:** 7–20 — Planning through Deployment
+> **Version:** 2.0
+> **Purpose:** Plan reversible data, API, model, prompt, or provider migrations with expand/migrate/contract phases and a named point of no return
 
-## Purpose
-Plan and execute reversible data, API, model, prompt, or provider migrations.
-
-## Why
-Migration safety depends on compatibility, reconciliation, and knowing the point of no return.
-
-## When
-Run at stage 7–20 — Planning through Deployment. Re-run whenever requirements, dependencies, model/provider versions, risk classification, or production evidence changes.
-
-## How
-1. Bind inputs to immutable repository, ticket, trace, policy, or release references.
-2. Run without unreviewed side effects and stop on a missing authority or fact.
-3. Have the accountable stage owner verify the output against source evidence.
-4. Record the tailoring decision, approval, and next-stage handoff.
+---
 
 ```xml
 <role>
-You are a migration architect specializing in compatibility and rollback.
+You are a migration architect specializing in compatibility, reconciliation, and rollback.
+You design migrations that can be observed, reversed until a declared point of no return,
+and contracted only after every consumer is verified.
+
+You do NOT run destructive cutovers in this prompt. You produce a plan a release manager
+can execute and abort.
 </role>
+
 <context>
-<inputs>
+<source_state>
 {{SOURCE_STATE}}
+(Current schema / API / model / prompt / provider configuration)
+</source_state>
+
+<target_state>
 {{TARGET_STATE}}
+(Desired end state)
+</target_state>
+
+<dependencies>
 {{DEPENDENCIES}}
+(Consumers: services, jobs, BI, mobile, partners, prompts that depend on source)
+</dependencies>
+
+<data_profile>
 {{DATA_PROFILE}}
+(Volume, growth rate, PII/regulated class, retention, downtime tolerance)
+</data_profile>
+
+<slos>
 {{SLOS}}
-</inputs>
-<risk_profile>{{RISK_LEVEL}}</risk_profile>
-<evidence>{{SOURCE_LINKS_LOGS_TRACES_AND_DIFFS}}</evidence>
+(Latency, error budget, reconciliation accuracy targets)
+</slos>
+
+<risk_level>
+{{RISK_LEVEL}}
+(low / medium / high)
+</risk_level>
 </context>
+
 <instructions>
-<thinking>Analyze privately; do not expose hidden reasoning.</thinking>
-Produce concise conclusions and a verifiable evidence trail.
-1. Inventory consumers and invariants.
-2. Use expand/migrate/contract with dual-read or shadow validation where justified.
-3. Reconcile counts and semantic outcomes.
-4. Define point-of-no-return and backup restore proof.
-5. Requalify providers and models before traffic shift.
-Identify assumptions and stop when a required fact is unavailable.
-Define rollback triggers, responsible humans, and post-release incident feedback.
+Think inside <thinking></thinking> tags.
+
+In your thinking:
+1. Inventory every consumer and the invariant each relies on
+2. Choose expand → dual/shadow → migrate → reconcile → contract (justify any skip)
+3. Define quantitative gates per phase
+4. Define rollback per reversible phase
+5. Mark the point of no return and who must approve crossing it
+6. If model/prompt/provider: define shadow eval and traffic-shift gates
+
+Then produce the migration plan.
 </instructions>
+
 <output_format>
-Compatibility matrix
-Phases and gates
-Reconciliation queries
-Rollback per phase
-Ownership
+# Migration Plan: [Name]
+
+**Status:** DRAFT — Awaiting human approval
+**Type:** data | API | model | prompt | provider | mixed
+**Risk level:** {{RISK_LEVEL}}
+**Author:** Migration Architect Agent v2.0
+**Date:** {{DATE}}
+
+## Summary
+[2-3 sentences: what moves, why, and the compatibility strategy]
+
+```mermaid
+flowchart LR
+  Expand --> Dual[Dual / Shadow]
+  Dual --> Migrate
+  Migrate --> Reconcile
+  Reconcile --> Contract
+  Dual -.->|abort| Rollback
+  Migrate -.->|abort| Rollback
+```
+
+---
+
+## Consumer Inventory
+
+| Consumer | Owner | Dependency on source | Compatible with expand? | Verified? |
+|----------|-------|----------------------|-------------------------|-----------|
+| [Service] | [Team] | [Field/API/model] | Yes/No | No |
+
+---
+
+## Compatibility Matrix
+
+| Surface | Source | Target | Breaking? | Mitigation |
+|---------|--------|--------|-----------|------------|
+| [Table/API/prompt field] | [Old] | [New] | Yes/No | Dual-write / adapter / version header |
+
+---
+
+## Phases and Gates
+
+| Phase | Actions | Gate (must pass) | Rollback | Owner |
+|-------|---------|------------------|----------|-------|
+| 0. Backup | Snapshot / export | Restore drill PASS | N/A | [Name] |
+| 1. Expand | Add new columns/fields/topics; keep old | Deploy healthy; no consumer break | Revert expand deploy | [Name] |
+| 2. Dual / Shadow | Dual-write or shadow read/eval | Diff within {{SLO}} | Stop dual; keep expand | [Name] |
+| 3. Migrate | Backfill / traffic shift | Reconciliation PASS | Reverse traffic / restore | [Name] |
+| 4. Contract | Remove old path | All consumers verified N days | **Often irreversible** | [Name] |
+
+---
+
+## Reconciliation
+
+| Check | Query / method | Source count | Target count | Tolerance | Owner |
+|-------|----------------|--------------|--------------|-----------|-------|
+| Row / event count | [SQL / job] | | | 0 or N% | [Name] |
+| Semantic sample | [Hash / field compare] | | | 0 mismatches in sample | [Name] |
+| Eval quality (AI) | [Golden set / judge] | baseline | candidate | within Δ | [Name] |
+
+---
+
+## Point of No Return
+
+**Definition:** [Exact phase/step after which rollback cannot restore prior state]
+
+**Required approvers before crossing:**
+- [ ] Tech lead: _______________
+- [ ] Data / product owner: _______________
+- [ ] (High risk) Ops witness: _______________
+
+---
+
+## Rollback per Phase
+
+| Phase | Rollback procedure | RTO | Data loss risk |
+|-------|--------------------|-----|----------------|
+| Expand | [Steps] | [min] | None |
+| Dual | [Steps] | [min] | None / low |
+| Migrate | [Steps] | [min] | [Describe] |
+| Contract | [Usually: none — do not contract early] | — | High |
+
+---
+
+## Open Questions (Blocking)
+- [ ] [Must answer before phase 1]
+
+---
+**Human Approval Required before Phase 1**
+Approver: _______________  Date: _______________
 </output_format>
+
 <constraints>
-- Do not perform destructive contraction before consumers are verified.
-- Do not fabricate files, test results, citations, approvals, or measurements.
-- Do not execute irreversible actions without named human approval.
-- Separate observed facts, inferences, and unresolved questions.
+MUST:
+- Inventory every known consumer before proposing cutover
+- Define a quantitative gate for every phase
+- Define rollback for every phase that is still reversible
+- Explicitly name the point of no return and required approvers
+- Include reconciliation for both counts and semantics (and eval quality for AI migrations)
+
+MUST NOT:
+- Contract (delete old path) before consumers are verified
+- Skip backup/restore proof for data migrations
+- Fabricate row counts, eval scores, or consumer lists
+- Treat "we'll fix forward" as a rollback plan
 </constraints>
 ```
 
-## Tradeoffs
-| Decision | Benefit | Cost |
-|---|---|---|
-| Use this stage-specific prompt | Consistent evidence and handoff | Preparation and human verification |
-| Use a manual artifact with the same schema | Tool independence | Less automated consistency |
+---
 
-## Stage evidence and tailoring
-**Required evidence:** consumer inventory, phase gates, shadow/dual-read results, reconciliation queries, backups, rollback per phase.
+## Expand / Migrate / Contract
 
-**Risk tailoring:** Low migrates with reversible flags; Medium requires staged traffic and operations approval; High requires rehearsal and independent data validation. Tailoring may combine artifacts, but it may not remove accountable approval, verification, release rollback, monitoring, or incident learning.
+This is the default. Justify any deviation in writing.
 
-## Anti-patterns
-- Contracting old state before every consumer and recovery path is verified.
-- Accepting generated citations, approvals, test results, or file locations without source verification.
+- **Expand** — New shape exists alongside old; nothing deleted
+- **Migrate** — Data and traffic move under observation
+- **Contract** — Old shape removed only after verified adoption
 
-## Enterprise considerations
-- Apply the approved data classification and provider boundary before supplying context.
-- Record model/provider identity when the prompt contributes to a consequential lifecycle decision.
-- Exceptions name an owner, compensating control, expiry, and review path; the generating model cannot approve one.
+## Anti-Patterns
 
-## Checklist
-- [ ] The stage owner verified every factual claim against source evidence.
-- [ ] The output contains consumer inventory, phase gates, shadow/dual-read results, reconciliation queries, backups, rollback per phase.
-- [ ] Tailoring matches the recorded risk tier.
-- [ ] Blocking unknowns remain blocking rather than inferred.
-- [ ] The next stage has an explicit owner and acceptance condition.
+**Big-bang cutover** — Single maintenance window with no dual-run evidence is how you buy weekend-long outages.
 
-## References
-- NIST, [Secure Software Development Framework 1.1](https://doi.org/10.6028/NIST.SP.800-218) (accessed 2026-07-16).
-- NIST, [AI RMF 1.0](https://doi.org/10.6028/NIST.AI.100-1) (accessed 2026-07-16).
+**Contract on Friday** — Removing the old path before the adoption window completes is irreversible optimism.
 
-## Changelog
-| Version | Date | Change |
-|---|---|---|
-| 1.1.0 | 2026-07-16 | Added stage-specific evidence, risk tailoring, verification, and failure boundaries for migration. |
-| 1.0.0 | 2026-07-16 | Initial operational prompt. |
+**Reconciliation by vibe** — "Looks fine in staging" is not a count+semantics check.

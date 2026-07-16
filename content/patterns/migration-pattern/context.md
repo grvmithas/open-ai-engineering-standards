@@ -1,46 +1,44 @@
-# Migration: Context Contract
+# Migration Pattern — Context
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Migration  
+> **Component:** context.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Make the evidence needed to transition data or services while preserving invariants and a tested return path authoritative, bounded, and reproducible.
+## Preconditions (must be true before activation)
 
-| Required input | Acceptance test |
-|---|---|
-| source/target inventory | owner, revision, retrieval time, and authority recorded for source/target inventory |
-| data profile and invariants | owner, revision, retrieval time, and authority recorded for data profile and invariants |
-| compatibility matrix | owner, revision, retrieval time, and authority recorded for compatibility matrix |
-| dependency and traffic map | owner, revision, retrieval time, and authority recorded for dependency and traffic map |
-| backup, restore, and reconciliation results | owner, revision, retrieval time, and authority recorded for backup, restore, and reconciliation results |
+- [ ] Source state and target state written (schema/API/store)
+- [ ] Consumer inventory started (services, jobs, reports, partners)
+- [ ] Data volume, retention, and SLO constraints known
+- [ ] Backup/restore path identified and rehearsable
+- [ ] Named human for cutover / point-of-no-return approval
 
-## Assembly procedure
+## Trigger conditions (apply the pattern)
 
-1. Tie each source to a trigger or workflow decision.
-2. Resolve conflicting authority before analysis; preserve both revisions and the resolution.
-3. Hash the accepted manifest and set expiry from the fastest-changing source.
-4. Exclude unrelated material and redact secrets without removing decision-relevant constraints.
+Apply when **any** of the following hold:
 
-## Tradeoffs
+- Live data shape or storage system changes
+- Existing API consumers must keep working across the change
+- Dual-write, dual-read, or shadow traffic is needed
+- Rollback after rewrite would require data repair
 
-Migration context deliberately spends additional review time to protect "record and monetary reconciliation = 100%"; evidence weakness triggers "Stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events".
+## Do not apply when
 
-## Anti-patterns
+- Expand-only additive change with no cutover and no old-path removal
+- Code-only refactor with identical external contracts
+- Throwaway test databases
+- Pure flag flip for containment (schedule real migration after)
 
-Migration context rejects shortcuts around "Define invariants, loss tolerance, RPO, RTO, and abort thresholds." because they sever the evidence chain required for "record and monetary reconciliation = 100%".
+## Required inputs
 
-## Enterprise considerations
+| Input | Source | Minimum quality |
+|-------|--------|-----------------|
+| Source/target | ADR or ticket | Explicit before/after |
+| Consumers | Search + owners | Named readers/writers |
+| Data profile | Metrics / DBA | Volume, hot keys, null rates |
+| SLOs | SRE | Error/latency budgets for cutover |
 
-Migration context governance binds owner, policy revision, and retained proof to "record and monetary reconciliation = 100%", with "Stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events" as the recorded recovery authority.
+## Authority boundary
 
-## Checklist
-
-- [ ] source/target inventory is present and provenance-bearing
-- [ ] data profile and invariants is present and provenance-bearing
-- [ ] compatibility matrix is present and provenance-bearing
-- [ ] dependency and traffic map is present and provenance-bearing
-- [ ] backup, restore, and reconciliation results is present and provenance-bearing
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+The migration agent designs phases and gates. **Destructive contraction** and **point-of-no-return cutover** require named human approval. The agent must not drop production columns unattended.

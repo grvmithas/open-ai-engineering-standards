@@ -71,11 +71,11 @@ Performance governance standardizes metric definitions, benchmark hardware, raw-
 
 ## Checklist
 
-- [ ] User journeys define SLIs and budgets before code optimization..
-- [ ] Workload models are versioned artifacts derived from production distributions..
-- [ ] Profiles and benchmark samples are captured from the same run..
-- [ ] CI catches deterministic regressions; canaries catch environment-dependent impact..
-- [ ] Capacity and cost are first-class outputs alongside latency..
+- [ ] User journeys define SLIs and budgets before code optimization.
+- [ ] Workload models are versioned artifacts derived from production distributions.
+- [ ] Profiles and benchmark samples are captured from the same run.
+- [ ] CI catches deterministic regressions; canaries catch environment-dependent impact.
+- [ ] Capacity and cost are first-class outputs alongside latency.
 - [ ] Diagram matches deployed topology rather than an aspirational target.
 - [ ] Rollback path preserves state and mixed-version contracts.
 

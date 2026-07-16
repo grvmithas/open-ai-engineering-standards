@@ -20,7 +20,7 @@ Capture `server_version`, client version, extensions, parameter settings, manage
 
 ## Tradeoffs
 
-The PostgreSQL review gate requires runtime/configuration evidence beyond a source diff. It increases reviewer effort but catches defects static style review cannot observe.
+Review must prove "primary keys, foreign keys, unique/check constraints, and nullability encode domain invariants" using `\conninfo`, `SELECT version()`, extension inventory, relevant `SHOW` settings, and topology. That PostgreSQL evidence costs more than diff inspection but exposes deadlock or long lock wait before merge.
 
 ## Anti-patterns
 

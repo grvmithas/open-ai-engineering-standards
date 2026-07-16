@@ -20,7 +20,7 @@ Capture shell, bundler/module-federation plugin, framework, router, browser targ
 
 ## Tradeoffs
 
-The Microfrontends deployment gate adds manual and target-environment checks that slow promotion. It reduces the chance that version, topology, state, or rollback assumptions reach production.
+Promotion waits for "host and remote compatibility matrix passes for current and candidate versions" and "remote entry/chunks are immutable, integrity-aware where supported, and have correct cache/CORS/CSP headers". Those Microfrontends target checks slow release but directly bound eager shared-module consumption or share-scope initialization and make this rollback executable: Update the runtime manifest or feature flag to the prior immutable remote asset set; keep the shell contract backward compatible until all cached tabs and remote versions age out.
 
 ## Anti-patterns
 

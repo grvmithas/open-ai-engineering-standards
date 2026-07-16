@@ -20,7 +20,7 @@ Capture AWS CLI/CDK/CloudFormation transform versions, partition, region, servic
 
 ## Tradeoffs
 
-The AWS review gate requires runtime/configuration evidence beyond a source diff. It increases reviewer effort but catches defects static style review cannot observe.
+Review must prove "IAM statements constrain action, resource, condition, and principal without wildcard shortcuts" using template/CDK source, synthesized CloudFormation, change set, stack events, and drift status. That AWS evidence costs more than diff inspection but exposes policy-chain AccessDenied before merge.
 
 ## Anti-patterns
 

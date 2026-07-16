@@ -20,7 +20,7 @@ Capture `redis_version`, mode, persistence, replication/cluster state, client li
 
 ## Tradeoffs
 
-The Redis deployment gate adds manual and target-environment checks that slow promotion. It reduces the chance that version, topology, state, or rollback assumptions reach production.
+Promotion waits for "record Redis/client versions, cluster topology, memory headroom, fragmentation, persistence, replication, and failover state" and "estimate new key count, value size, TTL distribution, command complexity, and network bytes at peak". Those Redis target checks slow release but directly bound maxmemory/OOM or unsafe eviction and make this rollback executable: Disable writes to the new versioned key prefix and revert clients; let disposable keys expire or delete them with bounded SCAN/UNLINK jobs—never use FLUSHDB on a shared instance.
 
 ## Anti-patterns
 

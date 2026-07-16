@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Sidebar from '@/components/Sidebar';
 import Search from '@/components/Search';
+import PatternsMegaMenu from '@/components/PatternsMegaMenu';
 import { REPOSITORY_URL, SITE_VERSION } from '@/lib/site';
 
 export default function DocsLayout({ children }: { children: React.ReactNode }) {
@@ -44,6 +45,19 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
           {/* Action Links */}
           <div className="flex items-center gap-3">
             <Link
+              href="/docs/handbook/README"
+              className="hidden sm:inline-block text-[11px] font-semibold text-amber-200 hover:text-amber-100 px-3 py-1.5 border border-amber-900/40 rounded-lg hover:bg-amber-950/20 transition duration-150"
+            >
+              Handbook
+            </Link>
+            <PatternsMegaMenu compact />
+            <Link
+              href="/portal"
+              className="text-[11px] font-semibold text-cyan-300 hover:text-cyan-200 px-3 py-1.5 border border-cyan-950/50 rounded-lg hover:bg-cyan-950/20 transition duration-150"
+            >
+              Portal
+            </Link>
+            <Link
               href="/about"
               className="text-[11px] font-semibold text-slate-300 hover:text-white px-3 py-1.5 border border-violet-950/30 rounded-lg hover:bg-slate-950/40 transition duration-150"
             >
@@ -69,7 +83,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
           <div className="space-y-6">
             <div>
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 pl-3">
-                Standard Chapters
+                Handbook navigation
               </div>
               <Sidebar />
             </div>
@@ -101,7 +115,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
               </div>
               <div className="flex-1">
                 <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 pl-3">
-                  Standard Chapters
+                  Handbook navigation
                 </div>
                 <Sidebar onLinkClick={() => setIsSidebarOpen(false)} />
               </div>

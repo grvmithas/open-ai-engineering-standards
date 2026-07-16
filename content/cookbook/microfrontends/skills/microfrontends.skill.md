@@ -45,7 +45,7 @@ Slices follow durable business domains, integrate through versioned shell contra
 
 ## Verification
 
-The evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. For manual checks, record environment, operator, exact steps, and result.
+The Microfrontends evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. It must also retain domain ownership, route manifest, shell API/event contracts, and compatibility matrix. For manual domain slice, shell contract, route, federated remote, shared package, or independent frontend release checks, record environment, operator, exact steps, and result.
 
 ## Failure recovery
 
@@ -61,7 +61,7 @@ Report the Microfrontends boundary, facts, hypotheses, commands actually run, ch
 
 ## Termination criteria
 
-Finish when native validation, all applicable review/deployment gates, and recovery signals pass, or when a named owner accepts a documented blocker through the repository's risk process.
+Finish the Microfrontends workflow only when native validation, applicable review/deployment gates, and recovery signals for eager shared-module consumption or share-scope initialization and unsatisfied singleton/range or duplicate framework runtime pass. Otherwise record a named owner and the exact missing Microfrontends evidence; risk acceptance does not convert a failed native check into a pass.
 
 ## Version-aware caution
 
@@ -69,7 +69,7 @@ Capture shell, bundler/module-federation plugin, framework, router, browser targ
 
 ## Tradeoffs
 
-This skill spends time fingerprinting Microfrontends and collecting native evidence before editing. It reduces throughput for trivial changes but prevents incorrect commands, unsupported APIs, and state-destructive rollback.
+This skill fingerprints Microfrontends through domain ownership, route manifest, shell API/event contracts, and compatibility matrix before editing and retains independent test/deploy pipeline, asset cache policy, rollback manifest, and fallback behavior before recovery. The added work is warranted when eager shared-module consumption or share-scope initialization could make Update the runtime manifest or feature flag to the prior immutable remote asset set; keep the shell contract backward compatible until all cached tabs and remote versions age out.
 
 ## Anti-patterns
 

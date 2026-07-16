@@ -1,73 +1,184 @@
 # Level 3: Skill Engineering
 
-> **Version:** 2.0  
-> **Updated:** 2026-07-16  
-> **Delivered:** 26 production-grade skills
+> **Prerequisites:** Level 2: Context Engineering
+> **Goal:** Build reusable, discoverable procedural knowledge that agents can invoke
+
+---
+
+## Why Skills Exist
+
+Skills solve a fundamental problem: **how do you give an agent repeatable, high-quality procedures without rebuilding them from scratch in every prompt?**
+
+A skill is a document that encodes HOW to do something — not what to do, not why to do it, but the exact step-by-step procedure for completing a specific type of task reliably.
+
+In Claude Code, skills live in `.claude/skills/` and are automatically discovered. In other systems, they are injected as context when relevant tasks are detected.
+
+---
+
+## Skills vs. Prompts vs. Agents
+
+| Concept | What It Is | When to Use |
+|---------|-----------|-------------|
+| **Prompt** | A structured instruction for one task | One-off tasks |
+| **Skill** | A reusable procedure for a task category | Repeated task types |
+| **Agent** | An autonomous actor that uses skills | Complex, multi-step goals |
+
+**Rule:** If you write the same prompt more than twice, extract it as a skill.
+
+---
+
+## Skill Structure (The OAIES Standard)
+
+Every skill file follows this exact structure:
+
+```markdown
+# [Skill Name] Skill
+
+## Trigger Conditions
+[When this skill should activate — specific patterns, keywords, or task types]
 
 ## Purpose
-This library provides reusable, trigger-driven engineering procedures with objective verification and explicit recovery behavior.
+[One sentence: what this skill does]
 
-## Why
-Skills move recurring procedures out of ad hoc prompts. A fixed contract makes activation, execution, evidence, and failure handling reviewable across agent runtimes.
+## Prerequisites
+[What must be true before this skill can execute]
 
-## How
-Install only skills relevant to the runtime, preserve each file unchanged, and route a request only when its trigger matches and no anti-trigger applies. Every skill requires scope, authoritative project context, and direct verification evidence.
+## Procedure
+[Numbered, imperative steps]
+
+## Verification
+[How to confirm the skill executed correctly]
+
+## Common Failures
+[What goes wrong and how to recover]
+
+## Examples
+[1-2 concrete examples of this skill in action]
+
+## Do Not Use This Skill When
+[Anti-trigger conditions]
+```
+
+### Compatibility with Open AI Skills Specs (openaiskills.io)
+The OAIES skill structure is designed to be fully compatible with emerging open standards for developer assistant skills:
+- **openaiskills.io specification:** Standardized, portable markdown format for AI agent skills across the developer ecosystem.
+- **Claude Code (.claude/skills):** Built directly to match Claude Code's auto-discovery skill scanner schema.
+- **Aider / Roo Code / Cline custom instructions:** Readily consumable by modern coding agents as background runtime knowledge.
+
+---
 
 ## Skills Library
-| Skill | Primary trigger |
-|---|---|
-| [accessibility.skill.md](./skills/accessibility.skill.md) | A web or native user interface is created, changed, or assessed for accessibility. |
-| [architecture.skill.md](./skills/architecture.skill.md) | A request changes system boundaries, deployment topology, data ownership, or a cross-team interface. |
-| [aws.skill.md](./skills/aws.skill.md) | An AWS IAM, network, compute, data, resilience, or deployment design changes. |
-| [azure.skill.md](./skills/azure.skill.md) | An Azure identity, network, compute, data, policy, or deployment design changes. |
-| [code-review.skill.md](./skills/code-review.skill.md) | A diff, pull request, patch, or release candidate requires an independent engineering review. |
-| [context.skill.md](./skills/context.skill.md) | An agent is missing relevant evidence, overloaded by noise, or vulnerable to stale/untrusted context. |
-| [data-engineering.skill.md](./skills/data-engineering.skill.md) | A batch, streaming, transformation, lineage, or data-quality pipeline changes. |
-| [debug.skill.md](./skills/debug.skill.md) | A reproducible defect, regression, crash, failed test, or unexplained production symptom needs root-cause analysis. |
-| [devops.skill.md](./skills/devops.skill.md) | A build, CI/CD, release pipeline, infrastructure automation, or artifact supply-chain flow changes. |
-| [documentation.skill.md](./skills/documentation.skill.md) | An API, system, decision, runbook, or operational task needs durable, implementation-verified documentation. |
-| [dotnet.skill.md](./skills/dotnet.skill.md) | A .NET API, worker, library, EF Core model, or asynchronous workflow changes. |
-| [evaluation.skill.md](./skills/evaluation.skill.md) | A model, prompt, retrieval, tool, or agent change needs an evidence-based release decision. |
-| [java.skill.md](./skills/java.skill.md) | A Java library, JVM service, Spring component, transaction, or concurrency behavior changes. |
-| [memory.skill.md](./skills/memory.skill.md) | An agent must retain state across turns, sessions, users, or tasks. |
-| [nextjs.skill.md](./skills/nextjs.skill.md) | A Next.js route, rendering boundary, cache policy, middleware, server action, or deployment behavior changes. |
-| [node.skill.md](./skills/node.skill.md) | A Node.js service, stream, worker, package, or event-loop behavior changes. |
-| [observability.skill.md](./skills/observability.skill.md) | An AI system needs diagnosable traces, metrics, logs, cost, quality signals, or service objectives. |
-| [performance.skill.md](./skills/performance.skill.md) | A measured latency, throughput, saturation, memory, CPU, or cost objective is missed. |
-| [planning.skill.md](./skills/planning.skill.md) | An approved feature or remediation must be decomposed into executable repository changes. |
-| [prompt.skill.md](./skills/prompt.skill.md) | A production model instruction, tool-use policy, or structured-output prompt must be authored or changed. |
-| [python.skill.md](./skills/python.skill.md) | A Python package, service, async task, CLI, or data-processing module changes. |
-| [rag.skill.md](./skills/rag.skill.md) | A product must ground generation in an external corpus using retrieval. |
-| [react.skill.md](./skills/react.skill.md) | React component behavior, state ownership, rendering, hydration, or client accessibility is being changed. |
-| [security.skill.md](./skills/security.skill.md) | Code or design crosses a trust boundary, changes identity or authorization, processes untrusted input, or handles sensitive data. |
-| [seo.skill.md](./skills/seo.skill.md) | A public web page or site changes crawlability, indexing, canonicalization, metadata, or structured data. |
-| [testing.skill.md](./skills/testing.skill.md) | A behavior change, defect, integration boundary, or release risk needs automated evidence. |
 
-**Catalog invariant:** exactly 26 files match `skills/*.skill.md`; every link above resolves to one delivered file.
+### Core Skills
+| Skill | Trigger | Purpose |
+|-------|---------|---------|
+| [architecture.skill.md](./skills/architecture.skill.md) | System design request | Design robust architectures |
+| [planning.skill.md](./skills/planning.skill.md) | Feature or task kickoff | Create implementation plans |
+| [debug.skill.md](./skills/debug.skill.md) | Bug report or error | Systematic debugging |
+| [code-review.skill.md](./skills/code-review.skill.md) | Review request | Comprehensive code review |
+| [documentation.skill.md](./skills/documentation.skill.md) | Doc generation request | Generate technical docs |
+| [security.skill.md](./skills/security.skill.md) | Security review request | Security audit |
+| [performance.skill.md](./skills/performance.skill.md) | Performance concern | Performance analysis and fix |
+| [testing.skill.md](./skills/testing.skill.md) | Test generation request | Generate comprehensive tests |
 
-## Tradeoffs
-Strict activation and evidence requirements reduce improvisational speed. They also prevent silent scope expansion, version guessing, and false completion.
+### Language / Framework Skills
+| Skill | Trigger |
+|-------|---------|
+| [react.skill.md](./skills/react.skill.md) | React component work |
+| [nextjs.skill.md](./skills/nextjs.skill.md) | Next.js routing, SSR, RSC |
+| [node.skill.md](./skills/node.skill.md) | Node.js API development |
+| [python.skill.md](./skills/python.skill.md) | Python development |
+| [java.skill.md](./skills/java.skill.md) | Java/Spring development |
+| [dotnet.skill.md](./skills/dotnet.skill.md) | .NET/C# development |
+
+### Platform Skills
+| Skill | Trigger |
+|-------|---------|
+| [azure.skill.md](./skills/azure.skill.md) | Azure cloud tasks |
+| [aws.skill.md](./skills/aws.skill.md) | AWS cloud tasks |
+| [devops.skill.md](./skills/devops.skill.md) | CI/CD, infrastructure |
+
+### AI-Specific Skills
+| Skill | Trigger |
+|-------|---------|
+| [prompt.skill.md](./skills/prompt.skill.md) | Prompt writing or review |
+| [context.skill.md](./skills/context.skill.md) | Context engineering |
+| [rag.skill.md](./skills/rag.skill.md) | RAG system tasks |
+| [evaluation.skill.md](./skills/evaluation.skill.md) | AI system evaluation |
+| [memory.skill.md](./skills/memory.skill.md) | Memory system design |
+| [observability.skill.md](./skills/observability.skill.md) | AI observability setup |
+
+### Quality Skills
+| Skill | Trigger |
+|-------|---------|
+| [accessibility.skill.md](./skills/accessibility.skill.md) | Accessibility review/fix |
+| [seo.skill.md](./skills/seo.skill.md) | SEO review/fix |
+| [data-engineering.skill.md](./skills/data-engineering.skill.md) | Data pipeline tasks |
+
+---
+
+## Installing Skills (Claude Code)
+
+```bash
+# From OAIES
+mkdir -p .claude/skills
+cp oaies/skills/*.skill.md .claude/skills/
+
+# Verify skills are discovered
+# Claude Code reads .claude/skills/ automatically
+```
+
+---
+
+## Naming Conventions
+
+```
+{domain}.skill.md          # Core skills
+{technology}.skill.md      # Technology-specific skills
+{platform}.skill.md        # Platform skills
+{domain}-{specialization}.skill.md  # Specialized variants
+```
+
+---
+
+## Writing a New Skill
+
+1. Identify the task pattern — it must recur at least 3x before warranting a skill
+2. Use the standard structure (above)
+3. Test with at least 2 different inputs
+4. Document trigger conditions precisely — vague triggers cause wrong skill selection
+5. Add to the skills index in this README
+6. Version with a changelog at the bottom of the file
+
+---
 
 ## Anti-Patterns
-- Triggering a broad skill on keyword overlap without evaluating anti-triggers.
-- Copying all 26 skills into every request and degrading context quality.
-- Claiming success without retained verification output.
 
-## Enterprise Considerations
-Govern installation, versions, approved sources, data handling, and audit retention centrally. Skills do not grant authority: runtime identity and effect approvals remain mandatory.
+### ❌ Skill That's Too Broad
+```
+# Wrong — "development skill" triggers on everything
+Trigger Conditions: Any development task
 
-## Checklist
-- [ ] Exactly 26 indexed skill files resolve
-- [ ] Runtime loads only relevant skills
-- [ ] Trigger and anti-trigger routing is tested
-- [ ] Evidence and failure outputs are retained
-- [ ] Skill updates pass link and structure validation
+# Correct — specific triggers
+Trigger Conditions: 
+- "create component", "build component", "new component"
+- Request to implement a UI element
+- React component generation tasks
+```
 
-## Authoritative Sources
-- [Agent Skills specification](https://agentskills.io/specification)
-- [NIST Secure Software Development Framework](https://csrc.nist.gov/Projects/ssdf)
+### ❌ Skill Without Verification Step
+If you cannot verify the skill succeeded, you cannot trust its output. Every skill must have a concrete verification procedure.
 
-## Changelog
-- **2.0 (2026-07-16):** Replaced cloned procedures with 26 domain-specific workflows, artifacts, recovery paths, examples, and sources.
-- **1.1:** Delivered the complete catalog.
-- **1.0:** Initial catalog claim.
+### ❌ Skill That Encodes One Team's Preferences
+Skills become institutional knowledge. Write them to work for any team following OAIES — not for your specific team's idiosyncrasies.
+
+---
+
+## Readiness Gate
+
+Before proceeding to Level 4, verify:
+- [ ] At least 5 skills installed for your primary technology stack
+- [ ] All skills follow the standard structure
+- [ ] Skills have specific, non-overlapping trigger conditions
+- [ ] Skills are version-controlled
+- [ ] At least one skill has been verified to improve output consistency

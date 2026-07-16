@@ -1,57 +1,171 @@
 # Enterprise Pattern
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Enterprise  
+> **Category:** Governance & Multi-Tenant AI Ops  
+> **Maturity:** Stable v1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Operate AI capabilities with enforceable governance across tenants, jurisdictions, and risk tiers.
+## Overview
 
-## Applicability
+The Enterprise Pattern prevents the failure mode where teams **deploy AI capabilities that work in a demo and cannot be governed in production**: no system inventory, unclear data classification, missing kill switches, and policy PDFs that never bind the runtime gateway.
 
-- regulated or personal data is processed
-- AI contributes to a material decision
-- shared services span business units or regions
+This pattern enforces inventory → risk tier → control map → gateway enforcement → evidence → incident obligations — before material AI use crosses tenants or jurisdictions.
 
-## Evidence
+## When to Apply
 
-- AI system inventory
-- use-case risk assessment
-- data flow and classification
-- model/vendor evaluation
-- control map, SLOs, and incident obligations
+Apply this pattern when:
+- Personal data, regulated data, or cross-border processing is in scope
+- AI output contributes to a material decision (credit, access, clinical, employment, safety)
+- Shared AI platform serves multiple business units, brands, or regions
+- Tools/MCP connectors can take external actions (email, tickets, cloud APIs)
+- Leadership needs an enforceable go-live gate, not a slide deck
 
-## Components
+Do NOT apply this pattern to:
+- Local prototyping on synthetic data with no production path
+- Pure offline research notebooks with no user-facing or automated action
+- Single-team internal copilots already covered by an existing approved use-case record (extend that record; do not invent a parallel governance stack)
+- Active incident containment (use [hotfix-pattern](../hotfix-pattern/README.md); update controls after)
 
-Enterprise README components gate 1 is accepted only when "inventory completeness = 100%" is source-verifiable; otherwise, disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle.
+---
 
-README is component thirteen.
+## Problem
 
-## Outcome measures
+```
+enterprise-pattern/problem.md
+```
 
-- inventory completeness = 100%
-- high-risk controls have independent evidence
-- policy decisions are attributable and retrievable < 1 business day. For the Enterprise README contract, gate 1 is evidenced by "inventory completeness = 100%"; failure invokes this domain recovery: Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle.
-- risk-tier SLO and harm indicators stay within threshold. For the Enterprise README contract, gate 2 is evidenced by "inventory completeness = 100%"; failure invokes this domain recovery: Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle.
+**Statement:** AI features ship with policy documents and vendor assurances but without an inventory entry, risk tier, runtime policy gateway, or proven disable path — leaving the organization unable to answer “what models touch what data where?” during audits or incidents.
 
-## Rollback
+**Measurable symptom:** On-call cannot disable a use case in <15 minutes, or security cannot list all production prompts/models/tools for a business unit within one working day.
 
-Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle.
+**Root cause:** Governance treated as documentation after build, instead of as runtime controls and evidence gates before exposure.
 
-## Tradeoffs
+---
 
-Enterprise README deliberately spends additional review time to protect "inventory completeness = 100%"; evidence weakness triggers "Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle".
+## Context Requirements
 
-## Anti-patterns
+Before applying this pattern:
+- [ ] AI system / use-case inventory exists (or this engagement creates the first entry)
+- [ ] Data classification and residency constraints known
+- [ ] Risk tier assigned with named owner
+- [ ] Policy gateway (or equivalent enforcement point) can bind model/prompt/tool policy
+- [ ] Kill switch / disable path rehearsed
 
-Enterprise README rejects shortcuts around "Register use case, owner, model, purpose, users, and prohibited uses." because they sever the evidence chain required for "inventory completeness = 100%".
+---
 
-## Citations
+## Workflow
 
-- [NIST AI RMF](https://doi.org/10.6028/NIST.AI.100-1)
-- [ISO/IEC 42001 overview](https://www.iso.org/standard/81230.html)
-- [EU AI Act](https://eur-lex.europa.eu/eli/reg/2024/1689/oj)
-- [OWASP LLM Top 10](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
+```mermaid
+flowchart TD
+    A[Register use case in AI inventory] --> B[Classify data + jurisdictions]
+    B --> C[Assign risk tier + owners]
+    C --> D[Map controls to runtime enforcement]
+    D --> E[Evaluate model/vendor/tools]
+    E --> F{Gateway + kill switch ready?}
+    F -->|No| G[Block production exposure]
+    F -->|Yes| H[Bind policy bundle at gateway]
+    H --> I[Staged enablement by tenant/region]
+    I --> J{Control evidence fresh?}
+    J -->|No| K[Freeze expansion; remediate]
+    J -->|Yes| L[Operate with SLOs + incident obligations]
+```
 
-## Changelog
+---
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+## Prompt
+
+See [prompt.md](./prompt.md) — full XML with bindable template variables for inventory, risk, controls, and go-live package.
+
+---
+
+## Agent Definition
+
+```yaml
+name: Enterprise AI Governance Agent
+role: |
+  You produce governable go-live packages: inventory fields, risk tier,
+  control map, gateway bindings, and disable procedures. You do not waive
+  high-risk controls. You do not claim external certification.
+```
+
+Full YAML: [agent.md](./agent.md)
+
+---
+
+## Subagents
+
+| Subagent | Role | When Invoked |
+|---------|------|-------------|
+| Inventory Registrar | Creates/updates system record | Start |
+| Data Flow Mapper | Classifies data + residency | After registration |
+| Control Mapper | Maps tier → enforceable controls | After risk tier |
+| Gateway Binder | Emits policy bundle + kill switch test | Before enablement |
+
+---
+
+## Skills Required
+
+- Responsible AI / risk assessment skill  
+- Security least-privilege / MCP OAuth skill  
+- Prompt-injection defense skill  
+- Audit logging / evidence skill  
+
+---
+
+## Hooks
+
+Executable checks in [hooks.md](./hooks.md): inventory ID, risk tier, kill-switch test evidence, no “certificate replaces control” language.
+
+---
+
+## Checklist
+
+See [checklist.md](./checklist.md). Gate: no production traffic until gateway binding and disable drill pass.
+
+---
+
+## Examples
+
+See [examples/example.md](./examples/example.md) — multi-region support copilot with tool actions, inline inventory + control map + disable drill.
+
+| Component | File |
+|-----------|------|
+| Problem | [problem.md](./problem.md) |
+| Context | [context.md](./context.md) |
+| Workflow | [workflow.md](./workflow.md) |
+| Prompt | [prompt.md](./prompt.md) |
+| Agent | [agent.md](./agent.md) |
+| Subagents | [subagents.md](./subagents.md) |
+| Skills | [skills.md](./skills.md) |
+| Hooks | [hooks.md](./hooks.md) |
+| Checklist | [checklist.md](./checklist.md) |
+| Failures | [failures.md](./failures.md) |
+| Enterprise | [enterprise-notes.md](./enterprise-notes.md) |
+
+---
+
+## Common Failures
+
+### Failure 1: Policy PDF as control
+**Symptom:** Audit asks for enforcement evidence; team produces a Confluence page.  
+**Cause:** Controls never bound at the gateway.  
+**Recovery:** Freeze use case; bind deny-by-default policy; re-drill kill switch.
+
+### Failure 2: Shadow tools
+**Symptom:** Agent calls an unsanctioned MCP/server in prod.  
+**Cause:** Tool allowlist absent or bypassed in “debug” mode.  
+**Recovery:** Revoke credentials; enforce allowlist; add detection for unknown tool names.
+
+### Failure 3: Inventory drift
+**Symptom:** Incident responders discover a second model endpoint.  
+**Cause:** Inventory updated at launch then abandoned.  
+**Recovery:** Reconcile from gateway logs; make inventory a release gate.
+
+---
+
+## Enterprise Notes
+
+- Map to existing risk, privacy, and change boards — do not invent a parallel “AI-only” bureaucracy that nobody uses.
+- This pattern produces **internal operating evidence**, not ISO/NIST/EU Act certification claims.
+- Cross-border: residency and subprocessors are runtime routing constraints, not footnotes.

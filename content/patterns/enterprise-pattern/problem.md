@@ -1,39 +1,36 @@
-# Enterprise: Problem
+# Enterprise Pattern — Problem
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Enterprise  
+> **Component:** problem.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Enterprise problem operationalizes this pattern outcome: operate ai capabilities with enforceable governance across tenants, jurisdictions, and risk tiers.
+## Statement
 
-## Observable problem
+AI capabilities reach production without a durable inventory record, risk tier, runtime-enforced policy bundle, or proven disable path. When auditors, regulators, or incident commanders ask basic questions, teams scramble through Slack history instead of systems of record.
 
-1. When regulated or personal data is processed, an undocumented assumption can become a production decision.
-2. When AI contributes to a material decision, an undocumented assumption can become a production decision.
-3. When shared services span business units or regions, an undocumented assumption can become a production decision.
+## Measurable symptoms
 
-## Quality boundary
+| Symptom | How you detect it |
+|---------|-------------------|
+| Inventory gap | Cannot list all prod models/prompts/tools for a BU in one business day |
+| Paper controls | “Governance” exists only as PDFs; gateway has no matching policy version |
+| Kill-switch fiction | On-call cannot disable a use case in <15 minutes |
+| Tool sprawl | Production traces show tools not on the approved allowlist |
+| Evidence rot | Model/vendor eval older than the change that altered data flow |
 
-Enterprise problem quality boundary gate 2 is accepted only when "inventory completeness = 100%" is source-verifiable; otherwise, disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle.
+## Root cause
 
-## Tradeoffs
+Organizations treat AI governance as a documentation and vendor-assurance exercise instead of as **enforceable runtime controls** with owners, SLOs, and incident obligations.
 
-Enterprise problem deliberately spends additional review time to protect "inventory completeness = 100%"; evidence weakness triggers "Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle".
+## Non-goals of this pattern
 
-## Anti-patterns
+- Not a substitute for legal advice or external certification
+- Not a full privacy program (it consumes classification and DPIA outputs)
+- Not model-training governance for research labs with no product exposure
+- Not a way to bypass existing high-risk change boards
 
-Enterprise problem rejects shortcuts around "Register use case, owner, model, purpose, users, and prohibited uses." because they sever the evidence chain required for "inventory completeness = 100%".
+## Related failure modes
 
-## Enterprise considerations
-
-Enterprise problem governance binds owner, policy revision, and retained proof to "inventory completeness = 100%", with "Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Trigger and affected population are quantified
-- [ ] Baseline and desired outcome are distinguishable
-- [ ] Scope and non-goals have named owners
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+See [failures.md](./failures.md).

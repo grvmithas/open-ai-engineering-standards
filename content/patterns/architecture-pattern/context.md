@@ -1,46 +1,45 @@
-# Architecture: Context Contract
+# Architecture Pattern — Context
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Architecture  
+> **Component:** context.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Make the evidence needed to choose and govern a system design against quantified quality-attribute scenarios authoritative, bounded, and reproducible.
+## Preconditions (must be true before activation)
 
-| Required input | Acceptance test |
-|---|---|
-| quality-attribute scenarios | owner, revision, retrieval time, and authority recorded for quality-attribute scenarios |
-| workload and failure model | owner, revision, retrieval time, and authority recorded for workload and failure model |
-| threat model | owner, revision, retrieval time, and authority recorded for threat model |
-| cost and capacity model | owner, revision, retrieval time, and authority recorded for cost and capacity model |
-| ADRs and organizational constraints | owner, revision, retrieval time, and authority recorded for ADRs and organizational constraints |
+- [ ] Architectural drivers written (problem, forces, constraints)
+- [ ] Quality-attribute scenarios listed (e.g. “p99 < 200ms on checkout”)
+- [ ] Current-state systems and constraints known
+- [ ] Risk level assigned (Low / Medium / High)
+- [ ] For High: independent reviewer identified
 
-## Assembly procedure
+## Trigger conditions (apply the pattern)
 
-1. Tie each source to a trigger or workflow decision.
-2. Resolve conflicting authority before analysis; preserve both revisions and the resolution.
-3. Hash the accepted manifest and set expiry from the fastest-changing source.
-4. Exclude unrelated material and redact secrets without removing decision-relevant constraints.
+Apply when **any** of the following hold:
 
-## Tradeoffs
+- New service, data store, or trust boundary
+- Conflicting quality attributes require an explicit trade
+- Cross-team or external contracts change
+- Decision is hard to reverse within six months
+- AI/tool-calling boundary introduced
 
-Architecture context deliberately spends additional review time to protect "all priority scenarios have measurable responses"; evidence weakness triggers "Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture".
+## Do not apply when
 
-## Anti-patterns
+- Local refactor, no new boundary
+- Pure bugfix or dependency bump with same topology
+- UI-only or docs-only
+- Choice among equivalent libraries with identical architecture
 
-Architecture context rejects shortcuts around "Name stakeholders and express quality attributes as stimulus-response scenarios." because they sever the evidence chain required for "all priority scenarios have measurable responses".
+## Required inputs
 
-## Enterprise considerations
+| Input | Source | Minimum quality |
+|-------|--------|-----------------|
+| Drivers | Product + eng | Problem, forces, non-goals |
+| QA scenarios | SRE / product | Measurable |
+| Constraints | Compliance / cost / legacy | Hard limits |
+| Current ADRs | Repo | Avoid contradictions |
 
-Architecture context governance binds owner, policy revision, and retained proof to "all priority scenarios have measurable responses", with "Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture" as the recorded recovery authority.
+## Authority boundary
 
-## Checklist
-
-- [ ] quality-attribute scenarios is present and provenance-bearing
-- [ ] workload and failure model is present and provenance-bearing
-- [ ] threat model is present and provenance-bearing
-- [ ] cost and capacity model is present and provenance-bearing
-- [ ] ADRs and organizational constraints is present and provenance-bearing
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+The architect agent drafts ADRs and diagrams. **High-risk approval** requires an independent human reviewer. The agent does not implement feature code or self-approve High-risk decisions.

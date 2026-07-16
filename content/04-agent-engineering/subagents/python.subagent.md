@@ -77,6 +77,9 @@ Mutable defaults, blocking async call, leaked session, dependency drift, and bro
 ## Verification
 Run configured ruff/black, mypy/pyright, pytest, python -m build, twine check, and clean environment import.
 
+## Domain Recovery Playbook
+Restore the lock and last installable package metadata, close leaked async resources, preserve failing seeds/fixtures, and verify a clean-environment wheel install.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

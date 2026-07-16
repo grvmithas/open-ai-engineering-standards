@@ -20,7 +20,7 @@ Read the Maven/Gradle toolchain, wrapper, Spring dependency management, and runt
 
 ## Tradeoffs
 
-The Java deployment gate adds manual and target-environment checks that slow promotion. It reduces the chance that version, topology, state, or rollback assumptions reach production.
+Promotion waits for "wrapper build and tests run with the same toolchain as the runtime image" and "dependency convergence and vulnerable transitive findings are reviewed". Those Java target checks slow release but directly bound bean graph or configuration binding failure and make this rollback executable: Pause message admission and traffic, drain transactions, then restore the previous JVM artifact only after verifying Flyway/Liquibase and serialized-event backward compatibility.
 
 ## Anti-patterns
 

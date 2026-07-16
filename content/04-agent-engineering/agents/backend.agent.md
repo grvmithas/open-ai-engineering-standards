@@ -77,6 +77,9 @@ Authorization bypass, duplicate effect, partial transaction, retry storm, incomp
 ## Verification
 Run schema compatibility, auth matrix, database integration, idempotency/concurrency, timeout, load-smoke, and trace checks.
 
+## Domain Recovery Playbook
+Stop new side effects, disable or route around the endpoint, drain or bound retries, reconcile committed versus acknowledged operations, and restore the previous compatible service version.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

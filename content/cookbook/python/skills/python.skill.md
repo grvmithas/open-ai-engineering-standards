@@ -45,7 +45,7 @@ Public boundaries are typed and validated; environments are reproducible; async 
 
 ## Verification
 
-The evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. For manual checks, record environment, operator, exact steps, and result.
+The Python evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. It must also retain `pyproject.toml`, lock/constraints, interpreter pin, and installed dependency report. For manual package, FastAPI/Django boundary, asyncio task, worker, or library API checks, record environment, operator, exact steps, and result.
 
 ## Failure recovery
 
@@ -61,7 +61,7 @@ Report the Python boundary, facts, hypotheses, commands actually run, changed ar
 
 ## Termination criteria
 
-Finish when native validation, all applicable review/deployment gates, and recovery signals pass, or when a named owner accepts a documented blocker through the repository's risk process.
+Finish the Python workflow only when native validation, applicable review/deployment gates, and recovery signals for environment or import resolution mismatch and unawaited coroutine or lost cancellation pass. Otherwise record a named owner and the exact missing Python evidence; risk acceptance does not convert a failed native check into a pass.
 
 ## Version-aware caution
 
@@ -69,7 +69,7 @@ Read `requires-python`, lock/constraint files, environment metadata, and framewo
 
 ## Tradeoffs
 
-This skill spends time fingerprinting Python and collecting native evidence before editing. It reduces throughput for trivial changes but prevents incorrect commands, unsupported APIs, and state-destructive rollback.
+This skill fingerprints Python through `pyproject.toml`, lock/constraints, interpreter pin, and installed dependency report before editing and retains async task dump, traceback with chained causes, profile, and open-resource evidence before recovery. The added work is warranted when environment or import resolution mismatch could make Stop producers before reverting consumers when task schemas changed; deploy the previous wheel/image only after confirming database and serialized payload compatibility.
 
 ## Anti-patterns
 

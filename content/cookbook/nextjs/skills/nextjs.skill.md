@@ -45,7 +45,7 @@ Server Components are the default; client boundaries are minimal; cache and dyna
 
 ## Verification
 
-The evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. For manual checks, record environment, operator, exact steps, and result.
+The Next.js evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. It must also retain `package.json`, lockfile, `next.config.*`, and installed Next.js docs. For manual App Router route, layout, Server Component, Client Component, or Route Handler checks, record environment, operator, exact steps, and result.
 
 ## Failure recovery
 
@@ -61,7 +61,7 @@ Report the Next.js boundary, facts, hypotheses, commands actually run, changed a
 
 ## Termination criteria
 
-Finish when native validation, all applicable review/deployment gates, and recovery signals pass, or when a named owner accepts a documented blocker through the repository's risk process.
+Finish the Next.js workflow only when native validation, applicable review/deployment gates, and recovery signals for Server/Client module boundary violations and static-to-dynamic build conflicts pass. Otherwise record a named owner and the exact missing Next.js evidence; risk acceptance does not convert a failed native check into a pass.
 
 ## Version-aware caution
 
@@ -69,7 +69,7 @@ Use the locally installed Next.js documentation under `node_modules/next/dist/do
 
 ## Tradeoffs
 
-This skill spends time fingerprinting Next.js and collecting native evidence before editing. It reduces throughput for trivial changes but prevents incorrect commands, unsupported APIs, and state-destructive rollback.
+This skill fingerprints Next.js through `package.json`, lockfile, `next.config.*`, and installed Next.js docs before editing and retains build output showing static, dynamic, and route bundle classification before recovery. The added work is warranted when Server/Client module boundary violations could make Route traffic to the prior immutable deployment, then invalidate only cache entries whose HTML/RSC or data contract is incompatible; never rely on redeploy alone to remove stale edge content.
 
 ## Anti-patterns
 

@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { spawnSync } from "node:child_process";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const expected = [
@@ -25,10 +26,33 @@ for (const name of expected) {
 }
 
 const localLink = /\[[^\]]+\]\(([^)]+)\)/g;
-const placeholder = /\b(?:TODO|TBD|FIXME|PLACEHOLDER)\b|\{\{[^}]+\}\}/i;
+// Flag unfinished authoring markers. Allow {{TEMPLATE_VARS}} in prompts — those are bindings, not TODOs.
+const unfinishedMarker = /\b(?:TODO|TBD|FIXME|PLACEHOLDER)\b/i;
 for (const file of files.concat(path.join(root, "README.md"))) {
   const text = fs.readFileSync(file, "utf8");
-  if (placeholder.test(text)) failures.push(`placeholder: ${path.relative(root, file)}`);
+  const rel = path.relative(root, file);
+  if (unfinishedMarker.test(text)) failures.push(`placeholder: ${rel}`);
+  // Outside prompt.md, bare {{vars}} usually means unfinished scaffolding.
+  if (!rel.endsWith(`${path.sep}prompt.md`) && !rel.endsWith("/prompt.md") && /\{\{[A-Z0-9_]+\}\}/.test(text)) {
+    failures.push(`placeholder: ${rel}`);
+  }
+  if (/(?:artifact|evidence|report)\s+(?:is\s+)?attached|attaches the resulting artifact/i.test(text)) {
+    failures.push(`artifact claim without inline content: ${rel}`);
+  }
+  if (/\*\*[^*\n]*[,:;]\.\*\*/.test(text)) {
+    failures.push(`malformed generated heading: ${path.relative(root, file)}`);
+  }
+  const sections = [...text.matchAll(/^## .+$/gm)];
+  for (let index = 0; index < sections.length; index++) {
+    const start = sections[index].index + sections[index][0].length;
+    const end = sections[index + 1]?.index ?? text.length;
+    if (!text.slice(start, end).trim()) {
+      failures.push(`empty section: ${path.relative(root, file)} ${sections[index][0]}`);
+    }
+  }
+  if ((text.match(/```/g) ?? []).length % 2 !== 0) {
+    failures.push(`unbalanced code fence: ${path.relative(root, file)}`);
+  }
   for (const match of text.matchAll(localLink)) {
     const target = match[1].split("#")[0];
     if (target && !/^(?:https?:|mailto:)/.test(target) &&
@@ -45,9 +69,16 @@ for (const name of expected) {
       failures.push(`prompt XML: ${name} missing ${tag}`);
     }
   }
-  if (!/chain-of-thought/i.test(prompt)) failures.push(`prompt safety: ${name}`);
+  const reasoningProhibition =
+    /(?:do not|never|must not)\s+(?:provide|reveal|expose|return|request)?[^.\n<]{0,100}(?:chain-of-thought|private (?:hidden )?reasoning)/i;
+  if (!reasoningProhibition.test(prompt)) {
+    failures.push(`prompt reasoning prohibition is not explicit: ${name}`);
+  }
   const agent = fs.readFileSync(path.join(root, `${name}-pattern`, "agent.md"), "utf8");
-  for (const field of ["approvals:", "budgets:", "recovery:", "termination:"]) {
+  for (const field of [
+    "read_only:", "effect_capable:", "memory:", "communication:", "approvals:",
+    "budgets:", "recovery:", "termination:", "success:", "safe_stop:", "failure:",
+  ]) {
     if (!agent.includes(field)) failures.push(`agent contract: ${name} missing ${field}`);
   }
 }
@@ -62,26 +93,48 @@ const proseByPattern = new Map();
 const lineOwners = new Map();
 for (const name of expected) {
   const patternFiles = files.filter((file) => file.includes(`${name}-pattern`));
-  const lines = patternFiles.flatMap((file) => fs.readFileSync(file, "utf8").split(/\r?\n/))
-    .filter((line) => !ignored.test(line.trim()))
-    .map(normalize).filter((line) => line.length >= 55);
-  proseByPattern.set(name, new Set(lines));
-  for (const line of new Set(lines)) {
-    if (!lineOwners.has(line)) lineOwners.set(line, []);
-    lineOwners.get(line).push(name);
+  const lines = [];
+  for (const file of patternFiles) {
+    let fenced = false;
+    fs.readFileSync(file, "utf8").split(/\r?\n/).forEach((line, index) => {
+      if (line.trim().startsWith("```")) { fenced = !fenced; return; }
+      if (fenced) return;
+      if (ignored.test(line.trim())) return;
+      const normalized = normalize(line);
+      if (normalized.length < 55) return;
+      lines.push(normalized);
+      if (!lineOwners.has(normalized)) lineOwners.set(normalized, []);
+      lineOwners.get(normalized).push(`${path.relative(root, file)}:${index + 1}`);
+    });
   }
+  proseByPattern.set(name, new Set(lines));
 }
 
-const duplicateLines = [...lineOwners].filter(([, owners]) => new Set(owners).size > 1);
-const totalLines = [...proseByPattern.values()].reduce((sum, set) => sum + set.size, 0);
-const duplicateOccurrences = duplicateLines.reduce((sum, [, owners]) => sum + new Set(owners).size, 0);
+const duplicateLines = [...lineOwners].filter(([, locations]) => locations.length > 1);
+const totalLines = [...lineOwners.values()].reduce((sum, locations) => sum + locations.length, 0);
+const duplicateOccurrences = duplicateLines.reduce((sum, [, locations]) => sum + locations.length, 0);
 const duplicateRate = totalLines ? duplicateOccurrences / totalLines : 0;
 if (duplicateRate > 0.03) failures.push(`duplicate substantive line rate ${(duplicateRate * 100).toFixed(2)}% > 3%`);
 
 const pairs = [];
 const gramsByPattern = new Map();
+const gramsByFile = new Map();
 for (const name of expected) {
-  const words = files.filter((file) => file.includes(`${name}-pattern`))
+  const patternFiles = files.filter((file) => file.includes(`${name}-pattern`));
+  for (const file of patternFiles) {
+    let fenced = false;
+    const words = fs.readFileSync(file, "utf8").split(/\r?\n/)
+      .filter((line) => {
+        if (line.trim().startsWith("```")) { fenced = !fenced; return false; }
+        return !fenced && !ignored.test(line.trim());
+      })
+      .flatMap((line) => normalize(line).split(" "))
+      .filter((word) => word.length > 2);
+    const grams = new Set();
+    for (let index = 0; index <= words.length - 7; index++) grams.add(words.slice(index, index + 7).join(" "));
+    gramsByFile.set(file, grams);
+  }
+  const words = patternFiles
     .flatMap((file) => {
       let fenced = false;
       return fs.readFileSync(file, "utf8").split(/\r?\n/).filter((line) => {
@@ -115,8 +168,25 @@ for (let i = 0; i < expected.length; i++) {
 }
 const highest = pairs.sort((a, b) => b.score - a.score)[0];
 const highestGram = [...pairs].sort((a, b) => b.gramScore - a.gramScore)[0];
+const withinPairs = [];
+for (const name of expected) {
+  const patternFiles = files.filter((file) => file.includes(`${name}-pattern`));
+  for (let left = 0; left < patternFiles.length; left++) {
+    for (let right = left + 1; right < patternFiles.length; right++) {
+      const a = gramsByFile.get(patternFiles[left]), b = gramsByFile.get(patternFiles[right]);
+      const intersection = [...a].filter((gram) => b.has(gram)).length;
+      const union = new Set([...a, ...b]).size;
+      withinPairs.push({
+        pair: `${path.relative(root, patternFiles[left])}:${path.relative(root, patternFiles[right])}`,
+        score: union ? intersection / union : 0,
+      });
+    }
+  }
+}
+const highestWithin = withinPairs.sort((a, b) => b.score - a.score)[0];
 if (highest.score > 0.08) failures.push(`highest pair similarity ${(highest.score * 100).toFixed(2)}% > 8%`);
 if (highestGram.gramScore > 0.12) failures.push(`highest 7-gram similarity ${(highestGram.gramScore * 100).toFixed(2)}% > 12%`);
+if (highestWithin.score > 0.12) failures.push(`highest within-pattern 7-gram similarity ${(highestWithin.score * 100).toFixed(2)}% > 12%`);
 
 console.log(`patterns=${expected.length}`);
 console.log(`component_files=${files.length}`);
@@ -126,12 +196,45 @@ console.log(`highest_pair=${highest.pair}`);
 console.log(`highest_pair_similarity=${(highest.score * 100).toFixed(2)}%`);
 console.log(`highest_7gram_pair=${highestGram.pair}`);
 console.log(`highest_7gram_similarity=${(highestGram.gramScore * 100).toFixed(2)}%`);
+console.log(`highest_within_pattern_pair=${highestWithin.pair}`);
+console.log(`highest_within_pattern_7gram_similarity=${(highestWithin.score * 100).toFixed(2)}%`);
+const [highestGramLeft, highestGramRight] = highestGram.pair.split(":");
+const sharedGrams = [...gramsByPattern.get(highestGramLeft)]
+  .filter((gram) => gramsByPattern.get(highestGramRight).has(gram));
+console.log(`shared_7grams_in_highest_pair=${sharedGrams.length}`);
+for (const gram of sharedGrams.slice(0, 5)) console.log(`- shared-7gram: ${gram}`);
 if (duplicateLines.length) {
   console.log("duplicate_findings:");
   for (const [line, owners] of duplicateLines.slice(0, 10)) {
-    console.log(`- [${[...new Set(owners)].join(", ")}] ${line}`);
+    console.log(`- [${owners.join(", ")}] ${line}`);
   }
 }
+
+let bashSnippets = 0;
+for (const file of files) {
+  const text = fs.readFileSync(file, "utf8");
+  for (const match of text.matchAll(/```bash\s*\n([\s\S]*?)```/g)) {
+    bashSnippets++;
+    const script = match[1];
+    if (/\}\s*\.\s+[A-Z]|policy_check\b/.test(script)) {
+      failures.push(`non-executable shell content: ${path.relative(root, file)}`);
+      continue;
+    }
+    const syntax = spawnSync("bash", ["-n"], { input: script, encoding: "utf8" });
+    if (syntax.error?.code === "ENOENT") {
+      failures.push(`cannot validate bash because bash is unavailable: ${path.relative(root, file)}`);
+    } else if (syntax.status !== 0) {
+      failures.push(`bash syntax error: ${path.relative(root, file)}: ${syntax.stderr.trim()}`);
+    }
+  }
+}
+for (const name of expected) {
+  const example = fs.readFileSync(path.join(root, `${name}-pattern`, "examples/example.md"), "utf8");
+  if (!/\|---|```(?:mermaid|json|yaml|text)/.test(example)) {
+    failures.push(`example lacks an inline concrete artifact: ${name}`);
+  }
+}
+console.log(`bash_snippets_validated=${bashSnippets}`);
 if (failures.length) {
   console.error(failures.join("\n"));
   process.exit(1);

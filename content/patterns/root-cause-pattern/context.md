@@ -1,46 +1,46 @@
-# Root Cause: Context Contract
+# Root Cause Pattern — Context
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Root Cause  
+> **Component:** context.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Make the evidence needed to explain why an incident occurred and prioritize controls that prevent or limit recurrence authoritative, bounded, and reproducible.
+## Preconditions (must be true before activation)
 
-| Required input | Acceptance test |
-|---|---|
-| normalized incident timeline | owner, revision, retrieval time, and authority recorded for normalized incident timeline |
-| logs, traces, metrics, and deploys | owner, revision, retrieval time, and authority recorded for logs, traces, metrics, and deploys |
-| decision and communication records | owner, revision, retrieval time, and authority recorded for decision and communication records |
-| architecture and control design | owner, revision, retrieval time, and authority recorded for architecture and control design |
-| interviews and counterfactual experiments | owner, revision, retrieval time, and authority recorded for interviews and counterfactual experiments |
+- [ ] Incident is mitigated or stable under monitoring (harm contained)
+- [ ] Incident ID, severity, duration, and impact summary exist
+- [ ] Raw timeline sources available (alerts, deploys, flags, chat, tickets)
+- [ ] Facilitator will enforce blameless norms aloud
+- [ ] Likely action owners attend (or delegate with authority)
+- [ ] Draft will use the RCA structure from the SDLC prompt (summary, timeline, 5 Whys, detection gap, remediation, prevention)
 
-## Assembly procedure
+## Trigger conditions (apply the pattern)
 
-1. Tie each source to a trigger or workflow decision.
-2. Resolve conflicting authority before analysis; preserve both revisions and the resolution.
-3. Hash the accepted manifest and set expiry from the fastest-changing source.
-4. Exclude unrelated material and redact secrets without removing decision-relevant constraints.
+Apply when **any** of the following hold:
 
-## Tradeoffs
+- SEV1 or SEV2 mitigated
+- SEV3 with clear recurrence risk or customer commitment to a writeup
+- Hotfix/rollback fixed symptoms but systemic gap remains
+- Near-miss that would have been SEV1 with minor timing differences
 
-Root Cause context deliberately spends additional review time to protect "100% causal edges cite evidence"; evidence weakness triggers "Withdraw unsupported causal claims, preserve the draft, and reopen timeline or experiment collection".
+## Do not apply when
 
-## Anti-patterns
+- Incident still uncontained — finish [hotfix-pattern](../hotfix-pattern/README.md) first
+- Purpose is to punish an individual — wrong process
+- No evidence timeline can be constructed (still write what is known; mark gaps; do not invent)
+- Purely speculative tabletop with no real event (use game-day notes instead)
 
-Root Cause context rejects shortcuts around "Set a blameless charter: explain system conditions, not individual fault." because they sever the evidence chain required for "100% causal edges cite evidence".
+## Required inputs
 
-## Enterprise considerations
+| Input | Source | Minimum quality |
+|-------|--------|-----------------|
+| Incident summary | Incident ticket | ID, SEV, impact, duration |
+| Timeline sources | APM, CD, flags, chat | Timestamps |
+| Contributing context | Deploys, traffic, config | Facts labeled |
+| Logs/metrics | Observability | Key excerpts linked |
+| Mitigation steps | IC timeline | What already ran |
 
-Root Cause context governance binds owner, policy revision, and retained proof to "100% causal edges cite evidence", with "Withdraw unsupported causal claims, preserve the draft, and reopen timeline or experiment collection" as the recorded recovery authority.
+## Authority boundary
 
-## Checklist
-
-- [ ] normalized incident timeline is present and provenance-bearing
-- [ ] logs, traces, metrics, and deploys is present and provenance-bearing
-- [ ] decision and communication records is present and provenance-bearing
-- [ ] architecture and control design is present and provenance-bearing
-- [ ] interviews and counterfactual experiments is present and provenance-bearing
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+The RCA agent **drafts**. Humans in the RCA meeting own the root-cause statement and action assignments. Legal/comms may restrict external versions. The agent must not invent owners or due dates.

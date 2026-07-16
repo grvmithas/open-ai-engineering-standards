@@ -1,39 +1,36 @@
-# Context: Problem
+# Context Pattern — Problem
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Context  
+> **Component:** problem.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Context problem operationalizes this pattern outcome: construct a minimal, provenance-bearing information package that preserves decision quality.
+## Statement
 
-## Observable problem
+Downstream agents (planner, coder, reviewer, debugger) fail when context is empty, stale, secret-laden, or a noisy whole-repo dump. They invent APIs, miss existing helpers, or leak sensitive material into prompts and logs.
 
-1. When the task crosses repositories or domains, an undocumented assumption can become a production decision.
-2. When source authority or freshness is uncertain, an undocumented assumption can become a production decision.
-3. When the work will outlive one model context window, an undocumented assumption can become a production decision.
+## Measurable symptoms
 
-## Quality boundary
+| Symptom | How you detect it |
+|---------|-------------------|
+| Invented symbols | Agent references types/functions absent from package and repo |
+| “Missing file” loops | Agent repeatedly asks for paths that should have been included |
+| Token blowouts | Context package > budget; quality degrades mid-task |
+| Secret hits | Hook or DLP flags keys, tokens, `.env`, prod dumps |
+| Stale excerpts | Package cites deleted APIs or pre-refactor shapes |
 
-Context problem quality boundary gate 2 is accepted only when "required-decision source recall = 100%" is source-verifiable; otherwise, invalidate the manifest, purge derived caches, and rebuild from authoritative revisions.
+## Root cause
 
-## Tradeoffs
+Context is treated as incidental paste rather than an engineered artifact: no inclusion rationale, no exclusion rules, no size budget, no validation before consumption.
 
-Context problem deliberately spends additional review time to protect "required-decision source recall = 100%"; evidence weakness triggers "Invalidate the manifest, purge derived caches, and rebuild from authoritative revisions".
+## Non-goals of this pattern
 
-## Anti-patterns
+- Not a vector database / RAG product architecture
+- Not a substitute for CLAUDE.md / AGENTS.md standing instructions
+- Not unbounded “index the company”
+- Not planning or coding — only packaging evidence for those agents
 
-Context problem rejects shortcuts around "List decisions the operator must make and evidence each decision requires." because they sever the evidence chain required for "required-decision source recall = 100%".
+## Related failure modes
 
-## Enterprise considerations
-
-Context problem governance binds owner, policy revision, and retained proof to "required-decision source recall = 100%", with "Invalidate the manifest, purge derived caches, and rebuild from authoritative revisions" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Trigger and affected population are quantified
-- [ ] Baseline and desired outcome are distinguishable
-- [ ] Scope and non-goals have named owners
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+See [failures.md](./failures.md).

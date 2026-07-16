@@ -8,11 +8,11 @@ Review a Node.js change using native configuration, failure, and operational evi
 
 ## Why
 
-The event loop remains non-blocking; concurrency is bounded; AbortSignal, errors, and shutdown propagate through every I/O boundary. This prompt requires native Node.js artifacts instead of substituting a generic incident or code-generation checklist.
+The event loop remains non-blocking; concurrency is bounded; AbortSignal, errors, and shutdown propagate through every I/O boundary. The review decision is accepted only when module mode, export map, TypeScript target, and startup command supports it; generic review advice cannot establish that Node.js state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Node.js evidence for the HTTP handler, worker, stream pipeline, package, or process lifecycle. Apply the invariant "The event loop remains non-blocking; concurrency is bounded; AbortSignal, errors, and shutdown propagate through every I/O boundary." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Read `engines.node`, `.nvmrc`/toolchain files, the lockfile, and the runtime ima
 
 ## Tradeoffs
 
-Node.js review takes longer because configuration and runtime state must be correlated with source. It eliminates generic style findings and prioritizes defects that can change production behavior.
+Node.js review correlates source with module mode, export map, TypeScript target, and startup command and event-loop delay, heap, CPU profile, active handles, and request trace. The cost is a deeper review; the benefit is direct evidence for "every promise is awaited, returned, or intentionally supervised" and "CPU-heavy or synchronous filesystem/crypto work is absent from request paths" instead of generic style findings.
 
 ## Anti-patterns
 
@@ -73,7 +73,7 @@ Node service governance pins runtime and package-manager lines, reviews install 
 
 - [Node.js API](https://nodejs.org/docs/latest/api/)
 - [Don't block the event loop](https://nodejs.org/en/learn/asynchronous-work/dont-block-the-event-loop)
-- [Node.js diagnostics](https://nodejs.org/en/learn/diagnostics)
+- [Node.js diagnostics](https://nodejs.org/en/learn/diagnostics/user-journey)
 - [OWASP Node.js security](https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html)
 
 ## Checklist

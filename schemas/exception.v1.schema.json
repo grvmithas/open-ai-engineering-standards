@@ -94,13 +94,13 @@
       "if": {"properties": {"status": {"enum": ["approved", "active"]}}, "required": ["status"]},
       "then": {
         "properties": {
-          "compensatingControls": {"items": {"properties": {"testResult": {"const": "pass"}}}},
+          "compensatingControls": {"type": "array", "items": {"type": "object", "properties": {"testResult": {"const": "pass"}}, "additionalProperties": true}},
           "residualRiskDisposition": {"enum": ["within-tolerance", "above-tolerance-authorized"]}
         }
       }
     },
     {"if": {"properties": {"status": {"const": "closed"}}, "required": ["status"]}, "then": {"required": ["closedAt", "closureEvidenceRefs"]}},
-    {"if": {"properties": {"residualImpact": {"const": "I3"}}, "required": ["residualImpact"]}, "then": {"properties": {"approvals": {"contains": {"type": "object", "properties": {"role": {"const": "accountable-executive"}, "decision": {"const": "approve"}}, "required": ["role", "decision"], "additionalProperties": true}}}}}
+    {"if": {"properties": {"residualImpact": {"const": "I3"}}, "required": ["residualImpact"]}, "then": {"properties": {"approvals": {"type": "array", "contains": {"type": "object", "properties": {"role": {"const": "accountable-executive"}, "decision": {"const": "approve"}}, "required": ["role", "decision"], "additionalProperties": true}}}}}
   ],
   "additionalProperties": false,
   "$defs": {

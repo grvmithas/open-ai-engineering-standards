@@ -1,39 +1,30 @@
-# Debug: Subagents
+# Debug Pattern — Subagents
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Debug  
+> **Component:** subagents.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Debug subagents operationalizes this pattern outcome: isolate a software defect through reproducible observations and falsifiable experiments.
+| Subagent | Role | When invoked | Output |
+|----------|------|--------------|--------|
+| Repro Locker | Pins runtime, flags, data seed, commit SHA | Before experiments | Repro recipe + rate |
+| Hypothesis Tester | Executes single-variable experiments | During diagnosis | Confirm / rule-out rows |
+| Similarity Scanner | Searches for the same anti-pattern | After root cause known | Path list + risk notes |
 
-| Subagent | Mandate | Required output |
-|---|---|---|
-| Reproducer | minimizes the failing input and environment | reproducer artifact with source IDs, uncertainty, and stop status |
-| Telemetry analyst | correlates events across signals | telemetry analyst artifact with source IDs, uncertainty, and stop status |
-| Hypothesis challenger | designs discriminating experiments | hypothesis challenger artifact with source IDs, uncertainty, and stop status |
+## Repro Locker contract
 
-## Delegation protocol
+- Record commit SHA, config flags, dependency versions, dataset ID
+- State repro rate (always / N% / once)
+- Prefer staging or local over prod for invasive probes
 
-Debug specialists receive only sources needed for "Write a deterministic symptom statement without assigning cause."; the parent retains effect approval and accountability for "reproduction rate before fix is recorded".
+## Hypothesis Tester contract
 
-## Tradeoffs
+- One independent variable per run
+- Cheapest high-likelihood experiment first
+- Write raw result, not narrative spin
 
-Debug subagents deliberately spends additional review time to protect "reproduction rate before fix is recorded"; evidence weakness triggers "Revert probes and fix, restore the locked environment, and preserve diagnostic artifacts".
+## Similarity Scanner contract
 
-## Anti-patterns
-
-Debug subagents rejects shortcuts around "Write a deterministic symptom statement without assigning cause." because they sever the evidence chain required for "reproduction rate before fix is recorded".
-
-## Enterprise considerations
-
-Debug subagents governance binds owner, policy revision, and retained proof to "reproduction rate before fix is recorded", with "Revert probes and fix, restore the locked environment, and preserve diagnostic artifacts" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Reproducer returned its required evidence
-- [ ] Telemetry analyst returned its required evidence
-- [ ] Hypothesis challenger returned its required evidence
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- Search by error signature, API shape, and anti-pattern snippet
+- Open follow-up tickets for non-trivial hits; do not silently “also fix everything” in the same PR without approval

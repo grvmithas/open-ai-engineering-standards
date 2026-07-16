@@ -1,6 +1,6 @@
 # Prompt Versioning
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative OAIES implementation profile
 
@@ -21,7 +21,7 @@ Use for every production prompt.
 5. Roll back aliases atomically.
 
 ## Evidence contract
-The decision record is the **prompt release manifest**. It records source digest; rendered digest; schema; tool contracts; policy; model parameters; aliases; signature. The PromptOps release manager owns completeness; the evidence is invalid when any runtime component is mutable outside the manifest. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+The decision record is the **prompt release manifest**. It records source digest; rendered digest; schema; tool contracts; policy; model parameters; aliases; signature. The PromptOps release manager owns completeness; the evidence is invalid when any runtime component is mutable outside the manifest. Store repository commit, built envelope digest, registry version, environment alias, and signer as one release lineage.
 
 ## Failure response and recovery
 **Trigger:** digest mismatch or undeclared runtime configuration.
@@ -29,7 +29,7 @@ The decision record is the **prompt release manifest**. It records source digest
 **Immediate response:** reject startup or pin the alias to the previous signed manifest. Preserve the prompt release manifest, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to prompt versioning.
 
 ## Decision authority
-The **PromptOps release manager** accepts the operational decision. The **application owner** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+The **PromptOps release manager** accepts the operational decision. The **application owner** provides independent challenge for high-risk scope, failed gates, or exceptions. Promotion services may verify signatures and gates; named release and risk owners decide exceptions and production exposure.
 
 ## Tradeoffs
 | Choice | Benefit | Cost |
@@ -45,12 +45,12 @@ The **PromptOps release manager** accepts the operational decision. The **applic
 - Retain lineage under records policy.
 
 ## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+**Prompt Versioning** is informative prompt-supply-chain guidance. Qualification remains specific to the rendered envelope, model, tools, data, and intended task.
 
 | Source | Relationship for Prompt Versioning | Boundary |
 |---|---|---|
-| NIST AI RMF | GOVERN 1.7; MANAGE 2.3 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clauses 7.5 and 8.1 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| NIST AI RMF | GOVERN 1.7; MANAGE 2.3 | Apply governance outcomes to the complete execution envelope, not prompt text alone. |
+| ISO/IEC 42001 | 42001 clauses 7.5 and 8.1 | Management-system alignment depends on controlled authoring, approval, distribution, and corrective action. |
 | Domain threat/control source | Supply-chain and prompt leakage controls | Test only the threats applicable to the documented system and release |
 
 ## Checklist

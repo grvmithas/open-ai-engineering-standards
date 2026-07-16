@@ -32,15 +32,15 @@ Native semantics come first; every operation is keyboard-complete; focus is dete
 
 **Preserve first:** semantic DOM and accessibility tree showing computed name, role, value, state, relationships, and landmarks.
 
-**Discriminate:** accessibility tree. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** accessibility tree. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For missing or incorrect accessible name/description, correlate that observation to the exact Accessibility Engineering target, revision, request/job, and UTC interval; compare semantic DOM and accessibility tree showing computed name, role, value, state, relationships, and landmarks with one healthy peer or baseline.
 
-**Native action:** run the repository's accessibility test suite (for example `npx playwright test tests/accessibility`) using the checked-in tool versions. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** run the repository's accessibility test suite (for example `npx playwright test tests/accessibility`) using the checked-in tool versions. Start in the safest Accessibility Engineering read-only or dry-run mode available. Before changing the semantic component, keyboard flow, focus transition, WCAG audit, remediation, or conformance release, name which of missing or incorrect accessible name/description and focus lost, trapped, obscured, or returned incorrectly the action distinguishes.
 
 **Root-cause direction:** Visible styling is not programmatically associated with the control.
 
 **Correction:** Use native label association or an accurate aria-labelledby relationship.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Interactive control has no accessible name` reproduction, verify the missing or incorrect accessible name/description signal cleared in accessibility tree. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Use native label association or an accurate aria-labelledby relationship. restored the intended Accessibility Engineering behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable the changed component or restore the previous accessible implementation through a feature flag; do not roll back content/data changes in a way that removes labels, alternatives, or user progress.
 
@@ -50,15 +50,15 @@ Native semantics come first; every operation is keyboard-complete; focus is dete
 
 **Preserve first:** keyboard sequence with visible focus, modal entry/escape/return, route focus, and error focus behavior.
 
-**Discriminate:** keyboard-only test. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** keyboard-only test. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For focus lost, trapped, obscured, or returned incorrectly, correlate that observation to the exact Accessibility Engineering target, revision, request/job, and UTC interval; compare keyboard sequence with visible focus, modal entry/escape/return, route focus, and error focus behavior with one healthy peer or baseline.
 
-**Native action:** run the project's configured axe integration and retain rule IDs, target selectors, and reviewed false positives. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** run the project's configured axe integration and retain rule IDs, target selectors, and reviewed false positives. Start in the safest Accessibility Engineering read-only or dry-run mode available. Before changing the semantic component, keyboard flow, focus transition, WCAG audit, remediation, or conformance release, name which of focus lost, trapped, obscured, or returned incorrectly and ARIA role/state/value diverges from interaction the action distinguishes.
 
 **Root-cause direction:** Focus management ignores open/close, route, or disabled-state transitions.
 
 **Correction:** Define entry, cycle, escape, and return-focus behavior.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Keyboard focus is trapped or lost` reproduction, verify the focus lost, trapped, obscured, or returned incorrectly signal cleared in keyboard-only test. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Define entry, cycle, escape, and return-focus behavior. restored the intended Accessibility Engineering behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable the changed component or restore the previous accessible implementation through a feature flag; do not roll back content/data changes in a way that removes labels, alternatives, or user progress.
 
@@ -68,15 +68,15 @@ Native semantics come first; every operation is keyboard-complete; focus is dete
 
 **Preserve first:** screen-reader transcript across the supported browser/AT matrix.
 
-**Discriminate:** screen reader and accessibility tree. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** screen reader and accessibility tree. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For ARIA role/state/value diverges from interaction, correlate that observation to the exact Accessibility Engineering target, revision, request/job, and UTC interval; compare screen-reader transcript across the supported browser/AT matrix with one healthy peer or baseline.
 
-**Native action:** use browser accessibility-tree inspection for name/role/state evidence. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** use browser accessibility-tree inspection for name/role/state evidence. Start in the safest Accessibility Engineering read-only or dry-run mode available. Before changing the semantic component, keyboard flow, focus transition, WCAG audit, remediation, or conformance release, name which of ARIA role/state/value diverges from interaction and contrast, non-text contrast, reflow, text spacing, or target-size failure the action distinguishes.
 
 **Root-cause direction:** Custom widget does not update its semantic state.
 
 **Correction:** Prefer native control or update state atomically with UI behavior.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `ARIA state differs from visual state` reproduction, verify the ARIA role/state/value diverges from interaction signal cleared in screen reader and accessibility tree. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Prefer native control or update state atomically with UI behavior. restored the intended Accessibility Engineering behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable the changed component or restore the previous accessible implementation through a feature flag; do not roll back content/data changes in a way that removes labels, alternatives, or user progress.
 
@@ -86,15 +86,15 @@ Native semantics come first; every operation is keyboard-complete; focus is dete
 
 **Preserve first:** automated scan results plus manual WCAG mapping, zoom/reflow, contrast, reduced-motion, and forced-colors evidence.
 
-**Discriminate:** contrast analyzer. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** contrast analyzer. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For contrast, non-text contrast, reflow, text spacing, or target-size failure, correlate that observation to the exact Accessibility Engineering target, revision, request/job, and UTC interval; compare automated scan results plus manual WCAG mapping, zoom/reflow, contrast, reduced-motion, and forced-colors evidence with one healthy peer or baseline.
 
-**Native action:** test at 200% text resize and 400% browser zoom/reflow at the target viewport. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** test at 200% text resize and 400% browser zoom/reflow at the target viewport. Start in the safest Accessibility Engineering read-only or dry-run mode available. Before changing the semantic component, keyboard flow, focus transition, WCAG audit, remediation, or conformance release, name which of contrast, non-text contrast, reflow, text spacing, or target-size failure and dynamic status/error not announced or announced excessively the action distinguishes.
 
 **Root-cause direction:** Foreground/background combination fails the required contrast criterion.
 
 **Correction:** Change design tokens and test all states, including focus and disabled.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Insufficient color contrast` reproduction, verify the contrast, non-text contrast, reflow, text spacing, or target-size failure signal cleared in contrast analyzer. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Change design tokens and test all states, including focus and disabled. restored the intended Accessibility Engineering behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable the changed component or restore the previous accessible implementation through a feature flag; do not roll back content/data changes in a way that removes labels, alternatives, or user progress.
 
@@ -104,15 +104,15 @@ Native semantics come first; every operation is keyboard-complete; focus is dete
 
 **Preserve first:** Accessibility Conformance Report/VPAT claims, defects, exceptions, owner, and retest date.
 
-**Discriminate:** screen-reader test. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** screen-reader test. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For dynamic status/error not announced or announced excessively, correlate that observation to the exact Accessibility Engineering target, revision, request/job, and UTC interval; compare Accessibility Conformance Report/VPAT claims, defects, exceptions, owner, and retest date with one healthy peer or baseline.
 
-**Native action:** execute the documented NVDA/JAWS/VoiceOver/TalkBack manual script; no CLI substitutes for this evidence. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** execute the documented NVDA/JAWS/VoiceOver/TalkBack manual script; no CLI substitutes for this evidence. Start in the safest Accessibility Engineering read-only or dry-run mode available. Before changing the semantic component, keyboard flow, focus transition, WCAG audit, remediation, or conformance release, name which of dynamic status/error not announced or announced excessively and missing or incorrect accessible name/description the action distinguishes.
 
 **Root-cause direction:** Important asynchronous content lacks suitable status semantics or focus strategy.
 
 **Correction:** Use restrained live regions or move focus when context truly changes.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Dynamic update is not announced` reproduction, verify the dynamic status/error not announced or announced excessively signal cleared in screen-reader test. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Use restrained live regions or move focus when context truly changes. restored the intended Accessibility Engineering behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable the changed component or restore the previous accessible implementation through a feature flag; do not roll back content/data changes in a way that removes labels, alternatives, or user progress.
 

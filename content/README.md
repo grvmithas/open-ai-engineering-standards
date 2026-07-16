@@ -75,23 +75,23 @@ See the [AI SDLC](./08-ai-sdlc/) for the complete workflow specification with pr
 - **[09-enterprise-ai/](./09-enterprise-ai/)** — Governance, security, compliance, templates
 - **[10-ai-org-playbook/](./10-ai-org-playbook/)** — Roles, operating models, culture
 
-### ⭐ Unique Differentiators
-- **[patterns/](./patterns/)** — 12 AI Engineering Patterns (full 13-component specification — nobody else has this)
-- **[cookbook/](./cookbook/)** — AI Cookbook for 18 technology stacks
-- **[mcps/](./mcps/)** — 24 production-ready MCP integration specs
+### Unique differentiators
+- **[patterns/](./patterns/)** — 12 AI Engineering Patterns (13-component operational specs; start with [planner](./patterns/planner-pattern/README.md))
+- **[cookbook/](./cookbook/)** — Technology cookbooks with prompts, skills, and checklists (see [React](./cookbook/react/README.md))
+- **[mcps/](./mcps/)** — MCP integration specs for production tooling
 
-### 🛠️ Operational Resources
-- **[prompts/](./prompts/)** — Standard prompt library (cross-referenced with SDLC)
-- **[skills/](./skills/)** — All 26 skills (installable in `.claude/skills/`)
-- **[agents/](./agents/)** — All 20 agent definitions (installable in `.claude/agents/`)
-- **[hooks/](./hooks/)** — 12 lifecycle hooks (pre/post code, commit, review, deploy)
-- **[checklists/](./checklists/)** — Quality gates for every stage
-- **[evaluation/](./evaluation/)** — RAGAS, DeepEval, Promptfoo setup guides
-- **[security/](./security/)** — Prompt injection defense, sandboxing, red teaming
-- **[observability/](./observability/)** — OpenTelemetry, LangSmith, Langfuse, dashboards
-- **[templates/](./templates/)** — ADR, PRD, RFC, Runbook, Playbook templates
-- **[papers/](./papers/)** — Curated breakthrough research papers
-- **[resources/](./resources/)** — Books, talks, repositories, standards
+### Operational resources (canonical paths)
+- **[SDLC prompts](./08-ai-sdlc/prompts/)** — Production prompts including [implementation-plan](./08-ai-sdlc/prompts/implementation-plan.prompt.md)
+- **[Skills](./03-skill-engineering/skills/)** — Reusable agent skills
+- **[Agents](./04-agent-engineering/agents/)** — Agent definitions
+- **[Hooks](./04-agent-engineering/hooks/)** — Lifecycle hooks
+- **[Checklists](./checklists/)** — Quality gates for every stage
+- **[Evaluation](./07-llmops/evaluation/)** — Framework selection and eval practice
+- **[Enterprise security & governance](./09-enterprise-ai/)** — Security, compliance, templates
+- **[Observability](./07-llmops/)** — Tracing, PromptOps, cost, dashboards
+- **[Templates](./09-enterprise-ai/templates/)** — ADR and related templates
+- **[Resources](./resources/)** — Curated books, talks, repositories, standards
+- **[Normative standard](./standard/)** — Machine-checkable controls, evidence, conformance (when claiming OAIES conformance)
 
 ---
 
@@ -100,33 +100,35 @@ See the [AI SDLC](./08-ai-sdlc/) for the complete workflow specification with pr
 ### Use with Claude Code
 ```bash
 # Clone into your project
-git clone https://github.com/your-org/oaies .oaies
+git clone https://github.com/gauravprwl14/open-ai-engineering-standard .oaies
 
-# Copy the behavioral contract
+# Copy the behavioral contract (repo root)
 cp .oaies/CLAUDE.md ./CLAUDE.md
 
-# Install skills
+# Install skills from their canonical location
 mkdir -p .claude/skills
-cp .oaies/skills/*.skill.md .claude/skills/
+cp .oaies/content/03-skill-engineering/skills/*.skill.md .claude/skills/
 
-# Install agents
+# Install agents from their canonical location
 mkdir -p .claude/agents
-cp .oaies/agents/*.agent.md .claude/agents/
+cp .oaies/content/04-agent-engineering/agents/*.agent.md .claude/agents/
 
 # Start a feature using the standard workflow
-# Reference: .oaies/08-ai-sdlc/prompts/story-kickoff.prompt.md
+# Reference: content/08-ai-sdlc/prompts/story-kickoff.prompt.md
+# Planning:  content/08-ai-sdlc/prompts/implementation-plan.prompt.md
+# Pattern:   content/patterns/planner-pattern/README.md
 ```
 
-### Use with Cursor / Windsurf / Roo
+### Use with Cursor
 ```bash
-# Copy rules into your IDE's rules folder
-cp .oaies/rules/*.md .cursorrules
-# or
-cp .oaies/rules/*.md .windsurfrules
+# Point Cursor rules / docs at the content tree, e.g.:
+# content/02-context-engineering/templates/CLAUDE.md.template
+# content/08-ai-sdlc/prompts/
+# content/patterns/planner-pattern/
 ```
 
 ### Use standalone
-Browse the maturity model from [Level 0](./00-foundations/) and follow the standard workflow defined in [Level 8](./08-ai-sdlc/).
+Browse the maturity model from [Level 0](./00-foundations/) and follow the standard workflow in [Level 8](./08-ai-sdlc/). For complex work, run the [Planner Pattern](./patterns/planner-pattern/README.md) before coding.
 
 ---
 
@@ -135,9 +137,9 @@ Browse the maturity model from [Level 0](./00-foundations/) and follow the stand
 | Principle | What It Means |
 |-----------|---------------|
 | **Opinionated** | One standard, not a menu of options |
-| **Production-first** | Every recommendation is battle-tested |
-| **Enterprise-ready** | Governance, compliance, and audit trails built in |
-| **Living standard** | Updated quarterly with technology radar insights |
+| **Production-first** | Recommendations include workflows, prompts, and failure recovery you can run |
+| **Enterprise-ready** | Governance, compliance, and audit trails are specified where they matter |
+| **Living standard** | Updated as tooling and practice change |
 | **Context-complete** | Every decision includes Why, When, Tradeoffs, Anti-patterns |
 
 ---

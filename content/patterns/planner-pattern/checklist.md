@@ -1,53 +1,40 @@
-# Planner: Quality Gate
+# Planner Pattern — Checklist
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Planner  
+> **Component:** checklist.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Applicability
+---
 
-- [ ] Trigger evidenced: more than three components change
-- [ ] Trigger evidenced: a dependency order constrains delivery
-- [ ] Trigger evidenced: an API, schema, or trust boundary changes
+**Gate:** Coding does not start until every item is checked or explicitly waived with a named approver.
 
-## Evidence package
+## Intake
 
-- [ ] acceptance criteria has authority, revision, timestamp, and owner
-- [ ] repository map and owners has authority, revision, timestamp, and owner
-- [ ] ADRs and dependency graph has authority, revision, timestamp, and owner
-- [ ] API/schema contracts has authority, revision, timestamp, and owner
-- [ ] delivery and risk constraints has authority, revision, timestamp, and owner
+- [ ] Story has clear, testable acceptance criteria
+- [ ] Out-of-scope items listed
+- [ ] Context assembled (relevant files included; secrets excluded)
+- [ ] Constraints documented (perf, security, compatibility, compliance)
 
-## Domain execution
+## Plan content
 
-- [ ] Classify ambiguity and list decisions execution must not make
-- [ ] Map affected components, owners, contracts, and dependency edges
-- [ ] Generate viable designs and reject those violating hard constraints
-- [ ] Record the chosen design and rejected alternatives in an ADR
-- [ ] Sequence vertical increments by dependency and reversibility
-- [ ] Attach tests, observability, rollout, and rollback to each increment
-- [ ] Run a pre-mortem with security, operations, and domain owners
-- [ ] Freeze the approved plan; route deviations through replanning
+- [ ] Mermaid component / data-flow diagram present
+- [ ] Every create/modify/delete path listed
+- [ ] New dependencies listed
+- [ ] API contract changes flagged (breaking vs non-breaking)
+- [ ] Schema/data changes include migration strategy
+- [ ] Implementation sequence respects dependencies
+- [ ] Test plan covers unit / integration / e2e as applicable
+- [ ] Rollback strategy defined per deployable stage
+- [ ] Performance and security considerations present
+- [ ] Blocking questions empty (or waived in writing)
 
-## Measured verification
+## Approval
 
-- [ ] Evidence demonstrates decision completeness = 100%
-- [ ] Evidence demonstrates unplanned file-change rate < 10%
-- [ ] Evidence demonstrates plan-driven rework < 10%
-- [ ] Evidence demonstrates all critical-path owners acknowledge
+- [ ] Human reviewed for understanding (can restate the plan)
+- [ ] Approver name + date recorded
+- [ ] Plan artifact stored with the change (linked from PR)
 
-## Recovery and closure
+## After coding starts
 
-- [ ] Rehearsed rollback can stop implementation, revert partial increments, and return to the last approved plan revision
-- [ ] Residual risks and follow-ups have owners and dates
-- [ ] Artifact hashes, effect approvals, and raw checks are retained
-
-## Anti-patterns
-
-Planner checklist rejects shortcuts around "Classify ambiguity and list decisions execution must not make." because they sever the evidence chain required for "decision completeness = 100%".
-
-## Enterprise considerations
-
-Planner checklist governance binds owner, policy revision, and retained proof to "decision completeness = 100%", with "Stop implementation, revert partial increments, and return to the last approved plan revision" as the recorded recovery authority.
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- [ ] Diff stays within planned paths or an approved plan revision exists
+- [ ] Reviewer checked plan conformance, not only style

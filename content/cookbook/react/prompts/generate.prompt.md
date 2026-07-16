@@ -8,11 +8,11 @@ Generate a production-ready component, Hook, context boundary, or route UI from 
 
 ## Why
 
-Rendering stays pure; state has one owner; Effects synchronize only with external systems. This prompt requires native React artifacts instead of substituting a generic incident or code-generation checklist.
+Rendering stays pure; state has one owner; Effects synchronize only with external systems. The generate decision is accepted only when `package.json` plus the lockfile entries for React, renderer, router, state, and test libraries supports it; generic generate advice cannot establish that React state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized React evidence for the component, Hook, context boundary, or route UI. Apply the invariant "Rendering stays pure; state has one owner; Effects synchronize only with external systems." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Read the installed `react` and `react-dom` versions from the lockfile. Concurren
 
 ## Tradeoffs
 
-The prompt rejects fast code generation when React version, configuration, or target evidence is absent. That delay prevents plausible output from crossing an unsupported component, Hook, context boundary, or route UI boundary.
+Generation waits for `package.json` plus the lockfile entries for React, renderer, router, state, and test libraries and `tsconfig.json` and ESLint React/Hook rules. That extra React discovery is justified because the output must prove "Hooks are top-level and exhaustive dependency analysis is satisfied without suppression" and survive Rules of Hooks violations rather than merely compile.
 
 ## Anti-patterns
 

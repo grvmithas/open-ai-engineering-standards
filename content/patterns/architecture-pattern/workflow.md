@@ -1,67 +1,44 @@
-# Architecture: Workflow
+# Architecture Pattern — Workflow
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Architecture  
+> **Component:** workflow.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Apply the domain workflow to choose and govern a system design against quantified quality-attribute scenarios.
+## End-to-end flow
 
 ```mermaid
 flowchart TD
-  S1[1. Name stakeholders and express quality attributes as stimulus-response scenarios] --> S2
-  S2[2. Separate hard constraints from preferences] --> S3
-  S3[3. Model workload, growth, failure domains, and trust boundaries] --> S4
-  S4[4. Develop at least two viable options and a baseline] --> S5
-  S5[5. Evaluate options with scenario walkthroughs and prototypes] --> S6
-  S6[6. Choose one option; record tradeoffs and rejected alternatives in an ADR] --> S7
-  S7[7. Define fitness functions for architectural claims] --> S8
-  S8[8. Review the ADR when assumptions or thresholds change]
-  S8 --> V{Domain metrics pass?}
-  V -->|No| R[supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture]
-  V -->|Yes| C[Retain evidence and close]
+    A[Input: drivers + constraints + QA scenarios] --> B[Architect Agent Activated]
+    B --> C[Clarify forces and non-goals]
+    C --> D[Generate ≥2 real alternatives]
+    D --> E[Evaluate vs quality attributes]
+    E --> F[Walk trust boundaries + failure modes]
+    F --> G[Draft ADR + diagrams]
+    G --> H{Independent review}
+    H -->|Reject / conditions| D
+    H -->|Approve| I[ADR accepted]
+    I --> J[Planner/coder may implement within ADR]
 ```
 
-## Procedure
+## Step procedure
 
-1. **Name stakeholders and.** Name stakeholders and express quality attributes as stimulus-response scenarios.
-2. **Separate hard constraints.** Separate hard constraints from preferences.
-3. **Model workload, growth,.** Model workload, growth, failure domains, and trust boundaries.
-4. **Develop at least.** Develop at least two viable options and a baseline.
-5. **Evaluate options with.** Evaluate options with scenario walkthroughs and prototypes.
-6. **Choose one option;.** Choose one option; record tradeoffs and rejected alternatives in an ADR.
-7. **Define fitness functions.** Define fitness functions for architectural claims.
-8. **Review the ADR.** Review the ADR when assumptions or thresholds change.
+| Step | Actor | Action | Exit criteria |
+|------|-------|--------|---------------|
+| 1 | Human | Freeze drivers, QA scenarios, risk | Inputs reviewable |
+| 2 | Architect | Restate forces and non-goals | Shared understanding |
+| 3 | Alternatives Generator | Produce ≥2 viable options | Options table |
+| 4 | Architect | Score vs QA scenarios | Winner + rejects |
+| 5 | Failure Walker + Threat Mapper | Degraded modes + trust edges | Findings listed |
+| 6 | Architect | Write ADR + Mermaid | Required sections present |
+| 7 | Independent reviewer | Approve / conditions / reject | Named decision |
+| 8 | Planner | Implement only within ADR | Plan cites ADR ID |
 
-## Verification
+## Deviation rule
 
-- all priority scenarios have measurable responses
-- prototype validates highest-risk assumption
-- fitness functions run in CI or operations
-- ADR review date and owner are current
+If implementation needs a different topology, **stop coding** and revise the ADR — do not silently diverge.
 
-## Tradeoffs
+## Parallelism rule
 
-Architecture workflow deliberately spends additional review time to protect "all priority scenarios have measurable responses"; evidence weakness triggers "Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture".
-
-## Anti-patterns
-
-Architecture workflow rejects shortcuts around "Name stakeholders and express quality attributes as stimulus-response scenarios." because they sever the evidence chain required for "all priority scenarios have measurable responses".
-
-## Enterprise considerations
-
-Architecture workflow governance binds owner, policy revision, and retained proof to "all priority scenarios have measurable responses", with "Supersede the ADR, disable the new topology at its seam, and restore the prior approved architecture" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Name stakeholders and express quality attributes as stimulus-response scenarios
-- [ ] Separate hard constraints from preferences
-- [ ] Model workload, growth, failure domains, and trust boundaries
-- [ ] Develop at least two viable options and a baseline
-- [ ] Evaluate options with scenario walkthroughs and prototypes
-- [ ] Choose one option; record tradeoffs and rejected alternatives in an ADR
-- [ ] Define fitness functions for architectural claims
-- [ ] Review the ADR when assumptions or thresholds change
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+Threat and failure walks can run in parallel after alternatives exist. Final ADR decision is serial.

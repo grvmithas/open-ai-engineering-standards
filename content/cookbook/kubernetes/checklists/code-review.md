@@ -20,7 +20,7 @@ Capture server and kubectl versions, API discovery, node OS/runtime, CNI/CSI, ad
 
 ## Tradeoffs
 
-The Kubernetes review gate requires runtime/configuration evidence beyond a source diff. It increases reviewer effort but catches defects static style review cannot observe.
+Review must prove "Pods are owned by Deployment, StatefulSet, Job, or another appropriate controller" using rendered manifests plus Git revision, field manager, server-side dry-run, diff, and admission result. That Kubernetes evidence costs more than diff inspection but exposes CrashLoopBackOff, probe failure, or bad configuration before merge.
 
 ## Anti-patterns
 

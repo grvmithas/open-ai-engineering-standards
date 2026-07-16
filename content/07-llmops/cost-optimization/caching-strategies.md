@@ -1,6 +1,6 @@
 # LLM Caching Strategies
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative OAIES implementation profile
 
@@ -21,7 +21,7 @@ Use for repeatable, non-personalized workloads with explicit freshness.
 5. Measure hit quality; purge on incident, deletion request, or policy change.
 
 ## Evidence contract
-The decision record is the **cache policy and isolation test**. It records tenant key; release digest; source freshness; TTL; encryption; purge path; semantic threshold. The cache service owner owns completeness; the evidence is invalid when key composition or source version is incomplete. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+The decision record is the **cache policy and isolation test**. It records tenant key; release digest; source freshness; TTL; encryption; purge path; semantic threshold. The cache service owner owns completeness; the evidence is invalid when key composition or source version is incomplete. Cost evidence includes quality and safety deltas, retry/agent amplification, cache effects, and human review—not provider list price alone.
 
 ## Failure response and recovery
 **Trigger:** cross-tenant hit, stale safety policy, or deletion propagation failure.
@@ -29,7 +29,7 @@ The decision record is the **cache policy and isolation test**. It records tenan
 **Immediate response:** disable the cache namespace, purge affected entries, and replay deletion jobs. Preserve the cache policy and isolation test, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to llm caching strategies.
 
 ## Decision authority
-The **cache service owner** accepts the operational decision. The **privacy engineer** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+The **cache service owner** accepts the operational decision. The **privacy engineer** provides independent challenge for high-risk scope, failed gates, or exceptions. Budget and routing services can trip circuit breakers; product, FinOps, and abuse owners decide degraded service and temporary quota changes.
 
 ## Tradeoffs
 | Choice | Benefit | Cost |
@@ -46,12 +46,12 @@ The **cache service owner** accepts the operational decision. The **privacy engi
 - Apply legal hold and deletion consistently.
 
 ## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+The **LLM Caching Strategies** profile treats resource consumption as a task-specific reliability and abuse constraint; it supplies neither financial advice nor universal targets.
 
 | Source | Relationship for LLM Caching Strategies | Boundary |
 |---|---|---|
-| NIST AI RMF | MAP 4.1; MANAGE 2.2 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clauses 8.2 and 8.4 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| NIST AI RMF | MAP 4.1; MANAGE 2.2 | Relate resource controls to the measured task and exposed population. |
+| ISO/IEC 42001 | 42001 clauses 8.2 and 8.4 | Use operational planning evidence within the organization’s own objectives and risk treatment. |
 | Domain threat/control source | Sensitive Information Disclosure | Test only the threats applicable to the documented system and release |
 
 ## Checklist

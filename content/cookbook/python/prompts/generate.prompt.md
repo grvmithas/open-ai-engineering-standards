@@ -8,11 +8,11 @@ Generate a production-ready package, FastAPI/Django boundary, asyncio task, work
 
 ## Why
 
-Public boundaries are typed and validated; environments are reproducible; async code contains no blocking I/O and preserves cancellation. This prompt requires native Python artifacts instead of substituting a generic incident or code-generation checklist.
+Public boundaries are typed and validated; environments are reproducible; async code contains no blocking I/O and preserves cancellation. The generate decision is accepted only when `pyproject.toml`, lock/constraints, interpreter pin, and installed dependency report supports it; generic generate advice cannot establish that Python state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Python evidence for the package, FastAPI/Django boundary, asyncio task, worker, or library API. Apply the invariant "Public boundaries are typed and validated; environments are reproducible; async code contains no blocking I/O and preserves cancellation." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Read `requires-python`, lock/constraint files, environment metadata, and framewo
 
 ## Tradeoffs
 
-The prompt rejects fast code generation when Python version, configuration, or target evidence is absent. That delay prevents plausible output from crossing an unsupported package, FastAPI/Django boundary, asyncio task, worker, or library API boundary.
+Generation waits for `pyproject.toml`, lock/constraints, interpreter pin, and installed dependency report and type-checker, formatter, linter, and test configuration. That extra Python discovery is justified because the output must prove "package imports work after installation, not through `sys.path` mutation" and survive environment or import resolution mismatch rather than merely compile.
 
 ## Anti-patterns
 

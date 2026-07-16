@@ -1,6 +1,6 @@
 # LLM-as-Judge Standard
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative OAIES implementation profile
 
@@ -101,7 +101,7 @@ Sample by risk and novelty, not only uniform traffic. Oversample low-confidence 
 Store: source trace ID; sampled unit; inclusion probability; candidate release; judge contract; raw structured judgment; human disposition; latency; tokens; cost; and redaction result. Human corrections feed the next calibration dataset only after provenance and contamination review.
 
 ## Evidence contract
-The decision record is the **judge calibration dossier**. It records rubric/version; human panel labels; confusion matrix; Krippendorff alpha; bootstrap intervals; slice errors. The evaluation science lead owns completeness; the evidence is invalid when judge agreement or severe-case recall falls below its release floor. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+The decision record is the **judge calibration dossier**. It records rubric/version; human panel labels; confusion matrix; Krippendorff alpha; bootstrap intervals; slice errors. The evaluation science lead owns completeness; the evidence is invalid when judge agreement or severe-case recall falls below its release floor. Dataset, annotation, rubric, scorer, and run identifiers are content-addressed so a disputed result can be replayed.
 
 ## Failure response and recovery
 **Trigger:** calibration drift, provider change, or order-bias test failure.
@@ -118,7 +118,7 @@ The decision record is the **judge calibration dossier**. It records rubric/vers
 7. Add the failure to bias/sentinel suites, re-run calibration, and require independent approval before reactivation.
 
 ## Decision authority
-The **evaluation science lead** accepts the operational decision. The **domain assurance chair** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+The **evaluation science lead** accepts the operational decision. The **domain assurance chair** provides independent challenge for high-risk scope, failed gates, or exceptions. Evaluation automation enforces the approved statistical rule; the evaluation and domain owners decide ambiguity, severe-case disposition, and residual uncertainty.
 
 ## Tradeoffs
 | Choice | Benefit | Cost |
@@ -136,12 +136,12 @@ The **evaluation science lead** accepts the operational decision. The **domain a
 - Preserve appeal and correction paths.
 
 ## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+For **LLM-as-Judge Standard**, this informative profile governs measurement evidence for the stated decision only; it neither makes an evaluator authoritative nor transfers fitness decisions to a framework.
 
 | Source | Relationship for LLM-as-Judge Standard | Boundary |
 |---|---|---|
-| NIST AI RMF | MEASURE 2.6 and 2.7 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clause 9.1 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| NIST AI RMF | MEASURE 2.6 and 2.7 | Interpret outcomes against the documented use case, sampling frame, and uncertainty. |
+| ISO/IEC 42001 | 42001 clause 9.1 | Use management-system evidence only within the organization’s declared scope and independent assessment process. |
 | Domain threat/control source | Overreliance and model-output manipulation | Test only the threats applicable to the documented system and release |
 
 ## Checklist

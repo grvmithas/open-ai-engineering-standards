@@ -2,14 +2,8 @@
 
 > **Prerequisites:** None
 > **Goal:** Understand how to engineer systems around LLMs — not just use them
-> **Version:** 1.2.0  
-> **Last updated:** 2026-07-16
 
 ---
-
-## Purpose
-
-Establish the risk, reliability, cost, latency, and provider mental models required before production model integration.
 
 ## Why This Level Exists
 
@@ -23,19 +17,11 @@ This level builds the mental models required before writing a single line of AI 
 
 1. How LLMs process information (and why it matters for engineering)
 2. The Harness Principle — the deterministic wrapper that makes AI reliable
-3. The deterministic boundary — a risk-based interpretation of the 50/50 mnemonic
+3. The 50/50 Rule — the most important rule in AI engineering
 4. LLM failure mode taxonomy — know your enemy before you fight it
 5. Provider landscape — how to choose without locking in
 6. Cost mental models — reasoning about token budgets as engineering constraints
 7. Latency tradeoffs — why speed is a first-class design concern
-
-## How
-
-Read the documents in numeric order, apply each checklist item to a real workload, and record evidence for every control. Treat named ratios and placement guidance as heuristics to evaluate, not universal constants.
-
-## When
-
-Use this level before initial architecture approval and revisit it when model versions, providers, data classifications, failure costs, or workload economics change.
 
 ---
 
@@ -45,7 +31,7 @@ Use this level before initial architecture approval and revisit it when model ve
 |------|---------------|
 | [01-how-llms-think.md](./01-how-llms-think.md) | Tokens, attention, context windows as engineering primitives |
 | [02-the-harness-principle.md](./02-the-harness-principle.md) | The deterministic wrapper standard |
-| [03-50-50-rule.md](./03-50-50-rule.md) | Risk-based boundary between model judgment and enforceable code |
+| [03-50-50-rule.md](./03-50-50-rule.md) | 50% AI reasoning, 50% deterministic code |
 | [04-failure-modes.md](./04-failure-modes.md) | Taxonomy of LLM failure modes |
 | [05-provider-landscape.md](./05-provider-landscape.md) | OpenAI, Anthropic, Google, Azure — decision framework |
 | [06-cost-mental-models.md](./06-cost-mental-models.md) | Token budget thinking |
@@ -94,7 +80,7 @@ If you cannot answer all four, stop. You are not ready to build.
 ## Anti-Patterns at This Level
 
 ### ❌ "The model is smart enough to figure it out"
-**Root cause:** Conflating capability with reliability. Model outputs remain probabilistic; the harness makes required invariants testable and enforceable.
+**Root cause:** Conflating intelligence with reliability. LLMs are impressively capable but probabilistically unreliable. Without a harness, every invocation is a roll of the dice.
 
 ### ❌ "We'll add guardrails later"
 **Root cause:** Treating safety and reliability as features rather than architecture. By the time you add them later, you're refactoring your entire system.
@@ -109,21 +95,13 @@ If you cannot answer all four, stop. You are not ready to build.
 
 ## Enterprise Considerations
 
-At enterprise scale, these topics may map to contractual, regulatory, security, financial, or operational controls:
+At enterprise scale, every item in this level becomes a compliance concern:
 - **Failure modes** map to regulatory risk categories
 - **Cost mental models** become CFO-reported line items
 - **Provider landscape** decisions trigger procurement, legal, and security reviews
 - **Latency tradeoffs** appear in SLA negotiations
 
-Revisit this level when the workload, model, provider, data classification, or control environment changes materially.
-
-## Tradeoffs
-
-| Decision | Benefit | Cost |
-|---|---|---|
-| Deterministic harness | Enforceable reliability and policy | More implementation |
-| Workload-specific evaluation | Defensible operating limits | Ongoing evaluation cost |
-| Provider contingency | Reduced concentration risk | Duplicate qualification |
+Do not skip this level because it feels too basic. Revisit it every 6 months — your understanding will compound.
 
 ---
 
@@ -131,9 +109,4 @@ Revisit this level when the workload, model, provider, data classification, or c
 
 Before proceeding to Level 1, complete the [Foundations Readiness Checklist](./checklists/foundations-readiness.md).
 
-**Minimum bar:** You can explain the harness, justify a deterministic boundary from failure impact, and map relevant failure modes to controls with evidence.
-
-## Changelog
-
-- 1.2.0 (2026-07-16): Removed literal percentage and arbitrary readiness-count interpretations.
-- 1.1.0 (2026-07-16): Completed linked corpus and scoped heuristics to workload evidence.
+**Minimum bar:** You can explain the Harness Principle, the 50/50 Rule, and three LLM failure modes to a non-technical stakeholder.

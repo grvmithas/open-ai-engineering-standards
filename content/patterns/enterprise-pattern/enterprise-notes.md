@@ -1,48 +1,27 @@
-# Enterprise: Enterprise Operations
+# Enterprise Pattern — Enterprise Notes
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Enterprise  
+> **Component:** enterprise-notes.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Enterprise enterprise-notes operationalizes this pattern outcome: operate ai capabilities with enforceable governance across tenants, jurisdictions, and risk tiers.
+## Fit existing boards
 
-## Tailored controls
+Route high-tier go-lives through the organization’s real risk, privacy, and change processes. An AI-specific markdown package should **feed** those boards, not replace them with a parallel approval cult.
 
-Board reporting separates inherent and residual risk. Three-lines governance assigns product ownership, independent risk challenge, and internal audit. Procurement terms cover training use, breach notice, deletion, location, audit rights, and model changes.
+## Multi-tenant and multi-region
 
-## Governance model
+Residency is a routing constraint at the gateway. Tenant isolation failures are governance failures even when model quality is fine. Stage enablement by tenant and region; keep expansion criteria quantitative (error/safety rates, cost caps).
 
-Enterprise enterprise-notes governance binds owner, policy revision, and retained proof to "inventory completeness = 100%", with "Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle" as the recorded recovery authority.
+## Evidence vs certification
 
-## Metrics and assurance
+This pattern produces operating evidence: inventory, control maps, gateway versions, drill logs. It does **not** assert ISO/IEC 42001 certification, NIST AI RMF “compliance,” or EU AI Act conformity. Map evidence into whatever assurance program you already run.
 
-- Control dashboard reports inventory completeness = 100%.
-- Control dashboard reports high-risk controls have independent evidence.
-- Control dashboard reports policy decisions are attributable and retrievable < 1 business day.
-- Control dashboard reports risk-tier SLO and harm indicators stay within threshold.
+## Vendor and subprocessors
 
-Enterprise enterprise-notes metrics and assurance gate 3 is accepted only when "inventory completeness = 100%" is source-verifiable; otherwise, disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle.
+Model/provider swaps are material changes. DPAs and regional endpoints must match the bound policy bundle. “The vendor is big” is not a control.
 
-## Tradeoffs
+## Retention and access
 
-Enterprise enterprise-notes deliberately spends additional review time to protect "inventory completeness = 100%"; evidence weakness triggers "Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle".
-
-## Anti-patterns
-
-Enterprise enterprise-notes rejects shortcuts around "Register use case, owner, model, purpose, users, and prohibited uses." because they sever the evidence chain required for "inventory completeness = 100%".
-
-## Citations
-
-- [NIST AI RMF](https://doi.org/10.6028/NIST.AI.100-1)
-- [ISO/IEC 42001 overview](https://www.iso.org/standard/81230.html)
-- [EU AI Act](https://eur-lex.europa.eu/eli/reg/2024/1689/oj)
-- [OWASP LLM Top 10](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
-
-## Checklist
-
-- [ ] RACI, data flow, threat model, capacity, and recovery are current
-- [ ] Audit evidence can be retrieved within one business day
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+Prompt/tool logs often contain personal data. Align retention, access, and redaction with privacy counsel — do not invent a universal retention number in this document.

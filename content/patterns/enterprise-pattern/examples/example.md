@@ -1,50 +1,82 @@
-# Enterprise: Worked Production Example
+# Enterprise Pattern — Example: Multi-region support copilot
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Enterprise  
+> **Component:** examples/example.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16  
+> **Scenario:** Customer-support copilot with ticket-update tool, EU + US regions
 
-## Scenario and artifacts
+---
 
-Approve support summarization for EU customers. AIR-61 uses model bundle mb-4.2, DPIA-31, red-team RT-204, residency route eu-west, retention 30 days, and human-send control. Policy denies health-data tickets and records decision IDs without ticket text.
+## Use-case brief
 
-## Execution
+Assist human agents drafting replies and proposing ticket field updates. AI never auto-sends email without human confirm. Tools: `tickets.get`, `tickets.propose_update` (requires human apply).
 
-1. Register use case, owner, model, purpose, users, and prohibited uses; the record attaches the resulting artifact to the example's primary change or incident ID.
-2. Tier risk from impact, autonomy, data, reach, and reversibility; the record attaches the resulting artifact to the example's primary change or incident ID.
-3. Map data flow, legal basis, residency, retention, and subprocessors; the record attaches the resulting artifact to the example's primary change or incident ID.
-4. Threat-model model, retrieval, tools, supply chain, and human handoffs; the record attaches the resulting artifact to the example's primary change or incident ID.
-5. Select controls and independent evidence for the risk tier; the record attaches the resulting artifact to the example's primary change or incident ID.
-6. Evaluate quality, safety, bias, privacy, security, and accessibility; the record attaches the resulting artifact to the example's primary change or incident ID.
-7. Deploy through tenant canaries with policy enforcement and kill switch; the record attaches the resulting artifact to the example's primary change or incident ID.
-8. Continuously monitor drift, incidents, vendor changes, and control effectiveness; the record attaches the resulting artifact to the example's primary change or incident ID.
+## Inventory record (inline)
 
-## Verification
+| Field | Value |
+|-------|-------|
+| Inventory ID | `AI-SYS-1042` |
+| Purpose | Support reply assist + proposed ticket updates |
+| Users | Internal support agents (Okta group `support-agents`) |
+| Data classes | Customer messages (personal data), account IDs, free-text |
+| Regions | `eu-west-1` (EU tenants), `us-east-1` (US tenants) |
+| Models | `vendorX-chat-2026-06` via AI gateway only |
+| Tools | `tickets.get`, `tickets.propose_update` |
+| Owners | Biz: N. Patel · Tech: R. Alvarez |
 
-- The owner records raw evidence that inventory completeness = 100%.
-- The owner records raw evidence that high-risk controls have independent evidence.
-- The owner records raw evidence that policy decisions are attributable and retrievable < 1 business day.
-- The owner records raw evidence that risk-tier SLO and harm indicators stay within threshold.
+## Risk tier
 
-## Rollback exercise
+**Tier:** Medium (personal data + external system side effects, human-in-loop for send/apply)  
 
-Enterprise examples/example rollback exercise gate 1 is accepted only when "inventory completeness = 100%" is source-verifiable; otherwise, disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle.
+Mandatory controls from rubric: SSO, audit log, tool allowlist, residency routing, kill switch, prompt-injection untrusted-content boundary, DPA on file for vendorX.
 
-## Tradeoffs
+## Control map (inline)
 
-Enterprise examples/example deliberately spends additional review time to protect "inventory completeness = 100%"; evidence weakness triggers "Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle".
+| Control | Enforcement | Evidence |
+|---------|-------------|----------|
+| SSO only | IdP → gateway JWT | Okta app `ai-support-copilot` |
+| Tool allowlist | Gateway deny-by-default | Policy `pol-1042-v3` tools list |
+| Residency | Gateway route by tenant region | Route table in `pol-1042-v3` |
+| Audit log | SIEM topic `ai.audit.support` | Redaction rules v2 |
+| Kill switch | Gateway feature `use_case:AI-SYS-1042=deny` | Drill 2026-07-10 |
 
-## Anti-patterns
+## Policy bundle excerpt
 
-Enterprise examples/example rejects shortcuts around "Register use case, owner, model, purpose, users, and prohibited uses." because they sever the evidence chain required for "inventory completeness = 100%".
+```yaml
+inventory_id: AI-SYS-1042
+version: pol-1042-v3
+models_allow: [vendorX-chat-2026-06]
+prompt_versions_pin: [support-copilot@7]
+tools_allow: [tickets.get, tickets.propose_update]
+residency:
+  EU: eu-west-1
+  US: us-east-1
+kill_switch: use_case:AI-SYS-1042
+```
 
-## Enterprise considerations
+## Kill-switch drill (inline log)
 
-Enterprise examples/example governance binds owner, policy revision, and retained proof to "inventory completeness = 100%", with "Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle" as the recorded recovery authority.
+```text
+2026-07-10T15:02Z IC: R. Alvarez sets gateway use_case:AI-SYS-1042=deny
+2026-07-10T15:04Z Synthetic probe returns 403 UseCaseDisabled
+2026-07-10T15:05Z SIEM shows deny events; ticket tool calls stop
+Result: PASS (3 minutes)
+```
 
-## Checklist
+## Enablement stages
 
-- [ ] Every stated artifact has an owner and storage location in the system of record
-- [ ] Reported outcomes come from executed checks
+| Stage | Scope | Exit |
+|-------|-------|------|
+| Pilot | 2 EU tenants | 7 days, injection eval pass, no shadow tools |
+| Limited | All EU | Cost < $0.04/ticket assist |
+| US | US tenants after EU soak | Same controls + US DPA endpoint |
 
-## Changelog
+## Human approval
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+```text
+Risk approver: L. Cho  Date: 2026-07-11
+Privacy: M. Berg  Date: 2026-07-11
+Recommendation enacted: ENABLE_PILOT
+```
+
+This example is the artifact shape — not a claim of live certification.

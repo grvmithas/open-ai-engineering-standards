@@ -1,48 +1,23 @@
-# Root Cause: Enterprise Operations
+# Root Cause Pattern — Enterprise Notes
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Root Cause  
+> **Component:** enterprise-notes.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Root Cause enterprise-notes operationalizes this pattern outcome: explain why an incident occurred and prioritize controls that prevent or limit recurrence.
+## Accountability without blame
 
-## Tailored controls
+Enterprises still need owners and due dates. That is accountability for **system change**, not a finding of personal fault. Keep HR/legal investigations on a separate track when required.
 
-Legal review protects privilege without deleting operational truth. HR policy separates accountability from blame; interview access is controlled, labor rules respected, and personal data minimized. Systemic action trends are reported across business units.
+## External vs internal artifacts
 
-## Governance model
+Customer-facing or regulator-facing summaries may need legal/comms review. Publish the internal blameless RCA first; redact as policy requires for external versions — do not let external softening delete prevention actions internally.
 
-Root Cause enterprise-notes governance binds owner, policy revision, and retained proof to "100% causal edges cite evidence", with "Withdraw unsupported causal claims, preserve the draft, and reopen timeline or experiment collection" as the recorded recovery authority.
+## AI / model incidents
 
-## Metrics and assurance
+When prompts, tools, or providers contributed, include version pins and evaluation gaps in contributing factors and prevention (golden cases, regression gates). Still identify one systemic root cause (e.g. “no canary abort on quality metric X”).
 
-- Control dashboard reports 100% causal edges cite evidence.
-- Control dashboard reports timeline uncertainty is explicit.
-- Control dashboard reports actions favor engineered controls over reminders.
-- Control dashboard reports effectiveness reviewed at 30/60/90 days.
+## Anti-claim
 
-Root Cause enterprise-notes metrics and assurance gate 3 is accepted only when "100% causal edges cite evidence" is source-verifiable; otherwise, withdraw unsupported causal claims, preserve the draft, and reopen timeline or experiment collection.
-
-## Tradeoffs
-
-Root Cause enterprise-notes deliberately spends additional review time to protect "100% causal edges cite evidence"; evidence weakness triggers "Withdraw unsupported causal claims, preserve the draft, and reopen timeline or experiment collection".
-
-## Anti-patterns
-
-Root Cause enterprise-notes rejects shortcuts around "Set a blameless charter: explain system conditions, not individual fault." because they sever the evidence chain required for "100% causal edges cite evidence".
-
-## Citations
-
-- [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
-- [NTSB investigative process](https://www.ntsb.gov/investigations/process/Pages/default.aspx)
-- [DOE Causal Analysis Guide](https://www.energy.gov/sites/default/files/2015/07/f24/DOE-HDBK-1028-2009_Vol3.pdf)
-- [Sidney Dekker Just Culture](https://www.sidneydekker.com/books/)
-
-## Checklist
-
-- [ ] RACI, data flow, threat model, capacity, and recovery are current
-- [ ] Audit evidence can be retrieved within one business day
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+Completing this RCA template is not ISO, NIST, or regulatory certification. It is an operating record of learning and commitments.

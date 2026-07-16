@@ -20,7 +20,7 @@ Record the conformance target (for example WCAG 2.2 level), browser/OS/screen-re
 
 ## Tradeoffs
 
-The Accessibility Engineering review gate requires runtime/configuration evidence beyond a source diff. It increases reviewer effort but catches defects static style review cannot observe.
+Review must prove "native element is used unless a custom interaction has a documented semantic need" using semantic DOM and accessibility tree showing computed name, role, value, state, relationships, and landmarks. That Accessibility Engineering evidence costs more than diff inspection but exposes missing or incorrect accessible name/description before merge.
 
 ## Anti-patterns
 

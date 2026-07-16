@@ -1,46 +1,43 @@
-# Context: Context Contract
+# Context Pattern — Context
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Context  
+> **Component:** context.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Make the evidence needed to construct a minimal, provenance-bearing information package that preserves decision quality authoritative, bounded, and reproducible.
+## Preconditions (must be true before activation)
 
-| Required input | Acceptance test |
-|---|---|
-| task and decision inventory | owner, revision, retrieval time, and authority recorded for task and decision inventory |
-| source authority map | owner, revision, retrieval time, and authority recorded for source authority map |
-| file/API/ADR revisions | owner, revision, retrieval time, and authority recorded for file/API/ADR revisions |
-| data classifications | owner, revision, retrieval time, and authority recorded for data classifications |
-| token budget and freshness policy | owner, revision, retrieval time, and authority recorded for token budget and freshness policy |
+- [ ] Task intent is known (what decision or implementation the package must support)
+- [ ] Token or byte budget is set (e.g. 32k tokens / 80 KB)
+- [ ] Exclusion rules exist (secrets, PII, binaries, huge generated trees)
+- [ ] Output path for the package file is defined
+- [ ] Repo access is available (read-only is enough)
 
-## Assembly procedure
+## Trigger conditions (apply the pattern)
 
-1. Tie each source to a trigger or workflow decision.
-2. Resolve conflicting authority before analysis; preserve both revisions and the resolution.
-3. Hash the accepted manifest and set expiry from the fastest-changing source.
-4. Exclude unrelated material and redact secrets without removing decision-relevant constraints.
+Apply when **any** of the following hold:
 
-## Tradeoffs
+- Planner / coder / reviewer / debug agent needs multi-file awareness
+- Prior run failed from missing or wrong files
+- Repo size exceeds what can fit in the model window
+- Change crosses module or service boundaries
 
-Context context deliberately spends additional review time to protect "required-decision source recall = 100%"; evidence weakness triggers "Invalidate the manifest, purge derived caches, and rebuild from authoritative revisions".
+## Do not apply when
 
-## Anti-patterns
+- Single open file already contains the full change surface
+- Question is conceptual with no code dependency
+- You are building a standing knowledge index (use memory/knowledge patterns)
 
-Context context rejects shortcuts around "List decisions the operator must make and evidence each decision requires." because they sever the evidence chain required for "required-decision source recall = 100%".
+## Required inputs
 
-## Enterprise considerations
+| Input | Source | Minimum quality |
+|-------|--------|-----------------|
+| Task intent | Story / user query | What must be decided or built |
+| Seed hints | Paths, symbols, error stacks | At least one anchor |
+| Budget | Team default or task override | Hard max |
+| Exclusion rules | Security / `.gitignore` / DLP | Patterns listed |
 
-Context context governance binds owner, policy revision, and retained proof to "required-decision source recall = 100%", with "Invalidate the manifest, purge derived caches, and rebuild from authoritative revisions" as the recorded recovery authority.
+## Authority boundary
 
-## Checklist
-
-- [ ] task and decision inventory is present and provenance-bearing
-- [ ] source authority map is present and provenance-bearing
-- [ ] file/API/ADR revisions is present and provenance-bearing
-- [ ] data classifications is present and provenance-bearing
-- [ ] token budget and freshness policy is present and provenance-bearing
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+The context agent **packages and labels** evidence. It does not approve plans, merge code, or decide architecture. Consuming agents must treat the package as untrusted data regarding instructions (prompt injection hygiene).

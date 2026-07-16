@@ -1,46 +1,49 @@
-# Optimization: Context Contract
+# Optimization Pattern — Context
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Optimization  
+> **Component:** context.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Make the evidence needed to improve a profiled bottleneck while protecting correctness and downstream guardrails authoritative, bounded, and reproducible.
+## Preconditions (must be true before activation)
 
-| Required input | Acceptance test |
-|---|---|
-| representative workload | owner, revision, retrieval time, and authority recorded for representative workload |
-| profiles and traces | owner, revision, retrieval time, and authority recorded for profiles and traces |
-| latency/throughput/cost baseline | owner, revision, retrieval time, and authority recorded for latency/throughput/cost baseline |
-| correctness oracle | owner, revision, retrieval time, and authority recorded for correctness oracle |
-| capacity and saturation signals | owner, revision, retrieval time, and authority recorded for capacity and saturation signals |
+- [ ] Target metric named (e.g. checkout `p99_latency_ms`, `cost_per_1k_requests`)
+- [ ] Minimum useful effect size declared (e.g. ≥15% p99 reduction or ≥20% unit-cost cut)
+- [ ] Guardrails listed (error rate, p99 ceiling, CPU/mem saturation, neighbor fairness)
+- [ ] Workload fixture frozen (RPS mix, concurrency, payload distribution, region)
+- [ ] Correctness oracle defined and runnable in CI or bench harness
+- [ ] Feature flag / config key exists to disable the optimization in <5 minutes
+- [ ] Human owner available for canary go/abort
 
-## Assembly procedure
+## Trigger conditions (apply the pattern)
 
-1. Tie each source to a trigger or workflow decision.
-2. Resolve conflicting authority before analysis; preserve both revisions and the resolution.
-3. Hash the accepted manifest and set expiry from the fastest-changing source.
-4. Exclude unrelated material and redact secrets without removing decision-relevant constraints.
+Apply when **any** of the following hold:
 
-## Tradeoffs
+- SLO or error-budget burn attributed to latency/throughput/cost
+- Profiling shows a dominant resource (≥30% of critical path or spend)
+- Growth model shows capacity cliff within planning horizon
+- Provider/token unit cost exceeds budget with a hypothesized mechanism
 
-Optimization context deliberately spends additional review time to protect "approved effect size reached with confidence interval"; evidence weakness triggers "Disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark".
+## Do not apply when
 
-## Anti-patterns
+- No metric owner and no success threshold (“make checkout faster”)
+- Active customer-harming incident — contain via [hotfix-pattern](../hotfix-pattern/README.md)
+- Change is purely correctness (wrong results) — fix, then re-measure
+- Theoretical maximum gain of the hot path cannot meet the minimum useful effect
+- Environment cannot run a representative workload (no staging parity and no safe canary)
 
-Optimization context rejects shortcuts around "Define target metric, guardrails, workload, and minimum useful effect." because they sever the evidence chain required for "approved effect size reached with confidence interval".
+## Required inputs
 
-## Enterprise considerations
+| Input | Source | Minimum quality |
+|-------|--------|-----------------|
+| SLO / budget | Service catalog / FinOps | Numeric threshold + window |
+| Baseline report | Bench harness | Warm-up + n≥30 + percentiles |
+| Profiles / traces | Continuous profiler / APM | End-to-end critical path |
+| Workload definition | Load-test repo | Versioned, checked in |
+| Oracle | Test suite / golden set | Fail-closed on mismatch |
+| Flag name | Flag service | Kill-switch documented |
 
-Optimization context governance binds owner, policy revision, and retained proof to "approved effect size reached with confidence interval", with "Disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark" as the recorded recovery authority.
+## Authority boundary
 
-## Checklist
-
-- [ ] representative workload is present and provenance-bearing
-- [ ] profiles and traces is present and provenance-bearing
-- [ ] latency/throughput/cost baseline is present and provenance-bearing
-- [ ] correctness oracle is present and provenance-bearing
-- [ ] capacity and saturation signals is present and provenance-bearing
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+The optimization agent **proposes one change and evaluates evidence**. It does not promote to 100% traffic. Named human owns canary abort and promotion. Coding agents implement only the hypothesized change behind the flag.

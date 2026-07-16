@@ -77,6 +77,9 @@ Secret in layer, floating base, root runtime, PID 1 signal loss, architecture mi
 ## Verification
 Run docker build with plain logs, hadolint, docker inspect/history, container smoke with read-only/cap-drop, SBOM and vulnerability policy.
 
+## Domain Recovery Playbook
+Quarantine the image digest, stop promotion, rebuild from pinned inputs without cache when integrity is uncertain, and return to the previous signed image.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

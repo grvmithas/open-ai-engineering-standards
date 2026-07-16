@@ -1,50 +1,73 @@
-# Hotfix: Worked Production Example
+# Hotfix Pattern — Example: SEV1 checkout null guard
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Hotfix  
+> **Component:** examples/example.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16  
+> **Scenario:** `checkout-api` 500s after deploy; NPE on empty discount code
 
-## Scenario and artifacts
+---
 
-INC-884: OAuth refresh loop drives 38% login failures. Commander disables refresh-v3 for 90% traffic, patch HOT-884 pins issuer normalization in one file, test oauth_issuer_case reproduces, canary reaches 10% for 10m, and rollback command rel deploy auth@sha256:7ca is rehearsed.
+## Declare (inline)
 
-## Execution
+```text
+Incident: INC-2841
+SEV1 — checkout 500s ~18% of POST /checkout
+IC: A. Mensah   Scribe: K. Liu
+Declared: 2026-07-16T14:12Z
+Cadence: status every 10m in #inc-2841
+Containment success: checkout_success_probe ≥ 99% for 10m
+```
 
-1. Establish incident command, severity, roles, and update cadence; the record attaches the resulting artifact to the example's primary change or incident ID.
-2. Contain blast radius using flags, rate limits, isolation, or rollback; the record attaches the resulting artifact to the example's primary change or incident ID.
-3. State the narrow failed invariant and evidence; avoid broad diagnosis; the record attaches the resulting artifact to the example's primary change or incident ID.
-4. Choose the smallest reversible remediation and explicit non-goals; the record attaches the resulting artifact to the example's primary change or incident ID.
-5. Pair-author and independently review the hotfix; the record attaches the resulting artifact to the example's primary change or incident ID.
-6. Test the exact failure, critical smoke path, and rollback; the record attaches the resulting artifact to the example's primary change or incident ID.
-7. Canary under incident observation with automatic abort; the record attaches the resulting artifact to the example's primary change or incident ID.
-8. Close emergency path; schedule full RCA and durable remediation; the record attaches the resulting artifact to the example's primary change or incident ID.
+## Recent changes
 
-## Verification
+| Time | Change |
+|------|--------|
+| 13:55Z | Deploy `sha256:aa11…` payments promo parsing |
+| 14:01Z | First alert `checkout_error_rate > 2%` |
 
-- The owner records raw evidence that time to containment meets severity target.
-- The owner records raw evidence that affected requests/users trend down after action.
-- The owner records raw evidence that hotfix changes only authorized scope.
-- The owner records raw evidence that rollback remains within incident RTO.
+LKG: `sha256:77bb…` (13:10Z)  
+Flag available: `checkout.promo_parser_v2`
 
-## Rollback exercise
+## Containment (executed)
 
-Hotfix examples/example rollback exercise gate 1 is accepted only when "time to containment meets severity target" is source-verifiable; otherwise, execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment.
+```text
+14:14Z IC: set checkout.promo_parser_v2=off
+14:16Z probe 99.3% — CONTAINED
+Evidence: flag audit + trace IDs preserved; bad digest kept for analysis (not deleted)
+```
 
-## Tradeoffs
+## Minimal patch scope
 
-Hotfix examples/example deliberately spends additional review time to protect "time to containment meets severity target"; evidence weakness triggers "Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment".
+Allowed paths only:
 
-## Anti-patterns
+```text
+src/checkout/promoParser.ts
+src/checkout/promoParser.test.ts
+```
 
-Hotfix examples/example rejects shortcuts around "Establish incident command, severity, roles, and update cadence." because they sever the evidence chain required for "time to containment meets severity target".
+Forbidden: lockfiles, fmt-only, unrelated modules.
 
-## Enterprise considerations
+Patch intent: treat empty string discount as `null`; no behavior change for valid codes.
 
-Hotfix examples/example governance binds owner, policy revision, and retained proof to "time to containment meets severity target", with "Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment" as the recorded recovery authority.
+## Emergency deploy + verify
 
-## Checklist
+| Time | Event |
+|------|-------|
+| 14:40Z | Hotfix digest `sha256:cc22…` deployed (flag still off) |
+| 14:45Z | Flag on at 5% — probes OK |
+| 14:55Z | Flag 100% — error_rate baseline |
+| 15:05Z | SEV1 → MONITORING |
 
-- [ ] Every stated artifact has an owner and storage location in the system of record
-- [ ] Reported outcomes come from executed checks
+## Abort criteria (were armed)
 
-## Changelog
+- error_rate > 1% for 3m after flag on → disable flag  
+- new exception class in logs → disable flag  
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+## Follow-ups
+
+- Durable: add contract test for empty discount; owner D. Ortiz due 2026-07-18  
+- RCA: scheduled 2026-07-17 per [root-cause-pattern](../../root-cause-pattern/README.md)
+
+```text
+IC Decision: A. Mensah 14:14Z contain; 14:38Z authorize minimal patch
+```

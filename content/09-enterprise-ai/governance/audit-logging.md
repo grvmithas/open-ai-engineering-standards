@@ -1,69 +1,194 @@
 # Enterprise AI Audit Logging
 
-> **Version:** 1.0.0
-> **Last updated:** 2026-07-16
-> **Status:** Informative OAIES implementation profile
+> **Version:** 2.0.0 | **Last updated:** 2026-07-16
 
 ## Purpose
-Record tamper-evident decision and action lineage while minimizing sensitive content.
+
+Record tamper-evident lineage for AI requests, tool side effects, approvals, and admin changes — with minimization so logs do not become a second copy of every secret.
 
 ## Why
-Accountability requires reconstructing who requested, what artifacts ran, what was approved, and what executed.
 
-## When
-Use on every production AI request and administrative change.
+When something goes wrong you must reconstruct: who requested, which artifact versions ran, what policy allowed it, what tools executed, and what the outcome was. Application logs that operators can edit are not an audit trail. Dumping raw prompts by default creates a privacy and security incident factory.
 
-## How
-1. Record trace/request/tenant/actor IDs, prompt and policy digests, model/provider version, tools, approvals, outcome, latency, tokens, and cost.
-2. Hash or tokenize sensitive payloads; store content only under explicit policy.
-3. Use append-only protected storage and synchronized clocks.
-4. Test access, retention, legal hold, export, and deletion.
-5. Link incidents and evaluations to trace IDs.
+---
 
-## Evidence contract
-The decision record is the **AI action lineage record**. It records actor/workload; tenant; request/trace; artifact digests; provider/model; tool; proposed/approved/executed action; retention class. The records and service owners jointly owns completeness; the evidence is invalid when the executed action cannot be reconstructed or log content exceeds approved minimization. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+## How — What to Log
 
-## Failure response and recovery
-**Trigger:** audit write failures or tamper signals exceed tolerance.
+### Event classes
 
-**Immediate response:** fail closed for consequential actions and move non-consequential traffic to a bounded queue. Preserve the AI action lineage record, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to enterprise ai audit logging.
+| Class | Examples | Required fields |
+|-------|----------|-----------------|
+| **Invocation** | Chat/completions, agent step | trace, tenant, actor, model, prompt digest, policy version, tokens, cost, latency, outcome |
+| **Retrieval** | Hybrid RAG query | corpus IDs, filter digest, hit IDs (not full chunk text by default), ACL decision ID |
+| **Tool** | Deploy, PR, email, DB | tool ID, args digest / redacted args, idempotency key, receipt ID, effect |
+| **Authorization** | Allow/deny | decision ID, policy version, obligations |
+| **Approval** | Dual control, step-up | approver, scope, expiry |
+| **Admin** | Prompt publish, key rotate, budget override | actor, before/after digests |
+| **Termination** | Cancel, budget kill, expire | reason, descendants revoked |
 
-## Decision authority
-The **records and service owners jointly** accepts the operational decision. The **internal audit or security assurance** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+```typescript
+interface AiActionLineageRecord {
+  schema: "oaies.audit.v2";
+  event_id: string;
+  prev_hash?: string;             // hash chain when using append-only log
+  recorded_at: string;            // RFC3339; from synchronized clock
+
+  trace_id: string;
+  request_id: string;
+  session_id?: string;
+  task_id?: string;
+  tenant_id: string;
+
+  actor: {
+    type: "user" | "agent" | "service";
+    principal: string;            // IdP sub or SPIFFE
+  };
+
+  artifact_digests: {
+    prompt?: string;
+    policy?: string;
+    workflow?: string;
+    memory_snapshot?: string;
+  };
+
+  provider?: string;
+  model?: string;
+  model_version?: string;
+
+  tool?: {
+    id: string;
+    idempotency_key: string;
+    args_digest: string;
+    receipt_id?: string;
+  };
+
+  authz_decision_id?: string;
+  approval_id?: string;
+
+  proposed_action?: string;
+  approved_action?: string;
+  executed_action?: string;
+
+  outcome: "success" | "denied" | "error" | "cancelled" | "timeout";
+  latency_ms?: number;
+  tokens_in?: number;
+  tokens_out?: number;
+  cost_usd?: number;
+
+  retention_class: string;
+  content_ref?: string;           // pointer to encrypted payload if policy allows
+}
+```
+
+### Minimization rules
+
+| Data | Default | When full content is allowed |
+|------|---------|------------------------------|
+| Prompts / completions | Hash + length + redaction markers | Explicit policy + access control + short retention |
+| Tool args | Schema + digests; redact secrets | Break-glass investigation |
+| Retrieved chunks | Source IDs + digests | Security IR with dual control |
+| PII | Tokenize / hash | Legal hold export under counsel |
+
+Never log API keys, session cookies, or raw credentials — even on error paths.
+
+---
+
+## How — Integrity and Storage
+
+```mermaid
+flowchart TD
+    App[Gateway / PEP / Agent runtime] --> Emit[Emit lineage record]
+    Emit --> Chain[Append-only store<br/>hash chain or WORM]
+    Chain --> Idx[Indexed query store<br/>restricted access]
+    Emit --> Clock[NTP/PTP sync check]
+    Chain --> Hold[Legal hold flag]
+    Hold --> Exp[Retention worker]
+    Exp --> Del[Delete or continue hold]
+```
+
+| Control | Requirement |
+|---------|-------------|
+| Append-only / WORM | Operators cannot alter their own trail |
+| Hash chain or signed batches | Tamper detection |
+| Clock sync | Alert on skew that would break ordering/`exp` correlation |
+| Segregation | Prod audit store ≠ app primary DB writable by app admins |
+| Access | Read roles split: ops metrics vs full forensic export |
+| Encryption | At rest; tenant-aware where required |
+
+```typescript
+function chainHash(prev: string | null, body: object): string {
+  const canonical = jcs(body);
+  return sha256(`${prev ?? "genesis"}:${canonical}`);
+}
+```
+
+---
+
+## How — Correlation and Export
+
+- Every user-visible error and incident ticket carries `trace_id`.  
+- Evaluations and canary failures link to the same IDs.  
+- Export packages include: records, trust roots / signing keys metadata, schema versions, and time range.  
+- Deletion and legal hold tested together — hold wins.
+
+---
+
+## Failure Response
+
+| Trigger | Response |
+|---------|----------|
+| Audit write failures exceed tolerance | **Fail closed** for consequential actions; buffer non-consequential only if pre-approved and bounded |
+| Tamper / chain break signal | Freeze writes forensically; escalate IR; do not “repair” by rewriting history |
+| Clock skew | Page on-call; mark new decisions untrusted until corrected |
+
+Preserve lineage records before any remediation mutation. Closure needs a regression test (e.g. forced audit outage → consequential deny).
+
+---
 
 ## Tradeoffs
+
 | Choice | Benefit | Cost |
-|---|---|---|
-| Detailed lineage | Strong accountability | Storage/privacy cost |
+|--------|---------|------|
+| Full prompt capture | Rich forensics | Privacy, cost, insider risk |
+| Digests-only | Safer default | Harder UX debugging |
+| Sync WORM cloud store | Strong integrity | Latency, vendor dependency |
+
+---
 
 ## Anti-patterns
-- Logging raw prompts by default.
-- Allowing operators to alter their own audit trail.
 
-## Enterprise considerations
-- Retention is requirement-specific, not a universal duration.
-- Restrict privileged log access.
+| Anti-pattern | Why it fails |
+|--------------|--------------|
+| Logging raw prompts by default | Creates regulated/secret corpus |
+| App admins can UPDATE audit rows | Non-repudiation theater |
+| No `trace_id` across gateway → tools | Cannot reconstruct |
+| Infinite retention “just in case” | Violates minimization and records policy |
+| Treating metrics dashboards as audit | Not evidentiary |
 
-## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+---
 
-| Source | Relationship for Enterprise AI Audit Logging | Boundary |
-|---|---|---|
-| NIST AI RMF | GOVERN 4.1; MANAGE 4 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clauses 7.5 and 9.1 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
-| Domain threat/control source | Logs must not create LLM06 sensitive-data exposure | Test only the threats applicable to the documented system and release |
+## Enterprise Considerations
+
+- Retention is **requirement-specific** (security, privacy, contract) — not a universal duration in this standard.  
+- Records + service owners jointly own completeness; internal audit challenges high-risk gaps.  
+- Align export/deletion with counsel; restrict privileged log access and monitor it.  
+- Reconcile cost fields with FinOps ledgers where chargeback matters.
+
+---
 
 ## Checklist
-- [ ] Every action reconstructable.
-- [ ] Clock skew monitored.
-- [ ] Sensitive fields minimized.
 
-## References
-- NIST, [AI RMF 1.0](https://doi.org/10.6028/NIST.AI.100-1), GOVERN and MAP (accessed 2026-07-16).
-- ISO, [ISO/IEC 42001:2023](https://www.iso.org/standard/81230.html) (accessed 2026-07-16). References indicate implementation alignment only; no certification is asserted.
+- [ ] Every consequential action reconstructable from lineage + receipts.  
+- [ ] Digests default; raw content only under explicit policy.  
+- [ ] Append-only / tamper-evident storage; admins cannot rewrite.  
+- [ ] Clock skew monitored.  
+- [ ] `trace_id` end-to-end across invoke, retrieve, tool, approve.  
+- [ ] Legal hold, export, and deletion tested.  
+- [ ] Audit-outage fail-closed tested for high-impact tools.  
+- [ ] Access to forensic exports dual-controlled and audited.
 
 ## Changelog
-| Version | Date | Change |
-|---|---|---|
-| 1.1.0 | 2026-07-16 | Replaced generic assurance text with the AI action lineage record, failure trigger, accountable decision, and scoped framework relationships for enterprise ai audit logging. |
-| 1.0.0 | 2026-07-16 | Initial complete profile. |
+
+- **2.0.0 — 2026-07-16:** Operational rewrite — event classes, lineage schema, minimization, integrity Mermaid, failure modes.  
+- **1.1.0 — 2026-07-16:** Evidence-contract stub.  
+- **1.0.0 — 2026-07-16:** Initial profile.

@@ -32,15 +32,15 @@ Rendering stays pure; state has one owner; Effects synchronize only with externa
 
 **Preserve first:** `package.json` plus the lockfile entries for React, renderer, router, state, and test libraries.
 
-**Discriminate:** eslint-plugin-react-hooks. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** eslint-plugin-react-hooks. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For Rules of Hooks violations, correlate that observation to the exact React target, revision, request/job, and UTC interval; compare `package.json` plus the lockfile entries for React, renderer, router, state, and test libraries with one healthy peer or baseline.
 
-**Native action:** `npm run lint -- --max-warnings=0`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `npm run lint -- --max-warnings=0`. Start in the safest React read-only or dry-run mode available. Before changing the component, Hook, context boundary, or route UI, name which of Rules of Hooks violations and stale closures and effect feedback loops the action distinguishes.
 
 **Root-cause direction:** A Hook is called conditionally or after an early return.
 
 **Correction:** Move every Hook to the component top level and branch inside the Hook or rendered output.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Rendered more hooks than during the previous render` reproduction, verify the Rules of Hooks violations signal cleared in eslint-plugin-react-hooks. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Move every Hook to the component top level and branch inside the Hook or rendered output. restored the intended React behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable the owning feature flag first; otherwise redeploy the previous immutable client assets while preserving API compatibility for already-cached bundles.
 
@@ -50,15 +50,15 @@ Rendering stays pure; state has one owner; Effects synchronize only with externa
 
 **Preserve first:** `tsconfig.json` and ESLint React/Hook rules.
 
-**Discriminate:** React DevTools Profiler. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** React DevTools Profiler. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For stale closures and effect feedback loops, correlate that observation to the exact React target, revision, request/job, and UTC interval; compare `tsconfig.json` and ESLint React/Hook rules with one healthy peer or baseline.
 
-**Native action:** `npx tsc --noEmit`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `npx tsc --noEmit`. Start in the safest React read-only or dry-run mode available. Before changing the component, Hook, context boundary, or route UI, name which of stale closures and effect feedback loops and unstable keys or identity the action distinguishes.
 
 **Root-cause direction:** Render synchronously calls a state setter.
 
 **Correction:** Move the update to an event or external-system Effect and prove its termination condition.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Too many re-renders` reproduction, verify the stale closures and effect feedback loops signal cleared in React DevTools Profiler. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Move the update to an event or external-system Effect and prove its termination condition. restored the intended React behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable the owning feature flag first; otherwise redeploy the previous immutable client assets while preserving API compatibility for already-cached bundles.
 
@@ -68,15 +68,15 @@ Rendering stays pure; state has one owner; Effects synchronize only with externa
 
 **Preserve first:** the nearest component, test, CSS, and Storybook conventions.
 
-**Discriminate:** React DevTools Profiler. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** React DevTools Profiler. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For unstable keys or identity, correlate that observation to the exact React target, revision, request/job, and UTC interval; compare the nearest component, test, CSS, and Storybook conventions with one healthy peer or baseline.
 
-**Native action:** `npm test -- --runInBand` using the repository test script. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `npm test -- --runInBand` using the repository test script. Start in the safest React read-only or dry-run mode available. Before changing the component, Hook, context boundary, or route UI, name which of unstable keys or identity and hydration divergence the action distinguishes.
 
 **Root-cause direction:** An Effect updates a dependency that changes on every execution.
 
 **Correction:** Remove derived state or stabilize the true external dependency.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Maximum update depth exceeded` reproduction, verify the unstable keys or identity signal cleared in React DevTools Profiler. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Remove derived state or stabilize the true external dependency. restored the intended React behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable the owning feature flag first; otherwise redeploy the previous immutable client assets while preserving API compatibility for already-cached bundles.
 
@@ -86,15 +86,15 @@ Rendering stays pure; state has one owner; Effects synchronize only with externa
 
 **Preserve first:** React DevTools Profiler commit/flamegraph for the reproduced interaction.
 
-**Discriminate:** browser console. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** browser console. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For hydration divergence, correlate that observation to the exact React target, revision, request/job, and UTC interval; compare React DevTools Profiler commit/flamegraph for the reproduced interaction with one healthy peer or baseline.
 
-**Native action:** `npm run build` and inspect the emitted bundle report when configured. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `npm run build` and inspect the emitted bundle report when configured. Start in the safest React read-only or dry-run mode available. Before changing the component, Hook, context boundary, or route UI, name which of hydration divergence and excessive render or bundle cost the action distinguishes.
 
 **Root-cause direction:** Server and client render different initial trees.
 
 **Correction:** Make initial output deterministic and defer browser-only data until after hydration.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Hydration mismatch` reproduction, verify the hydration divergence signal cleared in browser console. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Make initial output deterministic and defer browser-only data until after hydration. restored the intended React behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable the owning feature flag first; otherwise redeploy the previous immutable client assets while preserving API compatibility for already-cached bundles.
 
@@ -104,15 +104,15 @@ Rendering stays pure; state has one owner; Effects synchronize only with externa
 
 **Preserve first:** `package.json` plus the lockfile entries for React, renderer, router, state, and test libraries.
 
-**Discriminate:** eslint-plugin-react-hooks. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** eslint-plugin-react-hooks. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For excessive render or bundle cost, correlate that observation to the exact React target, revision, request/job, and UTC interval; compare `package.json` plus the lockfile entries for React, renderer, router, state, and test libraries with one healthy peer or baseline.
 
-**Native action:** React DevTools Profiler: record the exact interaction and compare committed renders. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** React DevTools Profiler: record the exact interaction and compare committed renders. Start in the safest React read-only or dry-run mode available. Before changing the component, Hook, context boundary, or route UI, name which of excessive render or bundle cost and Rules of Hooks violations the action distinguishes.
 
 **Root-cause direction:** A closure captured obsolete props or state.
 
 **Correction:** Declare every reactive dependency or use a functional state update.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Stale event or Effect value` reproduction, verify the excessive render or bundle cost signal cleared in eslint-plugin-react-hooks. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Declare every reactive dependency or use a functional state update. restored the intended React behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Disable the owning feature flag first; otherwise redeploy the previous immutable client assets while preserving API compatibility for already-cached bundles.
 

@@ -1,39 +1,36 @@
-# Optimization: Problem
+# Optimization Pattern — Problem
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Optimization  
+> **Component:** problem.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Optimization problem operationalizes this pattern outcome: improve a profiled bottleneck while protecting correctness and downstream guardrails.
+## Statement
 
-## Observable problem
+Performance and cost work without a frozen baseline, attributed bottleneck, and measured effect size produces changes that look faster in isolation and fail (or regress) under production distributions — while burning sprint capacity.
 
-1. When an SLO or unit-cost target is missed, an undocumented assumption can become a production decision.
-2. When profiling identifies a dominant resource, an undocumented assumption can become a production decision.
-3. When expected growth exhausts capacity, an undocumented assumption can become a production decision.
+## Measurable symptoms
 
-## Quality boundary
+| Symptom | How you detect it |
+|---------|-------------------|
+| No baseline | PR description has no before percentiles under a named workload |
+| Wrong path | Flamegraph / trace shows <15% of critical-path time in the changed code |
+| Tail silence | Only mean or “feels faster” reported; p95/p99 absent |
+| No kill switch | Optimization ships without a feature flag or config revert |
+| Oracle gap | Benchmark never asserts business/correctness invariants |
 
-Optimization problem quality boundary gate 2 is accepted only when "approved effect size reached with confidence interval" is source-verifiable; otherwise, disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark.
+## Root cause
 
-## Tradeoffs
+Engineers and agents optimize what is easy to measure locally (microbenchmarks, single-request traces) instead of the metric that defines success under representative load, including variance and shifted bottlenecks.
 
-Optimization problem deliberately spends additional review time to protect "approved effect size reached with confidence interval"; evidence weakness triggers "Disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark".
+## Non-goals of this pattern
 
-## Anti-patterns
+- Not a substitute for fixing functional bugs
+- Not a license for speculative rewrites (“rewrite in Rust”) without attribution
+- Not capacity planning theater — must produce numbers that capacity owners can use
+- Not incident containment (hotfix first)
 
-Optimization problem rejects shortcuts around "Define target metric, guardrails, workload, and minimum useful effect." because they sever the evidence chain required for "approved effect size reached with confidence interval".
+## Related failure modes
 
-## Enterprise considerations
-
-Optimization problem governance binds owner, policy revision, and retained proof to "approved effect size reached with confidence interval", with "Disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Trigger and affected population are quantified
-- [ ] Baseline and desired outcome are distinguishable
-- [ ] Scope and non-goals have named owners
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+See [failures.md](./failures.md) for microbenchmark theater, mean-vs-tail traps, and correctness collateral.

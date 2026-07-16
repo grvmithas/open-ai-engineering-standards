@@ -77,6 +77,9 @@ Hot partition, incompatible schema, duplicate side effect, offset loss, rebalanc
 ## Verification
 Run schema compatibility, producer/consumer integration, duplicate/replay, partition skew, lag recovery, and broker-failure tests.
 
+## Domain Recovery Playbook
+Pause the affected consumer, preserve offsets and producer transaction evidence, quarantine poison records, reconcile side effects, and reset offsets only with explicit range approval.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

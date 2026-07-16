@@ -1,53 +1,253 @@
 # Durable State and Checkpoints
 
-> **Version:** 1.0.0 | **Last updated:** 2026-07-16
+> **Version:** 2.0.0 | **Last updated:** 2026-07-16
 
 ## Purpose
 
-Provide recoverable, conflict-safe workflow state independent of model context and worker lifetime.
+Keep recoverable, conflict-safe workflow state outside model context so agents can crash, retry, and resume without corrupting gates or double-applying side effects.
 
 ## Why
 
-Agents retry, crash, duplicate messages, and race. A transcript cannot provide atomic transitions, exactly-once effects, schema migration, or deterministic recovery.
+Agents retry, crash, duplicate messages, and race. A chat transcript cannot provide atomic transitions, compare-and-swap, exactly-once effects, schema migration, or deterministic recovery. Authoritative state lives in a transactional store; the context window is a disposable working set.
 
-## How
+---
 
-1. Store authoritative state in a transactional system; workers receive immutable state snapshots and expected versions.
-2. Model transitions as a state machine with terminal states `succeeded`, `failed`, `cancelled`, and `expired`.
-3. Require compare-and-swap version checks, idempotency keys, outbox/inbox deduplication, and leases for exclusive work.
-4. Checkpoint after validated boundaries and before irreversible effects. Include schema version, workflow definition digest, inputs, outputs, tool receipts, budget consumed, pending work, and provenance pointers.
-5. Separate checkpoint creation from external side effects; use compensating transactions where atomic commit is impossible.
-6. On resume, verify digests and compatibility, reacquire authorization, reconcile uncertain side effects, then continue from the last committed transition.
-7. Test worker death, duplicate delivery, stale writes, partial writes, corrupt checkpoints, schema upgrades, and regional failover.
+## How — Authoritative State vs Chat Context
+
+| Layer | Role | Durable? | Source of truth? |
+|-------|------|----------|------------------|
+| **TaskState store** | Gates, status, artifact pointers, agent status, budget consumed | Yes | **Yes** |
+| **Checkpoint** | Validated snapshot at a semantic boundary | Yes | Point-in-time truth for resume |
+| **Message bus / outbox** | Communication + pending publishes | Yes (until acked) | For delivery, not business gates |
+| **Agent context window** | Reasoning scratchpad | No | **Never** |
+| **Tool receipts** | Proof a side effect already ran | Yes | For idempotent replay |
+
+```mermaid
+flowchart TD
+    Ctx[Agent context window<br/>ephemeral] -->|read snapshot| Snap[Immutable state snapshot]
+    Store[(TaskState store<br/>authoritative)] --> Snap
+    Agent[Agent worker] -->|CAS write after validation| Store
+    Agent -->|checkpoint at boundary| CP[(Checkpoint store)]
+    Agent -->|side effect| Tool[External tool]
+    Tool --> Receipt[(Tool receipt store)]
+    CP -->|resume| Agent
+```
+
+### Minimum TaskState (from Level 5, productionized)
+
+```typescript
+interface TaskState {
+  schema_version: "oaies.task-state.v2";
+  task_id: string;
+  version: number;              // monotonic; CAS target
+  status:
+    | "planning"
+    | "implementing"
+    | "reviewing"
+    | "testing"
+    | "complete"
+    | "failed"
+    | "cancelled"
+    | "expired";
+
+  gates: {
+    plan_approved: boolean;
+    implementation_complete: boolean;
+    review_passed: boolean;
+    tests_passing: boolean;
+    security_approved: boolean;
+    deployment_approved: boolean;
+  };
+
+  artifacts: {
+    implementation_plan?: string;
+    code_files?: string[];
+    test_results?: string;
+    review_report?: string;
+  };
+
+  active_agents: string[];
+  completed_agents: string[];
+  failed_agents: string[];
+
+  budget: {
+    currency_committed_usd: number;
+    currency_spent_usd: number;
+    tokens_spent: number;
+    hops_used: number;
+  };
+
+  workflow_digest: string;      // hash of graph/definition
+  intent_id: string;
+  updated_at: string;
+  updated_by: string;           // SPIFFE ID
+}
+```
+
+**Rules:**
+
+1. One authoritative store — not fragments in agent contexts.
+2. Agents read snapshots and write via CAS; no last-write-wins.
+3. Every state change is logged (who, what, when, previous version).
+4. Schema is defined upfront; agents cannot invent arbitrary keys in production.
+
+---
+
+## How — Checkpoint Format
+
+Checkpoint **after validated semantic boundaries** and **before irreversible effects** — not after every token.
+
+```typescript
+interface Checkpoint {
+  schema_version: "oaies.checkpoint.v2";
+  checkpoint_id: string;
+  task_id: string;
+  state_version: number;        // TaskState.version at commit
+  created_at: string;
+  created_by: string;
+
+  workflow_definition_digest: string;
+  input_digest: string;
+  output_digest?: string;
+
+  state_snapshot_uri: string;   // serialized TaskState
+  pending_work: Array<{
+    agent_id: string;
+    lease_id?: string;
+    message_id?: string;
+  }>;
+
+  tool_receipt_ids: string[];
+  budget_consumed: {
+    currency_usd: number;
+    tokens: number;
+    hops: number;
+  };
+
+  provenance: {
+    last_message_id: string;
+    delegation_hash: string;
+    policy_version: string;
+  };
+
+  integrity: {
+    snapshot_digest: string;    // sha256 of snapshot bytes
+    signature?: string;
+  };
+}
+```
+
+### Boundary examples
+
+| Checkpoint after | Why |
+|------------------|-----|
+| Plan approved gate flips true | Resume must not re-ask human without cause |
+| Implementation artifacts validated | Coder crash should not lose accepted files |
+| Before `deploy` / `payment` / `delete` | Separate commit from irreversible effect |
+| Branch cancelled / escalated | Terminal reason preserved |
+
+Do **not** checkpoint raw chain-of-thought or secrets in cleartext.
+
+---
+
+## How — Concurrency and Idempotency
+
+```typescript
+async function casUpdate(taskId: string, expected: number, patch: Partial<TaskState>) {
+  const ok = await db.taskState.updateIfVersion(taskId, expected, patch);
+  if (!ok) throw new StaleWriteError();
+}
+
+async function withLease(taskId: string, agentId: string, fn: () => Promise<void>) {
+  const lease = await db.leases.acquire({ taskId, agentId, ttlSeconds: 60 });
+  try {
+    await fn();
+  } finally {
+    await db.leases.release(lease.id);
+  }
+}
+```
+
+| Control | Purpose |
+|---------|---------|
+| CAS `version` | Conflict-safe writes |
+| Leases | Exclusive work on a branch |
+| Inbox/outbox dedupe | Safe retries |
+| Tool receipts | Exactly-once effects |
+
+---
+
+## How — Recovery
+
+```mermaid
+flowchart TD
+    Crash[Worker death / poison message] --> Load[Load latest checkpoint]
+    Load --> Verify[Verify snapshot_digest + workflow_digest]
+    Verify --> Compat{Schema compatible?}
+    Compat -->|No| Fail[Fail closed + escalate]
+    Compat -->|Yes| Reauth[Re-authorize: fresh tokens + policy]
+    Reauth --> Reconcile[Reconcile uncertain side effects via receipts]
+    Reconcile --> Resume[Continue from last committed transition]
+```
+
+**On resume:**
+
+1. Verify digests and workflow definition compatibility.
+2. **Re-authorize** — never restore live credentials, policy decisions, or remaining budget limits blindly from the checkpoint; re-read current policy and re-reserve budget.
+3. Reconcile side effects: if receipt exists, skip; if uncertain, compensate or human-gate.
+4. Reacquire leases; continue from last committed transition.
+5. If checkpoint corrupt: fall back to prior checkpoint or terminal `failed` with audit.
+
+### Tests required
+
+Worker death mid-write, duplicate delivery, stale CAS, partial write, corrupt checkpoint, schema upgrade, regional failover.
+
+---
 
 ## Tradeoffs
 
-Fine-grained checkpoints improve recovery but increase storage and contention. Checkpoint only validated semantic boundaries, not every token or reasoning step.
+| Choice | Benefit | Cost |
+|--------|---------|------|
+| Fine-grained checkpoints | Fast recovery | Storage + contention |
+| Coarse checkpoints | Cheaper | More rework on crash |
+| Separate outbox | Reliable publish | Operational complexity |
+
+Checkpoint only validated semantic boundaries — not every reasoning step.
+
+---
 
 ## Anti-patterns
 
-- Last-write-wins state updates from multiple agents.
-- Replaying a tool call because a response was lost without checking its idempotency receipt.
-- Restoring old credentials, policy decisions, or budgets from a checkpoint.
+| Anti-pattern | Why it fails |
+|--------------|--------------|
+| Last-write-wins from multiple agents | Silent gate corruption |
+| Treating transcript as state | Non-atomic, non-CAS, non-migratable |
+| Replaying tools without receipt check | Double deploy / double charge |
+| Restoring old credentials or budgets from checkpoint | Stale privilege and spend |
+| Checkpointing before validation | Poison resumes |
+
+---
 
 ## Enterprise Considerations
 
-Encrypt state, segregate tenants, classify checkpoint data, and apply retention/deletion policy. Recovery objectives must include the state store, artifact store, audit log, and identity dependencies.
+- Encrypt state at rest; segregate tenants; classify checkpoint payloads.
+- Retention/deletion must cover state store, artifact store, audit log, and receipts together.
+- RTO/RPO for the agent platform include identity and policy dependencies, not only the DB.
+- Legal hold can freeze destruction but must still allow correction annotations.
+
+---
 
 ## Checklist
 
-- [ ] State machine, invariants, schema versions, and terminal states are explicit.
-- [ ] Optimistic concurrency and idempotency are enforced.
-- [ ] Checkpoints carry provenance, budget, and workflow digests.
-- [ ] Resume re-authorizes and reconciles side effects.
-- [ ] Failure-injection and disaster-recovery tests pass.
-
-## References
-
-- [AWS Builders’ Library: Making retries safe with idempotent APIs](https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/)
-- [CloudEvents 1.0 specification](https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md)
-- [NIST SP 800-34 Rev. 1, Contingency Planning](https://doi.org/10.6028/NIST.SP.800-34r1)
+- [ ] Authoritative `TaskState` in a transactional store; context is non-authoritative.
+- [ ] State machine + terminal states (`complete` / `failed` / `cancelled` / `expired`) explicit.
+- [ ] CAS versioning and leases enforced.
+- [ ] Checkpoint schema includes digests, budget, provenance, pending work.
+- [ ] Resume re-authorizes and reconciles tool receipts.
+- [ ] Failure-injection and DR tests pass.
+- [ ] Tenant encryption and retention mapped to class.
 
 ## Changelog
 
-- **1.0.0 — 2026-07-16:** Initial production standard.
+- **2.0.0 — 2026-07-16:** Full rewrite — authoritative vs context, checkpoint schema, recovery Mermaid, CAS/leases, anti-patterns.
+- **1.0.0 — 2026-07-16:** Initial citation-style stub.

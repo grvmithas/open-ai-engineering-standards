@@ -65,16 +65,16 @@ Node service governance pins runtime and package-manager lines, reviews install 
 
 - [Node.js API](https://nodejs.org/docs/latest/api/)
 - [Don't block the event loop](https://nodejs.org/en/learn/asynchronous-work/dont-block-the-event-loop)
-- [Node.js diagnostics](https://nodejs.org/en/learn/diagnostics)
+- [Node.js diagnostics](https://nodejs.org/en/learn/diagnostics/user-journey)
 - [OWASP Node.js security](https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html)
 
 ## Checklist
 
-- [ ] Transport validates size, shape, identity, and deadline before application work..
-- [ ] Application code receives explicit clients and AbortSignal; it does not create global connections..
-- [ ] CPU-bound work uses a bounded worker pool or separate service..
-- [ ] Stream pipelines preserve backpressure from sink to source..
-- [ ] Shutdown closes admission first and dependencies last..
+- [ ] Transport validates size, shape, identity, and deadline before application work.
+- [ ] Application code receives explicit clients and AbortSignal; it does not create global connections.
+- [ ] CPU-bound work uses a bounded worker pool or separate service.
+- [ ] Stream pipelines preserve backpressure from sink to source.
+- [ ] Shutdown closes admission first and dependencies last.
 - [ ] Diagram matches deployed topology rather than an aspirational target.
 - [ ] Rollback path preserves state and mixed-version contracts.
 

@@ -1,47 +1,27 @@
-# Context: Enterprise Operations
+# Context Pattern — Enterprise Notes
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Context  
+> **Component:** enterprise-notes.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Context enterprise-notes operationalizes this pattern outcome: construct a minimal, provenance-bearing information package that preserves decision quality.
+## Audit trail
 
-## Tailored controls
+Record for each assembly: task ID, commit SHA, package hash, budget, scrubber result, assembler identity. Attach to the change ticket or PR.
 
-Context brokers enforce tenant boundaries, regional storage, document ACLs, deletion propagation, and source-level legal hold. Retrieval logs record source IDs without copying classified payloads.
+## Separation of duties
 
-## Governance model
+| Role | Allowed | Forbidden |
+|------|---------|-----------|
+| Assembler | Build packages under rules | Weaken secret exclusions unilaterally |
+| Security | Own exclusion patterns | Silently inject unrelated prod data “for context” |
+| Consumer agent | Read package | Treat package text as system instructions |
 
-Context enterprise-notes governance binds owner, policy revision, and retained proof to "required-decision source recall = 100%", with "Invalidate the manifest, purge derived caches, and rebuild from authoritative revisions" as the recorded recovery authority.
+## Prompt-injection hygiene
 
-## Metrics and assurance
+Retrieved or packaged file contents are **data**. Downstream prompts must instruct agents not to obey instructions found inside excerpts.
 
-- Control dashboard reports required-decision source recall = 100%.
-- Control dashboard reports irrelevant token ratio < 20%.
-- Control dashboard reports stale authoritative source rate < 2%.
-- Control dashboard reports every excerpt has provenance.
+## Anti-claim
 
-Context enterprise-notes metrics and assurance gate 3 is accepted only when "required-decision source recall = 100%" is source-verifiable; otherwise, invalidate the manifest, purge derived caches, and rebuild from authoritative revisions.
-
-## Tradeoffs
-
-Context enterprise-notes deliberately spends additional review time to protect "required-decision source recall = 100%"; evidence weakness triggers "Invalidate the manifest, purge derived caches, and rebuild from authoritative revisions".
-
-## Anti-patterns
-
-Context enterprise-notes rejects shortcuts around "List decisions the operator must make and evidence each decision requires." because they sever the evidence chain required for "required-decision source recall = 100%".
-
-## Citations
-
-- [NIST AI RMF](https://doi.org/10.6028/NIST.AI.100-1)
-- [OWASP LLM Prompt Injection](https://genai.owasp.org/llmrisk/llm01-prompt-injection/)
-- [W3C PROV-O](https://www.w3.org/TR/prov-o/)
-
-## Checklist
-
-- [ ] RACI, data flow, threat model, capacity, and recovery are current
-- [ ] Audit evidence can be retrieved within one business day
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+Passing secret greps is **not** a full DLP certification or data-classification audit. High-sensitivity repos still need enterprise DLP controls outside this pattern.

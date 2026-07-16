@@ -1,41 +1,37 @@
-# Migration: Failure Modes
+# Migration Pattern — Failures
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Migration  
+> **Component:** failures.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Migration failures operationalizes this pattern outcome: transition data or services while preserving invariants and a tested return path.
+## Failure 1: Contract first
 
-| Failure | Observable signal | Recovery |
-|---|---|---|
-| big-bang cutover | unknown incompatibility reaches all traffic | return to expand/contract phases |
-| count-only reconciliation | equal counts hide wrong values | compare canonical hashes and invariants |
-| non-idempotent replay | retry duplicates effects | introduce stable migration keys |
-| permanent dual-write | divergence surface never closes | assign contract deadline and owner |
+**Symptom:** Column dropped with cutover; rollback needs backup restore.  
+**Cause:** Treated migration as single deploy.  
+**Recovery:** Restore; redesign expand → dual → cutover → contract.
 
-## Rollback failure
+## Failure 2: Unknown consumers
 
-Migration failures rollback failure gate 2 is accepted only when "record and monetary reconciliation = 100%" is source-verifiable; otherwise, stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events.
+**Symptom:** Nightly job or partner feed breaks post-cutover.  
+**Cause:** Incomplete inventory.  
+**Recovery:** Halt contract; restore dual if needed; finish inventory; re-soak.
 
-## Tradeoffs
+## Failure 3: No reconciliation
 
-Migration failures deliberately spends additional review time to protect "record and monetary reconciliation = 100%"; evidence weakness triggers "Stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events".
+**Symptom:** API healthy; finance reports disagree.  
+**Cause:** No count/semantic gates.  
+**Recovery:** Run recon; repair data; delay contract until green.
 
-## Anti-patterns
+## Failure 4: Dual-write forever
 
-Migration failures rejects shortcuts around "Define invariants, loss tolerance, RPO, RTO, and abort thresholds." because they sever the evidence chain required for "record and monetary reconciliation = 100%".
+**Symptom:** Two writers still required months later.  
+**Cause:** No contract exit criteria.  
+**Recovery:** Define mismatch/error thresholds and a calendar date; execute contract.
 
-## Enterprise considerations
+## Failure 5: Fake rollback
 
-Migration failures governance binds owner, policy revision, and retained proof to "record and monetary reconciliation = 100%", with "Stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Detection exists for big-bang cutover
-- [ ] Detection exists for count-only reconciliation
-- [ ] Detection exists for non-idempotent replay
-- [ ] Detection exists for permanent dual-write
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+**Symptom:** Plan says “redeploy previous” after destructive rewrite.  
+**Cause:** Rollback ignored data plane.  
+**Recovery:** Rewrite rollback for data; rehearse; mark true PONR.

@@ -1,47 +1,80 @@
-# Legacy Modernization: Lifecycle Hooks
+# Legacy Modernization Pattern — Hooks
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Legacy Modernization  
+> **Component:** hooks.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Enforce legacy modernization gates outside model discretion.
-
-| Hook | Enforced condition | Failure behavior |
-|---|---|---|
-| preflight | block modernization without characterization coverage | fail closed without creating an effect |
-| domain-gate | compare old/new business outputs in shadow | fail closed without creating an effect |
-| closure | reject legacy deletion while consumers or rollback window remain | flip the strangler route to the legacy implementation and replay buffered work after reconciliation |
+## `pre-modernization.hook.sh`
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-: "${TASK_ID:?required}" "${MANIFEST_HASH:?required}" "${RISK_TIER:?required}". For the Legacy Modernization hooks contract, gate 1 is evidenced by "characterized critical behavior = 100%"; failure invokes this domain recovery: Flip the strangler route to the legacy implementation and replay buffered work after reconciliation.
-# oaies-legacy-modernization: evaluate the three versioned policy rules documented above.
-policy_check --pattern "legacy-modernization" --task "$TASK_ID" --manifest "$MANIFEST_HASH" --risk "$RISK_TIER"
+
+echo "Checking modernization slice prerequisites..."
+
+if [[ -z "${SLICE_FILE:-}" || ! -f "$SLICE_FILE" ]]; then
+  echo "ERROR: SLICE_FILE missing. Define a capability slice first."
+  exit 1
+fi
+
+if ! grep -qiE 'in scope|out of scope|capability' "$SLICE_FILE"; then
+  echo "ERROR: SLICE_FILE must declare in/out of scope for a capability."
+  exit 1
+fi
+
+if grep -qiE 'entire monolith|whole system|big.?bang|rewrite everything' "$SLICE_FILE"; then
+  echo "ERROR: Slice looks unbounded / big-bang. Narrow to one capability."
+  exit 1
+fi
+
+echo "Slice prerequisites OK."
 ```
 
-## Verification
+## `post-modernization-plan.hook.sh`
 
-Legacy Modernization hooks verification records raw evidence for "characterized critical behavior = 100%" and invokes "Flip the strangler route to the legacy implementation and replay buffered work after reconciliation" when the threshold is not demonstrated.
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-## Tradeoffs
+PLAN="${1:-}"
+if [[ -z "$PLAN" || ! -f "$PLAN" ]]; then
+  echo "ERROR: Usage: post-modernization-plan.hook.sh <slice-plan-file>"
+  exit 1
+fi
 
-Legacy Modernization hooks deliberately spends additional review time to protect "characterized critical behavior = 100%"; evidence weakness triggers "Flip the strangler route to the legacy implementation and replay buffered work after reconciliation".
+for key in "Seam" "Parity" "Traffic" "Retirement"; do
+  if ! grep -qi "$key" "$PLAN"; then
+    echo "ERROR: Plan missing required section/keyword: $key"
+    exit 1
+  fi
+done
 
-## Anti-patterns
+if grep -qiE 'cut over 100%|big.?bang|single weekend' "$PLAN" \
+  && ! grep -qiE '1%|10%|shadow|canary' "$PLAN"; then
+  echo "ERROR: 100% cutover without incremental/shadow steps."
+  exit 1
+fi
 
-Legacy Modernization hooks rejects shortcuts around "Inventory business capabilities, consumers, and operational pain." because they sever the evidence chain required for "characterized critical behavior = 100%".
+echo "Modernization slice plan validated."
+```
 
-## Enterprise considerations
+## `pre-retire-legacy.hook.sh`
 
-Legacy Modernization hooks governance binds owner, policy revision, and retained proof to "characterized critical behavior = 100%", with "Flip the strangler route to the legacy implementation and replay buffered work after reconciliation" as the recorded recovery authority.
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-## Checklist
+if [[ -z "${TRAFFIC_EVIDENCE:-}" || ! -f "$TRAFFIC_EVIDENCE" ]]; then
+  echo "ERROR: TRAFFIC_EVIDENCE required (proof of 100% on new path)."
+  exit 1
+fi
 
-- [ ] Automated test proves: block modernization without characterization coverage
-- [ ] Automated test proves: compare old/new business outputs in shadow
-- [ ] Automated test proves: reject legacy deletion while consumers or rollback window remain
+if ! grep -qiE '100%|fully shifted|no legacy traffic' "$TRAFFIC_EVIDENCE"; then
+  echo "ERROR: Evidence does not show full traffic shift."
+  exit 1
+fi
 
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+echo "Traffic evidence present. Retirement may proceed with human approval."
+```

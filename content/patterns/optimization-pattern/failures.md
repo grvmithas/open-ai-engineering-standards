@@ -1,41 +1,37 @@
-# Optimization: Failure Modes
+# Optimization Pattern — Failures
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Optimization  
+> **Component:** failures.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Optimization failures operationalizes this pattern outcome: improve a profiled bottleneck while protecting correctness and downstream guardrails.
+## Failure 1: Microbenchmark theater
 
-| Failure | Observable signal | Recovery |
-|---|---|---|
-| optimize intuition | changed code is not dominant cost | profile first |
-| average-only win | p99 or variance regresses | measure distributions |
-| microbenchmark victory | end-to-end cost shifts elsewhere | run system benchmark |
-| cache without bounds | memory and staleness become failures | set eviction and freshness invariants |
+**Symptom:** Local loop is 5–10× faster; production p99 unchanged.  
+**Cause:** Optimized a cold path or used a non-representative fixture.  
+**Recovery:** Re-trace production critical path; KILL the flag; only reopen with matching workload ID.
 
-## Rollback failure
+## Failure 2: Mean improved, tail died
 
-Optimization failures rollback failure gate 2 is accepted only when "approved effect size reached with confidence interval" is source-verifiable; otherwise, disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark.
+**Symptom:** Average latency down; p99 and error-budget burn up.  
+**Cause:** Guardrails omitted tails, GC pauses, lock contention, or queueing.  
+**Recovery:** Abort canary; restore baseline; redesign for tail (batching, timeouts, concurrency limits).
 
-## Tradeoffs
+## Failure 3: Correctness collateral
 
-Optimization failures deliberately spends additional review time to protect "approved effect size reached with confidence interval"; evidence weakness triggers "Disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark".
+**Symptom:** Faster responses with stale cache, lost updates, or wrong aggregates.  
+**Cause:** Oracle absent or waived “temporarily.”  
+**Recovery:** Immediate flag disable; add oracle assertions before any re-canary.
 
-## Anti-patterns
+## Failure 4: Confounded experiments
 
-Optimization failures rejects shortcuts around "Define target metric, guardrails, workload, and minimum useful effect." because they sever the evidence chain required for "approved effect size reached with confidence interval".
+**Symptom:** Results swing between deploys; nobody can reproduce the win.  
+**Cause:** Two optimizations or unrelated releases flipped in the same window.  
+**Recovery:** Serialize; invalidate the evaluation package; re-run single-flag A/B.
 
-## Enterprise considerations
+## Failure 5: No kill switch
 
-Optimization failures governance binds owner, policy revision, and retained proof to "approved effect size reached with confidence interval", with "Disable the optimization flag, restore baseline configuration, and compare recovery to the original benchmark" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Detection exists for optimize intuition
-- [ ] Detection exists for average-only win
-- [ ] Detection exists for microbenchmark victory
-- [ ] Detection exists for cache without bounds
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+**Symptom:** Regression requires a full redeploy to undo.  
+**Cause:** Optimization merged without a feature flag / config gate.  
+**Recovery:** Treat as release defect; emergency config revert or hotfix rollback; ban unflagged perf changes on the critical path.

@@ -1,46 +1,44 @@
-# Debug: Context Contract
+# Debug Pattern — Context
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Debug  
+> **Component:** context.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Make the evidence needed to isolate a software defect through reproducible observations and falsifiable experiments authoritative, bounded, and reproducible.
+## Preconditions (must be true before activation)
 
-| Required input | Acceptance test |
-|---|---|
-| minimal reproduction | owner, revision, retrieval time, and authority recorded for minimal reproduction |
-| expected-versus-actual record | owner, revision, retrieval time, and authority recorded for expected-versus-actual record |
-| logs, traces, metrics, dumps | owner, revision, retrieval time, and authority recorded for logs, traces, metrics, dumps |
-| environment and dependency lock | owner, revision, retrieval time, and authority recorded for environment and dependency lock |
-| recent changes and known-good baseline | owner, revision, retrieval time, and authority recorded for recent changes and known-good baseline |
+- [ ] Expected behavior stated in one sentence
+- [ ] Actual behavior stated (verbatim error when available)
+- [ ] Environment named (dev / staging / prod / test)
+- [ ] Logs, traces, metrics, or failing test available — or gap documented
+- [ ] Permission to run reproducing experiments in a safe environment
 
-## Assembly procedure
+## Trigger conditions (apply the pattern)
 
-1. Tie each source to a trigger or workflow decision.
-2. Resolve conflicting authority before analysis; preserve both revisions and the resolution.
-3. Hash the accepted manifest and set expiry from the fastest-changing source.
-4. Exclude unrelated material and redact secrets without removing decision-relevant constraints.
+Apply when **any** of the following hold:
 
-## Tradeoffs
+- Spec or prior behavior is violated
+- Failing test, stack trace, or error-budget burn
+- Intermittent / race / environment-sensitive failure
+- Previous quick fix failed or was reverted
 
-Debug context deliberately spends additional review time to protect "reproduction rate before fix is recorded"; evidence weakness triggers "Revert probes and fix, restore the locked environment, and preserve diagnostic artifacts".
+## Do not apply when
 
-## Anti-patterns
+- Request is a new feature, not a defect
+- Typo/syntax error with obvious single-line fix
+- Pure third-party outage (document workaround; open vendor ticket)
+- Containment still incomplete on SEV1 — stabilize first
 
-Debug context rejects shortcuts around "Write a deterministic symptom statement without assigning cause." because they sever the evidence chain required for "reproduction rate before fix is recorded".
+## Required inputs
 
-## Enterprise considerations
+| Input | Source | Minimum quality |
+|-------|--------|-----------------|
+| Symptom package | Ticket / user / alert | Expected, actual, when started |
+| Repro notes | Author or on-call | Steps or “cannot repro” |
+| Telemetry | Logs/traces/metrics | Correlated timestamps |
+| Recent changes | git log / deploy board | Suspect window |
 
-Debug context governance binds owner, policy revision, and retained proof to "reproduction rate before fix is recorded", with "Revert probes and fix, restore the locked environment, and preserve diagnostic artifacts" as the recorded recovery authority.
+## Authority boundary
 
-## Checklist
-
-- [ ] minimal reproduction is present and provenance-bearing
-- [ ] expected-versus-actual record is present and provenance-bearing
-- [ ] logs, traces, metrics, dumps is present and provenance-bearing
-- [ ] environment and dependency lock is present and provenance-bearing
-- [ ] recent changes and known-good baseline is present and provenance-bearing
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+The debug agent may propose and implement **root-cause fixes** in non-prod and via PR. Production mutation, data export, and emergency rollbacks require the human on-call / incident commander.

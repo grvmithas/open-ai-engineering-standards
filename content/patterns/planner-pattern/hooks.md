@@ -1,47 +1,87 @@
-# Planner: Lifecycle Hooks
+# Planner Pattern — Hooks
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Planner  
+> **Component:** hooks.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Enforce planner gates outside model discretion.
+## `pre-planning.hook.sh`
 
-| Hook | Enforced condition | Failure behavior |
-|---|---|---|
-| preflight | reject plans containing unresolved blocking decisions | fail closed without creating an effect |
-| domain-gate | verify every changed path exists or is explicitly new | fail closed without creating an effect |
-| closure | require a test and rollback entry for every increment | stop implementation, revert partial increments, and return to the last approved plan revision |
+Runs before the planner activates. Verifies story and context exist.
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-: "${TASK_ID:?required}" "${MANIFEST_HASH:?required}" "${RISK_TIER:?required}". For the Planner hooks contract, gate 1 is evidenced by "decision completeness = 100%"; failure invokes this domain recovery: Stop implementation, revert partial increments, and return to the last approved plan revision.
-# oaies-planner: evaluate the three versioned policy rules documented above.
-policy_check --pattern "planner" --task "$TASK_ID" --manifest "$MANIFEST_HASH" --risk "$RISK_TIER"
+
+echo "Checking planning prerequisites..."
+
+if [[ -z "${STORY_FILE:-}" || ! -f "$STORY_FILE" ]]; then
+  echo "ERROR: Story file not found. Run story-kickoff first and set STORY_FILE."
+  exit 1
+fi
+
+if ! grep -qiE 'acceptance|criteria|AC-' "$STORY_FILE"; then
+  echo "ERROR: Story appears to lack acceptance criteria."
+  exit 1
+fi
+
+if [[ -z "${CONTEXT_FILE:-}" || ! -f "$CONTEXT_FILE" ]]; then
+  echo "ERROR: CONTEXT_FILE missing. Assemble context before planning."
+  exit 1
+fi
+
+CONTEXT_SIZE=$(wc -c < "$CONTEXT_FILE" | tr -d ' ')
+if (( CONTEXT_SIZE < 500 )); then
+  echo "WARNING: Context seems thin (<500 bytes). Proceed only if intentionally small."
+fi
+
+echo "Prerequisites satisfied. Planning can begin."
 ```
 
-## Verification
+## `post-planning.hook.sh`
 
-Planner hooks verification records raw evidence for "decision completeness = 100%" and invokes "Stop implementation, revert partial increments, and return to the last approved plan revision" when the threshold is not demonstrated.
+Runs after plan generation. Verifies required sections before human review.
 
-## Tradeoffs
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-Planner hooks deliberately spends additional review time to protect "decision completeness = 100%"; evidence weakness triggers "Stop implementation, revert partial increments, and return to the last approved plan revision".
+PLAN_FILE="${1:-}"
+if [[ -z "$PLAN_FILE" || ! -f "$PLAN_FILE" ]]; then
+  echo "ERROR: Usage: post-planning.hook.sh <plan-file>"
+  exit 1
+fi
 
-## Anti-patterns
+echo "Validating plan structure..."
 
-Planner hooks rejects shortcuts around "Classify ambiguity and list decisions execution must not make." because they sever the evidence chain required for "decision completeness = 100%".
+REQUIRED_SECTIONS=(
+  "Architecture Diagram"
+  "Implementation Sequence"
+  "Rollback"
+  "Test Plan"
+)
 
-## Enterprise considerations
+for section in "${REQUIRED_SECTIONS[@]}"; do
+  if ! grep -qi "$section" "$PLAN_FILE"; then
+    echo "ERROR: Plan missing required section: $section"
+    exit 1
+  fi
+done
 
-Planner hooks governance binds owner, policy revision, and retained proof to "decision completeness = 100%", with "Stop implementation, revert partial increments, and return to the last approved plan revision" as the recorded recovery authority.
+if ! grep -qi "mermaid" "$PLAN_FILE"; then
+  echo "ERROR: Plan must include a Mermaid architecture diagram."
+  exit 1
+fi
 
-## Checklist
+if ! grep -qi "Human Approval" "$PLAN_FILE"; then
+  echo "ERROR: Plan missing Human Approval footer."
+  exit 1
+fi
 
-- [ ] Automated test proves: reject plans containing unresolved blocking decisions
-- [ ] Automated test proves: verify every changed path exists or is explicitly new
-- [ ] Automated test proves: require a test and rollback entry for every increment
+echo "Plan structure validated. Ready for human review."
+```
 
-## Changelog
+## CI integration note
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+Wire these hooks into the agent harness or a make target (`make plan-check PLAN=...`). Do not treat a green unit test suite as a substitute for plan structure validation.

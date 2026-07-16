@@ -1,50 +1,57 @@
-# Debug: Worked Production Example
+# Debug Pattern — Example: Intermittent 500 on user fetch
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Debug  
+> **Component:** examples/example.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16  
+> **Scenario:** `GET /api/users/:id` returns 500 ~5% after Redis caching PR
 
-## Scenario and artifacts
+---
 
-Orders intermittently stay PENDING. Repro DEBUG-551 uses event e-442 and clock skew +31s. Trace t-81 proves lease expiry compares database UTC with worker local time. Test lease_clock_skew.spec fails on 3f210ac and passes after monotonic-time normalization.
+## Bug analysis (artifact)
 
-## Execution
+**Root cause:** Cache write is async; a concurrent read can observe a miss and pass `null` into the user DTO mapper.  
+**Category:** race
 
-1. Write a deterministic symptom statement without assigning cause; the record attaches the resulting artifact to the example's primary change or incident ID.
-2. Capture a minimal reproduction and a known-good control; the record attaches the resulting artifact to the example's primary change or incident ID.
-3. Build a timeline across logs, traces, deploys, and configuration; the record attaches the resulting artifact to the example's primary change or incident ID.
-4. Enumerate mutually distinguishable hypotheses; the record attaches the resulting artifact to the example's primary change or incident ID.
-5. Rank hypotheses by explanatory power and test cost; the record attaches the resulting artifact to the example's primary change or incident ID.
-6. Change one variable per experiment and preserve raw output; the record attaches the resulting artifact to the example's primary change or incident ID.
-7. Localize the causal mechanism and add a failing regression test; the record attaches the resulting artifact to the example's primary change or incident ID.
-8. Apply the smallest fix; run focused, suite, and production guardrails; the record attaches the resulting artifact to the example's primary change or incident ID.
+### Characterization
 
-## Verification
+| Field | Value |
+|-------|-------|
+| Expected | 200 + user JSON |
+| Actual | 500, empty body ~5% of requests |
+| Env | staging + prod |
+| Started after | Redis caching PR `def5678` (Tuesday) |
+| Repro | ~5% under `hey -n 2000 -c 50` |
 
-- The owner records raw evidence that reproduction rate before fix is recorded.
-- The owner records raw evidence that regression test fails before and passes after.
-- The owner records raw evidence that no unrelated variable changes during causal experiment.
-- The owner records raw evidence that recurrence monitor remains clear for one release window.
+### Hypothesis testing
 
-## Rollback exercise
+| # | Hypothesis | Test | Result |
+|---|------------|------|--------|
+| 1 | Race between cache write and read | Add timing logs around get/set; load test | **Confirmed** — read returns null while write in-flight |
+| 2 | DTO mapper throws on unexpected field | Unit test mapper with fixture variants | Ruled out — only throws on null user |
+| 3 | DB pool exhaustion | Watch pool metrics during load | Ruled out — pool idle > 40% |
 
-Debug examples/example rollback exercise gate 1 is accepted only when "reproduction rate before fix is recorded" is source-verifiable; otherwise, revert probes and fix, restore the locked environment, and preserve diagnostic artifacts.
+### Fix applied
 
-## Tradeoffs
+- Await cache set before returning from cache layer; treat null miss as DB fetch only after write settlement
+- Files: `src/cache/userCache.ts`, `src/services/userService.ts`
+- Regression test: `userCache.concurrent.test.ts` — concurrent get/set must not yield null user to mapper
 
-Debug examples/example deliberately spends additional review time to protect "reproduction rate before fix is recorded"; evidence weakness triggers "Revert probes and fix, restore the locked environment, and preserve diagnostic artifacts".
+### Verification
 
-## Anti-patterns
+- [x] Load test error rate 0/2000 on staging  
+- [x] Unit + integration green  
+- [x] Mapper still rejects null explicitly (defense in depth)
 
-Debug examples/example rejects shortcuts around "Write a deterministic symptom statement without assigning cause." because they sever the evidence chain required for "reproduction rate before fix is recorded".
+### Similar risks
 
-## Enterprise considerations
+| Location | Notes |
+|----------|-------|
+| `src/cache/sessionCache.ts` | Same async set pattern — filed follow-up TICKET-4421 |
+| `src/cache/reportCache.ts` | Already awaits set — OK |
 
-Debug examples/example governance binds owner, policy revision, and retained proof to "reproduction rate before fix is recorded", with "Revert probes and fix, restore the locked environment, and preserve diagnostic artifacts" as the recorded recovery authority.
+```text
+Debugger: M. Ruiz  Date: 2026-07-16
+Reviewer: S. Okonkwo
+```
 
-## Checklist
-
-- [ ] Every stated artifact has an owner and storage location in the system of record
-- [ ] Reported outcomes come from executed checks
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+This example **is** the artifact — not a pointer elsewhere.

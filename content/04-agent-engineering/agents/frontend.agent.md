@@ -77,6 +77,9 @@ Keyboard trap, stale UI, hydration mismatch, unsafe HTML, inaccessible error, an
 ## Verification
 Run type/lint, component and browser tests, axe, production build, bundle budget, and critical-flow keyboard checks.
 
+## Domain Recovery Playbook
+Disable the affected route or feature flag, restore the previous asset bundle, preserve browser traces, and verify critical user and assistive-technology flows before re-release.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

@@ -74,11 +74,11 @@ Kubernetes platform governance owns admission policy, supported APIs, node/CNI/C
 
 ## Checklist
 
-- [ ] GitOps reconciliation is authoritative; emergency changes are committed back or automatically reverted..
-- [ ] A controller owns every Pod and exposes rollout state..
-- [ ] ServiceAccount plus cloud/workload identity grants only the Pod's required external permissions..
-- [ ] Default-deny NetworkPolicy is extended with explicit caller, dependency, and DNS paths..
-- [ ] Probes, requests, HPA, PDB, rollout surge, and topology spread are designed as one availability system..
+- [ ] GitOps reconciliation is authoritative; emergency changes are committed back or automatically reverted.
+- [ ] A controller owns every Pod and exposes rollout state.
+- [ ] ServiceAccount plus cloud/workload identity grants only the Pod's required external permissions.
+- [ ] Default-deny NetworkPolicy is extended with explicit caller, dependency, and DNS paths.
+- [ ] Probes, requests, HPA, PDB, rollout surge, and topology spread are designed as one availability system.
 - [ ] Diagram matches deployed topology rather than an aspirational target.
 - [ ] Rollback path preserves state and mixed-version contracts.
 

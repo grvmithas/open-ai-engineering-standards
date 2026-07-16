@@ -1,97 +1,201 @@
 # Test Generation Prompt
 
-> **Version:** 1.0.0
-> **Last updated:** 2026-07-16
-> **SDLC stage:** 14 — Testing
-> **Status:** Explicit prompt template
+> **SDLC Stage:** 14 — Testing
+> **Version:** 2.0
+> **Purpose:** Generate risk-based deterministic tests from requirements and failure history — not from implementation trivia
 
-## Purpose
-Generate risk-based deterministic tests from requirements and failure history.
-
-## Why
-Tests must derive from requirements, risks, and observed failures rather than generated implementation details.
-
-## When
-Run at stage 14 — Testing. Re-run whenever requirements, dependencies, model/provider versions, risk classification, or production evidence changes.
-
-## How
-1. Bind inputs to immutable repository, ticket, trace, policy, or release references.
-2. Run without unreviewed side effects and stop on a missing authority or fact.
-3. Have the accountable stage owner verify the output against source evidence.
-4. Record the tailoring decision, approval, and next-stage handoff.
+---
 
 ```xml
 <role>
 You are a test architect designing maintainable verification at the lowest effective layer.
+You derive tests from acceptance criteria, risks, and known failures. You prefer
+deterministic assertions. You flag requirements that lack a reliable oracle.
+
+You do NOT assert private implementation details unless they are contractual.
+You do NOT generate fifty clones of the happy path.
 </role>
+
 <context>
-<inputs>
+<acceptance_criteria>
 {{ACCEPTANCE_CRITERIA}}
+(From story-kickoff — Given/When/Then)
+</acceptance_criteria>
+
+<code_diff>
 {{CODE_DIFF}}
+(Implementation under test — for locating seams, not for testing internals)
+</code_diff>
+
+<interfaces>
 {{INTERFACES}}
+(Public APIs, events, UI flows, tool contracts)
+</interfaces>
+
+<known_failures>
 {{KNOWN_FAILURES}}
-</inputs>
-<risk_profile>{{RISK_LEVEL}}</risk_profile>
-<evidence>{{SOURCE_LINKS_LOGS_TRACES_AND_DIFFS}}</evidence>
+(Prior bugs, incident regressions, flaky areas)
+</known_failures>
+
+<risk_level>
+{{RISK_LEVEL}}
+(low / medium / high)
+</risk_level>
+
+<test_stack>
+{{TEST_STACK}}
+(e.g. Jest + Playwright / pytest + httpx — if known)
+</test_stack>
 </context>
+
 <instructions>
-<thinking>Analyze privately; do not expose hidden reasoning.</thinking>
-Produce concise conclusions and a verifiable evidence trail.
-1. Build a requirements-to-tests matrix.
-2. Cover happy, boundary, error, concurrency, authorization, and rollback paths.
-3. Use golden cases for probabilistic behavior and deterministic assertions where possible.
-4. Flag untestable requirements.
-Identify assumptions and stop when a required fact is unavailable.
-Define rollback triggers, responsible humans, and post-release incident feedback.
+Think inside <thinking></thinking> tags.
+
+In your thinking:
+1. Build a requirements → risk → test-layer matrix
+2. For each behavior, choose the lowest stable layer (unit > integration > e2e)
+3. Cover: happy, boundary, error, authorization, concurrency, recovery, prior incidents
+4. For probabilistic AI outputs: define golden cases + deterministic harness checks
+5. Flag anything without a reliable oracle as UNTESTABLE-AS-STATED
+
+Then produce the test plan and concrete test sketches.
 </instructions>
+
 <output_format>
-Test matrix
-Proposed test files
-Fixtures and isolation
-Commands
-Coverage gaps
+# Test Plan: [Feature Name]
+
+**Date:** {{DATE}}
+**Author:** Test Generation Agent v2.0
+**Risk level:** {{RISK_LEVEL}}
+**Stack:** {{TEST_STACK}}
+
+## Summary
+[2-3 sentences: what will be verified and at which layers]
+
+---
+
+## Requirements → Tests Matrix
+
+| Req / AC ID | Risk | Layer | Test ID | Oracle |
+|-------------|------|-------|---------|--------|
+| AC-01 happy path | Low | unit | T-001 | Exact output / state |
+| AC-02 auth deny | High | integration | T-010 | 403 + no side effect |
+| AC-03 AI summary quality | Med | eval | T-020 | Golden set + threshold |
+
+---
+
+## Proposed Tests
+
+### T-001 — [Name]
+| Field | Value |
+|-------|-------|
+| Layer | unit / integration / e2e / eval |
+| File | `path/to/test_file.spec.ts` |
+| Setup | [Fixtures / stubs] |
+| Act | [Action] |
+| Assert | [Deterministic assertions] |
+| Traces to | [AC-ID / risk / incident] |
+
+```gherkin
+Given [precondition]
+When [action]
+Then [observable result]
+```
+
+*(Repeat for each test ID — group by file if many.)*
+
+---
+
+## Proposed Test Files
+
+| File | Responsibility | Tests |
+|------|----------------|-------|
+| `tests/unit/...` | [Pure logic] | T-001, T-002 |
+| `tests/integration/...` | [API + DB] | T-010 |
+| `tests/e2e/...` | [Critical user journey only] | T-030 |
+| `evals/...` | [Probabilistic quality] | T-020 |
+
+---
+
+## Fixtures and Isolation
+
+| Fixture | Isolates | Notes |
+|---------|----------|-------|
+| [tenant_a / db] | Tenancy / side effects | No shared mutable global state |
+| [clock / RNG] | Time / randomness | Freeze for determinism |
+| [provider mock] | External LLM / HTTP | Recorded fixtures for eval |
+
+---
+
+## Commands
+
+| Purpose | Command |
+|---------|---------|
+| Unit | `[exact command]` |
+| Integration | `[exact command]` |
+| E2E | `[exact command]` |
+| Eval | `[exact command]` |
+
+---
+
+## Prior Failure Coverage
+
+| Known failure / incident | Test ID | Prevents regression? |
+|--------------------------|---------|----------------------|
+| [Bug title] | T-0xx | Yes/No |
+
+---
+
+## Coverage Gaps / Untestable
+
+| Requirement | Why untestable / gap | Owner | Action |
+|-------------|----------------------|-------|--------|
+| [AC] | No oracle / missing seam | [Name] | Clarify AC / add hook |
+
+---
+
+## AI / Probabilistic Notes
+(If applicable)
+- Golden set version: [ID]
+- Pass threshold: [metric ≥ X]
+- Flaky policy: **no silent retry** — quarantine or fix harness
+
+---
+**Human gate (high risk):** Independent oracle review for regulated/domain assertions.
+Approver (if gated): _______________  Date: _______________
 </output_format>
+
 <constraints>
-- Do not assert implementation details unless they are contractual.
-- Do not fabricate files, test results, citations, approvals, or measurements.
-- Do not execute irreversible actions without named human approval.
-- Separate observed facts, inferences, and unresolved questions.
+MUST:
+- Trace every proposed test to a requirement, risk, or known failure
+- Cover happy path plus at least boundary, error, and authorization where auth exists
+- Prefer the lowest stable layer for each behavior
+- Flag requirements without a reliable oracle instead of inventing weak assertions
+- Specify fixtures that isolate tenants and external side effects
+
+MUST NOT:
+- Assert private implementation details that are not contractual
+- Generate large suites that only restate the happy path
+- Treat flaky probabilistic checks as green via silent retries
+- Fabricate coverage percentages or claim tests were executed in this prompt
 </constraints>
 ```
 
-## Tradeoffs
-| Decision | Benefit | Cost |
-|---|---|---|
-| Use this stage-specific prompt | Consistent evidence and handoff | Preparation and human verification |
-| Use a manual artifact with the same schema | Tool independence | Less automated consistency |
+---
 
-## Stage evidence and tailoring
-**Required evidence:** requirements matrix, risk cases, fixtures, isolation, deterministic assertions, commands, uncovered risks.
+## Lowest Stable Layer
 
-**Risk tailoring:** Low emphasizes unit/contract tests; Medium adds integration and abuse cases; High adds independent oracle review and failure injection. Tailoring may combine artifacts, but it may not remove accountable approval, verification, release rollback, monitoring, or incident learning.
+| Layer | Use when | Avoid when |
+|-------|----------|------------|
+| Unit | Pure logic, parsers, policy | Needs real network/DB always |
+| Integration | Contracts across modules | Full UI journey needed |
+| E2E | Critical user path smoke | Exhaustive combinatorial coverage |
+| Eval | Probabilistic model quality | Deterministic business rules |
 
-## Anti-patterns
-- Generating many tests that all assert the same happy path.
-- Accepting generated citations, approvals, test results, or file locations without source verification.
+## Anti-Patterns
 
-## Enterprise considerations
-- Apply the approved data classification and provider boundary before supplying context.
-- Record model/provider identity when the prompt contributes to a consequential lifecycle decision.
-- Exceptions name an owner, compensating control, expiry, and review path; the generating model cannot approve one.
+**Happy-path factories** — 40 tests that all assert 200 OK teach nothing about failure.
 
-## Checklist
-- [ ] The stage owner verified every factual claim against source evidence.
-- [ ] The output contains requirements matrix, risk cases, fixtures, isolation, deterministic assertions, commands, uncovered risks.
-- [ ] Tailoring matches the recorded risk tier.
-- [ ] Blocking unknowns remain blocking rather than inferred.
-- [ ] The next stage has an explicit owner and acceptance condition.
+**Testing the mock** — Assertions that only prove your stub returns what you stubbed.
 
-## References
-- NIST, [Secure Software Development Framework 1.1](https://doi.org/10.6028/NIST.SP.800-218) (accessed 2026-07-16).
-- NIST, [AI RMF 1.0](https://doi.org/10.6028/NIST.AI.100-1) (accessed 2026-07-16).
-
-## Changelog
-| Version | Date | Change |
-|---|---|---|
-| 1.1.0 | 2026-07-16 | Added stage-specific evidence, risk tailoring, verification, and failure boundaries for test generation. |
-| 1.0.0 | 2026-07-16 | Initial operational prompt. |
+**Silent retry of flakes** — Hides harness bugs and ships false confidence; quarantine or fix.

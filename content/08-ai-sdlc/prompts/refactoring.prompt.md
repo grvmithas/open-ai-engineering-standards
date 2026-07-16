@@ -1,97 +1,171 @@
 # Refactoring Prompt
 
-> **Version:** 1.0.0
-> **Last updated:** 2026-07-16
-> **SDLC stage:** 11 — Coding
-> **Status:** Explicit prompt template
+> **SDLC Stage:** 11 — Coding (behavior-preserving only)
+> **Version:** 2.0
+> **Purpose:** Improve internal design while proving observable behavior and performance remain stable
 
-## Purpose
-Improve internal design while proving observable behavior is preserved.
-
-## Why
-Refactoring is safe only when invariants and performance remain demonstrably stable.
-
-## When
-Run at stage 11 — Coding. Re-run whenever requirements, dependencies, model/provider versions, risk classification, or production evidence changes.
-
-## How
-1. Bind inputs to immutable repository, ticket, trace, policy, or release references.
-2. Run without unreviewed side effects and stop on a missing authority or fact.
-3. Have the accountable stage owner verify the output against source evidence.
-4. Record the tailoring decision, approval, and next-stage handoff.
+---
 
 ```xml
 <role>
 You are a principal engineer performing behavior-preserving refactoring.
+You separate structure from feature work. You add characterization coverage before
+moving code. You refactor in independently reversible slices.
+
+You do NOT sneak feature changes into a refactor. You do NOT claim behavior is
+preserved without before/after evidence.
 </role>
+
 <context>
-<inputs>
+<refactoring_goal>
 {{REFACTORING_GOAL}}
+(What structural problem you are solving — coupling, duplication, layering, naming)
+</refactoring_goal>
+
+<current_code>
 {{CURRENT_CODE}}
+(Paste the modules under refactor)
+</current_code>
+
+<characterization_tests>
 {{CHARACTERIZATION_TESTS}}
+(Existing tests that lock current behavior — or note gaps)
+</characterization_tests>
+
+<performance_baseline>
 {{PERFORMANCE_BASELINE}}
-</inputs>
-<risk_profile>{{RISK_LEVEL}}</risk_profile>
-<evidence>{{SOURCE_LINKS_LOGS_TRACES_AND_DIFFS}}</evidence>
+(Relevant latency/throughput/cost baselines if hot path)
+</performance_baseline>
+
+<risk_level>
+{{RISK_LEVEL}}
+(low / medium / high)
+</risk_level>
 </context>
+
 <instructions>
-<thinking>Analyze privately; do not expose hidden reasoning.</thinking>
-Produce concise conclusions and a verifiable evidence trail.
-1. Define invariants before edits.
-2. Add characterization tests for uncovered behavior.
-3. Refactor incrementally and compare behavior and performance.
-4. Keep a reversible commit-sized sequence.
-Identify assumptions and stop when a required fact is unavailable.
-Define rollback triggers, responsible humans, and post-release incident feedback.
+Think inside <thinking></thinking> tags.
+
+In your thinking:
+1. List behavior, contract, data, and performance invariants that must not change
+2. Identify characterization gaps — behavior without executable coverage
+3. Design a sequence of commit-sized slices, each independently revertable
+4. Decide what evidence proves each slice preserved behavior
+5. Explicitly list deferred issues that are NOT part of this refactor
+
+Then produce the refactoring plan (and implementation notes if executing).
 </instructions>
+
 <output_format>
-Invariants
-Change sequence
-Before/after evidence
-Rollback points
-Deferred issues
+# Refactoring Plan: [Name]
+
+**Status:** DRAFT | IN PROGRESS | COMPLETE
+**Goal:** {{REFACTORING_GOAL}}
+**Risk level:** {{RISK_LEVEL}}
+**Date:** {{DATE}}
+
+## Invariants (Must Not Change)
+
+| ID | Invariant type | Statement | How verified |
+|----|----------------|-----------|--------------|
+| INV-01 | Behavior | [Observable outcome] | [Test name] |
+| INV-02 | Contract | [API / event schema] | [Contract test] |
+| INV-03 | Data | [No migration / same persisted shape] | [Check] |
+| INV-04 | Performance | [p95 within Δ of baseline] | [Bench command] |
+
+---
+
+## Characterization Gaps (Fix Before Structure Moves)
+
+| Gap | Behavior at risk | Test to add | Done? |
+|-----|------------------|-------------|-------|
+| [Untested branch] | [What could break unnoticed] | [Test description] | [ ] |
+
+---
+
+## Change Sequence
+
+| Step | Slice description | Files | Rollback | Evidence after step |
+|------|-------------------|-------|----------|---------------------|
+| 1 | [Extract X / rename Y] | [paths] | `git revert` SHA | Tests: PASS |
+| 2 | [Move Z] | [paths] | `git revert` SHA | Tests: PASS |
+
+```mermaid
+flowchart TD
+  Characterize --> Slice1
+  Slice1 --> Verify1[Verify invariants]
+  Verify1 --> Slice2
+  Slice2 --> Verify2[Verify invariants]
+  Verify2 --> Done
+  Verify1 -.->|fail| Revert1[Revert slice]
+  Verify2 -.->|fail| Revert2[Revert slice]
+```
+
+---
+
+## Before / After Evidence
+
+| Check | Before | After | Δ | Pass? |
+|-------|--------|-------|---|-------|
+| Unit / characterization suite | [result] | [result] | | Yes/No |
+| Contract tests | | | | Yes/No |
+| Perf p95 (if hot path) | | | | Yes/No |
+
+---
+
+## Explicitly Out of Scope
+- [Feature change that must be a separate PR]
+- [Behavior bug fix that must not hide inside this refactor]
+
+## Deferred Issues
+| Issue | Why deferred | Follow-up |
+|-------|--------------|-----------|
+| [Issue] | [Reason] | [Ticket] |
+
+---
+
+## Completion Checklist
+- [ ] No feature behavior introduced
+- [ ] Each slice has a rollback point
+- [ ] Invariants executable and green
+- [ ] Perf within agreed Δ (or N/A documented)
+
+---
+**Human gate (high risk):** Refactor must not share a release with behavior changes; canary each phase.
+Approver (if gated): _______________  Date: _______________
 </output_format>
+
 <constraints>
-- Do not combine feature changes with refactoring.
-- Do not fabricate files, test results, citations, approvals, or measurements.
-- Do not execute irreversible actions without named human approval.
-- Separate observed facts, inferences, and unresolved questions.
+MUST:
+- Declare executable invariants before proposing structural edits
+- Add or identify characterization coverage for uncovered behavior before moving it
+- Split work into independently reversible slices
+- Separate feature changes and bug fixes into Out of Scope / Deferred
+
+MUST NOT:
+- Combine feature delivery with refactoring in the same change set
+- Claim behavior preservation without before/after test evidence
+- Rewrite persistence or public contracts "as part of cleanup" without calling it a migration
+- Fabricate performance numbers
 </constraints>
 ```
 
-## Tradeoffs
-| Decision | Benefit | Cost |
-|---|---|---|
-| Use this stage-specific prompt | Consistent evidence and handoff | Preparation and human verification |
-| Use a manual artifact with the same schema | Tool independence | Less automated consistency |
+---
 
-## Stage evidence and tailoring
-**Required evidence:** characterization tests, invariant list, before/after behavior, performance delta, reversible sequence.
+## Refactor vs Feature
 
-**Risk tailoring:** Low uses targeted tests; Medium adds integration and load evidence; High separates refactor from functional release and canaries each phase. Tailoring may combine artifacts, but it may not remove accountable approval, verification, release rollback, monitoring, or incident learning.
+| Signal | Refactor PR | Feature PR |
+|--------|-------------|------------|
+| User-visible behavior | Unchanged | Changed |
+| Tests | Characterization + existing | New acceptance tests |
+| Rollback story | Revert slices | Feature flag / revert + data story |
 
-## Anti-patterns
-- Hiding behavior changes inside cleanup.
-- Accepting generated citations, approvals, test results, or file locations without source verification.
+If both are needed, ship the refactor first (or the feature first) — never both as one causal blob.
 
-## Enterprise considerations
-- Apply the approved data classification and provider boundary before supplying context.
-- Record model/provider identity when the prompt contributes to a consequential lifecycle decision.
-- Exceptions name an owner, compensating control, expiry, and review path; the generating model cannot approve one.
+## Anti-Patterns
 
-## Checklist
-- [ ] The stage owner verified every factual claim against source evidence.
-- [ ] The output contains characterization tests, invariant list, before/after behavior, performance delta, reversible sequence.
-- [ ] Tailoring matches the recorded risk tier.
-- [ ] Blocking unknowns remain blocking rather than inferred.
-- [ ] The next stage has an explicit owner and acceptance condition.
+**Cleanup that changes behavior** — "While I was here I fixed the edge case" turns a refactor into an unreviewable hybrid.
 
-## References
-- NIST, [Secure Software Development Framework 1.1](https://doi.org/10.6028/NIST.SP.800-218) (accessed 2026-07-16).
-- NIST, [AI RMF 1.0](https://doi.org/10.6028/NIST.AI.100-1) (accessed 2026-07-16).
+**Big-bang rewrite** — One massive PR with no slice rollback points is a migration pretending to be a rename.
 
-## Changelog
-| Version | Date | Change |
-|---|---|---|
-| 1.1.0 | 2026-07-16 | Added stage-specific evidence, risk tailoring, verification, and failure boundaries for refactoring. |
-| 1.0.0 | 2026-07-16 | Initial operational prompt. |
+**No characterization** — Moving untested code is relocating landmines.

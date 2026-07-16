@@ -1,6 +1,6 @@
 # LLMOps Alerting
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative OAIES implementation profile
 
@@ -21,7 +21,7 @@ Use after baselines and response runbooks exist.
 5. Test alerts and auto-rollback quarterly.
 
 ## Evidence contract
-The decision record is the **alert rule and game-day evidence**. It records symptom; SLO; windows; severity; route; runbook; auto-action; dedup key; owner. The on-call service owner owns completeness; the evidence is invalid when an alert cannot identify user impact or a responder action. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+The decision record is the **alert rule and game-day evidence**. It records symptom; SLO; windows; severity; route; runbook; auto-action; dedup key; owner. The on-call service owner owns completeness; the evidence is invalid when an alert cannot identify user impact or a responder action. Persist schema, instrumentation, collector, query, dashboard, and alert revisions so operational conclusions remain reproducible.
 
 ## Failure response and recovery
 **Trigger:** page delivery, burn calculation, or automated rollback fails.
@@ -29,7 +29,7 @@ The decision record is the **alert rule and game-day evidence**. It records symp
 **Immediate response:** disable unsafe automation, invoke the manual runbook, and repair before re-enabling. Preserve the alert rule and game-day evidence, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to llmops alerting.
 
 ## Decision authority
-The **on-call service owner** accepts the operational decision. The **incident management lead** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+The **on-call service owner** accepts the operational decision. The **incident management lead** provides independent challenge for high-risk scope, failed gates, or exceptions. Telemetry can trigger declared alerts or rollback; service and incident owners judge impact, restoration, and invalid measurement windows.
 
 ## Tradeoffs
 | Choice | Benefit | Cost |
@@ -46,12 +46,12 @@ The **on-call service owner** accepts the operational decision. The **incident m
 - Preserve notification and acknowledgment evidence.
 
 ## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+**LLMOps Alerting** defines informative diagnosability evidence. Sampling and mutable operational telemetry do not replace required action or records-management logs.
 
 | Source | Relationship for LLMOps Alerting | Boundary |
 |---|---|---|
-| NIST AI RMF | MANAGE 4.2 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clause 10.2 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| NIST AI RMF | MANAGE 4.2 | Evaluate monitoring coverage against known failure modes and sampling limitations. |
+| ISO/IEC 42001 | 42001 clause 10.2 | Performance-evaluation evidence remains subject to data quality, access, retention, and internal-audit scope. |
 | Domain threat/control source | Incident detection for LLM01, LLM06, and LLM10 scenarios | Test only the threats applicable to the documented system and release |
 
 ## Checklist
@@ -60,8 +60,8 @@ This profile is informative. It helps implement the following relationships and 
 - [ ] Provider failover does not bypass controls.
 
 ## References
-- OpenTelemetry, [Generative AI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/) (accessed 2026-07-16); pin the convention version because portions remain Development.
-- OpenTelemetry, [Trace semantic conventions](https://opentelemetry.io/docs/specs/semconv/general/trace/) (accessed 2026-07-16).
+- OpenTelemetry, [GenAI semantic conventions repository](https://github.com/open-telemetry/semantic-conventions-genai) (accessed 2026-07-16); alerts must declare the pinned telemetry contract.
+- Google SRE Workbook, [Alerting on SLOs](https://sre.google/workbook/alerting-on-slos/) (accessed 2026-07-16).
 
 ## Changelog
 | Version | Date | Change |

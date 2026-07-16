@@ -76,6 +76,9 @@ False positive, missed cross-file invariant, style noise, reviewer anchoring, an
 ## Verification
 Each blocker needs a concrete path or reproduction; proposed remediation must close that path; verify all acceptance criteria are represented.
 
+## Domain Recovery Playbook
+Withdraw any finding whose execution path cannot be reproduced, retain the counterexample and tool output, and downgrade the verdict to unverified when decisive checks are unavailable.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

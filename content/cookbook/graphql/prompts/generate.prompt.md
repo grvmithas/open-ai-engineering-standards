@@ -8,11 +8,11 @@ Generate a production-ready schema, resolver, request DataLoader, gateway, persi
 
 ## Why
 
-Schema exposes domain capabilities; authorization is enforced at trusted resolver/service boundaries; data access is batched per request; operations have resource budgets. This prompt requires native GraphQL artifacts instead of substituting a generic incident or code-generation checklist.
+Schema exposes domain capabilities; authorization is enforced at trusted resolver/service boundaries; data access is batched per request; operations have resource budgets. The generate decision is accepted only when canonical SDL, generated schema, registry/composition result, and breaking-change report supports it; generic generate advice cannot establish that GraphQL state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized GraphQL evidence for the schema, resolver, request DataLoader, gateway, persisted operation, or federated subgraph. Apply the invariant "Schema exposes domain capabilities; authorization is enforced at trusted resolver/service boundaries; data access is batched per request; operations have resource budgets." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Record GraphQL specification assumptions, server/framework, client, federation/d
 
 ## Tradeoffs
 
-The prompt rejects fast code generation when GraphQL version, configuration, or target evidence is absent. That delay prevents plausible output from crossing an unsupported schema, resolver, request DataLoader, gateway, persisted operation, or federated subgraph boundary.
+Generation waits for canonical SDL, generated schema, registry/composition result, and breaking-change report and validated operation document, variables, auth context, depth/complexity/cost, and persisted-operation ID. That extra GraphQL discovery is justified because the output must prove "field and type names model domain capabilities rather than database tables" and survive non-null propagation and partial response rather than merely compile.
 
 ## Anti-patterns
 

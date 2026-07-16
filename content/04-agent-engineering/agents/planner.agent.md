@@ -75,6 +75,9 @@ Hidden dependency, scope leakage, irreversible ordering, and plan drift.
 ## Verification
 Validate every criterion has a step and evidence; resolve every file link; dry-run listed commands where non-mutating.
 
+## Domain Recovery Playbook
+Freeze the last internally consistent plan, mark the blocked dependency, and replace the unknown with a bounded investigation artifact; never let implementation proceed on guessed sequencing.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

@@ -1,41 +1,25 @@
-# Debug: Skills
+# Debug Pattern — Skills
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Debug  
+> **Component:** skills.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Provide the domain procedures required to perform debug work reproducibly.
+| Skill | Path | Why required |
+|-------|------|--------------|
+| Debug | [`../../03-skill-engineering/skills/debug.skill.md`](../../03-skill-engineering/skills/debug.skill.md) | Characterization → hypotheses → fix → verify |
+| RCA | [`../../08-ai-sdlc/prompts/root-cause-analysis.prompt.md`](../../08-ai-sdlc/prompts/root-cause-analysis.prompt.md) | Production incidents needing blameless RCA |
+| Code search | harness | Similar-pattern scan |
 
-## Reproduction minimization
+## Skill activation triggers
 
-**Trigger:** A failure can be observed but has too many variables. **Procedure:** Remove inputs, services, timing conditions, and configuration one at a time while preserving the symptom and a known-good control. **Verification:** The smallest case reproduces at a recorded rate on a locked environment. **Unhappy path:** Instrument rather than guess when minimization makes an intermittent failure disappear.
+1. **Debug skill** — always for this pattern  
+2. **RCA prompt** — customer impact, SEV labeling, or post-incident requirement  
+3. **Code search** — after root cause is known
 
-## Hypothesis matrix
+## Verification that skills worked
 
-**Trigger:** More than one mechanism explains the symptom. **Procedure:** For each hypothesis, record predicted observations, contradicting observations, cheapest discriminating test, and expected control result. **Verification:** Every experiment can eliminate at least one candidate cause. **Unhappy path:** Collect new telemetry when hypotheses make identical predictions.
-
-## Controlled experimentation
-
-**Trigger:** A discriminating test is selected. **Procedure:** Capture baseline, vary exactly one factor, run treatment and control repeatedly, and retain raw output with environment fingerprint. **Verification:** Observed direction and magnitude match the surviving hypothesis and regression test. **Unhappy path:** Restore baseline before testing the next variable.
-
-## Tradeoffs
-
-Independent Debug skill verification spends a second practitioner pass to prevent an attractive artifact from substituting for reproducible domain evidence.
-
-## Anti-patterns
-
-For Debug, never claim skill completion from narrative alone; retain the domain inputs, transformations, thresholds, outputs, and unhappy-path result.
-
-## Enterprise considerations
-
-Enterprise Debug skill versions have named technical owners and mandatory review after a related incident, policy revision, or toolchain change.
-
-## Checklist
-
-- [ ] Reproduction minimization produced its named, independently verifiable artifact
-- [ ] Hypothesis matrix produced its named, independently verifiable artifact
-- [ ] Controlled experimentation produced its named, independently verifiable artifact
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- Debug: ≥3 hypotheses and a regression test  
+- RCA: one root cause + owners/due dates on actions (when used)  
+- Search: similar-risks table present (even if empty with “none found”)

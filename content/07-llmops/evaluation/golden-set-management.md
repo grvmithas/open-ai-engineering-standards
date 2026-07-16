@@ -1,6 +1,6 @@
 # Golden Set Management
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative OAIES implementation profile
 
@@ -20,8 +20,55 @@ Use before the first release and continuously after incidents and sampled produc
 4. Split development and locked holdout sets; detect benchmark contamination.
 5. Version changes, record label rationale, and add every confirmed production failure before closing its incident.
 
+## Case schema
+```yaml
+case:
+  id: refund-policy/en-US/edge/0042
+  schema_version: 2
+  task: grounded-answer
+  risk_tier: medium
+  locale: en-US
+  source:
+    type: adjudicated-production-failure
+    record_id: restricted-reference
+    collected_at: 2026-07-10
+    lawful_use_record: PRIV-218
+  input_ref: encrypted-object-version
+  context_refs:
+    - document_id: returns-policy
+      version: sha256:...
+      required_spans: ["section-3.2"]
+  expected:
+    claims:
+      - text: "Returns are accepted within 30 days."
+        support: "returns-policy#section-3.2"
+    prohibited: ["invented exception", "unapproved account action"]
+    acceptable_abstention: false
+  slices: [policy-exception, long-context]
+  severity_if_failed: high
+  labels:
+    authors: [qualified-role-a, qualified-role-b]
+    adjudicator: qualified-domain-role
+    rationale_ref: annotation-record
+  split: locked-holdout
+  content_hash: sha256:...
+```
+
+Store restricted payload separately from the manifest. Repository-visible records contain references, hashes, classification, and label lineage, not personal or confidential production content.
+
+## Sampling and maintenance
+- Allocate minimum cases by task × risk × locale × failure mode before random sampling; otherwise majority traffic hides rare severe paths.
+- Maintain development, release-regression, locked holdout, adversarial, and incident-sentinel partitions with separate access policy.
+- Report coverage as represented cells over required taxonomy cells and cases per cell. A large total count does not close an empty high-risk slice.
+- Add production failures through privacy review and adjudication; do not copy raw traces directly.
+- Detect near-duplicate contamination using normalized exact hashes plus embedding or locality-sensitive search reviewed by a human.
+- Rotate a portion of the holdout after confirmed exposure; preserve historical versions for reproducibility.
+
+## Dataset release gate
+Reject a dataset release when provenance or lawful-use metadata is missing, severe labels lack independent adjudication, required taxonomy cells are empty, payload/manifest hashes disagree, holdout readers exceed the approved group, or contamination exceeds the declared tolerance. Sign the accepted manifest and record the previous compatible evaluator baseline.
+
 ## Evidence contract
-The decision record is the **dataset card and signed manifest**. It records case ID; source provenance; consent basis; risk slice; label; adjudication; split; content hash. The evaluation data steward owns completeness; the evidence is invalid when provenance is missing or holdout contamination is detected. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+The decision record is the **dataset card and signed manifest**. It records case ID; source provenance; consent basis; risk slice; label; adjudication; split; content hash. The evaluation data steward owns completeness; the evidence is invalid when provenance is missing or holdout contamination is detected. Dataset, annotation, rubric, scorer, and run identifiers are content-addressed so a disputed result can be replayed.
 
 ## Failure response and recovery
 **Trigger:** a case leaks, is mislabeled, or appears in optimization data.
@@ -29,7 +76,7 @@ The decision record is the **dataset card and signed manifest**. It records case
 **Immediate response:** quarantine the dataset version, revoke holdout access, and rebuild affected baselines. Preserve the dataset card and signed manifest, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to golden set management.
 
 ## Decision authority
-The **evaluation data steward** accepts the operational decision. The **domain adjudication lead** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+The **evaluation data steward** accepts the operational decision. The **domain adjudication lead** provides independent challenge for high-risk scope, failed gates, or exceptions. Evaluation automation enforces the approved statistical rule; the evaluation and domain owners decide ambiguity, severe-case disposition, and residual uncertainty.
 
 ## Tradeoffs
 | Choice | Benefit | Cost |
@@ -46,12 +93,12 @@ The **evaluation data steward** accepts the operational decision. The **domain a
 - Require domain experts for regulated labels.
 
 ## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+For **Golden Set Management**, this informative profile governs measurement evidence for the stated decision only; it neither makes an evaluator authoritative nor transfers fitness decisions to a framework.
 
 | Source | Relationship for Golden Set Management | Boundary |
 |---|---|---|
-| NIST AI RMF | MAP 3; MEASURE 2.5 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clauses 7.5 and 8.4 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| NIST AI RMF | MAP 3; MEASURE 2.5 | Interpret outcomes against the documented use case, sampling frame, and uncertainty. |
+| ISO/IEC 42001 | 42001 clauses 7.5 and 8.4 | Use management-system evidence only within the organization’s declared scope and independent assessment process. |
 | Domain threat/control source | Data poisoning and sensitive-information disclosure | Test only the threats applicable to the documented system and release |
 
 ## Checklist

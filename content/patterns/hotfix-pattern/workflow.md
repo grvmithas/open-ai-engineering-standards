@@ -1,67 +1,61 @@
-# Hotfix: Workflow
+# Hotfix Pattern — Workflow
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Hotfix  
+> **Component:** workflow.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Apply the domain workflow to contain an active production defect with the smallest reversible intervention.
+## End-to-end flow
 
 ```mermaid
 flowchart TD
-  S1[1. Establish incident command, severity, roles, and update cadence] --> S2
-  S2[2. Contain blast radius using flags, rate limits, isolation, or rollback] --> S3
-  S3[3. State the narrow failed invariant and evidence; avoid broad diagnosis] --> S4
-  S4[4. Choose the smallest reversible remediation and explicit non-goals] --> S5
-  S5[5. Pair-author and independently review the hotfix] --> S6
-  S6[6. Test the exact failure, critical smoke path, and rollback] --> S7
-  S7[7. Canary under incident observation with automatic abort] --> S8
-  S8[8. Close emergency path; schedule full RCA and durable remediation]
-  S8 --> V{Domain metrics pass?}
-  V -->|No| R[execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment]
-  V -->|Yes| C[Retain evidence and close]
+    A[Detect harm] --> B[IC declares SEV + roles]
+    B --> C[Preserve evidence: freeze digests, traces, flags]
+    C --> D[Contain: flag off / traffic shift / LKG redeploy]
+    D --> E{Impact trending down?}
+    E -->|No| F[Escalate: broader disable / failover]
+    F --> D
+    E -->|Yes| G{Code still required?}
+    G -->|No| H[Monitor; open durable fix + RCA]
+    G -->|Yes| I[Minimal Diff Scout: path-only patch]
+    I --> J[Emergency review: IC + one reviewer]
+    J --> K[Deploy via hotfix lane + verify probes]
+    K --> L{Abort criteria?}
+    L -->|Trip| D
+    L -->|Pass| H
 ```
 
-## Procedure
+## Step procedure
 
-1. **Establish incident command,.** Establish incident command, severity, roles, and update cadence.
-2. **Contain blast radius.** Contain blast radius using flags, rate limits, isolation, or rollback.
-3. **State the narrow.** State the narrow failed invariant and evidence; avoid broad diagnosis.
-4. **Choose the smallest.** Choose the smallest reversible remediation and explicit non-goals.
-5. **Pair-author and independently.** Pair-author and independently review the hotfix.
-6. **Test the exact.** Test the exact failure, critical smoke path, and rollback.
-7. **Canary under incident.** Canary under incident observation with automatic abort.
-8. **Close emergency path;.** Close emergency path; schedule full RCA and durable remediation.
+| Step | Actor | Action | Exit criteria |
+|------|-------|--------|---------------|
+| 1 | On-call | Page / open channel | Channel live |
+| 2 | IC | Declare SEV, scribe, comms cadence | Roles in topic header |
+| 3 | Scribe | Timeline starts | Timestamps flowing |
+| 4 | Containment Advisor | Pick fastest reversible action | Harm reduced or next escalate |
+| 5 | Ops | Execute contain; preserve evidence | Metrics show improvement |
+| 6 | Minimal Diff Scout | If needed, smallest patch | Diff limited to failing path |
+| 7 | Reviewer + IC | Approve emergency change | Named ack |
+| 8 | Verification Runner | Probes + abort watch | Pass or abort to contain |
+| 9 | IC | Mitigated; schedule RCA + durable fix | Incident severity can step down |
 
-## Verification
+## Containment preference order
 
-- time to containment meets severity target
-- affected requests/users trend down after action
-- hotfix changes only authorized scope
-- rollback remains within incident RTO
+1. Feature flag / config kill switch  
+2. Traffic shift away from bad cohort / region  
+3. Redeploy last-known-good digest  
+4. Minimal code hotfix  
+5. Broader shutdown / maintenance mode (last resort)
 
-## Tradeoffs
+## Abort criteria for the hotfix deploy itself
 
-Hotfix workflow deliberately spends additional review time to protect "time to containment meets severity target"; evidence weakness triggers "Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment".
+Abort and return to containment if:
 
-## Anti-patterns
+- Error rate or probe does not improve within the SEV-specific window  
+- New error class appears  
+- Diff was expanded mid-review beyond agreed paths  
 
-Hotfix workflow rejects shortcuts around "Establish incident command, severity, roles, and update cadence." because they sever the evidence chain required for "time to containment meets severity target".
+## Parallelism rule
 
-## Enterprise considerations
-
-Hotfix workflow governance binds owner, policy revision, and retained proof to "time to containment meets severity target", with "Execute the preapproved command to restore the known-good artifact or disable the feature, then verify containment" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Establish incident command, severity, roles, and update cadence
-- [ ] Contain blast radius using flags, rate limits, isolation, or rollback
-- [ ] State the narrow failed invariant and evidence; avoid broad diagnosis
-- [ ] Choose the smallest reversible remediation and explicit non-goals
-- [ ] Pair-author and independently review the hotfix
-- [ ] Test the exact failure, critical smoke path, and rollback
-- [ ] Canary under incident observation with automatic abort
-- [ ] Close emergency path; schedule full RCA and durable remediation
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+One change thread under IC. Parallel “helpful” deploys are forbidden unless IC assigns a second thread with explicit non-overlapping scope.

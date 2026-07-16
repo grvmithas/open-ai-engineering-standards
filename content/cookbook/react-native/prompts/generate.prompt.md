@@ -8,11 +8,11 @@ Generate a production-ready screen, navigation flow, FlatList, native module, pl
 
 ## Why
 
-Domain logic is shared; platform behavior is explicit; native boundaries are typed; JS/UI threads and lists are measured on representative devices. This prompt requires native React Native artifacts instead of substituting a generic incident or code-generation checklist.
+Domain logic is shared; platform behavior is explicit; native boundaries are typed; JS/UI threads and lists are measured on representative devices. The generate decision is accepted only when `package.json`/lockfile, Podfile/lock, Gradle catalogs/wrapper, Xcode project, and platform deployment targets supports it; generic generate advice cannot establish that React Native state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized React Native evidence for the screen, navigation flow, FlatList, native module, platform adapter, or mobile release. Apply the invariant "Domain logic is shared; platform behavior is explicit; native boundaries are typed; JS/UI threads and lists are measured on representative devices." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Read React Native, React, navigation, native dependency, Gradle/AGP/Kotlin, Xcod
 
 ## Tradeoffs
 
-The prompt rejects fast code generation when React Native version, configuration, or target evidence is absent. That delay prevents plausible output from crossing an unsupported screen, navigation flow, FlatList, native module, platform adapter, or mobile release boundary.
+Generation waits for `package.json`/lockfile, Podfile/lock, Gradle catalogs/wrapper, Xcode project, and platform deployment targets and Metro config/resolution, generated native code/autolinking state, and debug/release build settings. That extra React Native discovery is justified because the output must prove "screen separates shared state from `.ios`/`.android` platform adapters" and survive native module missing/unlinked or architecture incompatible rather than merely compile.
 
 ## Anti-patterns
 

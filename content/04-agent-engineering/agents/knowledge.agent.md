@@ -77,6 +77,9 @@ Publishing unowned content, collapsing contradictory sources, stale policy retri
 ## Verification
 Validate schema, provenance links, owner, expiry, ACL matrix, duplicate clusters, and retrieval of current versus superseded records.
 
+## Domain Recovery Playbook
+Quarantine unowned, contradictory, stale, or overexposed records; restore the last authoritative version with provenance and propagate correction or deletion to downstream indexes.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

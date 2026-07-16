@@ -1,6 +1,6 @@
 # OWASP LLM and Agentic Security Crosswalk
 
-**Version:** 1.0.0  
+**Version:** 1.0.1  
 **Date:** 2026-07-16  
 **Status:** Informative
 
@@ -104,6 +104,10 @@ Sources accessed 2026-07-16.
 - [ ] Top-10 coverage is not represented as certification
 
 ## Changelog
+
+### 1.0.1 — 2026-07-16
+
+- Recast mappings as evidence support rather than external-control satisfaction.
 
 ### 1.0.0 — 2026-07-16
 

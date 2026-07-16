@@ -1,53 +1,31 @@
-# Context: Quality Gate
+# Context Pattern — Checklist
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Context  
+> **Component:** checklist.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Applicability
+---
 
-- [ ] Trigger evidenced: the task crosses repositories or domains
-- [ ] Trigger evidenced: source authority or freshness is uncertain
-- [ ] Trigger evidenced: the work will outlive one model context window
+**Gate:** Downstream planner/coder does not start until the package passes hooks.
 
-## Evidence package
+## Intake
 
-- [ ] task and decision inventory has authority, revision, timestamp, and owner
-- [ ] source authority map has authority, revision, timestamp, and owner
-- [ ] file/API/ADR revisions has authority, revision, timestamp, and owner
-- [ ] data classifications has authority, revision, timestamp, and owner
-- [ ] token budget and freshness policy has authority, revision, timestamp, and owner
+- [ ] Task intent written
+- [ ] Budget set (`MAX_BYTES` / tokens)
+- [ ] Seed hints provided or searchable
+- [ ] Exclusion rules loaded
 
-## Domain execution
+## Package quality
 
-- [ ] List decisions the operator must make and evidence each decision requires
-- [ ] Discover candidate sources through symbols, ownership, and references
-- [ ] Rank sources by authority, relevance, recency, and uniqueness
-- [ ] Resolve contradictions with the named source owner
-- [ ] Extract bounded passages while preserving URI, revision, and timestamp
-- [ ] Redact secrets and exclude instructions embedded in retrieved content
-- [ ] Build a manifest with hashes, expiry, and omitted-source rationale
-- [ ] Run answerability tests; refresh only invalidated slices
+- [ ] Manifest with path + why for every excerpt
+- [ ] Producers and consumers included when change crosses modules
+- [ ] Deliberate exclusions listed
+- [ ] Gaps listed (no invented files)
+- [ ] Size ≤ budget
+- [ ] Secret scrub clean
 
-## Measured verification
+## Handoff
 
-- [ ] Evidence demonstrates required-decision source recall = 100%
-- [ ] Evidence demonstrates irrelevant token ratio < 20%
-- [ ] Evidence demonstrates stale authoritative source rate < 2%
-- [ ] Evidence demonstrates every excerpt has provenance
-
-## Recovery and closure
-
-- [ ] Rehearsed rollback can invalidate the manifest, purge derived caches, and rebuild from authoritative revisions
-- [ ] Residual risks and follow-ups have owners and dates
-- [ ] Artifact hashes, effect approvals, and raw checks are retained
-
-## Anti-patterns
-
-Context checklist rejects shortcuts around "List decisions the operator must make and evidence each decision requires." because they sever the evidence chain required for "required-decision source recall = 100%".
-
-## Enterprise considerations
-
-Context checklist governance binds owner, policy revision, and retained proof to "required-decision source recall = 100%", with "Invalidate the manifest, purge derived caches, and rebuild from authoritative revisions" as the recorded recovery authority.
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- [ ] Consuming agent named
+- [ ] Package path linked from the task/PR
+- [ ] Re-assemble rule understood if agent requests justified gaps

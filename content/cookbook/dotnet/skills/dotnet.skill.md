@@ -45,7 +45,7 @@ DI lifetimes are valid; CancellationToken reaches I/O; one scoped DbContext owns
 
 ## Verification
 
-The evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. For manual checks, record environment, operator, exact steps, and result.
+The .NET evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. It must also retain solution/project files, `global.json`, lock files, target frameworks, and package graph. For manual ASP.NET Core endpoint, hosted service, EF Core unit of work, or application slice checks, record environment, operator, exact steps, and result.
 
 ## Failure recovery
 
@@ -61,7 +61,7 @@ Report the .NET boundary, facts, hypotheses, commands actually run, changed arti
 
 ## Termination criteria
 
-Finish when native validation, all applicable review/deployment gates, and recovery signals pass, or when a named owner accepts a documented blocker through the repository's risk process.
+Finish the .NET workflow only when native validation, applicable review/deployment gates, and recovery signals for invalid DI lifetime or missing registration and concurrent or overlong DbContext use pass. Otherwise record a named owner and the exact missing .NET evidence; risk acceptance does not convert a failed native check into a pass.
 
 ## Version-aware caution
 
@@ -69,7 +69,7 @@ Read `global.json`, target framework monikers, SDK lock, runtime image, and pack
 
 ## Tradeoffs
 
-This skill spends time fingerprinting .NET and collecting native evidence before editing. It reduces throughput for trivial changes but prevents incorrect commands, unsupported APIs, and state-destructive rollback.
+This skill fingerprints .NET through solution/project files, `global.json`, lock files, target frameworks, and package graph before editing and retains EF Core generated SQL, query plan, change tracker, and pool metrics before recovery. The added work is warranted when invalid DI lifetime or missing registration could make Stop new background work, drain hosted services within the host shutdown timeout, then redeploy the previous published artifact after checking EF migration compatibility.
 
 ## Anti-patterns
 

@@ -71,11 +71,11 @@ AWS governance enforces organization policies, centralized CloudTrail/configurat
 
 ## Checklist
 
-- [ ] Organization and account boundaries isolate ownership, billing, policy, and blast radius..
-- [ ] Workloads assume roles; long-lived IAM user keys are not application credentials..
-- [ ] Cells own compute, quotas, and dependencies required for independent failure..
-- [ ] CloudFormation change sets expose replacement and policy changes before execution..
-- [ ] Traffic shifting is coupled to CloudWatch user-impact alarms..
+- [ ] Organization and account boundaries isolate ownership, billing, policy, and blast radius.
+- [ ] Workloads assume roles; long-lived IAM user keys are not application credentials.
+- [ ] Cells own compute, quotas, and dependencies required for independent failure.
+- [ ] CloudFormation change sets expose replacement and policy changes before execution.
+- [ ] Traffic shifting is coupled to CloudWatch user-impact alarms.
 - [ ] Diagram matches deployed topology rather than an aspirational target.
 - [ ] Rollback path preserves state and mixed-version contracts.
 

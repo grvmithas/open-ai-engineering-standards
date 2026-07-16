@@ -1,41 +1,28 @@
-# Optimization: Skills
+# Optimization Pattern — Skills
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Optimization  
+> **Component:** skills.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Provide the domain procedures required to perform optimization work reproducibly.
+| Skill | Path / domain | Why required |
+|-------|---------------|--------------|
+| Profiling & tracing | Performance skill | Attribute dominant cost before coding |
+| Benchmark design | Perf / LLMOps cost skills | Fair A/B, warm-up, confidence intervals |
+| Feature flags | Release / platform skill | Kill-switch and progressive exposure |
+| Correctness oracles | Testing skill | Fail closed when faster ≠ correct |
 
-## Profile interpretation
+## Skill activation triggers
 
-**Trigger:** A target metric misses its threshold under a representative workload. **Procedure:** Correlate CPU, allocation, I/O, locks, queues, network, and downstream spans; distinguish utilization from saturation and causal cost from incidental samples. **Verification:** The dominant path explains enough baseline cost to achieve the proposed effect size. **Unhappy path:** Do not optimize a path whose maximum theoretical gain misses the target.
+1. **Profiling** — always before a hypothesis; re-run after candidate if bottleneck may have shifted  
+2. **Benchmark design** — whenever baseline or candidate results are produced  
+3. **Feature flags** — before any production-facing change lands  
+4. **Oracles** — every candidate evaluation; not optional for caching/concurrency changes
 
-## Benchmark design
+## Verification that skills worked
 
-**Trigger:** An optimization hypothesis names a mechanism. **Procedure:** Fix workload fingerprint, warmup, environment, control revision, repetitions, correctness oracle, and confidence interval before running treatment. **Verification:** Results are stable across order randomization and report variance and tails. **Unhappy path:** Discard contaminated runs rather than selecting favorable samples.
-
-## Capacity modeling
-
-**Trigger:** The change improves the measured benchmark. **Procedure:** Project throughput and saturation at growth and failure conditions; include shifted memory, storage, network, and vendor limits. **Verification:** Headroom meets the planning horizon without violating unit cost or SLO guardrails. **Unhappy path:** Keep the baseline when the optimization only moves the bottleneck.
-
-## Tradeoffs
-
-Independent Optimization skill verification spends a second practitioner pass to prevent an attractive artifact from substituting for reproducible domain evidence.
-
-## Anti-patterns
-
-For Optimization, never claim skill completion from narrative alone; retain the domain inputs, transformations, thresholds, outputs, and unhappy-path result.
-
-## Enterprise considerations
-
-Enterprise Optimization skill versions have named technical owners and mandatory review after a related incident, policy revision, or toolchain change.
-
-## Checklist
-
-- [ ] Profile interpretation produced its named, independently verifiable artifact
-- [ ] Benchmark design produced its named, independently verifiable artifact
-- [ ] Capacity modeling produced its named, independently verifiable artifact
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- Profiling: dominant cost named with ≥30% share or explicit “no dominant cost” stop  
+- Benchmark: control and candidate share workload ID and warm-up policy  
+- Flags: report names the flag and disable procedure  
+- Oracle: zero failures, or recommendation is forced KILL

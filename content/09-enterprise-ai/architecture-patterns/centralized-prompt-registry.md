@@ -1,6 +1,6 @@
 # Centralized Enterprise Prompt Registry
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative OAIES implementation profile
 
@@ -21,7 +21,7 @@ Use at multi-team scale or for regulated workloads.
 5. Export and restore; requalify registry provider.
 
 ## Evidence contract
-The decision record is the **enterprise prompt supply-chain record**. It records repository commit; review; build digest; signature; registry version; environment alias; cache; promotion; rollback. The PromptOps platform owner owns completeness; the evidence is invalid when runtime prompt differs from reviewed source. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+The decision record is the **enterprise prompt supply-chain record**. It records repository commit; review; build digest; signature; registry version; environment alias; cache; promotion; rollback. The PromptOps platform owner owns completeness; the evidence is invalid when runtime prompt differs from reviewed source. Architecture evidence binds diagrams and contracts to deployed adapters, policies, identities, data routes, resilience tests, and exit drills.
 
 ## Failure response and recovery
 **Trigger:** signature, approval, or registry integrity verification fails.
@@ -29,7 +29,7 @@ The decision record is the **enterprise prompt supply-chain record**. It records
 **Immediate response:** serve the last verified cached artifact and disable promotion writes. Preserve the enterprise prompt supply-chain record, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to centralized enterprise prompt registry.
 
 ## Decision authority
-The **PromptOps platform owner** accepts the operational decision. The **change-management control owner** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+The **PromptOps platform owner** accepts the operational decision. The **change-management control owner** provides independent challenge for high-risk scope, failed gates, or exceptions. Runtime policy may select only approved paths; architecture, service, data, and risk owners approve topology and failover boundaries.
 
 ## Tradeoffs
 | Choice | Benefit | Cost |
@@ -45,12 +45,12 @@ The **PromptOps platform owner** accepts the operational decision. The **change-
 - Keep vendor exit tooling.
 
 ## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+**Centralized Enterprise Prompt Registry** is an informative architecture pattern. Teams may use an equivalent design that satisfies the same boundaries, and no portability or provider-neutrality certification is implied.
 
 | Source | Relationship for Centralized Enterprise Prompt Registry | Boundary |
 |---|---|---|
-| NIST AI RMF | GOVERN 1.7; MANAGE 3.1 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clauses 7.5 and 8.1 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| NIST AI RMF | GOVERN 1.7; MANAGE 3.1 | Use NIST risk outcomes to evaluate the actual data and control plane. |
+| ISO/IEC 42001 | 42001 clauses 7.5 and 8.1 | ISO-related evidence is informative unless incorporated into the organization’s formally scoped system. |
 | Domain threat/control source | Supply-chain compromise and prompt leakage | Test only the threats applicable to the documented system and release |
 
 ## Checklist

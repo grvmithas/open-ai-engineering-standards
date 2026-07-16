@@ -1,41 +1,31 @@
-# Enterprise: Skills
+# Enterprise Pattern — Skills
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Enterprise  
+> **Component:** skills.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Provide the domain procedures required to perform enterprise work reproducibly.
+| Skill | Domain path | Why required |
+|-------|-------------|--------------|
+| Responsible AI / risk | `09-enterprise-ai/governance/` | Tiering and oversight obligations |
+| Least privilege | `09-enterprise-ai/security/least-privilege.md` | Tool and data scope minimization |
+| OAuth for MCP | `09-enterprise-ai/security/oauth-for-mcp.md` | Safe tool credentials |
+| Prompt-injection defense | `09-enterprise-ai/security/prompt-injection-defense.md` | Untrusted content boundaries |
+| Audit logging | `09-enterprise-ai/governance/audit-logging.md` | Evidence and forensics |
+| Sandboxing | `09-enterprise-ai/security/sandboxing.md` | Contain tool side effects |
 
-## Use-case risk tiering
+## Skill activation triggers
 
-**Trigger:** A new AI use case or material capability change is proposed. **Procedure:** Score impact, autonomy, affected population, data sensitivity, reach, detectability, and reversibility; map the result to prohibited, high, medium, or low controls. **Verification:** Independent risk review reproduces the tier from inventory evidence. **Unhappy path:** Block deployment when ownership, purpose, or affected population is unknown.
+1. **Risk** — every new use case and every material change  
+2. **Least privilege / MCP OAuth** — any tool with side effects  
+3. **Injection defense** — any untrusted user or retrieved content in context  
+4. **Audit logging** — before pilot enablement  
+5. **Sandboxing** — code execution or high-impact tools
 
-## Control mapping
+## Verification that skills worked
 
-**Trigger:** The use-case tier is approved. **Procedure:** Map each identified harm to preventive, detective, responsive, and evidence controls with owner, frequency, threshold, and exception path. **Verification:** Every high risk has operating-effectiveness evidence, not policy text alone. **Unhappy path:** Add a compensating control and expiry when the standard control cannot operate.
-
-## Model change governance
-
-**Trigger:** Model, prompt, retrieval, tools, or policy will change. **Procedure:** Version the complete bundle, rerun tier-specific evaluations, compare cohorts, canary tenants, and retain a kill switch. **Verification:** Runtime bundle digest matches approval and harm indicators stay within limits. **Unhappy path:** Restore the last approved bundle and revoke changed tool authority.
-
-## Tradeoffs
-
-Independent Enterprise skill verification spends a second practitioner pass to prevent an attractive artifact from substituting for reproducible domain evidence.
-
-## Anti-patterns
-
-For Enterprise, never claim skill completion from narrative alone; retain the domain inputs, transformations, thresholds, outputs, and unhappy-path result.
-
-## Enterprise considerations
-
-Enterprise Enterprise skill versions have named technical owners and mandatory review after a related incident, policy revision, or toolchain change.
-
-## Checklist
-
-- [ ] Use-case risk tiering produced its named, independently verifiable artifact
-- [ ] Control mapping produced its named, independently verifiable artifact
-- [ ] Model change governance produced its named, independently verifiable artifact
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- Risk: tier matches rubric criteria written in the package  
+- Privilege: tool allowlist is deny-by-default  
+- Logging: redaction rules exist for sensitive fields  
+- Kill switch: drill log shows disable without engineering heroics

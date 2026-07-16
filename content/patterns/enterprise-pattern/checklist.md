@@ -1,53 +1,38 @@
-# Enterprise: Quality Gate
+# Enterprise Pattern — Checklist
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Enterprise  
+> **Component:** checklist.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Applicability
+---
 
-- [ ] Trigger evidenced: regulated or personal data is processed
-- [ ] Trigger evidenced: AI contributes to a material decision
-- [ ] Trigger evidenced: shared services span business units or regions
+**Gate:** No production/pilot traffic until checked items for the assigned tier are done.
 
-## Evidence package
+## Inventory & risk
 
-- [ ] AI system inventory has authority, revision, timestamp, and owner
-- [ ] use-case risk assessment has authority, revision, timestamp, and owner
-- [ ] data flow and classification has authority, revision, timestamp, and owner
-- [ ] model/vendor evaluation has authority, revision, timestamp, and owner
-- [ ] control map, SLOs, and incident obligations has authority, revision, timestamp, and owner
+- [ ] Inventory ID assigned and linked from the service catalog
+- [ ] Business and technical owners named
+- [ ] Data classes and jurisdictions documented
+- [ ] Risk tier assigned from the org rubric (not invented ad hoc)
+- [ ] RACI for incidents and model changes recorded
 
-## Domain execution
+## Controls & runtime
 
-- [ ] Register use case, owner, model, purpose, users, and prohibited uses
-- [ ] Tier risk from impact, autonomy, data, reach, and reversibility
-- [ ] Map data flow, legal basis, residency, retention, and subprocessors
-- [ ] Threat-model model, retrieval, tools, supply chain, and human handoffs
-- [ ] Select controls and independent evidence for the risk tier
-- [ ] Evaluate quality, safety, bias, privacy, security, and accessibility
-- [ ] Deploy through tenant canaries with policy enforcement and kill switch
-- [ ] Continuously monitor drift, incidents, vendor changes, and control effectiveness
+- [ ] Every mandatory control mapped to an enforcement point
+- [ ] Policy bundle pins models, prompt versions, tool allowlist, residency
+- [ ] Gateway shows active bundle version matching the package
+- [ ] Credentials for tools are least-privilege and revocable
+- [ ] Audit logging + redaction configured and reachable by responders
+- [ ] Kill-switch drill completed within tier RTO (≤15m high tier)
 
-## Measured verification
+## Enablement
 
-- [ ] Evidence demonstrates inventory completeness = 100%
-- [ ] Evidence demonstrates high-risk controls have independent evidence
-- [ ] Evidence demonstrates policy decisions are attributable and retrievable < 1 business day
-- [ ] Evidence demonstrates risk-tier SLO and harm indicators stay within threshold
+- [ ] Pilot scope limited (tenants/regions) with exit criteria
+- [ ] Quality/safety/cost alerts routed to on-call
+- [ ] Required approvers recorded (risk/privacy/security as tier demands)
+- [ ] Exception records (if any) have owner + expiry
 
-## Recovery and closure
+## Anti-stubs
 
-- [ ] Rehearsed rollback can disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle
-- [ ] Residual risks and follow-ups have owners and dates
-- [ ] Artifact hashes, effect approvals, and raw checks are retained
-
-## Anti-patterns
-
-Enterprise checklist rejects shortcuts around "Register use case, owner, model, purpose, users, and prohibited uses." because they sever the evidence chain required for "inventory completeness = 100%".
-
-## Enterprise considerations
-
-Enterprise checklist governance binds owner, policy revision, and retained proof to "inventory completeness = 100%", with "Disable the use case at the policy gateway, revoke tool credentials, and restore the approved model-prompt-policy bundle" as the recorded recovery authority.
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- [ ] No “we’re compliant because vendor says so” as sole evidence
+- [ ] No standing debug bypass that disables the allowlist

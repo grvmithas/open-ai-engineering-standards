@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { navigation, NavItem } from '@/lib/navigation';
@@ -9,37 +9,56 @@ interface SidebarProps {
   onLinkClick?: () => void;
 }
 
+function containsPath(item: NavItem, pathname: string): boolean {
+  return `/docs/${item.slug}` === pathname || Boolean(item.children?.some(child => containsPath(child, pathname)));
+}
+
+function initialExpansion(items: NavItem[], pathname: string, expanded: Record<string, boolean> = {}) {
+  for (const item of items) {
+    if (item.children?.some(child => containsPath(child, pathname))) {
+      expanded[item.slug] = true;
+      initialExpansion(item.children, pathname, expanded);
+    }
+  }
+  return expanded;
+}
+
+function filterNavigation(items: NavItem[], query: string): NavItem[] {
+  if (!query) return items;
+  return items.flatMap(item => {
+    const children = item.children ? filterNavigation(item.children, query) : [];
+    const matches = item.title.toLowerCase().includes(query) || item.slug.toLowerCase().includes(query);
+    return matches || children.length > 0 ? [{ ...item, children: children.length > 0 ? children : undefined }] : [];
+  });
+}
+
 export default function Sidebar({ onLinkClick }: SidebarProps) {
   const pathname = usePathname();
-  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>(() => {
-    // Expand categories matching pathname initially
-    const initial: Record<string, boolean> = {};
-    navigation.forEach(item => {
-      if (item.children) {
-        const hasActiveChild = item.children.some(child => `/docs/${child.slug}` === pathname);
-        if (hasActiveChild || `/docs/${item.slug}` === pathname) {
-          initial[item.title] = true;
-        }
-      }
-    });
-    return initial;
-  });
+  const [query, setQuery] = useState('');
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>(
+    () => initialExpansion(navigation, pathname),
+  );
+  const normalizedQuery = query.trim().toLowerCase();
+  const visibleNavigation = useMemo(() => filterNavigation(navigation, normalizedQuery), [normalizedQuery]);
 
-  const toggleCategory = (title: string) => {
+  const toggleCategory = (slug: string) => {
     setExpandedCategories(prev => ({
       ...prev,
-      [title]: !prev[title]
+      [slug]: !prev[slug]
     }));
   };
 
-  const renderNavItem = (item: NavItem) => {
+  const renderNavItem = (item: NavItem, depth = 0) => {
     const href = `/docs/${item.slug}`;
     const isActive = pathname === href;
     const hasChildren = !!item.children && item.children.length > 0;
-    const isExpanded = expandedCategories[item.title];
+    const isExpanded =
+      Boolean(normalizedQuery) ||
+      expandedCategories[item.slug] ||
+      Boolean(item.children?.some(child => containsPath(child, pathname)));
 
     return (
-      <div key={item.title} className="mb-1">
+      <li key={`${item.slug}-${depth}`}>
         <div className="flex items-center justify-between group">
           {hasChildren ? (
             <div
@@ -53,6 +72,7 @@ export default function Sidebar({ onLinkClick }: SidebarProps) {
                 href={href}
                 onClick={onLinkClick}
                 className="flex min-w-0 flex-1 items-center gap-2 py-1.5 pl-3"
+                style={{ paddingLeft: `${0.75 + depth * 0.65}rem` }}
               >
                 {item.icon && <span className="text-sm">{item.icon}</span>}
                 <span className="truncate">{item.title}</span>
@@ -64,7 +84,7 @@ export default function Sidebar({ onLinkClick }: SidebarProps) {
               </Link>
               <button
                 type="button"
-                onClick={() => toggleCategory(item.title)}
+                onClick={() => toggleCategory(item.slug)}
                 aria-expanded={Boolean(isExpanded)}
                 aria-label={`${isExpanded ? 'Collapse' : 'Expand'} ${item.title}`}
                 className="p-2.5"
@@ -83,6 +103,7 @@ export default function Sidebar({ onLinkClick }: SidebarProps) {
                   ? 'bg-violet-950/35 text-violet-300 border border-violet-950/30 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]' 
                   : 'text-slate-300 hover:bg-slate-900 hover:text-white'
               }`}
+              style={{ paddingLeft: `${0.75 + depth * 0.65}rem` }}
             >
               {item.icon && <span className="text-sm">{item.icon}</span>}
               <span>{item.title}</span>
@@ -96,35 +117,32 @@ export default function Sidebar({ onLinkClick }: SidebarProps) {
         </div>
 
         {hasChildren && isExpanded && (
-          <div className="pl-4 mt-1 border-l border-violet-950/20 ml-4 space-y-1">
-            {item.children!.map(child => {
-              const childHref = `/docs/${child.slug}`;
-              const isChildActive = pathname === childHref;
-
-              return (
-                <Link
-                  key={child.title}
-                  href={childHref}
-                  onClick={onLinkClick}
-                  className={`block py-1.5 px-3 text-[11px] font-medium rounded-md transition duration-150 ${
-                    isChildActive
-                      ? 'text-violet-300 bg-violet-950/15 border-l-2 border-violet-500 font-semibold'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-950/30'
-                  }`}
-                >
-                  {child.title}
-                </Link>
-              );
-            })}
-          </div>
+          <ul className="mt-1 space-y-1 border-l border-violet-950/20">
+            {item.children!.map(child => renderNavItem(child, depth + 1))}
+          </ul>
         )}
-      </div>
+      </li>
     );
   };
 
   return (
-    <nav className="space-y-1">
-      {navigation.map(item => renderNavItem(item))}
+    <nav aria-label="Documentation">
+      <label className="mb-3 grid gap-1.5 px-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+        Filter navigation
+        <input
+          type="search"
+          value={query}
+          onChange={event => setQuery(event.target.value)}
+          placeholder="Title or path…"
+          className="rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-xs font-normal normal-case tracking-normal text-white outline-none placeholder:text-slate-600 focus:border-violet-700 focus:ring-2 focus:ring-violet-700/20"
+        />
+      </label>
+      <ul className="space-y-1">
+        {visibleNavigation.map(item => renderNavItem(item))}
+      </ul>
+      {visibleNavigation.length === 0 && (
+        <p className="px-3 py-4 text-center text-xs text-slate-500">No navigation entries match.</p>
+      )}
     </nav>
   );
 }

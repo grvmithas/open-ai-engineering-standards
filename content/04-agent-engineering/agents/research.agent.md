@@ -76,6 +76,9 @@ Stale documentation, SEO content masquerading as authority, version mismatch, ci
 ## Verification
 Resolve cited URLs; verify quotations in source; compare version/date; require two independent sources for high-impact claims where available.
 
+## Domain Recovery Playbook
+Retract unsupported claims, retain the contradiction and source ledger, narrow the conclusion, and hand off missing empirical questions as explicit experiments.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

@@ -45,7 +45,7 @@ The event loop remains non-blocking; concurrency is bounded; AbortSignal, errors
 
 ## Verification
 
-The evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. For manual checks, record environment, operator, exact steps, and result.
+The Node.js evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. It must also retain runtime and package-manager pin plus lockfile integrity. For manual HTTP handler, worker, stream pipeline, package, or process lifecycle checks, record environment, operator, exact steps, and result.
 
 ## Failure recovery
 
@@ -61,7 +61,7 @@ Report the Node.js boundary, facts, hypotheses, commands actually run, changed a
 
 ## Termination criteria
 
-Finish when native validation, all applicable review/deployment gates, and recovery signals pass, or when a named owner accepts a documented blocker through the repository's risk process.
+Finish the Node.js workflow only when native validation, applicable review/deployment gates, and recovery signals for unhandled promise rejection or uncaught exception and event-loop blocking and CPU saturation pass. Otherwise record a named owner and the exact missing Node.js evidence; risk acceptance does not convert a failed native check into a pass.
 
 ## Version-aware caution
 
@@ -69,7 +69,7 @@ Read `engines.node`, `.nvmrc`/toolchain files, the lockfile, and the runtime ima
 
 ## Tradeoffs
 
-This skill spends time fingerprinting Node.js and collecting native evidence before editing. It reduces throughput for trivial changes but prevents incorrect commands, unsupported APIs, and state-destructive rollback.
+This skill fingerprints Node.js through runtime and package-manager pin plus lockfile integrity before editing and retains event-loop delay, heap, CPU profile, active handles, and request trace before recovery. The added work is warranted when unhandled promise rejection or uncaught exception could make Stop new admission, drain workers and keep idempotency records, then route to the previous image; do not kill consumers while acknowledgements or writes are in flight.
 
 ## Anti-patterns
 
@@ -85,7 +85,7 @@ Node service governance pins runtime and package-manager lines, reviews install 
 
 - [Node.js API](https://nodejs.org/docs/latest/api/)
 - [Don't block the event loop](https://nodejs.org/en/learn/asynchronous-work/dont-block-the-event-loop)
-- [Node.js diagnostics](https://nodejs.org/en/learn/diagnostics)
+- [Node.js diagnostics](https://nodejs.org/en/learn/diagnostics/user-journey)
 - [OWASP Node.js security](https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html)
 
 ## Checklist

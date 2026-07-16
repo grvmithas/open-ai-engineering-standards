@@ -45,7 +45,7 @@ Schema exposes domain capabilities; authorization is enforced at trusted resolve
 
 ## Verification
 
-The evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. For manual checks, record environment, operator, exact steps, and result.
+The GraphQL evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. It must also retain canonical SDL, generated schema, registry/composition result, and breaking-change report. For manual schema, resolver, request DataLoader, gateway, persisted operation, or federated subgraph checks, record environment, operator, exact steps, and result.
 
 ## Failure recovery
 
@@ -61,7 +61,7 @@ Report the GraphQL boundary, facts, hypotheses, commands actually run, changed a
 
 ## Termination criteria
 
-Finish when native validation, all applicable review/deployment gates, and recovery signals pass, or when a named owner accepts a documented blocker through the repository's risk process.
+Finish the GraphQL workflow only when native validation, applicable review/deployment gates, and recovery signals for non-null propagation and partial response and N+1 resolver fan-out pass. Otherwise record a named owner and the exact missing GraphQL evidence; risk acceptance does not convert a failed native check into a pass.
 
 ## Version-aware caution
 
@@ -69,7 +69,7 @@ Record GraphQL specification assumptions, server/framework, client, federation/d
 
 ## Tradeoffs
 
-This skill spends time fingerprinting GraphQL and collecting native evidence before editing. It reduces throughput for trivial changes but prevents incorrect commands, unsupported APIs, and state-destructive rollback.
+This skill fingerprints GraphQL through canonical SDL, generated schema, registry/composition result, and breaking-change report before editing and retains resolver trace tree, per-field errors, downstream query count, DataLoader batch/cache evidence before recovery. The added work is warranted when non-null propagation and partial response could make Route resolvers/subgraphs back to the previous implementation while leaving additive schema visible but safely unavailable/deprecated; remove schema only after registered clients no longer reference it.
 
 ## Anti-patterns
 

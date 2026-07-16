@@ -1,6 +1,6 @@
 # NIST AI Risk Crosswalk
 
-**Version:** 1.0.0  
+**Version:** 1.0.1  
 **Date:** 2026-07-16  
 **Status:** Informative
 
@@ -105,6 +105,10 @@ Sources accessed 2026-07-16.
 - [ ] No NIST certification or endorsement claim is made
 
 ## Changelog
+
+### 1.0.1 — 2026-07-16
+
+- Made relationship claims evidence-specific and aligned mappings with P/A/I classifications.
 
 ### 1.0.0 — 2026-07-16
 

@@ -1,47 +1,27 @@
-# Migration: Enterprise Operations
+# Migration Pattern — Enterprise Notes
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Migration  
+> **Component:** enterprise-notes.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Migration enterprise-notes operationalizes this pattern outcome: transition data or services while preserving invariants and a tested return path.
+## Audit trail
 
-## Tailored controls
+Retain: consumer inventory, phase PRs, recon outputs, soak metrics, cutover approver (SSO), PONR acknowledgment. Link to change ticket.
 
-Migration evidence includes data lineage, residency, retention, backup encryption, processor changes, and customer notification. Finance requires independent reconciliation sign-off before contract.
+## Separation of duties
 
-## Governance model
+| Role | Allowed | Forbidden (High-risk) |
+|------|---------|------------------------|
+| Migration author | Design + implement phases | Sole cutover approval |
+| Data owner | Approve recon semantics | Skip recon |
+| SRE / release | Execute cutover window | Contract without soak file |
 
-Migration enterprise-notes governance binds owner, policy revision, and retained proof to "record and monetary reconciliation = 100%", with "Stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events" as the recorded recovery authority.
+## Regulated data
 
-## Metrics and assurance
+Personal or financial data migrations need data-owner sign-off on reconciliation meaning — not only “row counts match.”
 
-- Control dashboard reports record and monetary reconciliation = 100%.
-- Control dashboard reports unclassified mismatch count = 0.
-- Control dashboard reports error-budget burn stays below abort threshold.
-- Control dashboard reports restore completes within RTO.
+## Anti-claim
 
-Migration enterprise-notes metrics and assurance gate 3 is accepted only when "record and monetary reconciliation = 100%" is source-verifiable; otherwise, stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events.
-
-## Tradeoffs
-
-Migration enterprise-notes deliberately spends additional review time to protect "record and monetary reconciliation = 100%"; evidence weakness triggers "Stop writers, route to the compatibility path, restore the last verified checkpoint, and reconcile replayed events".
-
-## Anti-patterns
-
-Migration enterprise-notes rejects shortcuts around "Define invariants, loss tolerance, RPO, RTO, and abort thresholds." because they sever the evidence chain required for "record and monetary reconciliation = 100%".
-
-## Citations
-
-- [AWS migration best practices](https://docs.aws.amazon.com/prescriptive-guidance/latest/strategy-database-migration/best-practices.html)
-- [Martin Fowler Parallel Change](https://martinfowler.com/bliki/ParallelChange.html)
-- [Google SRE data integrity](https://sre.google/sre-book/data-integrity/)
-
-## Checklist
-
-- [ ] RACI, data flow, threat model, capacity, and recovery are current
-- [ ] Audit evidence can be retrieved within one business day
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+Passing internal gates is **not** an external audit opinion on data integrity. Map into existing change-advisory processes where required.

@@ -45,7 +45,7 @@ Native semantics come first; every operation is keyboard-complete; focus is dete
 
 ## Verification
 
-The evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. For manual checks, record environment, operator, exact steps, and result.
+The Accessibility Engineering evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. It must also retain semantic DOM and accessibility tree showing computed name, role, value, state, relationships, and landmarks. For manual semantic component, keyboard flow, focus transition, WCAG audit, remediation, or conformance release checks, record environment, operator, exact steps, and result.
 
 ## Failure recovery
 
@@ -61,7 +61,7 @@ Report the Accessibility Engineering boundary, facts, hypotheses, commands actua
 
 ## Termination criteria
 
-Finish when native validation, all applicable review/deployment gates, and recovery signals pass, or when a named owner accepts a documented blocker through the repository's risk process.
+Finish the Accessibility Engineering workflow only when native validation, applicable review/deployment gates, and recovery signals for missing or incorrect accessible name/description and focus lost, trapped, obscured, or returned incorrectly pass. Otherwise record a named owner and the exact missing Accessibility Engineering evidence; risk acceptance does not convert a failed native check into a pass.
 
 ## Version-aware caution
 
@@ -69,7 +69,7 @@ Record the conformance target (for example WCAG 2.2 level), browser/OS/screen-re
 
 ## Tradeoffs
 
-This skill spends time fingerprinting Accessibility Engineering and collecting native evidence before editing. It reduces throughput for trivial changes but prevents incorrect commands, unsupported APIs, and state-destructive rollback.
+This skill fingerprints Accessibility Engineering through semantic DOM and accessibility tree showing computed name, role, value, state, relationships, and landmarks before editing and retains screen-reader transcript across the supported browser/AT matrix before recovery. The added work is warranted when missing or incorrect accessible name/description could make Disable the changed component or restore the previous accessible implementation through a feature flag; do not roll back content/data changes in a way that removes labels, alternatives, or user progress.
 
 ## Anti-patterns
 

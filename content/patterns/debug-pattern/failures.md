@@ -1,41 +1,37 @@
-# Debug: Failure Modes
+# Debug Pattern — Failures
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Debug  
+> **Component:** failures.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Debug failures operationalizes this pattern outcome: isolate a software defect through reproducible observations and falsifiable experiments.
+## Failure 1: Symptom → fix
 
-| Failure | Observable signal | Recovery |
-|---|---|---|
-| shotgun debugging | many variables change together | restore baseline and test one hypothesis |
-| log-led certainty | message is effect, not cause | trace backward to mechanism |
-| non-reproduction dismissal | intermittent issue is closed | instrument frequency and conditions |
-| fix masks symptom | alert clears but invariant still fails | test the specification directly |
+**Symptom:** Catch-all handler returns 200; underlying race remains.  
+**Cause:** No hypothesis testing.  
+**Recovery:** Revert masking change; restart debug workflow; fix cause.
 
-## Rollback failure
+## Failure 2: Multi-variable thrash
 
-Debug failures rollback failure gate 2 is accepted only when "reproduction rate before fix is recorded" is source-verifiable; otherwise, revert probes and fix, restore the locked environment, and preserve diagnostic artifacts.
+**Symptom:** “It works” after changing code, config, and infra together.  
+**Cause:** Experiments not isolated.  
+**Recovery:** Bisect; re-confirm with one variable; discard unrelated changes.
 
-## Tradeoffs
+## Failure 3: No regression test
 
-Debug failures deliberately spends additional review time to protect "reproduction rate before fix is recorded"; evidence weakness triggers "Revert probes and fix, restore the locked environment, and preserve diagnostic artifacts".
+**Symptom:** Bug returns after a refactor.  
+**Cause:** Fix merged without failing-first test.  
+**Recovery:** Add test; keep it in CI; treat absence as process defect.
 
-## Anti-patterns
+## Failure 4: Cannot reproduce → guess
 
-Debug failures rejects shortcuts around "Write a deterministic symptom statement without assigning cause." because they sever the evidence chain required for "reproduction rate before fix is recorded".
+**Symptom:** Patch based on intuition; prod still broken.  
+**Cause:** Skipped repro locking.  
+**Recovery:** Capture more telemetry; improve repro; avoid prod speculation patches.
 
-## Enterprise considerations
+## Failure 5: Fix everywhere silently
 
-Debug failures governance binds owner, policy revision, and retained proof to "reproduction rate before fix is recorded", with "Revert probes and fix, restore the locked environment, and preserve diagnostic artifacts" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Detection exists for shotgun debugging
-- [ ] Detection exists for log-led certainty
-- [ ] Detection exists for non-reproduction dismissal
-- [ ] Detection exists for fix masks symptom
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+**Symptom:** Huge PR “while debugging” touches unrelated modules.  
+**Cause:** Similarity scan turned into drive-by rewrite.  
+**Recovery:** Split follow-ups; merge only causal fix + test.

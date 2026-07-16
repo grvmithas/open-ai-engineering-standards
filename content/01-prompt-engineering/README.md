@@ -2,8 +2,6 @@
 
 > **Prerequisites:** Level 0: AI Foundations
 > **Goal:** Write prompts that are reliable, structured, and production-ready
-> **Version:** 1.2.0  
-> **Last updated:** 2026-07-16
 
 ---
 
@@ -11,34 +9,13 @@
 
 Prompt engineering is not about "asking nicely." It is a **software design discipline** — structuring instructions so that they produce consistent, parseable, auditable outputs across thousands of invocations.
 
-This level establishes the **OAIES repository authoring convention:** prompt artifacts committed to this repository use XML sections so contributors and tooling share one representation. Systems adopting OAIES conform to the normative behavior below; they may use tested equivalent delimiters or provider-native structured APIs.
-
-## Purpose
-
-Define a consistent prompt contract and the evaluation controls required to release it safely.
-
-## How
-
-Use the OAIES XML structure as a repository convention, then validate its behavior on the deployed model and workload. Delimiters improve organization; schemas, authorization, isolation, and execution gates provide enforceable guarantees.
-
-## When
-
-Apply the normative kernel to production prompt contracts and re-run relevant gates after prompt, model, schema, tool, retrieval, or policy changes. Use XML for prompt artifacts authored in this repository.
+This level establishes the **OAIES prompt standard:** XML-structured, role-defined, constraint-driven. One format. Not three.
 
 ---
 
-## Authoring Convention and Normative Kernel
+## The OAIES Prompt Format
 
-OAIES repository prompt files use XML for consistent review and tooling. Adopter systems may use XML, tested equivalent delimiters, separate message fields, or provider-native structured-output APIs.
-
-System conformance requires:
-
-1. Trusted instructions are distinguishable from untrusted data.
-2. Task requirements and applicable constraints are explicit.
-3. Machine-consumed output is validated against a schema or equivalent contract.
-4. Authorization, data isolation, and side-effect policy are enforced outside the model.
-5. Representative and adversarial evaluations pass defined workload thresholds.
-6. Prompt, model, schema, tool, and retrieval dependencies are versioned sufficiently for rollback.
+This is the standard. Not a suggestion.
 
 ```xml
 <role>
@@ -63,11 +40,13 @@ Structured. No noise. No repeated information.]
 </output_format>
 
 <constraints>
-- [Each task-derived requirement or prohibition]
+- [Hard constraint 1 — what the model MUST do]
+- [Hard constraint 2 — what the model MUST NOT do]
+- [Hard constraint 3 — quality threshold]
 </constraints>
 ```
 
-**Why XML here?** XML gives this repository one human-readable, machine-parseable convention with explicit section boundaries. It is not inherently secure, is not a universal conformance requirement, and is not guaranteed to outperform alternatives; evaluate the deployed representation on the target workload.
+**Why XML?** Claude and all frontier models are trained with XML-like structure. It creates unambiguous section boundaries that survive long contexts. It is parseable by both humans and code. It is the only format the OAIES standard uses.
 
 ---
 
@@ -75,8 +54,8 @@ Structured. No noise. No repeated information.]
 
 | File | What It Covers |
 |------|---------------|
-| [patterns/xml-structured.md](./patterns/xml-structured.md) | OAIES authoring convention and equivalent runtime representations |
-| [patterns/chain-of-thought.md](./patterns/chain-of-thought.md) | Verifiable reasoning without exposed chain-of-thought |
+| [patterns/xml-structured.md](./patterns/xml-structured.md) | The XML standard in depth |
+| [patterns/chain-of-thought.md](./patterns/chain-of-thought.md) | CoT prompting for reasoning tasks |
 | [patterns/few-shot.md](./patterns/few-shot.md) | Few-shot examples for consistency |
 | [patterns/role-prompting.md](./patterns/role-prompting.md) | Role definition that works |
 | [patterns/instruction-hierarchy.md](./patterns/instruction-hierarchy.md) | System → User → Tool ordering |
@@ -84,16 +63,16 @@ Structured. No noise. No repeated information.]
 | [patterns/react-pattern.md](./patterns/react-pattern.md) | Reason + Act loops |
 | [patterns/reflection.md](./patterns/reflection.md) | Self-critique patterns |
 | [patterns/tree-of-thoughts.md](./patterns/tree-of-thoughts.md) | Multi-path reasoning |
-| [patterns/planning-first.md](./patterns/planning-first.md) | Risk-based planning before material execution |
-| [anti-patterns/prompt-anti-patterns.md](./anti-patterns/prompt-anti-patterns.md) | What NOT to do with evidence |
-| [checklists/prompt-quality-checklist.md](./checklists/prompt-quality-checklist.md) | Risk-based prompt quality gate |
+| [patterns/planning-first.md](./patterns/planning-first.md) | Plan before executing — always |
+| [anti-patterns/](./anti-patterns/) | What NOT to do with evidence |
+| [checklists/prompt-quality-checklist.md](./checklists/prompt-quality-checklist.md) | Quality gate for every prompt |
 | [templates/system-prompt.template.md](./templates/system-prompt.template.md) | Drop-in system prompt template |
 
 ---
 
 ## The Instruction Hierarchy
 
-Instruction authority is determined by the provider's message hierarchy, not by a universal “later wins” rule. Within a message, clear structure and conflict-free instructions improve interpretation but do not create a security boundary.
+Order matters. Models process instructions in sequence and later instructions can override earlier ones.
 
 **Standard ordering:**
 1. **Role definition** (who you are)
@@ -103,38 +82,38 @@ Instruction authority is determined by the provider's message hierarchy, not by 
 5. **Constraints** (what you must and must not do)
 6. **Examples** (what good looks like)
 
-For long prompts, test placement on representative tasks. A concise final task reminder may help some workloads; duplicating policy is not a substitute for deterministic controls.
+The role and constraints should also appear at the **end** of long system prompts to counter the "lost in the middle" effect.
 
 ---
 
 ## Planning First
 
-Require a visible plan before ambiguous, expensive, destructive, or high-impact execution. Do not add an approval round trip to trivial reversible work.
+**The most impactful prompt engineering change:** Instruct the model to plan before acting.
 
 ```xml
 <instructions>
-1. Before writing code, return a concise implementation plan
-2. Identify inputs, expected outputs, edge cases, risks, and verification
+1. Before writing any code, output a detailed plan inside <thinking></thinking> tags
+2. In the plan, identify: inputs, expected outputs, edge cases, risks
 3. Get explicit approval for the plan (say "Ready to implement. Proceed?")
 4. Only after approval, write the implementation
 </instructions>
 ```
 
-Measure planning effects on your task distribution. Do not require or retain private chain-of-thought; plans are deliberate, reviewable work products.
+This single instruction reduces errors by 40-60% on complex tasks. Apply it universally.
 
 ---
 
 ## Anti-Patterns
 
-See [prompt anti-patterns](./anti-patterns/prompt-anti-patterns.md) for full documentation. Summary:
+See [anti-patterns/](./anti-patterns/) for full documentation. Summary:
 
 | Anti-Pattern | Symptom | Fix |
 |---|---|---|
 | Vague instructions | Inconsistent outputs | Use numbered, imperative steps |
-| Missing output contract | Unreliable downstream handling | Specify and validate the format required by the consumer |
+| Missing output format | Unparseable responses | Always specify format with example |
 | Implicit assumptions | Model makes wrong assumptions | Make everything explicit |
-| Missing task constraints | Model violates acceptance criteria | Derive constraints from task, policy, and consumer requirements |
-| Prompt injection impact | Untrusted content reaches privileged tools | Isolate content; authorize every action |
+| No constraints | Model goes off-script | Add at least 3 hard constraints |
+| Prompt injection surface | User input in system prompt | Sanitize inputs, use XML tags |
 | Giant monolithic prompt | Performance degrades over context | Break into structured sections |
 
 ---
@@ -143,7 +122,7 @@ See [prompt anti-patterns](./anti-patterns/prompt-anti-patterns.md) for full doc
 
 Prompts are code. Version them from day one.
 
-```text
+```
 prompts/
 ├── story-kickoff.prompt.md        ← v1.0
 ├── story-kickoff.prompt.v2.md     ← v2.0 (in testing)
@@ -152,33 +131,14 @@ prompts/
 
 When a prompt changes, document: what changed, why, what metric it improved, what regression test covers it.
 
-## Tradeoffs
-
-| Decision | Benefit | Cost |
-|---|---|---|
-| One XML convention | Consistent review and tooling | Requires migration and evaluation |
-| Explicit schema | Predictable integration | Validator maintenance |
-| Risk-based planning | Alignment for material changes | Additional latency |
-
-## Enterprise Considerations
-
-Version prompts with model, tool, schema, and retrieval dependencies. Store evaluation evidence, apply data classification to examples, and enforce permissions outside the model.
-
 ---
 
 ## Readiness Gate
 
 Before proceeding to Level 2, verify:
-- [ ] OAIES repository prompt artifacts use the XML authoring convention
-- [ ] Runtime prompt representations preserve trusted-instruction and untrusted-data boundaries
-- [ ] Machine-consumed outputs have a validated schema or equivalent contract
-- [ ] Constraints are derived from task, policy, and consumer requirements
-- [ ] Planning and approval are required only by defined risk triggers
-- [ ] Representative and adversarial evaluations meet workload thresholds
-- [ ] Authorization, isolation, and side-effect controls are enforced outside the model
-- [ ] Prompt dependencies are versioned and rollback is tested
-
-## Changelog
-
-- 1.2.0 (2026-07-16): Distinguished the XML authoring convention from system conformance and aligned gates to the normative kernel.
-- 1.1.0 (2026-07-16): Completed corpus, scoped planning claims, and made authorization/isolation deterministic.
+- [ ] All prompts follow the XML structure standard
+- [ ] Every prompt has an output format specification
+- [ ] Every prompt has at least 3 constraints
+- [ ] Every prompt has a planning step for complex tasks
+- [ ] At least one prompt has been tested with adversarial inputs
+- [ ] All prompts are version-controlled with changelogs

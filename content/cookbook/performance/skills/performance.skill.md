@@ -45,7 +45,7 @@ Optimization starts from a reproducible workload and user-impact metric; profile
 
 ## Verification
 
-The evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. For manual checks, record environment, operator, exact steps, and result.
+The Performance Engineering evidence packet must identify command, target, UTC time, artifact/revision, exit status, and observed signal. It must also retain SLI/SLO definition, histogram boundaries, trace sampling, RUM attribution, and business-impact cohort. For manual SLO, workload model, benchmark, profile, capacity plan, Web Vital budget, or regression gate checks, record environment, operator, exact steps, and result.
 
 ## Failure recovery
 
@@ -61,7 +61,7 @@ Report the Performance Engineering boundary, facts, hypotheses, commands actuall
 
 ## Termination criteria
 
-Finish when native validation, all applicable review/deployment gates, and recovery signals pass, or when a named owner accepts a documented blocker through the repository's risk process.
+Finish the Performance Engineering workflow only when native validation, applicable review/deployment gates, and recovery signals for tail latency hidden by averages and benchmark/production workload mismatch pass. Otherwise record a named owner and the exact missing Performance Engineering evidence; risk acceptance does not convert a failed native check into a pass.
 
 ## Version-aware caution
 
@@ -69,7 +69,7 @@ Record hardware, OS/kernel, runtime/browser, build mode, dependency versions, da
 
 ## Tradeoffs
 
-This skill spends time fingerprinting Performance Engineering and collecting native evidence before editing. It reduces throughput for trivial changes but prevents incorrect commands, unsupported APIs, and state-destructive rollback.
+This skill fingerprints Performance Engineering through SLI/SLO definition, histogram boundaries, trace sampling, RUM attribution, and business-impact cohort before editing and retains CPU, allocation/heap, I/O, lock, network, database, and browser trace aligned to one run before recovery. The added work is warranted when tail latency hidden by averages could make Shift traffic or artifact to the measured baseline when user-impact guardrails regress; retain candidate telemetry and profiles so rollback does not erase causal evidence.
 
 ## Anti-patterns
 

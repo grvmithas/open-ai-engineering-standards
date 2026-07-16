@@ -8,11 +8,11 @@ Generate a production-ready domain slice, shell contract, route, federated remot
 
 ## Why
 
-Slices follow durable business domains, integrate through versioned shell contracts, fail locally, and prove independent build and deployment. This prompt requires native Microfrontends artifacts instead of substituting a generic incident or code-generation checklist.
+Slices follow durable business domains, integrate through versioned shell contracts, fail locally, and prove independent build and deployment. The generate decision is accepted only when domain ownership, route manifest, shell API/event contracts, and compatibility matrix supports it; generic generate advice cannot establish that Microfrontends state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Microfrontends evidence for the domain slice, shell contract, route, federated remote, shared package, or independent frontend release. Apply the invariant "Slices follow durable business domains, integrate through versioned shell contracts, fail locally, and prove independent build and deployment." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Capture shell, bundler/module-federation plugin, framework, router, browser targ
 
 ## Tradeoffs
 
-The prompt rejects fast code generation when Microfrontends version, configuration, or target evidence is absent. That delay prevents plausible output from crossing an unsupported domain slice, shell contract, route, federated remote, shared package, or independent frontend release boundary.
+Generation waits for domain ownership, route manifest, shell API/event contracts, and compatibility matrix and host/remote build metadata, remote entry URL/digest, share scope, singleton/range resolution, and CSP/CORS headers. That extra Microfrontends discovery is justified because the output must prove "slice maps to one durable business capability and accountable team" and survive eager shared-module consumption or share-scope initialization rather than merely compile.
 
 ## Anti-patterns
 

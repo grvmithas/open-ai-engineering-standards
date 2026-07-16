@@ -20,7 +20,7 @@ Capture server and kubectl versions, API discovery, node OS/runtime, CNI/CSI, ad
 
 ## Tradeoffs
 
-The Kubernetes deployment gate adds manual and target-environment checks that slow promotion. It reduces the chance that version, topology, state, or rollback assumptions reach production.
+Promotion waits for "rendered manifests are retained and server-side dry-run/admission succeeds on the target cluster" and "`kubectl diff` contains no unapproved immutable-field replacement or selector change". Those Kubernetes target checks slow release but directly bound CrashLoopBackOff, probe failure, or bad configuration and make this rollback executable: Revert the Git revision or use `kubectl rollout undo` only when controller history and schema compatibility are verified; never patch Pods, and pause rollout before collecting failed Pod events and previous logs.
 
 ## Anti-patterns
 

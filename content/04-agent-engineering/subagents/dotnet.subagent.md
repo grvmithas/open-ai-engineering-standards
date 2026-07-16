@@ -77,6 +77,9 @@ Captive dependency, lost cancellation, client-side EF evaluation, deadlock, trim
 ## Verification
 Run dotnet restore --locked-mode where configured, build, test, format --verify-no-changes, and publish target runtime.
 
+## Domain Recovery Playbook
+Restore the prior package lock or service revision, cancel outstanding work, dispose scoped resources, and re-run analyzer, integration, and target-runtime publish checks.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

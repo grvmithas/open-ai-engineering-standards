@@ -32,15 +32,15 @@ Domain logic is shared; platform behavior is explicit; native boundaries are typ
 
 **Preserve first:** `package.json`/lockfile, Podfile/lock, Gradle catalogs/wrapper, Xcode project, and platform deployment targets.
 
-**Discriminate:** native build and module registry. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** native build and module registry. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For native module missing/unlinked or architecture incompatible, correlate that observation to the exact React Native target, revision, request/job, and UTC interval; compare `package.json`/lockfile, Podfile/lock, Gradle catalogs/wrapper, Xcode project, and platform deployment targets with one healthy peer or baseline.
 
-**Native action:** `npx react-native info` and `npx react-native doctor`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `npx react-native info` and `npx react-native doctor`. Start in the safest React Native read-only or dry-run mode available. Before changing the screen, navigation flow, FlatList, native module, platform adapter, or mobile release, name which of native module missing/unlinked or architecture incompatible and app registration/startup exception the action distinguishes.
 
 **Root-cause direction:** Native dependency is absent, unlinked, or unavailable in the current runtime.
 
 **Correction:** Verify platform installation and rebuild the native application.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Invariant Violation: native module cannot be null` reproduction, verify the native module missing/unlinked or architecture incompatible signal cleared in native build and module registry. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Verify platform installation and rebuild the native application. restored the intended React Native behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop phased rollout or select the previous OTA bundle only when its native-module ABI matches installed binaries; otherwise ship a corrective store build and preserve migrated local data.
 
@@ -50,15 +50,15 @@ Domain logic is shared; platform behavior is explicit; native boundaries are typ
 
 **Preserve first:** Metro config/resolution, generated native code/autolinking state, and debug/release build settings.
 
-**Discriminate:** Metro logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** Metro logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For app registration/startup exception, correlate that observation to the exact React Native target, revision, request/job, and UTC interval; compare Metro config/resolution, generated native code/autolinking state, and debug/release build settings with one healthy peer or baseline.
 
-**Native action:** `npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output <path>` for bundle verification. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output <path>` for bundle verification. Start in the safest React Native read-only or dry-run mode available. Before changing the screen, navigation flow, FlatList, native module, platform adapter, or mobile release, name which of app registration/startup exception and nested/unbounded VirtualizedList the action distinguishes.
 
 **Root-cause direction:** Entry registration failed or an earlier module exception aborted startup.
 
 **Correction:** Find the first bundler/runtime error and verify the registered app key.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Application has not been registered` reproduction, verify the app registration/startup exception signal cleared in Metro logs. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Find the first bundler/runtime error and verify the registered app key. restored the intended React Native behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop phased rollout or select the previous OTA bundle only when its native-module ABI matches installed binaries; otherwise ship a corrective store build and preserve migrated local data.
 
@@ -68,15 +68,15 @@ Domain logic is shared; platform behavior is explicit; native boundaries are typ
 
 **Preserve first:** JS/UI frame rates, Hermes profile, native Instruments/Perfetto trace, memory, startup, and list metrics.
 
-**Discriminate:** React Native warning. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** React Native warning. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For nested/unbounded VirtualizedList, correlate that observation to the exact React Native target, revision, request/job, and UTC interval; compare JS/UI frame rates, Hermes profile, native Instruments/Perfetto trace, memory, startup, and list metrics with one healthy peer or baseline.
 
-**Native action:** `cd android && ./gradlew lint test assembleRelease`. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `cd android && ./gradlew lint test assembleRelease`. Start in the safest React Native read-only or dry-run mode available. Before changing the screen, navigation flow, FlatList, native module, platform adapter, or mobile release, name which of nested/unbounded VirtualizedList and Metro module resolution or cache/config mismatch the action distinguishes.
 
 **Root-cause direction:** A virtualized list is inside a same-axis ScrollView.
 
 **Correction:** Use one virtualized parent and model surrounding content as header/footer.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `VirtualizedLists should never be nested` reproduction, verify the nested/unbounded VirtualizedList signal cleared in React Native warning. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Use one virtualized parent and model surrounding content as header/footer. restored the intended React Native behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop phased rollout or select the previous OTA bundle only when its native-module ABI matches installed binaries; otherwise ship a corrective store build and preserve migrated local data.
 
@@ -86,15 +86,15 @@ Domain logic is shared; platform behavior is explicit; native boundaries are typ
 
 **Preserve first:** screen-reader tree, focus order, dynamic text, touch target, keyboard, and platform permission behavior.
 
-**Discriminate:** Metro resolver output. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** Metro resolver output. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For Metro module resolution or cache/config mismatch, correlate that observation to the exact React Native target, revision, request/job, and UTC interval; compare screen-reader tree, focus order, dynamic text, touch target, keyboard, and platform permission behavior with one healthy peer or baseline.
 
-**Native action:** `cd ios && xcodebuild -workspace <app>.xcworkspace -scheme <scheme> -configuration Release test` on approved macOS CI. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `cd ios && xcodebuild -workspace <app>.xcworkspace -scheme <scheme> -configuration Release test` on approved macOS CI. Start in the safest React Native read-only or dry-run mode available. Before changing the screen, navigation flow, FlatList, native module, platform adapter, or mobile release, name which of Metro module resolution or cache/config mismatch and JS thread, UI thread, bridge/native boundary, or memory stall the action distinguishes.
 
 **Root-cause direction:** Metro resolution, alias, case, or dependency graph is inconsistent.
 
 **Correction:** Correct the canonical import and reset cache only after fixing configuration.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `Unable to resolve module` reproduction, verify the Metro module resolution or cache/config mismatch signal cleared in Metro resolver output. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Correct the canonical import and reset cache only after fixing configuration. restored the intended React Native behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop phased rollout or select the previous OTA bundle only when its native-module ABI matches installed binaries; otherwise ship a corrective store build and preserve migrated local data.
 
@@ -104,15 +104,15 @@ Domain logic is shared; platform behavior is explicit; native boundaries are typ
 
 **Preserve first:** `package.json`/lockfile, Podfile/lock, Gradle catalogs/wrapper, Xcode project, and platform deployment targets.
 
-**Discriminate:** React Native performance monitor. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.
+**Discriminate:** React Native performance monitor. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline.. For JS thread, UI thread, bridge/native boundary, or memory stall, correlate that observation to the exact React Native target, revision, request/job, and UTC interval; compare `package.json`/lockfile, Podfile/lock, Gradle catalogs/wrapper, Xcode project, and platform deployment targets with one healthy peer or baseline.
 
-**Native action:** `npx react-native log-android` or platform-native logs for the reproduced build. Start read-only or dry-run. Narrow scope before any operation that changes process, topology, cache, schema, traffic, or data.
+**Native action:** `npx react-native log-android` or platform-native logs for the reproduced build. Start in the safest React Native read-only or dry-run mode available. Before changing the screen, navigation flow, FlatList, native module, platform adapter, or mobile release, name which of JS thread, UI thread, bridge/native boundary, or memory stall and native module missing/unlinked or architecture incompatible the action distinguishes.
 
 **Root-cause direction:** JavaScript or native main thread performs excessive synchronous work.
 
 **Correction:** Profile both threads and defer, batch, or move the measured bottleneck.
 
-**Recovery proof:** Re-run the failed operation, verify the causal native signal cleared, verify the intended result, and observe the relevant error/saturation metric through one complete workload or rollout window.
+**Recovery proof:** Re-run `UI freezes during interaction` reproduction, verify the JS thread, UI thread, bridge/native boundary, or memory stall signal cleared in React Native performance monitor. Correlate the observation to the exact target, revision, request/job, and UTC interval; compare with one healthy peer or baseline., and prove Profile both threads and defer, batch, or move the measured bottleneck. restored the intended React Native behavior through one complete workload or rollout window.
 
 **Rollback boundary:** Stop phased rollout or select the previous OTA bundle only when its native-module ABI matches installed binaries; otherwise ship a corrective store build and preserve migrated local data.
 

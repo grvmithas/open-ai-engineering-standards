@@ -1,71 +1,215 @@
 # Level 7: LLMOps
 
-> **Version:** 1.0.0
-> **Last updated:** 2026-07-16
-> **Status:** Informative OAIES implementation profile
+> **Prerequisites:** Levels 0-6
+> **Goal:** Operate LLMs in production with reliability, observability, cost control, and continuous improvement
 
-## Purpose
-Operate model-backed systems with qualified evaluation, immutable PromptOps, controlled cost, and portable observability.
+---
 
-## Why
-Production behavior changes with prompts, retrieval, models, providers, traffic, and adversaries; operations must continuously prove control.
+## Why LLMOps Is Not MLOps
 
-## When
-Adopt after the application harness exists and before production exposure.
+MLOps manages the training, versioning, and deployment of models. LLMOps manages everything that happens **after** you call a frontier model API — and frontier model APIs are not something you train.
 
-## How
-1. Implement the evaluation documents below.
-2. Version and stage prompt releases.
-3. Enforce route, cache, and token budgets.
-4. Instrument OpenTelemetry traces, metrics, dashboards, and alerts.
-5. Close incidents into golden sets and provider requalification.
+LLMOps is the operational discipline of:
+- **Evaluation** — knowing when your system works and when it doesn't
+- **PromptOps** — treating prompts as versioned, deployable artifacts
+- **Cost management** — controlling token costs without sacrificing quality
+- **Observability** — full tracing from user request to model response
+- **Continuous improvement** — closing the production-to-evaluation feedback loop
 
-## Evidence contract
-The decision record is the **LLMOps control-plane inventory**. It records qualified artifact IDs; gate histories; SLOs; spend; open incidents. The LLMOps service owner owns completeness; the evidence is invalid when a production route has no current qualification. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+---
 
-## Failure response and recovery
-**Trigger:** any release lacks traceable evaluation or rollback.
+## The Core Problem LLMOps Solves
 
-**Immediate response:** freeze the route and restore the last complete release envelope. Preserve the LLMOps control-plane inventory, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to level 7: llmops.
+```mermaid
+graph LR
+    A[Prompt Change] --> B{Does It Work?}
+    B -->|Without LLMOps| C[🎲 Hope and Check Manually]
+    B -->|With LLMOps| D[📊 Run Evaluation Suite]
+    D --> E{Pass Gates?}
+    E -->|No| F[🚫 Block Deployment]
+    E -->|Yes| G[✅ Deploy Confidently]
+```
 
-## Decision authority
-The **LLMOps service owner** accepts the operational decision. The **product risk owner** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+Without LLMOps, every prompt change is a deployment risk. With LLMOps, prompt changes are as safe as code changes — because they have tests.
 
-## Tradeoffs
-| Choice | Benefit | Cost |
-|---|---|---|
-| Complete LLMOps | Reliable change | Platform investment |
+---
 
-## Anti-patterns
-- Manual spot checks as release evidence.
-- Provider-specific telemetry with no export path.
+## Contents
 
-## Enterprise considerations
-- Evaluation: [framework selection](./evaluation/framework-selection.md), [golden sets](./evaluation/golden-set-management.md), [LLM judges](./evaluation/llm-as-judge.md), [continuous evaluation](./evaluation/continuous-eval.md), [metrics](./evaluation/metrics/README.md).
-- PromptOps: [versioning](./promptops/versioning.md), [registries](./promptops/registries.md), [A/B testing](./promptops/ab-testing.md), [staged deployment](./promptops/staged-deployment.md), [regression gates](./promptops/regression-gates.md).
-- Cost: [routing](./cost-optimization/model-routing.md), [caching](./cost-optimization/caching-strategies.md), [budgets](./cost-optimization/token-budgets.md).
-- Observability: [tracing](./observability/tracing.md), [metrics](./observability/metrics.md), [dashboards](./observability/dashboards.md), [alerting](./observability/alerting.md).
+### Evaluation
+| File | What It Covers |
+|------|----------------|
+| [evaluation/framework-selection.md](./evaluation/framework-selection.md) | RAGAS vs DeepEval vs Promptfoo — when to use each |
+| [Live Eval Script (eval/test_sample.py)](../eval/test_sample.py) | Working python test case using DeepEval for semantic relevancy |
+| [evaluation/golden-set-management.md](./evaluation/golden-set-management.md) | Building and maintaining regression test suites |
+| [evaluation/llm-as-judge.md](./evaluation/llm-as-judge.md) | Biases, calibration, and safeguards |
+| [evaluation/continuous-eval.md](./evaluation/continuous-eval.md) | Embedding evaluation in production workflows |
+| [evaluation/metrics/](./evaluation/metrics/) | Faithfulness, groundedness, context recall, hallucination rate |
 
-## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+### PromptOps
+| File | What It Covers |
+|------|----------------|
+| [promptops/versioning.md](./promptops/versioning.md) | Prompts as immutable versioned artifacts |
+| [promptops/registries.md](./promptops/registries.md) | Langfuse, PromptLayer, Braintrust comparison |
+| [promptops/ab-testing.md](./promptops/ab-testing.md) | Traffic splitting between prompt versions |
+| [promptops/staged-deployment.md](./promptops/staged-deployment.md) | dev → staging → production |
+| [promptops/regression-gates.md](./promptops/regression-gates.md) | CI/CD blocks on prompt quality degradation |
 
-| Source | Relationship for Level 7: LLMOps | Boundary |
-|---|---|---|
-| NIST AI RMF | GOVERN 1.7; MEASURE 2 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clauses 8–10 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
-| Domain threat/control source | LLM10 and model-operations failure scenarios | Test only the threats applicable to the documented system and release |
+### Cost Optimization
+| File | What It Covers |
+|------|----------------|
+| [cost-optimization/model-routing.md](./cost-optimization/model-routing.md) | Route tasks to appropriate model tier |
+| [cost-optimization/caching-strategies.md](./cost-optimization/caching-strategies.md) | Semantic caching, exact-match caching |
+| [cost-optimization/token-budgets.md](./cost-optimization/token-budgets.md) | Enforced per-request token limits |
 
-## Checklist
-- [ ] All links resolve.
-- [ ] Production failures become regression cases.
-- [ ] Provider requalification is current.
+### Observability
+| File | What It Covers |
+|------|----------------|
+| [observability/tracing.md](./observability/tracing.md) | OpenTelemetry + LangSmith/Langfuse |
+| [observability/metrics.md](./observability/metrics.md) | Key LLM metrics to track |
+| [observability/dashboards.md](./observability/dashboards.md) | Grafana dashboard templates |
+| [observability/alerting.md](./observability/alerting.md) | Alert definitions and thresholds |
 
-## References
-- NIST, [AI RMF 1.0](https://doi.org/10.6028/NIST.AI.100-1), MEASURE 2–3 (accessed 2026-07-16).
-- NIST, [AI 600-1 Generative AI Profile](https://doi.org/10.6028/NIST.AI.600-1), Measurement and Evaluation risks (accessed 2026-07-16).
+---
 
-## Changelog
-| Version | Date | Change |
-|---|---|---|
-| 1.1.0 | 2026-07-16 | Replaced generic assurance text with the LLMOps control-plane inventory, failure trigger, accountable decision, and scoped framework relationships for level 7: llmops. |
-| 1.0.0 | 2026-07-16 | Initial complete profile. |
+## The OAIES Evaluation Stack
+
+**This is the standard. One stack. No "pick your favorite."**
+
+| Layer | Tool | Purpose |
+|-------|------|---------|
+| **CI/CD Gate** | DeepEval | pytest-style evaluation that blocks bad deploys |
+| **RAG Evaluation** | RAGAS | Retrieval and generation quality for RAG pipelines |
+| **Security Testing** | Promptfoo | Adversarial testing and red teaming |
+| **Production Monitoring** | Langfuse | Traces, cost, latency, quality in production |
+| **A/B Testing** | Langfuse | Traffic splitting and metric comparison |
+
+---
+
+## PromptOps: The Minimum Viable Setup
+
+```bash
+# 1. Initialize a prompt registry (Langfuse example)
+langfuse prompt create \
+  --name "user-intent-classifier" \
+  --content "prompts/user-intent-classifier.prompt.md" \
+  --version 1.0 \
+  --environment production
+
+# 2. In code, fetch by name (never hardcode the prompt)
+from langfuse import Langfuse
+client = Langfuse()
+prompt = client.get_prompt("user-intent-classifier", version="production")
+
+# 3. When changing a prompt, deploy to staging first
+langfuse prompt create \
+  --name "user-intent-classifier" \
+  --content "prompts/user-intent-classifier-v2.prompt.md" \
+  --version 2.0 \
+  --environment staging
+
+# 4. Run regression tests against staging
+deepeval test run --environment staging
+
+# 5. If tests pass, promote to production
+langfuse prompt promote --name "user-intent-classifier" --version 2.0 --environment production
+```
+
+---
+
+## Cost Optimization: The Model Routing Standard
+
+**Use the cheapest model that can do the job. Use expensive models only for tasks that require them.**
+
+```python
+# Model routing configuration (OAIES standard)
+MODEL_ROUTING = {
+    "classification": "gpt-4o-mini",        # Fast, cheap, good for simple classification
+    "extraction": "gpt-4o-mini",            # Structured extraction from text
+    "summarization": "gpt-4o-mini",         # Basic summarization
+    "code_generation": "claude-sonnet-4",   # Complex code generation
+    "architecture_review": "claude-opus-4", # High-stakes architectural decisions
+    "creative_writing": "claude-sonnet-4",  # Creative content
+    "rag_synthesis": "gpt-4o-mini",         # RAG response generation (context does the work)
+    "complex_reasoning": "o3",              # Multi-step reasoning, math
+}
+
+def route_model(task_type: str, complexity: str = "standard") -> str:
+    """Route task to appropriate model based on type and complexity."""
+    if complexity == "high":
+        # Upgrade to next tier for high-complexity variants
+        return MODEL_ROUTING.get(f"{task_type}_complex", MODEL_ROUTING[task_type])
+    return MODEL_ROUTING[task_type]
+```
+
+**Cost impact:** Teams implementing model routing typically reduce LLM API costs by 40-70% without measurable quality degradation for routed tasks.
+
+---
+
+## Observability: The Minimum Metrics
+
+Every production LLM system MUST track:
+
+| Metric | What It Measures | Alert Threshold |
+|--------|-----------------|-----------------|
+| `llm.latency.p50` | Median response time | >2s for user-facing |
+| `llm.latency.p99` | Tail latency | >10s for user-facing |
+| `llm.cost.per_request` | Token cost | >$0.10 per request |
+| `llm.cost.daily` | Daily spend | >120% of budget |
+| `llm.error_rate` | API error rate | >1% |
+| `llm.evaluation.faithfulness` | RAG faithfulness score | <0.85 |
+| `llm.evaluation.hallucination` | Hallucination rate | >2% |
+| `llm.token.input.avg` | Average input tokens | Context growth monitoring |
+| `llm.token.output.avg` | Average output tokens | Response bloat detection |
+
+---
+
+## Continuous Improvement Loop
+
+```mermaid
+graph LR
+    A[Production Traffic] --> B[Langfuse Tracing]
+    B --> C[Automatic Failure Capture]
+    C --> D[Human Review Sample]
+    D --> E[Add to Eval Dataset]
+    E --> F[Run Regression Suite]
+    F --> G[Identify Degradation]
+    G --> H[Prompt Iteration]
+    H --> I[A/B Test in Staging]
+    I --> J{Pass Gates?}
+    J -->|No| H
+    J -->|Yes| K[Deploy to Production]
+    K --> A
+```
+
+This loop should run continuously in production. Not monthly. Not after incidents. Continuously.
+
+---
+
+## Anti-Patterns
+
+### ❌ "We'll evaluate it manually"
+Manual evaluation doesn't scale beyond 50 samples. At production scale (10k+ requests/day), you need automated evaluation. Build it from day one.
+
+### ❌ "Our prompt hasn't changed so we don't need to re-evaluate"
+**The model changes.** API providers update models. Fine-tuned models drift. Even with a frozen prompt, your evaluation suite must run on a schedule.
+
+### ❌ "We use the most powerful model for everything"
+A `gpt-4o-mini` call that classifies user intent costs 20-50x less than a `gpt-4o` call. For simple tasks, this is waste — not quality.
+
+### ❌ "Our developers update prompts directly in production"
+Prompts are deployable artifacts. They need staging environments, regression tests, and rollback capability — exactly like code.
+
+---
+
+## Readiness Gate
+
+Before proceeding to Level 8, verify:
+- [ ] DeepEval CI gate running on every PR that touches prompts
+- [ ] RAGAS evaluation suite running for all RAG pipelines
+- [ ] Langfuse (or equivalent) capturing all production traces
+- [ ] Model routing implemented for at least 3 task types
+- [ ] Cost dashboards showing daily and per-request costs
+- [ ] Alert thresholds configured for all minimum metrics
+- [ ] Prompt versioning in a registry (not hardcoded in source)
+- [ ] A/B testing infrastructure validated with at least one test

@@ -70,11 +70,11 @@ React Native governance aligns JS/native dependency matrices, signing, store rol
 
 ## Checklist
 
-- [ ] Screens compose shared domain hooks and platform-neutral design primitives..
-- [ ] Platform adapters isolate genuine OS behavior and permissions..
-- [ ] Native module contracts specify threads, ownership, errors, and ABI/version compatibility..
-- [ ] Navigation and persisted state have explicit migration contracts..
-- [ ] Performance is profiled in release mode on physical devices..
+- [ ] Screens compose shared domain hooks and platform-neutral design primitives.
+- [ ] Platform adapters isolate genuine OS behavior and permissions.
+- [ ] Native module contracts specify threads, ownership, errors, and ABI/version compatibility.
+- [ ] Navigation and persisted state have explicit migration contracts.
+- [ ] Performance is profiled in release mode on physical devices.
 - [ ] Diagram matches deployed topology rather than an aspirational target.
 - [ ] Rollback path preserves state and mixed-version contracts.
 

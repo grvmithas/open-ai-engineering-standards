@@ -1,87 +1,204 @@
-# Level 6: Memory and Knowledge Systems
+# Level 6: Memory & Knowledge Systems
 
-> **Version:** 2.0.0  
-> **Last updated:** 2026-07-16  
-> **Prerequisite:** governed identity, authorization, and evaluation infrastructure
+> **Prerequisites:** Level 5: Multi-Agent Systems
+> **Goal:** Give agents persistent memory, accumulated knowledge, and the ability to learn from experience
 
-## Purpose
+---
 
-Define production memory and retrieval systems that are attributable, tenant-safe, correctable, deletable, and measurably useful.
+## Why Memory Matters
 
-## Why
+Stateless agents cannot:
+- Learn from past mistakes within a project
+- Accumulate domain knowledge over time
+- Recognize patterns across sessions
+- Provide consistent behavior based on established team preferences
+- Avoid repeating the same debugging process for recurring issues
 
-Memory can preserve mistakes, secrets, stale claims, and injected instructions as efficiently as it preserves useful knowledge. Retrieval quality and control must be measured on the actual corpus and workload; universal recall percentages, chunk overlaps, vector-count cutoffs, and compression thresholds are unsupported.
+Memory transforms a stateless LLM invocation into an agent that gets smarter with use.
 
-## How
+---
+
+## Memory Type Taxonomy
 
 ```mermaid
-flowchart LR
-    S[Authorized sources] --> I[Validate and ingest]
-    I --> P[(Provenance catalog)]
-    P --> A[ACL filter]
-    A --> R[Selected retrievers]
-    R --> V[Rerank and verify]
-    V --> G[Grounded answer]
-    G --> C[Citations and evaluation]
-    D[Delete or correct] --> P
+graph TD
+    M[Agent Memory] --> IC[In-Context Memory]
+    M --> EP[Episodic Memory]
+    M --> SM[Semantic Memory]
+    M --> PR[Procedural Memory]
+    M --> EX[External Memory]
+    
+    IC --> ICd["Working memory — active context window<br/>Scope: Current session<br/>Capacity: Token limit<br/>Persistence: None"]
+    EP --> EPd["Past interaction recall<br/>Scope: Project/user<br/>Capacity: Indexed<br/>Persistence: Database"]
+    SM --> SMd["Factual knowledge stores<br/>Scope: Domain knowledge<br/>Capacity: Vector DB<br/>Persistence: Indefinite"]
+    PR --> PRd["Skill-based memory<br/>Scope: How to do tasks<br/>Capacity: Files<br/>Persistence: Versioned"]
+    EX --> EXd["Database-backed persistence<br/>Scope: Shared across agents<br/>Capacity: Unlimited<br/>Persistence: Configurable"]
 ```
 
-1. Govern the [memory lifecycle](./standards/memory-lifecycle-governance.md) and [security and poisoning controls](./standards/security-and-poisoning.md).
-2. Select memory by semantics: [in-context](./memory-types/in-context.md), [episodic](./memory-types/episodic.md), [semantic](./memory-types/semantic.md), [procedural](./memory-types/procedural.md), or [external state](./memory-types/external.md).
-3. Select and combine retrieval modes from measured query classes, not ideology.
-4. Enforce authorization before candidate retrieval and again before generation.
-5. Validate with [retrieval and citation evaluation](./standards/retrieval-citation-evaluation.md).
+---
 
-## Corpus
+## When to Use Each Memory Type
+
+| Memory Type | Use When | Storage | Example |
+|-------------|---------|---------|---------|
+| **In-Context** | Current task needs full context | None (ephemeral) | Current code being reviewed |
+| **Episodic** | Agent needs to recall past decisions or interactions | Vector DB + metadata | "We tried X in sprint 3 and it failed because..." |
+| **Semantic** | Agent needs domain knowledge beyond training | Vector DB | Company architecture docs, API references |
+| **Procedural** | Agent needs skill knowledge | Files (.skill.md) | How to debug React rendering issues |
+| **External** | Persistent state across sessions and agents | Database | Task state, project decisions, user preferences |
+
+---
+
+## Contents
+
+### Memory Types
+- [memory-types/in-context.md](./memory-types/in-context.md) — Working memory patterns and compression
+- [memory-types/episodic.md](./memory-types/episodic.md) — Past interaction retrieval
+- [memory-types/semantic.md](./memory-types/semantic.md) — Factual knowledge stores
+- [memory-types/procedural.md](./memory-types/procedural.md) — Skills and workflow memory
+- [memory-types/external.md](./memory-types/external.md) — Database-backed persistence
 
 ### Knowledge Graphs
-- [Construction](./knowledge-graphs/construction.md)
-- [Querying](./knowledge-graphs/querying.md)
-- [Maintenance](./knowledge-graphs/maintenance.md)
+- [knowledge-graphs/construction.md](./knowledge-graphs/construction.md) — Building knowledge graphs from text
+- [knowledge-graphs/querying.md](./knowledge-graphs/querying.md) — Graph traversal for RAG
+- [knowledge-graphs/maintenance.md](./knowledge-graphs/maintenance.md) — Keeping knowledge current
 
-### Vector and Retrieval Infrastructure
-- [Store selection](./vector-databases/selection-guide.md)
-- [Indexing patterns](./vector-databases/indexing-patterns.md)
-- [Retrieval optimization](./vector-databases/retrieval-optimization.md)
+### Vector Databases
+- [vector-databases/selection-guide.md](./vector-databases/selection-guide.md) — Pinecone vs Weaviate vs Qdrant vs pgvector
+- [vector-databases/indexing-patterns.md](./vector-databases/indexing-patterns.md) — Chunking, embedding, metadata
+- [vector-databases/retrieval-optimization.md](./vector-databases/retrieval-optimization.md) — Hybrid search, reranking
 
-### RAG Architectures
-- [Naive RAG](./rag/naive-rag.md)
-- [Advanced RAG](./rag/advanced-rag.md)
-- [Hybrid RAG](./rag/hybrid-rag.md)
-- [Agentic RAG](./rag/agentic-rag.md)
+### RAG Systems
+- [rag/naive-rag.md](./rag/naive-rag.md) — Basic retrieval-augmented generation
+- [rag/advanced-rag.md](./rag/advanced-rag.md) — Query rewriting, reranking, fusion
+- [rag/hybrid-rag.md](./rag/hybrid-rag.md) — Vector + keyword + graph (the OAIES standard)
+- [rag/agentic-rag.md](./rag/agentic-rag.md) — Agent-driven retrieval strategies
 
-## Tradeoffs
+---
 
-Stronger provenance, isolation, and deletion add metadata and operational cost. Hybrid and graph retrieval can improve specific query classes but increase latency and tuning surface; they are enabled only when offline and online evidence justifies them.
+## The OAIES RAG Standard: Hybrid RAG
 
-## Anti-patterns
+**The OAIES standard for RAG is hybrid retrieval. Not vector-only.**
 
-- **Write-only memory:** no expiry, correction, conflict, or deletion path.
-- **ACL after retrieval:** unauthorized candidates can leak through ranking, caches, telemetry, or timing.
-- **Similarity as truth:** high vector score does not establish authority, freshness, or factual support.
-- **Summary replacement:** destructive compaction silently removes commitments and qualifiers.
-- **Graph by default:** knowledge graphs remain an emerging option for relationship-heavy workloads, not a universal RAG requirement.
+```mermaid
+graph LR
+    Q[User Query] --> QR[Query Rewriting]
+    QR --> VS[Vector Search]
+    QR --> KW[Keyword Search / BM25]
+    QR --> GQ[Graph Query]
+    VS --> F[Fusion + Reranking]
+    KW --> F
+    GQ --> F
+    F --> R[Top-K Retrieved Chunks]
+    R --> G[Generation]
+    G --> Out[Answer with Sources]
+```
 
-## Enterprise Considerations
+**Why hybrid:**
+- Vector search finds semantically similar content but misses exact keyword matches
+- Keyword search finds exact matches but misses paraphrased content
+- Graph retrieval finds entity relationships that neither can find
+- Fusion of all three achieves >90% recall on knowledge-intensive questions
 
-Classify data before ingestion; enforce purpose, residency, legal hold, retention, deletion, correction, and tenant isolation across source, indexes, caches, replicas, backups, traces, and derived artifacts.
+**Why not vector-only:**
+Vector-only RAG achieves ~65-75% recall in practice. For knowledge-intensive applications (legal, medical, technical documentation), this means 25-35% of questions cannot be answered correctly — not because the information doesn't exist, but because retrieval failed.
 
-## Checklist
+---
 
-- [ ] Every record has source, owner, tenant, ACL, version, timestamps, and transformation provenance.
-- [ ] Retention, deletion, correction, conflict, and legal-hold workflows are tested end to end.
-- [ ] Authorization occurs before retrieval and cache access.
-- [ ] Poisoning detection, quarantine, rollback, and re-index recovery are exercised.
-- [ ] Retrieval mode is selected per evaluated query class.
-- [ ] Retrieval, generation, citation support, and compaction-loss tests pass workload-specific gates.
+## Vector Database Selection Guide
 
-## References
+| Database | Best For | When to Choose |
+|---------|---------|---------------|
+| **pgvector** | Starting out, PostgreSQL already in stack | <10M vectors, want simplicity |
+| **Pinecone** | Managed, scale, low ops burden | >10M vectors, managed preferred |
+| **Qdrant** | Self-hosted, full control, open-source | Security requirements prevent managed |
+| **Weaviate** | Multi-modal, graph + vector hybrid | Need graph traversal with vectors |
+| **Chroma** | Development, prototyping | Local development only |
 
-- [NIST AI RMF 1.0](https://doi.org/10.6028/NIST.AI.100-1)
-- [NIST SP 800-53 Rev. 5](https://doi.org/10.6028/NIST.SP.800-53r5)
-- [OWASP RAG Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/RAG_Security_Cheat_Sheet.html)
-- [Retrieval-Augmented Generation](https://arxiv.org/abs/2005.11401)
+**OAIES default:** Start with `pgvector` (zero additional infrastructure). Migrate to Qdrant or Pinecone when you exceed 5M vectors or need horizontal scaling.
 
-## Changelog
+---
 
-- **2.0.0 — 2026-07-16:** Added lifecycle, provenance, isolation, correction, poisoning, retrieval-selection, ACL-first, citation, and compaction standards; removed unsupported numeric mandates.
+## Context Compression for Long-Running Agents
+
+As conversations grow, context fills. Without compression, agents eventually hit the context limit and lose information.
+
+```python
+class ConversationCompressor:
+    """OAIES standard: compress conversation history at regular intervals."""
+    
+    COMPRESS_AT_TOKENS = 60_000  # Compress when approaching 60k tokens
+    KEEP_LAST_N = 5              # Always keep last 5 messages verbatim
+    
+    async def compress(self, messages: list[Message]) -> list[Message]:
+        """Compress older messages while preserving recent context."""
+        if count_tokens(messages) < self.COMPRESS_AT_TOKENS:
+            return messages  # No compression needed
+        
+        recent = messages[-self.KEEP_LAST_N:]
+        older = messages[:-self.KEEP_LAST_N]
+        
+        # Summarize older messages
+        summary = await self.summarize(older)
+        
+        # Replace older messages with summary
+        summary_message = Message(
+            role="system",
+            content=f"[Summary of {len(older)} previous messages]: {summary}",
+            metadata={"type": "compression", "messages_compressed": len(older)}
+        )
+        
+        return [summary_message] + recent
+```
+
+**When to compress:** At 60% of context window (not at 100% — compression at 100% means you've already lost context quality).
+
+---
+
+## Production Standards
+
+| Standard | What it covers |
+|----------|----------------|
+| [Memory lifecycle governance](./standards/memory-lifecycle-governance.md) | Ingest → correct → expire → delete with propagation checklist |
+| [Retrieval, citation, evaluation](./standards/retrieval-citation-evaluation.md) | Hybrid RAG metrics, citation rules, failure cases |
+| [Security and poisoning](./standards/security-and-poisoning.md) | Corpus poisoning, tenant isolation, red-team cases |
+
+---
+
+## Anti-Patterns
+
+### ❌ Infinite Conversation History
+Storing every message forever creates: unbounded context growth, degraded retrieval, and privacy risks (you're retaining data you don't need).
+
+**Fix:** Implement rolling compression. Keep last N turns verbatim, summarize everything older.
+
+### ❌ Vector Search Only
+As described above, vector-only RAG has 25-35% recall failures. For any production knowledge system, implement hybrid retrieval.
+
+### ❌ Chunking Without Overlap
+Splitting documents into non-overlapping chunks loses context at chunk boundaries. Use 10-20% overlap.
+
+```python
+# Wrong
+chunks = split_text(document, chunk_size=500, overlap=0)
+
+# Correct
+chunks = split_text(document, chunk_size=500, overlap=50)  # 10% overlap
+```
+
+### ❌ No Memory Access Control
+Memory systems often contain sensitive information (past decisions, user preferences, project details). Access to memory must be controlled by the same permission system as other data.
+
+---
+
+## Readiness Gate
+
+Before proceeding to Level 7, verify:
+- [ ] Memory type selected for each agent (appropriate to use case)
+- [ ] Hybrid RAG implemented (vector + keyword minimum)
+- [ ] Conversation compression implemented for long-running agents
+- [ ] Vector database selected with scaling plan
+- [ ] Memory access control enforced
+- [ ] Memory content not retaining PII beyond necessity
+- [ ] RAGAS evaluation suite running on RAG pipeline
+- [ ] Retrieval recall ≥ 0.75 on representative queries

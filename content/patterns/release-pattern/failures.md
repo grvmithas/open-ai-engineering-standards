@@ -1,41 +1,37 @@
-# Release: Failure Modes
+# Release Pattern — Failures
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Release  
+> **Component:** failures.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Release failures operationalizes this pattern outcome: promote a signed artifact through progressive exposure with objective abort criteria.
+## Failure 1: Mutable tag deploy
 
-| Failure | Observable signal | Recovery |
-|---|---|---|
-| Friday optimism | staffing cannot support observation | reschedule or staff release |
-| mutable artifact | stages run different bytes | promote by digest only |
-| manual canary judgment | weak signals are rationalized | encode thresholds |
-| rollback breaks schema | contract migration is irreversible | use expand-contract compatibility |
+**Symptom:** Rollback redeploys different bits than intended; forensics cannot pin the build.  
+**Cause:** `:latest` / moving tags used as release identity.  
+**Recovery:** Halt; pin digests; rebuild attestation; block floating tags in CD.
 
-## Rollback failure
+## Failure 2: Abort criteria renegotiated mid-canary
 
-Release failures rollback failure gate 2 is accepted only when "artifact-to-runtime digest match = 100%" is source-verifiable; otherwise, halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health.
+**Symptom:** Error rate breaches original threshold; team “temporarily” raises it.  
+**Cause:** Criteria were treated as suggestions.  
+**Recovery:** Abort on original criteria immediately; restore prior; file process defect; require new Go for any threshold change.
 
-## Tradeoffs
+## Failure 3: One-shot 100% expose
 
-Release failures deliberately spends additional review time to protect "artifact-to-runtime digest match = 100%"; evidence weakness triggers "Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health".
+**Symptom:** Outage affects all users before detection.  
+**Cause:** Skipped progressive stages “because staging looked fine.”  
+**Recovery:** Mandate canary for SLO-sensitive services; auto-fail hooks if exposure jumps 0→100 without waiver.
 
-## Anti-patterns
+## Failure 4: Irreversible migration bundled with app
 
-Release failures rejects shortcuts around "Freeze artifact digest, configuration, migrations, and release evidence." because they sever the evidence chain required for "artifact-to-runtime digest match = 100%".
+**Symptom:** Rollback cannot restore service without data surgery.  
+**Cause:** Contract/destructive schema shipped with app cutover.  
+**Recovery:** Abort app via flag; keep expand; schedule forward fix; ban destructive DDL in the same change as first exposure.
 
-## Enterprise considerations
+## Failure 5: Unrehearsed rollback
 
-Release failures governance binds owner, policy revision, and retained proof to "artifact-to-runtime digest match = 100%", with "Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Detection exists for Friday optimism
-- [ ] Detection exists for mutable artifact
-- [ ] Detection exists for manual canary judgment
-- [ ] Detection exists for rollback breaks schema
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+**Symptom:** Abort decision made; operators fumble commands past RTO.  
+**Cause:** Rollback never drilled.  
+**Recovery:** Restore manually; schedule drill; fail pre-release hook until drill date is recent per policy.

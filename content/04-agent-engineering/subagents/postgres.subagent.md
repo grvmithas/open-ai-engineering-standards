@@ -77,6 +77,9 @@ ACCESS EXCLUSIVE lock, table rewrite, invalid concurrent index, replica lag, tra
 ## Verification
 Run psql -X -v ON_ERROR_STOP=1; EXPLAIN comparisons; migration up on a clone; pg_locks observation; constraint/index validity; counts/checksums/domain reconciliation.
 
+## Domain Recovery Playbook
+Cancel the unsafe statement, honor lock and statement timeouts, stop backfill at its checkpoint, repair or drop an invalid concurrent index safely, and reconcile before resuming.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

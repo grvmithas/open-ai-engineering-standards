@@ -77,6 +77,9 @@ Sensitive content logging, cardinality explosion, broken trace context, alert fa
 ## Verification
 Run telemetry contract tests, trace continuity checks, redaction tests, cardinality estimates, and synthetic alert scenarios.
 
+## Domain Recovery Playbook
+Roll back telemetry that leaks data, overloads the collector, or creates uncontrolled cardinality; preserve a minimal correlation signal and validate ingestion recovery before re-enabling.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

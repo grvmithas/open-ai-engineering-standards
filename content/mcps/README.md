@@ -1,136 +1,166 @@
-# MCP Integration Standard
+# MCP Integrations
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Protocol baseline:** MCP `2025-11-25`
+> **The M×N Problem Solver — One standard integration per external system.**
 
-## Purpose
-Define the production contract for connecting agents to external systems through Model Context Protocol (MCP). This inventory provides exactly 24 service-specific specifications with implementation, authorization, threat, operations, enterprise, and verification requirements.
+---
 
-## Why
-MCP removes client-by-service integration duplication, but protocol compatibility does not make an integration safe. Tool metadata can be poisoned, provider content can inject instructions, broad credentials can create confused deputies, and remote servers introduce OAuth, tenancy, egress, and incident-response obligations. These specifications make those controls explicit and testable.
+## What Is MCP
 
-## How to use this standard
-1. Select the service specification from the inventory and confirm its applicability and official implementation status.
-2. Enable only tools, resources, and prompts required by the approved use case. The correct number is determined by task need, client context budget, authorization surface, and evaluation evidence—not a universal numeric maximum.
-3. Separate reads from mutations. Require policy evaluation and human approval bound to the exact arguments for consequential writes.
-4. Implement the authorization profile below for remote servers; keep local `stdio` servers local and single-user.
-5. Validate schemas, provider identifiers, destinations, outputs, pagination, and size/cost limits. Treat all retrieved content as untrusted data.
-6. Verify contract, integration, authorization, tenant-isolation, adversarial, revocation, and incident tests before production.
+Model Context Protocol (MCP) is the open standard for connecting AI agents to external data and tools. It solves the M×N integration problem:
+- **Without MCP:** M models × N tools = M×N custom integrations
+- **With MCP:** M models × N MCP servers = M+N implementations
 
-## Protocol and capability lifecycle
-- Negotiate `protocolVersion` during `initialize`; support MCP `2025-11-25` or fail explicitly.
-- Use Streamable HTTP for remote servers. Use `stdio` only for a local child process; never expose it through an unauthenticated network wrapper.
-- Advertise only implemented capabilities. Paginate lists and implement cancellation/progress where the operation warrants it.
-- Send the applicable `notifications/tools/list_changed`, `notifications/resources/list_changed`, or `notifications/prompts/list_changed` notification after a material catalog or entitlement change. Clients must re-list and review changed metadata before use.
-- Prefer official vendor-hosted servers or vendor-maintained packages. Pin local packages/images and verify release provenance; a community server requires an explicit security review and named maintainer.
+Every major AI system (Claude, GPT-4, Gemini, Cursor, Windsurf, Roo) now supports MCP. It is the integration standard.
 
-## Authorization profile for remote MCP servers
-MCP `2025-11-25` remote authorization is an OAuth protected-resource flow, not provider-token forwarding:
+---
 
-1. The MCP server publishes OAuth 2.0 Protected Resource Metadata under RFC 9728 and returns a standards-compliant `WWW-Authenticate` challenge.
-2. The client discovers an authorization server only through validated protected-resource and authorization-server metadata.
-3. Authorization code flow uses PKCE. The client verifies advertised support and uses `S256`; it refuses authorization when required PKCE metadata is absent.
-4. The client includes the canonical MCP server URI as the RFC 8707 `resource` value in both authorization and token requests.
-5. The MCP server validates token signature, issuer, expiry/not-before, authorized party when applicable, and audience/resource. A token for another resource is rejected.
-6. The MCP server never passes the inbound MCP bearer token through to the downstream provider. It uses a server-side exchange or maps the identity to a separate short-lived, tenant-bound provider credential.
-7. Consent identifies the service, tenant, enabled capabilities, data classes, and write effects. Step-up authorization cannot silently broaden previous consent.
+## Why This Section Exists
 
-Local servers that use environment credentials still require least privilege, secret-manager delivery, rotation, process isolation, and provider-side authorization. They must not claim compliance with the remote OAuth profile unless they implement it.
+MCP servers are easy to create poorly. The most common mistake is treating MCP as a thin API wrapper — just exposing existing APIs as tools. This leads to:
+- Too many tools loaded into context (degrading agent reasoning)
+- Tool definitions designed for humans, not agents
+- Missing security controls on tool execution
+- No rate limiting or cost controls
 
-## Tool, resource, and prompt design
-- Tool names describe intent; descriptions state when to use the tool, side effects, approval needs, and important limits.
-- Inputs use closed JSON Schemas, bounded strings/arrays/time ranges, canonical provider IDs, explicit pagination, and destination allowlists.
-- Outputs are typed, bounded, redacted, and labeled as untrusted. Return stable IDs, source references, provider request IDs, and structured errors.
-- Resources are read-only, canonical, tenant-scoped, and versioned where the provider permits. Prompts return instructions and resource references; they do not silently execute writes.
-- Provider text, code, logs, tickets, messages, pages, traces, database values, and web content cannot authorize another tool call or override system policy.
+This section provides production-ready MCP integration specs that avoid these mistakes.
 
-## Security and privacy controls
-| Risk | Required control |
-|---|---|
-| Prompt injection | Preserve trust boundaries, label external content, isolate instructions from data, and evaluate adversarial content. |
-| Tool poisoning | Pin provenance, allowlist tools, diff names/descriptions/schemas after change notifications, and require review before activation. |
-| Data exfiltration | Object and tenant allowlists, DLP/redaction, egress policy, response caps, and approval for cross-boundary movement. |
-| SSRF | Fixed provider origins, DNS/IP and redirect revalidation, private/link-local denial, and no arbitrary URL-fetch primitive. |
-| Confused deputy | User/tenant-bound credentials, provider authorization on every operation, exact-argument approvals, and audience validation. |
-| Unsafe mutation | Optimistic concurrency, idempotency where supported, no blind write retry, and rollback or compensation testing. |
+---
 
-## Rate limits, telemetry, and audit
-Use each provider's documented response headers, cost model, retry signals, and endpoint/plan limits; do not invent a fixed quota. Apply per-user, per-tenant, and per-tool budgets, bounded exponential backoff with jitter for idempotent reads, circuit breaking, and explicit handling of ambiguous writes.
+## MCP Design Principles (OAIES Standard)
 
-Record enough metadata to reconstruct authorization and operational decisions: timestamp, actor/tenant pseudonym, tool, outcome, latency, bytes, provider request ID, approval reference, policy decision, and rate-limit state. Do not universally log raw inputs or outputs. Capture content only when an approved purpose, classification, minimization rule, access control, retention period, and redaction policy require it. Never log bearer tokens, provider credentials, secrets, or unrestricted payloads.
+### 1. Design for the Agent, Not the API
+The tool name and description must make sense to an LLM reasoning about what to do next — not to a developer reading API docs.
 
-## Tenancy, revocation, and incident response
-Partition credentials, caches, cursors, sessions, telemetry, and audit records by the service's tenant boundary. Re-authorize tenant changes. Revocation must disable the MCP grant immediately, remove provider credentials, terminate active sessions, and evict credential-bound caches.
+```json
+// Wrong — designed for API documentation
+{
+  "name": "POST /api/v2/issues",
+  "description": "Creates a new issue via the REST API"
+}
 
-Incident runbooks must support disabling risky tools, revoking/rotating credentials, preserving tamper-evident evidence, identifying affected tenants/calls/data, containing egress, notifying owners under policy, patching, adversarial retesting, and staged restoration.
+// Correct — designed for agent reasoning
+{
+  "name": "create_issue",
+  "description": "Create a new GitHub issue. Use when you need to report a bug, request a feature, or track work. Requires: title (required), body (optional), labels (optional array)."
+}
+```
 
-## Inventory
+### 2. Principle of Least Privilege
+Every MCP server must only expose the minimum tools and permissions required. Do not expose delete operations if the agent only needs read access.
 
-### Version Control
-- [GitHub](./version-control/github.mcp.md)
-- [GitLab](./version-control/gitlab.mcp.md)
-- [Azure DevOps](./version-control/azure-devops.mcp.md)
-- [Bitbucket Cloud](./version-control/bitbucket-cloud.mcp.md)
+### 3. Avoid Context Bloat
+Load tool definitions progressively. Don't register 50 tools at startup. Use categories or lazy loading so only relevant tools are in context.
+
+### 4. Security First
+All tool inputs are untrusted. Validate and sanitize before execution. Apply OAuth 2.1 for production deployments.
+
+### 5. Every Tool Call Is Audited
+All tool invocations (inputs and outputs) must be logged for audit, debugging, and cost tracking.
+
+---
+
+## Available MCP Integrations
+
+### Developer Tools
+| MCP | File | Primary Use |
+|-----|------|------------|
+| GitHub | [github.mcp.md](./version-control/github.mcp.md) | Issues, PRs, code search |
+| GitLab | gitlab.mcp.md (Planned) | MRs, pipelines, issues |
+| Azure DevOps | azure-devops.mcp.md (Planned) | Work items, pipelines, repos |
+| Playwright | playwright.mcp.md (Planned) | Browser automation, testing |
+| Chrome DevTools | chrome-devtools.mcp.md (Planned) | Performance, debugging |
 
 ### Project Management
-- [Jira Cloud](./project-management/jira.mcp.md)
-- [Linear](./project-management/linear.mcp.md)
-- [Notion](./project-management/notion.mcp.md)
-- [Asana](./project-management/asana.mcp.md)
-- [monday.com](./project-management/monday.mcp.md)
+| MCP | Status | Primary Use |
+|-----|--------|------------|
+| Jira | jira.mcp.md (Planned) | Issues, sprints, backlogs |
+| Linear | linear.mcp.md (Planned) | Issues, projects, cycles |
+| Notion | notion.mcp.md (Planned) | Docs, databases, pages |
 
 ### Communication
-- [Slack](./communication/slack.mcp.md)
-- [Microsoft Teams](./communication/microsoft-teams.mcp.md)
-- [Discord](./communication/discord.mcp.md)
+| MCP | Status | Primary Use |
+|-----|--------|------------|
+| Slack | slack.mcp.md (Planned) | Messages, channels, search |
+| Microsoft Teams | teams.mcp.md (Planned) | Messages, meetings, files |
 
-### Infrastructure and Data
-- [Filesystem](./infrastructure-data/filesystem.mcp.md)
-- [Docker](./infrastructure-data/docker.mcp.md)
-- [Kubernetes](./infrastructure-data/kubernetes.mcp.md)
-- [PostgreSQL](./infrastructure-data/postgresql.mcp.md)
-- [Redis](./infrastructure-data/redis.mcp.md)
-- [Supabase](./infrastructure-data/supabase.mcp.md)
+### Infrastructure
+| MCP | Status | Primary Use |
+|-----|--------|------------|
+| Filesystem | filesystem.mcp.md (Planned) | File read/write with path validation |
+| Docker | docker.mcp.md (Planned) | Container management |
+| PostgreSQL | postgres.mcp.md (Planned) | Database queries (read-only by default) |
+| Redis | redis.mcp.md (Planned) | Cache operations |
+| Supabase | supabase.mcp.md (Planned) | Database + auth + storage |
 
 ### Observability
-- [Sentry](./observability/sentry.mcp.md)
-- [Datadog](./observability/datadog.mcp.md)
-- [Grafana](./observability/grafana.mcp.md)
-- [OpenTelemetry](./observability/opentelemetry.mcp.md)
+| MCP | Status | Primary Use |
+|-----|--------|------------|
+| Sentry | sentry.mcp.md (Planned) | Error tracking, performance |
+| Datadog | datadog.mcp.md (Planned) | Metrics, logs, traces |
+| Grafana | grafana.mcp.md (Planned) | Dashboards, alerts |
+| OpenTelemetry | opentelemetry.mcp.md (Planned) | Traces, metrics, logs |
 
-### Browser and Testing
-- [Playwright](./browser-testing/playwright.mcp.md)
-- [Chrome DevTools](./browser-testing/chrome-devtools.mcp.md)
+---
 
-## Tradeoffs
-MCP standardizes discovery and invocation but adds another authorization and supply-chain boundary. Official hosted servers reduce adapter drift while introducing vendor availability and data-path dependencies. Narrow catalogs and approvals reduce agent autonomy and add latency, but they constrain blast radius and make behavior auditable.
+## MCP Specification Format
 
-## Anti-patterns
-- Forwarding the MCP access token to a provider, accepting a token minted for another audience, or inventing provider scope names.
-- Treating every provider endpoint as a tool, enforcing an arbitrary global tool-count limit, or loading catalogs without evaluation.
-- Trusting instructions returned by tools/resources, accepting arbitrary destinations, or sharing credentials/cursors across tenants.
-- Logging all raw inputs and outputs by default, retrying writes after ambiguous failures, or enabling destructive tools through model confirmation alone.
+Every MCP in this library follows this specification:
 
-## Enterprise considerations
-Integrate SSO/SCIM, separation of duties, approved-app workflows, DLP, audit export, retention/deletion, legal hold, eDiscovery, accessibility, residency, and incident notification according to each service specification and data classification. Maintain an owner, data-flow record, threat model, vendor review, SBOM/provenance record, upgrade policy, RTO/RPO, credential inventory, and tested decommission path for every deployment.
+```markdown
+# {Service} MCP Integration
+
+## Purpose
+[What this MCP enables an agent to do]
+
+## Security Model
+[Authentication method, required permissions, threat model]
+
+## Tool Definitions
+
+### Tool: {tool_name}
+**Description:** [Agent-facing description]
+**Input schema:**
+```json
+{
+  "property": "type — description"
+}
+```
+**Output:** [What the tool returns]
+**Rate limits:** [API limits to respect]
+**Errors:** [Common errors and handling]
+
+## Example Agent Interactions
+[Concrete example of agent using this MCP]
+
+## Anti-Patterns
+[What not to do with this MCP]
+```
+
+---
+
+## Security Considerations for All MCPs
+
+Before deploying any MCP server in production:
+
+- [ ] Authentication: OAuth 2.1 or API key with rotation schedule
+- [ ] Authorization: Tool execution restricted by user permissions
+- [ ] Input validation: All tool inputs validated (type, length, allowed patterns)
+- [ ] Output filtering: Sensitive data stripped from tool responses
+- [ ] Rate limiting: Tool calls rate-limited per user/session
+- [ ] Audit logging: All tool calls logged with user, inputs, outputs
+- [ ] Least privilege: Server can only access what it needs
+- [ ] SSRF protection: Outbound calls from MCP server validate destinations
+
+---
 
 ## Checklist
-- [ ] One inventory specification and named owner selected
-- [ ] MCP version, transport, capabilities, pagination, cancellation, and change notifications tested
-- [ ] RFC 9728 discovery, PKCE S256, RFC 8707 binding, issuer/audience validation, and no token passthrough verified
-- [ ] Consent, least privilege, provider authorization, and argument-bound mutation approval tested
-- [ ] Input/output validation, injection, exfiltration, SSRF, tool poisoning, and confused-deputy tests pass
-- [ ] Provider-aware rate controls and minimized, redacted telemetry are operational
-- [ ] Tenant isolation, revocation, incident response, enterprise controls, and decommissioning are tested
-- [ ] Package/image provenance, citations, inventory count, and links are current
 
-## Primary references
-- [MCP specification `2025-11-25`](https://modelcontextprotocol.io/specification/2025-11-25/)
-- [MCP authorization](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization)
-- [OAuth 2.0 Protected Resource Metadata — RFC 9728](https://www.rfc-editor.org/rfc/rfc9728)
-- [Resource Indicators for OAuth 2.0 — RFC 8707](https://www.rfc-editor.org/rfc/rfc8707)
-- [Proof Key for Code Exchange — RFC 7636](https://www.rfc-editor.org/rfc/rfc7636)
-- [OAuth 2.0 Security Best Current Practice — RFC 9700](https://www.rfc-editor.org/rfc/rfc9700)
-
-## Changelog
-- **2.0 — 2026-07-16:** Replaced legacy universal tool-count and payload-logging claims; added the MCP 2025-11-25 authorization profile, capability lifecycle, threat controls, enterprise requirements, citations, and verified 24-file inventory.
-- **1.0 — 2026-07-16:** Initial integration inventory.
+For each MCP server you deploy:
+- [ ] Tool descriptions are agent-optimized (not API-documentation-style)
+- [ ] Maximum 10-15 tools per server (fewer = better agent reasoning)
+- [ ] All tool inputs validated before execution
+- [ ] OAuth 2.1 authentication implemented
+- [ ] Audit logging enabled
+- [ ] Rate limiting configured
+- [ ] Tested with adversarial inputs (injection, path traversal, SSRF)
+- [ ] Documented in your system's architecture

@@ -1,41 +1,26 @@
-# Context: Skills
+# Context Pattern — Skills
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Context  
+> **Component:** skills.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Provide the domain procedures required to perform context work reproducibly.
+| Skill | Path | Why required |
+|-------|------|--------------|
+| Context curation | context skill in skill-engineering | Rank, trim, label packages |
+| Codebase search | harness search tools | Find call sites and schemas |
+| Security hygiene | security skill (exclusion subset) | Keep secrets/PII out |
 
-## Decision-led retrieval
+## Skill activation triggers
 
-**Trigger:** An operator identifies a decision it cannot support. **Procedure:** Translate the decision into source authorities and bounded queries; stop retrieval when all acceptance questions have authoritative coverage. **Verification:** The manifest maps each decision to at least one current source and records omitted candidates. **Unhappy path:** Do not compensate for a missing authority with broader search.
+1. **Curation** — always  
+2. **Search** — when seeds are thin or last package had gaps  
+3. **Security hygiene** — always before handoff
 
-## Provenance scoring
+## Verification that skills worked
 
-**Trigger:** Multiple sources make overlapping or conflicting claims. **Procedure:** Score ownership, normative status, revision, recency, directness, and corroboration; preserve conflict until the authority resolves it. **Verification:** Every excerpt carries source ID, revision, timestamp, and authority score. **Unhappy path:** Quarantine unresolved conflicting claims from decision use.
-
-## Loss-aware compression
-
-**Trigger:** The accepted sources exceed the context budget. **Procedure:** Extract constraints, exceptions, examples, interfaces, and source anchors; compare compressed claims against originals. **Verification:** Answerability tests pass with at least twenty percent budget headroom. **Unhappy path:** Restore the source passage when compression changes scope or modality.
-
-## Tradeoffs
-
-Independent Context skill verification spends a second practitioner pass to prevent an attractive artifact from substituting for reproducible domain evidence.
-
-## Anti-patterns
-
-For Context, never claim skill completion from narrative alone; retain the domain inputs, transformations, thresholds, outputs, and unhappy-path result.
-
-## Enterprise considerations
-
-Enterprise Context skill versions have named technical owners and mandatory review after a related incident, policy revision, or toolchain change.
-
-## Checklist
-
-- [ ] Decision-led retrieval produced its named, independently verifiable artifact
-- [ ] Provenance scoring produced its named, independently verifiable artifact
-- [ ] Loss-aware compression produced its named, independently verifiable artifact
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- Manifest lists why for every path  
+- Exclusions section is non-empty for large repos  
+- Scrubber reports clean  
+- Consuming agent proceeds without immediate “missing file” thrash

@@ -20,7 +20,7 @@ Capture AWS CLI/CDK/CloudFormation transform versions, partition, region, servic
 
 ## Tradeoffs
 
-The AWS deployment gate adds manual and target-environment checks that slow promotion. It reduces the chance that version, topology, state, or rollback assumptions reach production.
+Promotion waits for "caller identity and target account/region are printed before any mutation" and "template validation, lint/tests, synthesized diff, and change set show no unapproved replacement". Those AWS target checks slow release but directly bound policy-chain AccessDenied and make this rollback executable: Shift weighted traffic or aliases to the prior immutable version/cell, then use CloudFormation rollback for infrastructure; do not delete a failed stack when retained data or forensic events are required.
 
 ## Anti-patterns
 

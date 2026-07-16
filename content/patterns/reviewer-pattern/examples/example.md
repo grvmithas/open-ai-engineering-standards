@@ -1,50 +1,79 @@
-# Reviewer: Worked Production Example
+# Reviewer Pattern — Example: Auth-scoped report API PR
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Reviewer  
+> **Component:** examples/example.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16  
+> **Scenario:** PR adds `POST /api/v1/reports` with org scoping
 
-## Scenario and artifacts
+---
 
-Review payment retry PR #184. Artifacts: commit 6ab91e2, REQ-PAY-77, failing test retry_duplicate_charge.spec.ts, trace tr-992. Finding R-03 proves an idempotency key is regenerated after timeout, enabling duplicate capture; severity is blocking.
+## Inputs (abbreviated)
 
-## Execution
+**AC:**
+1. Authenticated user with `reports:create` can create a report for their org  
+2. Users cannot create reports for another org  
+3. Invalid payload returns 400 with field errors  
+4. Unauthenticated requests return 401  
 
-1. Reconstruct intended behavior from requirements before reading the implementation; the record attaches the resulting artifact to the example's primary change or incident ID.
-2. Partition review by correctness, security, reliability, operability, and maintainability; the record attaches the resulting artifact to the example's primary change or incident ID.
-3. Trace every changed behavior to a requirement and test; the record attaches the resulting artifact to the example's primary change or incident ID.
-4. Follow data and authority across trust boundaries; the record attaches the resulting artifact to the example's primary change or incident ID.
-5. Reproduce suspected defects on the exact revision; the record attaches the resulting artifact to the example's primary change or incident ID.
-6. Calibrate severity from likelihood, impact, reachability, and detectability; the record attaches the resulting artifact to the example's primary change or incident ID.
-7. Separate blocking findings from non-blocking improvements; the record attaches the resulting artifact to the example's primary change or incident ID.
-8. Verify fixes and close only the reproduced defect, not the comment; the record attaches the resulting artifact to the example's primary change or incident ID.
+**Risk:** internal API, handles confidential business data, JWT auth, no payments, not AI.
 
-## Verification
+## Review report (artifact)
 
-- The owner records raw evidence that 100% findings include file/line and reproduction evidence.
-- The owner records raw evidence that blocking false-positive rate < 5%.
-- The owner records raw evidence that critical requirement coverage = 100%.
-- The owner records raw evidence that fix verification performed by reviewer.
+### Summary
 
-## Rollback exercise
+Correctness mostly sound; org scoping is enforced in the service but the route trusts a client-supplied `orgId`. One High security finding; tests miss cross-org denial.
 
-Reviewer examples/example rollback exercise gate 1 is accepted only when "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision." is source-verifiable; otherwise, reject approval, remove unverified review-driven edits, and restore the reviewed revision.
+**Verdict:** Request changes
 
-## Tradeoffs
+### Critical
 
-Reviewer examples/example deliberately spends additional review time to protect "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision."; evidence weakness triggers "Reject approval, remove unverified review-driven edits, and restore the reviewed revision".
+_None_
 
-## Anti-patterns
+### High
 
-Reviewer examples/example rejects shortcuts around "Reconstruct intended behavior from requirements before reading the implementation." because they sever the evidence chain required for "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision.".
+| ID | Title | Location | Issue | Remediation |
+|----|-------|----------|-------|-------------|
+| REV-001 | Client-supplied orgId | `src/routes/reports.ts:38` | Handler uses `body.orgId` instead of token `org_id` | Derive org from auth context; reject body.orgId mismatch with 403 |
+| REV-002 | Missing cross-org test | `tests/reports.int.test.ts` | Only happy-path create; no foreign org attempt | Add test: user A token + org B id → 403 |
 
-## Enterprise considerations
+### Medium
 
-Reviewer examples/example governance binds owner, policy revision, and retained proof to "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision.", with "Reject approval, remove unverified review-driven edits, and restore the reviewed revision" as the recorded recovery authority.
+| ID | Title | Location | Issue | Remediation |
+|----|-------|----------|-------|-------------|
+| REV-003 | Unbounded title length | `reportService.ts:22` | Title string not length-capped | Cap at 200 chars in schema + DB |
 
-## Checklist
+### Nit
 
-- [ ] Every stated artifact has an owner and storage location in the system of record
-- [ ] Reported outcomes come from executed checks
+- Prefer `const` for the Zod schema export in `reports.ts`
 
-## Changelog
+### AC → Test map
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+| AC | Test evidence | Gap? |
+|----|---------------|------|
+| Create with permission | `creates report for caller org` | No |
+| Cross-org denied | — | **Yes → REV-002** |
+| 400 on invalid | `rejects empty title` | No |
+| 401 unauthenticated | `rejects missing token` | No |
+
+### Positive notes
+
+- Migration is expand-only with `(org_id, created_at)` index — good rollout posture  
+- OpenTelemetry span attributes on the handler are clear
+
+### Fix verification (round 2)
+
+| ID | Status | Evidence |
+|----|--------|----------|
+| REV-001 | Resolved | Route now uses `ctx.auth.orgId` only |
+| REV-002 | Resolved | New test `denies foreign orgId` fails on old rev, passes on new |
+| REV-003 | Resolved | Zod `.max(200)` + DB `varchar(200)` |
+
+**Verdict (round 2):** Approve
+
+```text
+Reviewer: S. Okonkwo  Date: 2026-07-16
+Author: A. Chen
+SoD: distinct identities — OK for High-risk internal API
+```
+
+This example **is** the artifact — not a pointer to a file elsewhere.

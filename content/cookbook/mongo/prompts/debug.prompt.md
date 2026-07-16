@@ -8,11 +8,11 @@ Diagnose a MongoDB incident by testing platform-specific failure classes before 
 
 ## Why
 
-Documents match atomic access patterns; validators enforce shape; explain evidence drives indexes; shard keys distribute both writes and queries. This prompt requires native MongoDB artifacts instead of substituting a generic incident or code-generation checklist.
+Documents match atomic access patterns; validators enforce shape; explain evidence drives indexes; shard keys distribute both writes and queries. The debug decision is accepted only when `explain('executionStats')` including examined/returned ratio, sort/spill, and shard targeting supports it; generic debug advice cannot establish that MongoDB state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized MongoDB evidence for the document model, collection validator, query, aggregation, index, transaction, or shard key. Apply the invariant "Documents match atomic access patterns; validators enforce shape; explain evidence drives indexes; shard keys distribute both writes and queries." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>

@@ -1,6 +1,6 @@
 # Provider-Neutral AI Harness
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative OAIES implementation profile
 
@@ -20,8 +20,81 @@ Use for enterprise applications calling external or self-hosted models.
 4. Qualify every provider/route independently.
 5. Test exit, export, failover, and rollback at least annually.
 
+## Reference data flow
+```mermaid
+flowchart LR
+  U["Authenticated application"] --> G["AI gateway"]
+  G --> P["Policy: tenant, purpose, data class, region"]
+  P --> H["Canonical harness"]
+  H --> R["Qualified route selector"]
+  R --> A1["Provider adapter A"]
+  R --> A2["Provider adapter B"]
+  R --> AS["Self-hosted adapter"]
+  A1 --> V["Canonical response validator"]
+  A2 --> V
+  AS --> V
+  V --> U
+  H --> T["OpenTelemetry + separate audit log"]
+  H --> E["Evaluation sampling"]
+  H --> K["Kill switch / last-known-good policy"]
+```
+
+Restricted payload stays in the approved regional path. Policy receives authenticated attributes from trusted identity and data-classification services, not model-generated text. Adapters receive short-lived provider credentials from workload identity; credentials never enter canonical messages or traces.
+
+## Canonical contract
+```typescript
+type CanonicalRequest = {
+  requestId: string;
+  tenantId: string;
+  actor: { subject: string; purpose: string };
+  task: { type: string; riskTier: "low" | "medium" | "high" };
+  data: { classification: string; allowedRegions: string[] };
+  messagesRef: string;
+  promptRelease: string;
+  toolPolicyRelease?: string;
+  limits: { inputTokens: number; outputTokens: number; totalCostUsd: number };
+};
+
+type AdapterCapabilities = {
+  immutableModelIds: boolean;
+  regions: string[];
+  toolCalling: "none" | "native" | "emulated";
+  structuredOutput: "none" | "best_effort" | "constrained";
+  zeroDataRetentionContract: boolean;
+  contentCaptureConfigurable: boolean;
+};
+
+type CanonicalResult =
+  | { status: "ok"; outputRef: string; providerResponseId: string; usage: Usage }
+  | { status: "blocked"; reasonCode: string }
+  | { status: "retryable"; reasonCode: string; retryAfterMs?: number }
+  | { status: "failed"; reasonCode: string };
+```
+
+Provider-specific fields remain in a namespaced extension with schema/version and are never required by application business logic. If a capability cannot be represented safely, policy marks the route ineligible rather than emulating it invisibly.
+
+## Adapter conformance
+Each adapter passes:
+- request/response/error fixtures and unknown-field handling;
+- timeout, cancellation, retry-after, streaming interruption, and duplicate-response behavior;
+- tool-call ID, argument schema, finish reason, safety block, and malformed structured-output mapping;
+- usage and cost reconciliation against provider invoices;
+- data-region, retention, training-use, and content-filter configuration tests;
+- OpenTelemetry attribute mapping and redaction;
+- failover equivalence on the route’s locked golden set.
+
+Failover is policy selection, not catch-all retry. It is prohibited when the fallback lacks data authority, capability, qualification freshness, or equivalent tool/security behavior.
+
+## Operational verification
+| Frequency | Verification |
+|---|---|
+| Every adapter change | Contract fixtures, golden set, adversarial tests, telemetry schema, cost reconciliation |
+| Daily | Provider model/alias resolution, region, authentication, quota, sentinel quality |
+| Quarterly | Credential rotation, deletion/retention evidence, failover game day |
+| Annual or material change | Provider due diligence, terms, capability, concentration and exit requalification |
+
 ## Evidence contract
-The decision record is the **harness contract and adapter conformance suite**. It records canonical request/response/error; capability declaration; policy hooks; provider fields; test vectors; failover result. The AI platform architect owns completeness; the evidence is invalid when provider adapter behavior escapes the canonical contract. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+The decision record is the **harness contract and adapter conformance suite**. It records canonical request/response/error; capability declaration; policy hooks; provider fields; test vectors; failover result. The AI platform architect owns completeness; the evidence is invalid when provider adapter behavior escapes the canonical contract. Architecture evidence binds diagrams and contracts to deployed adapters, policies, identities, data routes, resilience tests, and exit drills.
 
 ## Failure response and recovery
 **Trigger:** contract, policy, or data-boundary test fails.
@@ -29,7 +102,7 @@ The decision record is the **harness contract and adapter conformance suite**. I
 **Immediate response:** remove the adapter from routing and restore the previous adapter release. Preserve the harness contract and adapter conformance suite, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to provider-neutral ai harness.
 
 ## Decision authority
-The **AI platform architect** accepts the operational decision. The **provider risk owner** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+The **AI platform architect** accepts the operational decision. The **provider risk owner** provides independent challenge for high-risk scope, failed gates, or exceptions. Runtime policy may select only approved paths; architecture, service, data, and risk owners approve topology and failover boundaries.
 
 ## Tradeoffs
 | Choice | Benefit | Cost |
@@ -45,12 +118,12 @@ The **AI platform architect** accepts the operational decision. The **provider r
 - Maintain an approved-provider register.
 
 ## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+**Provider-Neutral AI Harness** is an informative architecture pattern. Teams may use an equivalent design that satisfies the same boundaries, and no portability or provider-neutrality certification is implied.
 
 | Source | Relationship for Provider-Neutral AI Harness | Boundary |
 |---|---|---|
-| NIST AI RMF | MANAGE 2.3 and 3.2 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clause 8.1 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| NIST AI RMF | MANAGE 2.3 and 3.2 | Use NIST risk outcomes to evaluate the actual data and control plane. |
+| ISO/IEC 42001 | 42001 clause 8.1 | ISO-related evidence is informative unless incorporated into the organization’s formally scoped system. |
 | Domain threat/control source | Supply-chain and sensitive-data boundaries | Test only the threats applicable to the documented system and release |
 
 ## Checklist

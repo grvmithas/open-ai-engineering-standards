@@ -20,7 +20,7 @@ Read `global.json`, target framework monikers, SDK lock, runtime image, and pack
 
 ## Tradeoffs
 
-The .NET review gate requires runtime/configuration evidence beyond a source diff. It increases reviewer effort but catches defects static style review cannot observe.
+Review must prove "singleton services do not capture scoped dependencies" using solution/project files, `global.json`, lock files, target frameworks, and package graph. That .NET evidence costs more than diff inspection but exposes invalid DI lifetime or missing registration before merge.
 
 ## Anti-patterns
 

@@ -1,41 +1,25 @@
-# Legacy Modernization: Skills
+# Legacy Modernization Pattern — Skills
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Legacy Modernization  
+> **Component:** skills.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Provide the domain procedures required to perform legacy modernization work reproducibly.
+| Skill | Path | Why required |
+|-------|------|--------------|
+| Strangler / seam design | architecture practice | Coexistence without big-bang |
+| Characterization testing | test craft | Parity oracles |
+| Migration | [`../migration-pattern/`](../migration-pattern/README.md) | Data moves inside a slice |
 
-## Characterization testing
+## Skill activation triggers
 
-**Trigger:** Relied-upon behavior lacks an authoritative specification. **Procedure:** Capture sanitized production examples, boundary cases, failure semantics, and side effects as golden-master tests without asserting the design is desirable. **Verification:** Tests fail when observed legacy behavior changes and identify the affected consumer. **Unhappy path:** Version intentionally changed behavior instead of silently updating fixtures.
+1. **Seam design** — always at slice start  
+2. **Characterization** — before any traffic above 0%  
+3. **Migration pattern** — when the slice moves data stores or schemas
 
-## Seam extraction
+## Verification that skills worked
 
-**Trigger:** A legacy dependency prevents isolated replacement. **Procedure:** Introduce a narrow interface around time, I/O, state, or external authority while preserving behavior; route old code through the seam first. **Verification:** Characterization tests and production telemetry are unchanged before new implementation starts. **Unhappy path:** Revert the seam when it alters call order, state, or error semantics.
-
-## Strangler rollout
-
-**Trigger:** A replacement capability passes contract tests. **Procedure:** Shadow old and new outputs, classify mismatches, canary consumers, and retain an immediate routing switch until the rollback window expires. **Verification:** Business outcomes and contract results match at every traffic stage. **Unhappy path:** Flip routing to legacy and reconcile buffered work on mismatch.
-
-## Tradeoffs
-
-Independent Legacy Modernization skill verification spends a second practitioner pass to prevent an attractive artifact from substituting for reproducible domain evidence.
-
-## Anti-patterns
-
-For Legacy Modernization, never claim skill completion from narrative alone; retain the domain inputs, transformations, thresholds, outputs, and unhappy-path result.
-
-## Enterprise considerations
-
-Enterprise Legacy Modernization skill versions have named technical owners and mandatory review after a related incident, policy revision, or toolchain change.
-
-## Checklist
-
-- [ ] Characterization testing produced its named, independently verifiable artifact
-- [ ] Seam extraction produced its named, independently verifiable artifact
-- [ ] Strangler rollout produced its named, independently verifiable artifact
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- Seam ADR exists  
+- Parity report completed and linked before ramp  
+- Data moves reference migration-pattern gates

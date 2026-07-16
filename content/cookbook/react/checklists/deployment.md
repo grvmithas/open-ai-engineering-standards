@@ -20,7 +20,7 @@ Read the installed `react` and `react-dom` versions from the lockfile. Concurren
 
 ## Tradeoffs
 
-The React deployment gate adds manual and target-environment checks that slow promotion. It reduces the chance that version, topology, state, or rollback assumptions reach production.
+Promotion waits for "production build completes with the repository's exact React renderer and bundler versions" and "route-level chunks and source-map policy are inspected for unexpected dependency or secret exposure". Those React target checks slow release but directly bound Rules of Hooks violations and make this rollback executable: Disable the owning feature flag first; otherwise redeploy the previous immutable client assets while preserving API compatibility for already-cached bundles.
 
 ## Anti-patterns
 

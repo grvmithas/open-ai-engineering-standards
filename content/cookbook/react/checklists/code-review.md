@@ -20,7 +20,7 @@ Read the installed `react` and `react-dom` versions from the lockfile. Concurren
 
 ## Tradeoffs
 
-The React review gate requires runtime/configuration evidence beyond a source diff. It increases reviewer effort but catches defects static style review cannot observe.
+Review must prove "Hooks are top-level and exhaustive dependency analysis is satisfied without suppression" using `package.json` plus the lockfile entries for React, renderer, router, state, and test libraries. That React evidence costs more than diff inspection but exposes Rules of Hooks violations before merge.
 
 ## Anti-patterns
 

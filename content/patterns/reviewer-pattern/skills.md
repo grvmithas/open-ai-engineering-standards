@@ -1,41 +1,25 @@
-# Reviewer: Skills
+# Reviewer Pattern — Skills
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Reviewer  
+> **Component:** skills.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Provide the domain procedures required to perform reviewer work reproducibly.
+| Skill | Path | Why required |
+|-------|------|--------------|
+| Code review | [`../../03-skill-engineering/skills/code-review.skill.md`](../../03-skill-engineering/skills/code-review.skill.md) | Five-pass procedure and verdict format |
+| Security | `03-skill-engineering/skills/security.skill.md` | Trust-boundary and injection review |
+| Debug | [`../../03-skill-engineering/skills/debug.skill.md`](../../03-skill-engineering/skills/debug.skill.md) | Reproduce suspected defects before blocking |
 
-## Behavioral diffing
+## Skill activation triggers
 
-**Trigger:** A revision changes executable behavior or a contract. **Procedure:** Map changed inputs, outputs, state, authority, errors, and timing to requirements before assessing implementation style. **Verification:** Each changed behavior has a requirement and test anchor. **Unhappy path:** Block review when intended behavior cannot be established.
+1. **Code review skill** — always for this pattern  
+2. **Security skill** — PII, payments, public internet, auth changes, or `IS_AI=yes`  
+3. **Debug skill** — when a suspected defect needs reproduction before a Block verdict
 
-## Defect reproduction
+## Verification that skills worked
 
-**Trigger:** A suspected defect could be blocking. **Procedure:** Construct the smallest input and environment that fails on the reviewed revision and succeeds on the control revision or stated oracle. **Verification:** Attach commands, revision, expected result, actual result, and raw output. **Unhappy path:** Withdraw or downgrade a finding that cannot be reproduced.
-
-## Severity calibration
-
-**Trigger:** A reproduced defect needs prioritization. **Procedure:** Score reachability, affected population, impact, detectability, existing controls, and reversibility; use the highest credible consequence, not reviewer intuition. **Verification:** A second reviewer can derive the same severity from the recorded factors. **Unhappy path:** Escalate disagreement on release-blocking severity to the risk owner.
-
-## Tradeoffs
-
-Independent Reviewer skill verification spends a second practitioner pass to prevent an attractive artifact from substituting for reproducible domain evidence.
-
-## Anti-patterns
-
-For Reviewer, never claim skill completion from narrative alone; retain the domain inputs, transformations, thresholds, outputs, and unhappy-path result.
-
-## Enterprise considerations
-
-Enterprise Reviewer skill versions have named technical owners and mandatory review after a related incident, policy revision, or toolchain change.
-
-## Checklist
-
-- [ ] Behavioral diffing produced its named, independently verifiable artifact
-- [ ] Defect reproduction produced its named, independently verifiable artifact
-- [ ] Severity calibration produced its named, independently verifiable artifact
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+- Code review: all five passes addressed or explicitly scoped out  
+- Security: every entry point traced or marked N/A with reason  
+- Debug: blocking claims include reproduction steps or “could not reproduce” + residual risk

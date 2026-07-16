@@ -20,7 +20,7 @@ Read React Native, React, navigation, native dependency, Gradle/AGP/Kotlin, Xcod
 
 ## Tradeoffs
 
-The React Native review gate requires runtime/configuration evidence beyond a source diff. It increases reviewer effort but catches defects static style review cannot observe.
+Review must prove "screen separates shared state from `.ios`/`.android` platform adapters" using `package.json`/lockfile, Podfile/lock, Gradle catalogs/wrapper, Xcode project, and platform deployment targets. That React Native evidence costs more than diff inspection but exposes native module missing/unlinked or architecture incompatible before merge.
 
 ## Anti-patterns
 

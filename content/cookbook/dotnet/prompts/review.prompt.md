@@ -8,11 +8,11 @@ Review a .NET change using native configuration, failure, and operational eviden
 
 ## Why
 
-DI lifetimes are valid; CancellationToken reaches I/O; one scoped DbContext owns a unit of work; options fail fast. This prompt requires native .NET artifacts instead of substituting a generic incident or code-generation checklist.
+DI lifetimes are valid; CancellationToken reaches I/O; one scoped DbContext owns a unit of work; options fail fast. The review decision is accepted only when DI registrations, options binding/validation, middleware order, and endpoint metadata supports it; generic review advice cannot establish that .NET state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized .NET evidence for the ASP.NET Core endpoint, hosted service, EF Core unit of work, or application slice. Apply the invariant "DI lifetimes are valid; CancellationToken reaches I/O; one scoped DbContext owns a unit of work; options fail fast." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Read `global.json`, target framework monikers, SDK lock, runtime image, and pack
 
 ## Tradeoffs
 
-.NET review takes longer because configuration and runtime state must be correlated with source. It eliminates generic style findings and prioritizes defects that can change production behavior.
+.NET review correlates source with DI registrations, options binding/validation, middleware order, and endpoint metadata and EF Core generated SQL, query plan, change tracker, and pool metrics. The cost is a deeper review; the benefit is direct evidence for "singleton services do not capture scoped dependencies" and "CancellationToken flows from endpoint through every asynchronous I/O call" instead of generic style findings.
 
 ## Anti-patterns
 

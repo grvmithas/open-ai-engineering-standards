@@ -8,11 +8,11 @@ Review a Kubernetes change using native configuration, failure, and operational 
 
 ## Why
 
-Controllers own Pods; workload identity and network policy are least-privilege; probes, resources, topology, disruption, and rollout are explicit desired state. This prompt requires native Kubernetes artifacts instead of substituting a generic incident or code-generation checklist.
+Controllers own Pods; workload identity and network policy are least-privilege; probes, resources, topology, disruption, and rollout are explicit desired state. The review decision is accepted only when Deployment/StatefulSet status, ReplicaSets, Pod conditions, events, previous logs, and termination state supports it; generic review advice cannot establish that Kubernetes state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Kubernetes evidence for the controller-managed workload, Service, policy, autoscaler, disruption budget, or GitOps release. Apply the invariant "Controllers own Pods; workload identity and network policy are least-privilege; probes, resources, topology, disruption, and rollout are explicit desired state." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Capture server and kubectl versions, API discovery, node OS/runtime, CNI/CSI, ad
 
 ## Tradeoffs
 
-Kubernetes review takes longer because configuration and runtime state must be correlated with source. It eliminates generic style findings and prioritizes defects that can change production behavior.
+Kubernetes review correlates source with Deployment/StatefulSet status, ReplicaSets, Pod conditions, events, previous logs, and termination state and Service, EndpointSlice, NetworkPolicy, DNS, routes, and caller-side connectivity. The cost is a deeper review; the benefit is direct evidence for "Pods are owned by Deployment, StatefulSet, Job, or another appropriate controller" and "ServiceAccount maps to workload identity; automounted tokens and RBAC are minimized" instead of generic style findings.
 
 ## Anti-patterns
 

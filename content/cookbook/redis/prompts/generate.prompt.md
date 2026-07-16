@@ -8,11 +8,11 @@ Generate a production-ready keyspace, cache, session store, rate limiter, stream
 
 ## Why
 
-Every keyspace defines type, cardinality, TTL, memory policy, atomicity, durability, topology, and behavior when Redis is unavailable. This prompt requires native Redis artifacts instead of substituting a generic incident or code-generation checklist.
+Every keyspace defines type, cardinality, TTL, memory policy, atomicity, durability, topology, and behavior when Redis is unavailable. The generate decision is accepted only when `INFO server`, `INFO memory`, `INFO persistence`, `INFO replication`, and `INFO cluster` supports it; generic generate advice cannot establish that Redis state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Redis evidence for the keyspace, cache, session store, rate limiter, stream consumer, or Redis topology. Apply the invariant "Every keyspace defines type, cardinality, TTL, memory policy, atomicity, durability, topology, and behavior when Redis is unavailable." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Capture `redis_version`, mode, persistence, replication/cluster state, client li
 
 ## Tradeoffs
 
-The prompt rejects fast code generation when Redis version, configuration, or target evidence is absent. That delay prevents plausible output from crossing an unsupported keyspace, cache, session store, rate limiter, stream consumer, or Redis topology boundary.
+Generation waits for `INFO server`, `INFO memory`, `INFO persistence`, `INFO replication`, and `INFO cluster` and `CONFIG GET` for maxmemory/policy, persistence, timeout, and output-buffer settings under approved access. That extra Redis discovery is justified because the output must prove "key format includes bounded namespace, tenant scope, schema version, and collision-safe identifier" and survive maxmemory/OOM or unsafe eviction rather than merely compile.
 
 ## Anti-patterns
 

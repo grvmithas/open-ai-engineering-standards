@@ -70,11 +70,11 @@ Redis governance allocates key prefixes, memory budgets, ACL patterns, persisten
 
 ## Checklist
 
-- [ ] The system of record remains authoritative unless Redis durability is explicitly designed and tested..
-- [ ] Clients are cluster/failover aware and bound commands by deadline and queue..
-- [ ] Key schema versions allow coexistence and rollback..
-- [ ] TTL jitter and single-flight behavior protect the source during misses..
-- [ ] Memory, persistence, and eviction policies match the keyspace's data-loss contract..
+- [ ] The system of record remains authoritative unless Redis durability is explicitly designed and tested.
+- [ ] Clients are cluster/failover aware and bound commands by deadline and queue.
+- [ ] Key schema versions allow coexistence and rollback.
+- [ ] TTL jitter and single-flight behavior protect the source during misses.
+- [ ] Memory, persistence, and eviction policies match the keyspace's data-loss contract.
 - [ ] Diagram matches deployed topology rather than an aspirational target.
 - [ ] Rollback path preserves state and mixed-version contracts.
 

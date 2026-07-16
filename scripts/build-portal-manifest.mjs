@@ -104,22 +104,25 @@ const soaDispositions = assuranceRows
   .map(([disposition, meaning, claimEffect]) => ({ disposition, meaning, claimEffect }));
 
 const crosswalkDirectory = path.join(CONTENT_ROOT, 'standard', 'crosswalks');
+const crosswalkIndex = read('content/standard/crosswalks/README.md');
+const crosswalkFrameworks = new Map(
+  [...crosswalkIndex.matchAll(/^\|\s*\[[^\]]+]\(\.\/([^)]+)\)\s*\|\s*([^|]+)\|$/gm)]
+    .map(match => [
+      match[1],
+      match[2].split(/,\s+/).map(value => cleanInlineMarkdown(value)).filter(Boolean),
+    ]),
+);
 const crosswalks = fs.readdirSync(crosswalkDirectory, { withFileTypes: true })
   .filter(entry => entry.isFile() && entry.name.endsWith('.md') && entry.name !== 'README.md')
   .sort((left, right) => left.name.localeCompare(right.name))
   .map(entry => {
     const sourcePath = toPosix(path.relative(ROOT, path.join(crosswalkDirectory, entry.name)));
     const markdown = read(sourcePath);
-    const frameworks = [...new Set(
-      [...markdown.matchAll(/\b(?:ISO\/IEC\s+\d+(?::\d+)?|NIST(?:\s+(?:AI\s+RMF|SP|SSDF))?[^,;|\n)]*|OWASP[^,;|\n)]*|OpenTelemetry|OpenSSF|SLSA|MCP|A2A)\b/gi)]
-        .map(match => cleanInlineMarkdown(match[0]))
-        .filter(value => value.length > 2),
-    )].slice(0, 12);
     return {
       title: title(markdown, entry.name),
       description: description(markdown),
       ...metadata(markdown),
-      frameworks,
+      frameworks: crosswalkFrameworks.get(entry.name) ?? [],
       sourcePath,
       sourceSlug: sourcePath.slice('content/'.length, -3),
     };

@@ -8,11 +8,11 @@ Review a React change using native configuration, failure, and operational evide
 
 ## Why
 
-Rendering stays pure; state has one owner; Effects synchronize only with external systems. This prompt requires native React artifacts instead of substituting a generic incident or code-generation checklist.
+Rendering stays pure; state has one owner; Effects synchronize only with external systems. The review decision is accepted only when `tsconfig.json` and ESLint React/Hook rules supports it; generic review advice cannot establish that React state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized React evidence for the component, Hook, context boundary, or route UI. Apply the invariant "Rendering stays pure; state has one owner; Effects synchronize only with external systems." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Read the installed `react` and `react-dom` versions from the lockfile. Concurren
 
 ## Tradeoffs
 
-React review takes longer because configuration and runtime state must be correlated with source. It eliminates generic style findings and prioritizes defects that can change production behavior.
+React review correlates source with `tsconfig.json` and ESLint React/Hook rules and the nearest component, test, CSS, and Storybook conventions. The cost is a deeper review; the benefit is direct evidence for "Hooks are top-level and exhaustive dependency analysis is satisfied without suppression" and "derived values are computed during render instead of mirrored through an Effect" instead of generic style findings.
 
 ## Anti-patterns
 

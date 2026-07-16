@@ -9,6 +9,9 @@ const checks = {
     ['src/app/about/page.tsx', /id="main-content"/, 'about skip target'],
     ['src/components/Search.tsx', /aria-labelledby=/, 'labelled search dialog'],
     ['src/components/Search.tsx', /aria-modal="true"/, 'modal semantics'],
+    ['src/app/portal/page.tsx', /id="main-content"/, 'portal skip target'],
+    ['src/components/PortalExplorer.tsx', /aria-live="polite"/, 'portal result announcement'],
+    ['src/components/Sidebar.tsx', /type="search"/, 'navigation filtering'],
   ],
   security: [
     ['src/lib/docs.ts', /sanitizeHtml\(/, 'Markdown HTML sanitization'],

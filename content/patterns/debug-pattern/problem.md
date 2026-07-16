@@ -1,39 +1,36 @@
-# Debug: Problem
+# Debug Pattern — Problem
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Debug  
+> **Component:** problem.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Debug problem operationalizes this pattern outcome: isolate a software defect through reproducible observations and falsifiable experiments.
+## Statement
 
-## Observable problem
+Defects persist or recur because responders jump from symptom to speculative fix without reproduction, competing hypotheses, or single-variable experiments. “Fixed” often means “error string gone,” not “causal factor removed.”
 
-1. When actual behavior violates a specification, an undocumented assumption can become a production decision.
-2. When the failure is intermittent or environment-sensitive, an undocumented assumption can become a production decision.
-3. When multiple plausible causes remain, an undocumented assumption can become a production decision.
+## Measurable symptoms
 
-## Quality boundary
+| Symptom | How you detect it |
+|---------|-------------------|
+| Reopen rate | Same bug ticket reopens within 14 days |
+| Fix without test | PR claims fix; no new failing-then-passing test |
+| Shotgun diffs | Debug PR touches many unrelated modules |
+| Env mystery | “Works on my machine”; prod still fails |
+| Hypothesis vacuum | No written alternatives before first patch |
 
-Debug problem quality boundary gate 2 is accepted only when "reproduction rate before fix is recorded" is source-verifiable; otherwise, revert probes and fix, restore the locked environment, and preserve diagnostic artifacts.
+## Root cause
 
-## Tradeoffs
+Agents and humans optimize for clearing the immediate error signal. Causal isolation requires locking the environment, stating expected vs actual, and falsifying hypotheses — work that is skipped under time pressure.
 
-Debug problem deliberately spends additional review time to protect "reproduction rate before fix is recorded"; evidence weakness triggers "Revert probes and fix, restore the locked environment, and preserve diagnostic artifacts".
+## Non-goals of this pattern
 
-## Anti-patterns
+- Not feature design or refactoring sprees
+- Not a full incident command process (use incident/hotfix patterns for containment)
+- Not vendor outage resolution beyond workaround documentation
+- Not required for trivial syntax errors
 
-Debug problem rejects shortcuts around "Write a deterministic symptom statement without assigning cause." because they sever the evidence chain required for "reproduction rate before fix is recorded".
+## Related failure modes
 
-## Enterprise considerations
-
-Debug problem governance binds owner, policy revision, and retained proof to "reproduction rate before fix is recorded", with "Revert probes and fix, restore the locked environment, and preserve diagnostic artifacts" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Trigger and affected population are quantified
-- [ ] Baseline and desired outcome are distinguishable
-- [ ] Scope and non-goals have named owners
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+See [failures.md](./failures.md).

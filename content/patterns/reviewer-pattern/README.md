@@ -1,56 +1,194 @@
 # Reviewer Pattern
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Reviewer  
+> **Category:** Quality & Defect Detection  
+> **Maturity:** Stable v1.1  
+> **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Detect consequential defects with requirement-traceable, severity-calibrated findings.
+## Overview
 
-## Applicability
+The Reviewer Pattern solves the most common failure in AI-assisted merges: **shipping code that “looks fine” but breaks correctness, security, or contracts**. Agents and humans both produce diffs that compile and pass happy-path tests while leaving reachable defects.
 
-- an artifact changes runtime behavior
-- a public contract or security boundary changes
-- release evidence needs independent challenge
+The Reviewer Pattern enforces independent, severity-calibrated challenge of a change — not rubber-stamp approval and not style-nit farming.
 
-## Evidence
+## When to Apply
 
-- diff and base revision
-- acceptance criteria
-- threat model and policies
-- test and coverage output
-- runtime or benchmark evidence
+Apply this pattern when:
+- A PR or agent diff changes runtime behavior
+- A public API, auth boundary, tenancy rule, or schema contract changes
+- Security-sensitive paths are touched (auth, crypto, PII, payments, AI tool calls)
+- Release evidence requires an independent second pass
+- An agent both authored and “self-reviewed” the change
 
-## Components
+Do NOT apply this pattern to:
+- Docs-only edits with no runtime effect
+- Pure formatting / import-sort commits with no logic delta
+- Draft spikes that will never merge
+- Active SEV1 containment (stabilize first; review the durable fix after)
 
-Reviewer README components gate 1 is accepted only when "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision." is source-verifiable; otherwise, reject approval, remove unverified review-driven edits, and restore the reviewed revision.
+---
 
-README is component thirteen.
+## Problem
 
-## Outcome measures
+```
+reviewer-pattern/problem.md
+```
 
-- 100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision.
-- blocking false-positive rate < 5%
-- critical requirement coverage = 100%
-- fix verification performed by reviewer
+**Statement:** Changes merge with consequential defects because review focuses on style, trusts green CI, or skips requirement tracing and security boundary walks.
 
-## Rollback
+**Measurable symptom:** >20% of post-merge defects in AI-assisted PRs were detectable from the diff alone.
 
-Reject approval, remove unverified review-driven edits, and restore the reviewed revision.
+**Root cause:** Reviewers optimize for comment volume or “LGTM speed” instead of falsifying the claimed behavior against requirements, tests, and trust boundaries.
 
-## Tradeoffs
+---
 
-Reviewer README deliberately spends additional review time to protect "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision."; evidence weakness triggers "Reject approval, remove unverified review-driven edits, and restore the reviewed revision".
+## Context Requirements
 
-## Anti-patterns
+Before applying this pattern:
+- [ ] Diff and base revision are available
+- [ ] Acceptance criteria or ticket AC exist
+- [ ] Test results / coverage for the change are attached
+- [ ] Risk profile known (public / PII / payments / AI)
+- [ ] Named human can issue Approve / Request changes / Block
 
-Reviewer README rejects shortcuts around "Reconstruct intended behavior from requirements before reading the implementation." because they sever the evidence chain required for "100% findings include file/line and reproduction evidence. For the Reviewer README contract, gate 1 is evidenced by "100% findings include file/line and reproduction evidence"; failure invokes this domain recovery: Reject approval, remove unverified review-driven edits, and restore the reviewed revision.".
+---
 
-## Citations
+## Workflow
 
-- [OWASP Code Review Guide](https://owasp.org/www-project-code-review-guide/)
-- [NIST SSDF](https://doi.org/10.6028/NIST.SP.800-218)
-- [Google Engineering Practices review](https://google.github.io/eng-practices/review/)
+```mermaid
+flowchart TD
+    A[Input: PR diff + AC + risk profile] --> B[Reviewer Agent Activated]
+    B --> C[Intent reconstruction from AC]
+    C --> D[Pass 1: Correctness + edge cases]
+    D --> E[Pass 2: Security / trust boundaries]
+    E --> F[Pass 3: Perf + reliability]
+    F --> G[Pass 4: Maintainability + tests]
+    G --> H[Severity calibration]
+    H --> I{Blocking findings?}
+    I -->|Yes| J[Request changes / Block]
+    J --> K[Author fixes]
+    K --> L[Fix verification on same findings]
+    L --> I
+    I -->|No| M[Approve or Approve-with-nits]
+    M --> N[Review artifact stored with PR]
+```
 
-## Changelog
+---
 
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+## Prompt
+
+See [prompt.md](./prompt.md) — grounded in Level 8 [`security-review.prompt.md`](../../08-ai-sdlc/prompts/security-review.prompt.md) and the [`code-review` skill](../../03-skill-engineering/skills/code-review.skill.md).
+
+---
+
+## Agent Definition
+
+```yaml
+name: Reviewer Agent
+role: |
+  You are a principal engineer performing independent code review.
+  You find defects with file:line, severity, and remediation.
+  You do not rewrite the feature. You do not approve without evidence.
+
+tools:
+  - read_file
+  - search_files
+  - run_tests          # reproduce / verify claims
+  # Denied: write_file to product code, merge, deploy, secret exfil
+
+memory:
+  - project_standards
+  - prior_findings_on_this_pr
+  - threat_model_snippets
+
+termination:
+  success: Verdict issued; all Critical/High either fixed+verified or explicitly waived
+  failure: Cannot obtain diff, AC, or reproducible evidence after 2 requests
+```
+
+---
+
+## Subagents
+
+| Subagent | Role | When Invoked |
+|----------|------|--------------|
+| Diff Mapper | Lists changed paths and behavioral deltas | Start of review |
+| Security Scanner | OWASP / AI injection / secret checks | Pass 2 |
+| Test Adequacy Checker | Maps AC → tests; flags untested paths | Pass 4 |
+
+---
+
+## Skills Required
+
+- `code-review.skill.md` — five-pass review procedure
+- `security.skill.md` — trust-boundary and injection review
+- `debug.skill.md` — reproduce suspected defects before blocking
+
+---
+
+## Hooks
+
+Executable hooks live in [hooks.md](./hooks.md): `pre-review.hook.sh` (diff + AC present) and `post-review.hook.sh` (verdict + severity table present).
+
+---
+
+## Checklist
+
+Before marking review complete:
+- [ ] All five review passes executed (or explicitly scoped out with reason)
+- [ ] Every Critical/High finding has file:line + remediation
+- [ ] Security pass completed when risk profile requires it
+- [ ] Fix verification done for findings that were “fixed”
+- [ ] Verdict is one of: Approve / Approve with nits / Request changes / Block
+- [ ] At least one specific positive note (balanced review)
+- [ ] Review artifact linked on the PR
+
+---
+
+## Examples
+
+See [examples/example.md](./examples/example.md) for a full review report on an auth-scoped API PR (findings table, verdict, fix verification).
+
+| Component | File |
+|-----------|------|
+| Problem | [problem.md](./problem.md) |
+| Context | [context.md](./context.md) |
+| Workflow | [workflow.md](./workflow.md) |
+| Prompt | [prompt.md](./prompt.md) |
+| Agent | [agent.md](./agent.md) |
+| Subagents | [subagents.md](./subagents.md) |
+| Skills | [skills.md](./skills.md) |
+| Hooks | [hooks.md](./hooks.md) |
+| Checklist | [checklist.md](./checklist.md) |
+| Failures | [failures.md](./failures.md) |
+| Enterprise | [enterprise-notes.md](./enterprise-notes.md) |
+
+---
+
+## Common Failures
+
+### Failure 1: Style volume hides a bug
+**Symptom:** 40 nits, zero Critical; production breaks on null edge case.  
+**Cause:** Review optimized for comment count.  
+**Recovery:** Cap nits; force Correctness + Security passes first.
+
+### Failure 2: Green CI = approved
+**Symptom:** Merge after “tests pass” with no AC tracing.  
+**Cause:** CI covers happy path only.  
+**Recovery:** Require AC→test map; fail review if critical AC untested.
+
+### Failure 3: Author self-review as final
+**Symptom:** Agent that wrote the PR also issued Approve.  
+**Cause:** No separation of duties.  
+**Recovery:** Different reviewer identity (human or distinct agent + human gate).
+
+---
+
+## Enterprise Notes
+
+- **Audit trail:** Store the review report (verdict, findings, fix verification) with the PR.
+- **SoD:** Author ≠ final approver for High-risk changes.
+- **Scale:** Severity calibration training beats “more reviewers.”
+- **Anti-claim:** A completed review is not a security certification or compliance attestation.

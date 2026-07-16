@@ -20,7 +20,7 @@ Read the Maven/Gradle toolchain, wrapper, Spring dependency management, and runt
 
 ## Tradeoffs
 
-The Java review gate requires runtime/configuration evidence beyond a source diff. It increases reviewer effort but catches defects static style review cannot observe.
+Review must prove "controllers map validated DTOs and do not expose JPA entities" using `pom.xml` or Gradle catalogs, wrapper version, toolchain, BOM, and dependency tree. That Java evidence costs more than diff inspection but exposes bean graph or configuration binding failure before merge.
 
 ## Anti-patterns
 

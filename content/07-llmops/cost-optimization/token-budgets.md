@@ -1,6 +1,6 @@
 # Token Budget Standard
 
-> **Version:** 1.0.0
+> **Version:** 1.1.0
 > **Last updated:** 2026-07-16
 > **Status:** Informative OAIES implementation profile
 
@@ -21,7 +21,7 @@ Use for every production model route.
 5. Alert on forecast variance and degrade safely before hard exhaustion.
 
 ## Evidence contract
-The decision record is the **budget policy and exhaustion test**. It records task cap; context reserve; output cap; retry cap; loop cap; tenant quota; override expiry. The FinOps product owner owns completeness; the evidence is invalid when mandatory evidence is truncated or retries evade the aggregate cap. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+The decision record is the **budget policy and exhaustion test**. It records task cap; context reserve; output cap; retry cap; loop cap; tenant quota; override expiry. The FinOps product owner owns completeness; the evidence is invalid when mandatory evidence is truncated or retries evade the aggregate cap. Cost evidence includes quality and safety deltas, retry/agent amplification, cache effects, and human review—not provider list price alone.
 
 ## Failure response and recovery
 **Trigger:** spend velocity or token amplification crosses its circuit breaker.
@@ -29,7 +29,7 @@ The decision record is the **budget policy and exhaustion test**. It records tas
 **Immediate response:** stop retries, switch to bounded degradation, and page the quota owner. Preserve the budget policy and exhaustion test, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to token budget standard.
 
 ## Decision authority
-The **FinOps product owner** accepts the operational decision. The **abuse-prevention lead** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+The **FinOps product owner** accepts the operational decision. The **abuse-prevention lead** provides independent challenge for high-risk scope, failed gates, or exceptions. Budget and routing services can trip circuit breakers; product, FinOps, and abuse owners decide degraded service and temporary quota changes.
 
 ## Tradeoffs
 | Choice | Benefit | Cost |
@@ -46,12 +46,12 @@ The **FinOps product owner** accepts the operational decision. The **abuse-preve
 - Require approval for temporary increases.
 
 ## Framework relationship
-This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+The **Token Budget Standard** profile treats resource consumption as a task-specific reliability and abuse constraint; it supplies neither financial advice nor universal targets.
 
 | Source | Relationship for Token Budget Standard | Boundary |
 |---|---|---|
-| NIST AI RMF | MANAGE 2.2 | Use the cited outcomes as governance questions; NIST does not approve implementations |
-| ISO/IEC 42001 | 42001 clause 8.1 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| NIST AI RMF | MANAGE 2.2 | Relate resource controls to the measured task and exposed population. |
+| ISO/IEC 42001 | 42001 clause 8.1 | Use operational planning evidence within the organization’s own objectives and risk treatment. |
 | Domain threat/control source | LLM10 Unbounded Consumption | Test only the threats applicable to the documented system and release |
 
 ## Checklist

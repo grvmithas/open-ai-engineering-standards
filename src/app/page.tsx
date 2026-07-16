@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import manifest from '@/generated/content-manifest.json';
+import PatternsMegaMenu from '@/components/PatternsMegaMenu';
 import { REPOSITORY_URL, SITE_VERSION } from '@/lib/site';
 
 const MATURITY_LEVELS = [
@@ -11,47 +11,47 @@ const MATURITY_LEVELS = [
   { level: 5, slug: '05-multi-agent-systems', title: 'Multi-Agent Systems', desc: 'Supervisor, pipeline, parallel patterns, communication protocol', icon: '🕸️', color: '#e11d48' },
   { level: 6, slug: '06-memory-knowledge', title: 'Memory & Knowledge', desc: 'Hybrid RAG, vector databases, episodic and semantic memory', icon: '🧠', color: '#dc2626' },
   { level: 7, slug: '07-llmops', title: 'LLMOps', desc: 'Evaluation gates, PromptOps, cost optimization, observability', icon: '⚙️', color: '#ea580c' },
-  { level: 8, slug: '08-ai-sdlc', title: 'AI SDLC', desc: '26-stage workflow, production prompts for every stage', icon: '🔄', color: '#d97706' },
+  { level: 8, slug: '08-ai-sdlc', title: 'AI SDLC', desc: 'Stage workflow with 15 production prompts and quality gates', icon: '🔄', color: '#d97706' },
   { level: 9, slug: '09-enterprise-ai', title: 'Enterprise AI', desc: 'Governance, EU AI Act, provider-neutral architecture, audit logging', icon: '🏢', color: '#65a30d' },
   { level: 10, slug: '10-ai-org-playbook', title: 'AI Org Playbook', desc: 'Roles, operating models, hiring criteria, culture principles', icon: '📖', color: '#059669' },
 ];
 
 const FEATURES = [
   {
+    icon: '📘',
+    title: 'Practitioner Handbook',
+    desc: 'Skills vs prompts, context packages, planning gates, HITL, PR review, evals, hooks, MCP, and token discipline — written for teams that ship UI with AI.',
+    href: '/docs/handbook/README',
+  },
+  {
     icon: '🎯',
-    title: '13-Component Pattern Spec',
-    desc: 'Every AI Engineering Pattern includes problem, workflow, prompt, agent, skills, hooks, checklist, examples, failures, and enterprise notes.',
+    title: '12 AI Engineering Patterns',
+    desc: 'Operational envelopes (planner, reviewer, release, hotfix…). Open the pattern README from the Patterns menu — not a dump of stub components.',
     href: '/docs/patterns/README',
   },
   {
     icon: '🔒',
     title: 'Security-First by Default',
-    desc: 'OWASP Top 10 + AI-specific attack vectors baked into every skill, agent, and SDLC stage. Not bolted on after.',
+    desc: 'Security skill, review gates, and enterprise control maps. High-impact effects require human approval.',
     href: '/docs/03-skill-engineering/skills/security.skill',
   },
   {
     icon: '📊',
     title: 'Evaluation CI/CD Gate',
     desc: 'GitHub Actions workflow that blocks PRs when LLM evaluation tests fail. Prompts are treated like code.',
-    href: '/docs/07-llmops/evaluation/framework-selection',
+    href: '/docs/handbook/evals-as-quality-gates',
   },
   {
-    icon: '⚡',
-    title: '26-Stage AI SDLC',
-    desc: 'Complete software development lifecycle with AI-enhanced prompts for every stage — from story kickoff to knowledge capture.',
+    icon: '🔄',
+    title: 'AI SDLC + 15 production prompts',
+    desc: 'Stage workflow with versioned prompts for story, plan, coding, security, incident, RCA, and knowledge capture.',
     href: '/docs/08-ai-sdlc/README',
   },
   {
-    icon: '🏢',
-    title: 'Enterprise Ready',
-    desc: 'EU AI Act compliance, provider-neutral gateway, audit logging standard, multi-tenant isolation, and governance frameworks.',
-    href: '/docs/09-enterprise-ai/README',
-  },
-  {
-    icon: '🤖',
-    title: 'Production Agent Specs',
-    desc: 'Every agent ships with a YAML specification: role, tools, memory, communication, termination criteria, and failure handling.',
-    href: '/docs/04-agent-engineering/agents/coder.agent',
+    icon: '🍳',
+    title: 'Technology cookbooks',
+    desc: 'React, Next.js, microfrontends, and more — native commands, failure classes, and rollback — linked from curated nav.',
+    href: '/docs/cookbook/README',
   },
 ];
 
@@ -75,8 +75,10 @@ export default function HomePage() {
             <span style={{ padding: '0.1rem 0.45rem', background: 'rgba(139,92,246,0.15)', color: 'var(--primary-light)', borderRadius: 4, fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', border: '1px solid rgba(139,92,246,0.3)' }}>v{SITE_VERSION}</span>
           </Link>
           <nav style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+            <Link href="/docs/handbook/README" style={{ padding: '0.4rem 0.85rem', borderRadius: 6, color: 'var(--text-subtle)', fontSize: '0.85rem', textDecoration: 'none', transition: 'color 0.15s', fontWeight: 500 }}>Handbook</Link>
             <Link href="/docs/README" style={{ padding: '0.4rem 0.85rem', borderRadius: 6, color: 'var(--text-subtle)', fontSize: '0.85rem', textDecoration: 'none', transition: 'color 0.15s', fontWeight: 500 }}>Docs</Link>
-            <Link href="/docs/patterns/README" style={{ padding: '0.4rem 0.85rem', borderRadius: 6, color: 'var(--text-subtle)', fontSize: '0.85rem', textDecoration: 'none', transition: 'color 0.15s', fontWeight: 500 }}>Patterns</Link>
+            <Link href="/portal" style={{ padding: '0.4rem 0.85rem', borderRadius: 6, color: 'var(--text-subtle)', fontSize: '0.85rem', textDecoration: 'none', transition: 'color 0.15s', fontWeight: 500 }}>Portal</Link>
+            <PatternsMegaMenu />
             <Link href="/about" style={{ padding: '0.4rem 0.85rem', borderRadius: 6, color: 'var(--text-subtle)', fontSize: '0.85rem', textDecoration: 'none', transition: 'color 0.15s', fontWeight: 500 }}>About</Link>
             <Link href="/docs/08-ai-sdlc/README" style={{ padding: '0.4rem 0.85rem', borderRadius: 6, color: 'var(--text-subtle)', fontSize: '0.85rem', textDecoration: 'none', transition: 'color 0.15s', fontWeight: 500 }}>SDLC</Link>
             <Link href="/docs/resources/README" style={{ padding: '0.4rem 0.85rem', borderRadius: 6, color: 'var(--text-subtle)', fontSize: '0.85rem', textDecoration: 'none', transition: 'color 0.15s', fontWeight: 500 }}>Resources</Link>
@@ -181,15 +183,28 @@ export default function HomePage() {
             }}>
               AI SDLC Prompts
             </Link>
+            <Link href="/portal" style={{
+              padding: '0.75rem 2rem',
+              borderRadius: 10,
+              background: 'rgba(6,182,212,0.08)',
+              color: '#67e8f9',
+              fontWeight: 600,
+              fontSize: '0.95rem',
+              textDecoration: 'none',
+              border: '1px solid rgba(6,182,212,0.25)',
+              transition: 'all 0.15s',
+            }}>
+              Explore the Standards Portal
+            </Link>
           </div>
 
           {/* Stats */}
           <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', marginTop: '3.5rem', flexWrap: 'wrap' }}>
             {[
-              { value: String(MATURITY_LEVELS.length), label: 'Maturity Levels' },
-              { value: '26', label: 'SDLC Stages' },
-              { value: '13', label: 'Pattern Components' },
-              { value: String(manifest.documentCount), label: 'Production Docs' },
+              { value: '10', label: 'Handbook chapters' },
+              { value: '12', label: 'Patterns' },
+              { value: '15', label: 'SDLC prompts' },
+              { value: String(MATURITY_LEVELS.length), label: 'Maturity levels' },
             ].map(stat => (
               <div key={stat.label} style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '2rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em' }}>{stat.value}</div>

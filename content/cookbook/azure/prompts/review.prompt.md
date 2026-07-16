@@ -8,11 +8,11 @@ Review a Azure change using native configuration, failure, and operational evide
 
 ## Why
 
-Infrastructure is declarative; identities are credentialless and least-privilege; private connectivity, policy, diagnostics, and cost ownership are explicit. This prompt requires native Azure artifacts instead of substituting a generic incident or code-generation checklist.
+Infrastructure is declarative; identities are credentialless and least-privilege; private connectivity, policy, diagnostics, and cost ownership are explicit. The review decision is accepted only when tenant, subscription, resource-group, principal object ID, role assignments, deny assignments, and policy state supports it; generic review advice cannot establish that Azure state.
 
 ## How
 
-Resolve every XML variable with sanitized evidence. Use `{{NOT_AVAILABLE: reason}}` only when the missing artifact is explicitly returned as a blocker.
+Resolve every XML variable with sanitized Azure evidence for the subscription workload, Bicep module, managed identity, private endpoint, or release pipeline. Apply the invariant "Infrastructure is declarative; identities are credentialless and least-privilege; private connectivity, policy, diagnostics, and cost ownership are explicit." before accepting output. Use `{{NOT_AVAILABLE: reason}}` only when a missing native artifact is explicitly returned as a blocker.
 
 ```xml
 <role>
@@ -57,7 +57,7 @@ Capture Azure CLI/Bicep versions, resource-provider API versions, and service SK
 
 ## Tradeoffs
 
-Azure review takes longer because configuration and runtime state must be correlated with source. It eliminates generic style findings and prioritizes defects that can change production behavior.
+Azure review correlates source with tenant, subscription, resource-group, principal object ID, role assignments, deny assignments, and policy state and private endpoint, subnet, route, NSG, private DNS zone links, and caller-side DNS resolution. The cost is a deeper review; the benefit is direct evidence for "Bicep uses explicit supported API versions and deterministic names/scopes" and "managed identity replaces account keys and role scope is no broader than required" instead of generic style findings.
 
 ## Anti-patterns
 

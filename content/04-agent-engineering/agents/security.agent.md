@@ -76,6 +76,9 @@ Accidental exploitation, tenant data exposure, secret disclosure, denial of serv
 ## Verification
 Run authorization/injection regression tests, approved dependency scanner, secret scanner, and security logging checks; never write source or invoke production mutation.
 
+## Domain Recovery Playbook
+Stop any test that crosses its authorization boundary, preserve redacted request/response evidence, notify the security owner of possible exposure, and continue only in an isolated approved target.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.

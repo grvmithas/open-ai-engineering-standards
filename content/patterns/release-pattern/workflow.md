@@ -1,67 +1,58 @@
-# Release: Workflow
+# Release Pattern — Workflow
 
-> **Version:** 2.0 | **Updated:** 2026-07-16 | **Status:** Stable
+> **Pattern:** Release  
+> **Component:** workflow.md  
+> **Version:** 1.1 | **Updated:** 2026-07-16
 
-## Purpose
+---
 
-Apply the domain workflow to promote a signed artifact through progressive exposure with objective abort criteria.
+## End-to-end flow
 
 ```mermaid
 flowchart TD
-  S1[1. Freeze artifact digest, configuration, migrations, and release evidence] --> S2
-  S2[2. Verify provenance, policy, compatibility, and environment readiness] --> S3
-  S3[3. Rehearse rollback and forward-fix against production-like state] --> S4
-  S4[4. Deploy internal or dark with no customer authority] --> S5
-  S5[5. Canary a representative cohort with automatic abort thresholds] --> S6
-  S6[6. Hold and compare SLO, business, security, and support signals] --> S7
-  S7[7. Expand 1/10/25/50/100% with approval at risk boundaries] --> S8
-  S8[8. Close after observation window; preserve artifact and release ledger]
-  S8 --> V{Domain metrics pass?}
-  V -->|No| R[halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health]
-  V -->|Yes| C[Retain evidence and close]
+    A[Collect digest, provenance, gates] --> B[Draft go/no-go package]
+    B --> C{Human Go/No-Go}
+    C -->|No-Go| X[Remediate artifact or gates]
+    C -->|Go| D[Expand-only migrations if any]
+    D --> E[Deploy artifact to canary slots]
+    E --> F[Flag ON at 1% or canary cohort]
+    F --> G{Abort criteria}
+    G -->|Tripped| H[Disable flag / redeploy prior digest]
+    H --> I[Verify recovery vs baseline]
+    G -->|Clear after hold| J[Promote 5%]
+    J --> G
+    G -->|Clear at final hold| K[100% + observation window]
+    K --> L{Post-release SLO}
+    L -->|Burn| H
+    L -->|Stable| M[Close change; contract migrations later]
 ```
 
-## Procedure
+## Step procedure
 
-1. **Freeze artifact digest,.** Freeze artifact digest, configuration, migrations, and release evidence.
-2. **Verify provenance, policy,.** Verify provenance, policy, compatibility, and environment readiness.
-3. **Rehearse rollback and.** Rehearse rollback and forward-fix against production-like state.
-4. **Deploy internal or.** Deploy internal or dark with no customer authority.
-5. **Canary a representative.** Canary a representative cohort with automatic abort thresholds.
-6. **Hold and compare.** Hold and compare SLO, business, security, and support signals.
-7. **Expand 1/10/25/50/100% with.** Expand 1/10/25/50/100% with approval at risk boundaries.
-8. **Close after observation.** Close after observation window; preserve artifact and release ledger.
+| Step | Actor | Action | Exit criteria |
+|------|-------|--------|---------------|
+| 1 | Artifact Verifier | Confirm digest + provenance + SBOM policy | Matches release record |
+| 2 | Gate Aggregator | Attach test/security results for digest | All required gates green or exception filed |
+| 3 | Release Agent | Emit sequence, canary, abort, rollback | Package complete |
+| 4 | Human | Go / No-Go | Named decision |
+| 5 | Ops | Expand-only migration | Migration reversible or safe to leave |
+| 6 | Canary Controller | 1% → 5% → 25% → 100% with holds | Each hold met |
+| 7 | On-call | Watch abort metrics | Auto or manual abort if tripped |
+| 8 | Rollback Operator | On abort: flag off + prior digest | RTO met; health restored |
+| 9 | Owner | Observation window; close change | Notes + digest recorded |
 
-## Verification
+## Abort criteria (example shape — declare concrete numbers per service)
 
-- artifact-to-runtime digest match = 100%
-- deployment success > 99%
-- rollback completes within RTO
-- no accelerated SLO burn during holds
+Abort if **any** true for the hold window:
 
-## Tradeoffs
+- Error rate > baseline + absolute delta  
+- p99 latency > SLO or > baseline + %  
+- Saturation (CPU/mem/queue) soft limit breached  
+- Business KPI probe fails (checkout success, auth success)  
+- Security/page-worthy alert on the canary cohort  
 
-Release workflow deliberately spends additional review time to protect "artifact-to-runtime digest match = 100%"; evidence weakness triggers "Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health".
+Do **not** raise these numbers during an active canary without a new Go decision.
 
-## Anti-patterns
+## Parallelism rule
 
-Release workflow rejects shortcuts around "Freeze artifact digest, configuration, migrations, and release evidence." because they sever the evidence chain required for "artifact-to-runtime digest match = 100%".
-
-## Enterprise considerations
-
-Release workflow governance binds owner, policy revision, and retained proof to "artifact-to-runtime digest match = 100%", with "Halt promotion, redeploy the signed previous artifact, reverse only backward-safe migrations, and verify service/data health" as the recorded recovery authority.
-
-## Checklist
-
-- [ ] Freeze artifact digest, configuration, migrations, and release evidence
-- [ ] Verify provenance, policy, compatibility, and environment readiness
-- [ ] Rehearse rollback and forward-fix against production-like state
-- [ ] Deploy internal or dark with no customer authority
-- [ ] Canary a representative cohort with automatic abort thresholds
-- [ ] Hold and compare SLO, business, security, and support signals
-- [ ] Expand 1/10/25/50/100% with approval at risk boundaries
-- [ ] Close after observation window; preserve artifact and release ledger
-
-## Changelog
-
-- 2026-07-16: Replaced generic scaffolding with domain-specific production guidance.
+One progressive release per blast-radius unit (service or flag). Parallel unrelated releases need separate abort dashboards so signals are not confounded.

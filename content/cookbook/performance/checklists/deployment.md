@@ -20,7 +20,7 @@ Record hardware, OS/kernel, runtime/browser, build mode, dependency versions, da
 
 ## Tradeoffs
 
-The Performance Engineering deployment gate adds manual and target-environment checks that slow promotion. It reduces the chance that version, topology, state, or rollback assumptions reach production.
+Promotion waits for "release artifact is identical to the profiled candidate and source maps/symbols are retained" and "CI budgets pass for bundle, startup, query, allocation, throughput, and latency metrics relevant to the change". Those Performance Engineering target checks slow release but directly bound tail latency hidden by averages and make this rollback executable: Shift traffic or artifact to the measured baseline when user-impact guardrails regress; retain candidate telemetry and profiles so rollback does not erase causal evidence.
 
 ## Anti-patterns
 

@@ -76,6 +76,9 @@ Stale commands, mixed audience, leaked secrets, undocumented destructive effect,
 ## Verification
 Run documented commands, schema checks, link checker, and reference comparison; record any example that cannot be executed.
 
+## Domain Recovery Playbook
+Remove or clearly mark an unverified example, restore the last implementation-matching text, and file the source/documentation conflict with the owning team.
+
 ## Retry and Failure Recovery
 - Retry only failures classified transient by the domain tool or protocol and only within the caller profile.
 - Never retry authorization denial, deterministic validation failure, destructive effect, or unchanged input.
