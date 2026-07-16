@@ -59,7 +59,7 @@ export default function MarkdownRenderer({ blocks }: MarkdownRendererProps) {
   }, [blocks]);
 
   return (
-    <div className="prose">
+    <div className="doc-content">
       {blocks.map((block, idx) => {
         if (block.type === 'mermaid') {
           return <Mermaid key={idx} chart={block.content} />;
@@ -67,6 +67,7 @@ export default function MarkdownRenderer({ blocks }: MarkdownRendererProps) {
         return (
           <div
             key={idx}
+            className="prose"
             dangerouslySetInnerHTML={{ __html: block.content }}
           />
         );

@@ -239,15 +239,112 @@ body {
   border: 1px solid var(--border);
 }
 
-/* Mermaid diagrams */
+/* Mermaid — isolated light canvas; never inherit dark prose currentColor */
+.mermaid-figure,
+.mermaid-panel {
+  margin: 1.75rem 0;
+  color: #0f172a;
+  color-scheme: light;
+}
+
+.mermaid-panel,
 .mermaid-wrapper {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 1.5rem;
-  margin: 1.5rem 0;
+  background: #ffffff;
+  border: 1px solid #94a3b8;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
   overflow-x: auto;
+  box-shadow: 0 10px 28px rgba(2, 6, 23, 0.45);
+}
+
+.mermaid-panel--loading,
+.mermaid-wrapper--loading {
+  min-height: 10rem;
+  background: #f8fafc;
+}
+
+.mermaid-canvas,
+.mermaid-wrapper {
   text-align: center;
+}
+
+.mermaid-canvas svg,
+.mermaid-wrapper svg {
+  max-width: 100%;
+  height: auto;
+  display: inline-block;
+  background: #ffffff;
+  color: #0f172a !important;
+}
+
+/* Node fills / strokes */
+.mermaid-canvas .node rect,
+.mermaid-canvas .node polygon,
+.mermaid-canvas .node circle,
+.mermaid-canvas .node path,
+.mermaid-wrapper .node rect,
+.mermaid-wrapper .node polygon,
+.mermaid-wrapper .node circle,
+.mermaid-wrapper .node path {
+  stroke-width: 1.75px !important;
+}
+
+/* Label text — HTML foreignObject + SVG text */
+.mermaid-canvas .nodeLabel,
+.mermaid-canvas .edgeLabel,
+.mermaid-canvas .label,
+.mermaid-canvas .cluster-label,
+.mermaid-canvas foreignObject,
+.mermaid-canvas foreignObject div,
+.mermaid-canvas foreignObject span,
+.mermaid-canvas text,
+.mermaid-wrapper .nodeLabel,
+.mermaid-wrapper .edgeLabel,
+.mermaid-wrapper .label,
+.mermaid-wrapper .cluster-label,
+.mermaid-wrapper foreignObject,
+.mermaid-wrapper foreignObject div,
+.mermaid-wrapper foreignObject span,
+.mermaid-wrapper text {
+  color: #0f172a !important;
+  fill: #0f172a !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+.mermaid-canvas .edgeLabel rect,
+.mermaid-canvas .labelBkg,
+.mermaid-wrapper .edgeLabel rect,
+.mermaid-wrapper .labelBkg {
+  fill: #ffffff !important;
+  opacity: 1 !important;
+  stroke: #cbd5e1 !important;
+}
+
+/* Edges / arrows */
+.mermaid-canvas .flowchart-link,
+.mermaid-canvas .edge-thickness-normal,
+.mermaid-canvas path.path,
+.mermaid-canvas line,
+.mermaid-wrapper .flowchart-link,
+.mermaid-wrapper .edge-thickness-normal,
+.mermaid-wrapper path.path,
+.mermaid-wrapper line {
+  stroke: #1e293b !important;
+  stroke-width: 1.75px !important;
+}
+
+.mermaid-canvas marker path,
+.mermaid-wrapper marker path {
+  fill: #1e293b !important;
+  stroke: #1e293b !important;
+}
+
+.mermaid-canvas .cluster rect,
+.mermaid-wrapper .cluster rect {
+  fill: #f1f5f9 !important;
+  stroke: #334155 !important;
+  stroke-width: 1.5px !important;
 }
 
 /* Anchor links on headings */
