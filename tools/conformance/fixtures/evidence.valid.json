@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "1.0.0",
+  "assessmentId": "checkout-prod-2026-07",
+  "generatedAt": "2026-07-16T12:00:00.000Z",
+  "artifacts": [
+    {
+      "id": "authz-order-test",
+      "controlId": "AUTHZ-01",
+      "requirementId": "retrieval-order",
+      "type": "test",
+      "uri": "urn:oaies:test:authz-order",
+      "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "observedAt": "2026-07-15T12:00:00.000Z",
+      "validUntil": "2026-08-15T12:00:00.000Z",
+      "result": "pass"
+    },
+    {
+      "id": "budget-gate-test",
+      "controlId": "BUDGET-01",
+      "requirementId": "budget-gate",
+      "type": "test",
+      "uri": "urn:oaies:test:budget-gate",
+      "digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "observedAt": "2026-07-15T12:00:00.000Z",
+      "result": "fail",
+      "metadata": { "run": "offline" }
+    },
+    {
+      "id": "unmapped-artifact",
+      "controlId": "UNKNOWN-01",
+      "requirementId": "unknown",
+      "type": "review",
+      "uri": "urn:oaies:review:unmapped",
+      "digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "observedAt": "2026-07-15T12:00:00.000Z",
+      "result": "pass"
+    }
+  ]
+}

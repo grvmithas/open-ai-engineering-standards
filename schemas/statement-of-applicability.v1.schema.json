@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://open-ai-engineering-standard.org/schemas/v1/statement-of-applicability.schema.json",
+  "title": "OAIES Statement of Applicability v1",
+  "description": "Authoritative control inventory and disposition for one assessed AI system.",
+  "type": "object",
+  "required": ["schemaVersion", "id", "version", "status", "oaiesVersion", "systemRef", "systemVersion", "systemOwner", "boundaryRef", "scope", "environments", "assessmentPeriod", "catalogRef", "catalogVersion", "workloadProfiles", "autonomyLevel", "impactLevel", "classificationEvidenceRef", "materialChangeTriggers", "decisions", "reconciliation", "approvals", "createdAt", "nextReviewAt"],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "id": {"type": "string", "pattern": "^SOA-[A-Z0-9][A-Z0-9-]{2,63}$"},
+    "version": {"$ref": "#/$defs/semver"},
+    "status": {"enum": ["draft", "approved", "superseded"]},
+    "oaiesVersion": {"$ref": "#/$defs/semver"},
+    "systemRef": {"type": "string", "format": "uri-reference"},
+    "systemVersion": {"type": "string", "minLength": 1, "maxLength": 200},
+    "systemOwner": {"type": "string", "minLength": 1, "maxLength": 200},
+    "boundaryRef": {"type": "string", "format": "uri-reference"},
+    "scope": {"type": "string", "minLength": 20, "maxLength": 4000},
+    "environments": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["development", "test", "staging", "production"]}},
+    "assessmentPeriod": {"$ref": "#/$defs/period"},
+    "catalogRef": {"type": "string", "format": "uri-reference"},
+    "catalogVersion": {"$ref": "#/$defs/semver"},
+    "workloadProfiles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["P1", "P2", "P3", "P4", "P5", "P6"]}},
+    "autonomyLevel": {"enum": ["A0", "A1", "A2", "A3", "A4"]},
+    "impactLevel": {"enum": ["I0", "I1", "I2", "I3"]},
+    "classificationEvidenceRef": {"type": "string", "format": "uri-reference"},
+    "materialChangeTriggers": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 5, "maxLength": 1000}},
+    "decisions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["controlId", "controlVersion", "disposition", "applicabilityRationale", "implementationSummary", "controlOwner", "evidenceRefs", "lastTestedAt", "nextReviewAt"],
+        "properties": {
+          "controlId": {"$ref": "#/$defs/controlId"},
+          "controlVersion": {"$ref": "#/$defs/semver"},
+          "disposition": {"enum": ["applicable-conforming", "applicable-exception", "applicable-nonconforming", "not-applicable"]},
+          "applicabilityRationale": {"type": "string", "minLength": 10, "maxLength": 2000},
+          "implementationSummary": {"type": "string", "minLength": 3, "maxLength": 2000},
+          "controlOwner": {"type": "string", "minLength": 1, "maxLength": 200},
+          "evidenceRefs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "format": "uri-reference"}},
+          "exceptionRef": {"type": "string", "format": "uri-reference"},
+          "notApplicableBoundaryRef": {"type": "string", "format": "uri-reference"},
+          "notApplicableApprovedBy": {"type": "string", "minLength": 1, "maxLength": 200},
+          "lastTestedAt": {"type": "string", "format": "date-time"},
+          "nextReviewAt": {"type": "string", "format": "date-time"}
+        },
+        "allOf": [
+          {"if": {"properties": {"disposition": {"const": "applicable-conforming"}}, "required": ["disposition"]}, "then": {"properties": {"evidenceRefs": {"minItems": 1}}, "not": {"required": ["exceptionRef"]}}},
+          {"if": {"properties": {"disposition": {"const": "applicable-exception"}}, "required": ["disposition"]}, "then": {"required": ["exceptionRef"], "properties": {"evidenceRefs": {"minItems": 1}}}},
+          {"if": {"properties": {"disposition": {"const": "not-applicable"}}, "required": ["disposition"]}, "then": {"required": ["notApplicableBoundaryRef", "notApplicableApprovedBy"], "properties": {"evidenceRefs": {"maxItems": 0}}, "not": {"required": ["exceptionRef"]}}}
+        ],
+        "additionalProperties": false
+      }
+    },
+    "reconciliation": {
+      "type": "object",
+      "required": ["catalogControlCount", "distinctDecisionCount", "missingControlIds", "duplicateControlIds", "validationEvidenceRef"],
+      "properties": {
+        "catalogControlCount": {"type": "integer", "minimum": 1},
+        "distinctDecisionCount": {"type": "integer", "minimum": 1},
+        "missingControlIds": {"type": "array", "maxItems": 0},
+        "duplicateControlIds": {"type": "array", "maxItems": 0},
+        "validationEvidenceRef": {"type": "string", "format": "uri-reference"}
+      },
+      "additionalProperties": false
+    },
+    "approvals": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/approval"}},
+    "createdAt": {"type": "string", "format": "date-time"},
+    "approvedAt": {"type": "string", "format": "date-time"},
+    "nextReviewAt": {"type": "string", "format": "date-time"},
+    "previousVersionRef": {"type": "string", "format": "uri-reference"}
+  },
+  "allOf": [
+    {"if": {"properties": {"status": {"const": "approved"}}, "required": ["status"]}, "then": {"required": ["approvedAt"]}},
+    {"if": {"properties": {"impactLevel": {"const": "I3"}}, "required": ["impactLevel"]}, "then": {"properties": {"workloadProfiles": {"contains": {"const": "P6"}}}}}
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "semver": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"},
+    "controlId": {"type": "string", "pattern": "^OAIES-(GOV|RSK|DAT|MOD|AGT|SEC|OPS|ASR)-[0-9]{3}[a-z]?$"},
+    "period": {"type": "object", "required": ["start", "end"], "properties": {"start": {"type": "string", "format": "date-time"}, "end": {"type": "string", "format": "date-time"}}, "additionalProperties": false},
+    "approval": {"type": "object", "required": ["role", "identity", "decision", "decidedAt", "recordRef"], "properties": {"role": {"enum": ["system-owner", "independent-risk-owner", "assessor"]}, "identity": {"type": "string", "minLength": 1, "maxLength": 200}, "decision": {"enum": ["approve", "reject", "validated", "not-validated"]}, "decidedAt": {"type": "string", "format": "date-time"}, "recordRef": {"type": "string", "format": "uri-reference"}}, "additionalProperties": false}
+  }
+}

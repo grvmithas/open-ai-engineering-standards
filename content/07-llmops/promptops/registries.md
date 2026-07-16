@@ -1,0 +1,79 @@
+# Prompt Registry Standard
+
+> **Version:** 1.0.0
+> **Last updated:** 2026-07-16
+> **Status:** Informative OAIES implementation profile
+
+## Purpose
+Operate a governed registry for prompt lifecycle, lineage, access, and export.
+
+## Why
+A registry is a control plane, not merely a text store.
+
+## When
+Use when more than one service or team deploys prompts.
+
+## How
+1. Require API and UI RBAC, immutable history, approval workflow, aliases, audit export, and regional controls.
+2. Evaluate Langfuse, PromptLayer, and Braintrust against the same control requirements.
+3. Select one system of record; repository remains review source.
+4. Test backup, export, and restore quarterly.
+5. Requalify the registry provider annually and after material service changes.
+
+## Product qualification matrix
+Capabilities change; verify the current contracted edition in a bake-off instead of treating this table as a purchase decision.
+
+| Product | Qualification focus | Evidence required before selection |
+|---|---|---|
+| Langfuse | Prompt management integrated with traces, scores, and self-hosting options | Edition-specific RBAC, backup/restore, region, export, and outage-cache tests |
+| PromptLayer | Prompt registry, release labels, request history, and collaboration workflow | Approval separation, audit export, retention, region, and API-failure tests |
+| Braintrust | Prompt and experiment lifecycle integrated with datasets, scorers, and production logs | Project isolation, experiment lineage, export, retention, and restore tests |
+
+## Evidence contract
+The decision record is the **registry qualification and restore record**. It records edition; region; RBAC; approval workflow; export format; backup RPO/RTO; outage behavior. The PromptOps platform owner owns completeness; the evidence is invalid when contracted capabilities or data terms materially change. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+
+## Failure response and recovery
+**Trigger:** registry returns an unsigned or unapproved artifact.
+
+**Immediate response:** serve the last locally verified release and disable promotions until integrity is restored. Preserve the registry qualification and restore record, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to prompt registry standard.
+
+## Decision authority
+The **PromptOps platform owner** accepts the operational decision. The **enterprise architecture review** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+
+## Tradeoffs
+| Choice | Benefit | Cost |
+|---|---|---|
+| Managed registry | Fast adoption | Vendor and data residency risk |
+| Self-hosted registry | Control | Operational burden |
+
+## Anti-patterns
+- Choosing on UI alone.
+- Making registry availability a request-path single point of failure.
+
+## Enterprise considerations
+- Cache last approved prompt.
+- Define exit and data deletion terms.
+
+## Framework relationship
+This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+
+| Source | Relationship for Prompt Registry Standard | Boundary |
+|---|---|---|
+| NIST AI RMF | MANAGE 3.1 | Use the cited outcomes as governance questions; NIST does not approve implementations |
+| ISO/IEC 42001 | 42001 clause 8.1 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| Domain threat/control source | Supply-chain compromise | Test only the threats applicable to the documented system and release |
+
+## Checklist
+- [ ] RBAC tested.
+- [ ] Export verified.
+- [ ] Request path survives outage.
+
+## References
+- NIST, [AI RMF 1.0](https://doi.org/10.6028/NIST.AI.100-1), GOVERN 1.7 and MANAGE 2 (accessed 2026-07-16).
+- SLSA, [Provenance](https://slsa.dev/spec/v1.1/provenance) (accessed 2026-07-16); apply the provenance pattern to prompt release envelopes, not as a claim of SLSA conformance.
+
+## Changelog
+| Version | Date | Change |
+|---|---|---|
+| 1.1.0 | 2026-07-16 | Replaced generic assurance text with the registry qualification and restore record, failure trigger, accountable decision, and scoped framework relationships for prompt registry standard. |
+| 1.0.0 | 2026-07-16 | Initial complete profile. |

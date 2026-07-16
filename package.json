@@ -1,25 +1,60 @@
 {
   "name": "open-ai-engineering-standard",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grvmithas/open-ai-engineering-standard.git"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
+    "predev": "npm run generate",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "content:generate": "node scripts/build-content-manifest.mjs",
+    "content:check-generated": "node scripts/build-content-manifest.mjs --check",
+    "portal:generate": "node scripts/build-portal-manifest.mjs",
+    "portal:check-generated": "node scripts/build-portal-manifest.mjs --check",
+    "portal:validate": "node scripts/validate-portal.mjs",
+    "generate": "npm run content:generate && npm run portal:generate",
+    "content:validate": "node scripts/validate-content.mjs",
+    "links:check": "node scripts/validate-links.mjs",
+    "mermaid:check": "node scripts/validate-mermaid.mjs",
+    "a11y:smoke": "node scripts/smoke-checks.mjs accessibility",
+    "security:smoke": "node scripts/smoke-checks.mjs security",
+    "test": "npm run content:check-generated && npm run portal:check-generated && npm run content:validate && npm run portal:validate && npm run links:check && npm run mermaid:check && npm run a11y:smoke && npm run security:smoke",
+    "prebuild": "npm run generate"
   },
   "dependencies": {
+    "fuse.js": "^7.5.0",
+    "gray-matter": "^4.0.3",
+    "highlight.js": "^11.11.1",
+    "mermaid": "^11.16.0",
     "next": "16.2.10",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "rehype-highlight": "^7.0.2",
+    "remark": "^15.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-html": "^16.0.1",
+    "remark-slug": "^7.0.1",
+    "sanitize-html": "^2.17.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/sanitize-html": "^2.16.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
+    "jsdom": "^29.1.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

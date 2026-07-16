@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://open-ai-engineering-standard.org/schemas/v1/tool-contract.schema.json",
+  "title": "OAIES Tool Contract v1",
+  "description": "Security and behavior contract for a tool callable by an AI agent.",
+  "type": "object",
+  "required": ["schemaVersion", "id", "name", "version", "description", "owner", "inputSchema", "outputSchema", "sideEffect", "maximumImpactLevel", "requiredAutonomyLevel", "authorization", "confirmationPolicy", "idempotency", "timeouts", "audit", "failureModes"],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{2,127}$"},
+    "name": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9._-]{1,127}$"},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "description": {"type": "string", "minLength": 10, "maxLength": 2000},
+    "owner": {"type": "string", "minLength": 1, "maxLength": 200},
+    "inputSchema": {"$ref": "#/$defs/schemaRef"},
+    "outputSchema": {"$ref": "#/$defs/schemaRef"},
+    "sideEffect": {"enum": ["none", "read", "reversible-write", "irreversible-write", "external-communication", "financial-transaction"]},
+    "maximumImpactLevel": {"enum": ["I0", "I1", "I2", "I3"]},
+    "requiredAutonomyLevel": {"enum": ["A0", "A1", "A2", "A3", "A4"]},
+    "authorization": {
+      "type": "object",
+      "required": ["scheme", "scopes", "userDelegationRequired", "leastPrivilegeReviewed"],
+      "properties": {
+        "scheme": {"enum": ["none", "api-key", "oauth2", "mtls", "workload-identity", "signed-request"]},
+        "scopes": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 200}},
+        "userDelegationRequired": {"type": "boolean"},
+        "leastPrivilegeReviewed": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "confirmationPolicy": {"enum": ["never", "risk-based", "always"]},
+    "idempotency": {"enum": ["not-applicable", "supported", "required"]},
+    "timeouts": {
+      "type": "object",
+      "required": ["connectMs", "executionMs"],
+      "properties": {
+        "connectMs": {"type": "integer", "minimum": 1, "maximum": 300000},
+        "executionMs": {"type": "integer", "minimum": 1, "maximum": 3600000}
+      },
+      "additionalProperties": false
+    },
+    "rateLimit": {
+      "type": "object",
+      "required": ["requests", "periodSeconds"],
+      "properties": {
+        "requests": {"type": "integer", "minimum": 1},
+        "periodSeconds": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "audit": {
+      "type": "object",
+      "required": ["logInvocations", "logArguments", "logResults", "redactionPolicy"],
+      "properties": {
+        "logInvocations": {"const": true},
+        "logArguments": {"type": "boolean"},
+        "logResults": {"type": "boolean"},
+        "redactionPolicy": {"type": "string", "minLength": 5, "maxLength": 1000}
+      },
+      "additionalProperties": false
+    },
+    "failureModes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["code", "condition", "retryable", "safeState"],
+        "properties": {
+          "code": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,63}$"},
+          "condition": {"type": "string", "minLength": 5, "maxLength": 1000},
+          "retryable": {"type": "boolean"},
+          "safeState": {"type": "string", "minLength": 5, "maxLength": 1000}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {"if": {"properties": {"sideEffect": {"enum": ["irreversible-write", "external-communication", "financial-transaction"]}}, "required": ["sideEffect"]}, "then": {"properties": {"confirmationPolicy": {"enum": ["risk-based", "always"]}}}}
+  ],
+  "$defs": {
+    "schemaRef": {
+      "type": "object",
+      "required": ["uri", "digest"],
+      "properties": {
+        "uri": {"type": "string", "format": "uri-reference"},
+        "digest": {"type": "string", "pattern": "^sha256:[A-Fa-f0-9]{64}$"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

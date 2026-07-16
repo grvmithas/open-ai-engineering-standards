@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://open-ai-engineering-standard.org/schemas/v1/ai-system-manifest.schema.json",
+  "title": "OAIES AI System Manifest v1",
+  "description": "Normative inventory, boundary, and kernel classification record for one AI system.",
+  "type": "object",
+  "required": ["schemaVersion", "id", "name", "version", "lifecycleStatus", "purpose", "systemOwner", "businessOwner", "boundaryRef", "workloadProfiles", "autonomyLevel", "impactLevel", "classificationRationale", "classificationApprovedBy", "classificationApprovedAt", "dataClassification", "components", "intendedUses", "foreseeableMisuse", "prohibitedUses", "affectedParties", "environments", "materialChangeTriggers", "createdAt", "updatedAt"],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "id": {"type": "string", "pattern": "^SYS-[A-Z0-9][A-Z0-9-]{2,63}$"},
+    "name": {"type": "string", "minLength": 1, "maxLength": 200},
+    "version": {"$ref": "#/$defs/semver"},
+    "lifecycleStatus": {"enum": ["proposed", "development", "validation", "approved", "production", "suspended", "retired"]},
+    "purpose": {"type": "string", "minLength": 10, "maxLength": 2000},
+    "systemOwner": {"$ref": "#/$defs/party"},
+    "businessOwner": {"$ref": "#/$defs/party"},
+    "accountableExecutive": {"$ref": "#/$defs/party"},
+    "boundaryRef": {"type": "string", "format": "uri"},
+    "workloadProfiles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["P1", "P2", "P3", "P4", "P5", "P6"]}},
+    "autonomyLevel": {"enum": ["A0", "A1", "A2", "A3", "A4"]},
+    "impactLevel": {"enum": ["I0", "I1", "I2", "I3"]},
+    "classificationRationale": {"type": "string", "minLength": 20, "maxLength": 4000},
+    "classificationApprovedBy": {"$ref": "#/$defs/party"},
+    "classificationApprovedAt": {"type": "string", "format": "date-time"},
+    "legalPolicyDesignations": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 2, "maxLength": 200}},
+    "dataClassification": {"enum": ["public", "internal", "confidential", "restricted"]},
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "ref", "version", "supplier", "insideBoundary"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1, "maxLength": 128},
+          "type": {"enum": ["model", "prompt", "agent", "tool", "mcp-server", "context-source", "evaluation-suite", "application", "infrastructure", "human-operation"]},
+          "ref": {"type": "string", "format": "uri-reference"},
+          "version": {"type": "string", "minLength": 1, "maxLength": 200},
+          "supplier": {"type": "string", "minLength": 1, "maxLength": 200},
+          "insideBoundary": {"const": true}
+        },
+        "additionalProperties": false
+      }
+    },
+    "intendedUses": {"$ref": "#/$defs/nonEmptyStrings"},
+    "foreseeableMisuse": {"$ref": "#/$defs/nonEmptyStrings"},
+    "prohibitedUses": {"$ref": "#/$defs/nonEmptyStrings"},
+    "affectedParties": {"$ref": "#/$defs/nonEmptyStrings"},
+    "environments": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["development", "test", "staging", "production"]}},
+    "jurisdictions": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 2, "maxLength": 100}},
+    "humanOversight": {
+      "type": "object",
+      "required": ["mode", "interventionPoint", "owner", "independentDecision"],
+      "properties": {
+        "mode": {"enum": ["none", "meaningful-review", "per-action-approval", "runtime-oversight", "human-command"]},
+        "interventionPoint": {"type": "string", "minLength": 5, "maxLength": 1000},
+        "owner": {"$ref": "#/$defs/party"},
+        "independentDecision": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "materialChangeTriggers": {"$ref": "#/$defs/nonEmptyStrings"},
+    "evidenceRefs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "format": "uri-reference"}},
+    "createdAt": {"type": "string", "format": "date-time"},
+    "updatedAt": {"type": "string", "format": "date-time"}
+  },
+  "allOf": [
+    {"if": {"properties": {"impactLevel": {"const": "I3"}}}, "then": {"properties": {"workloadProfiles": {"contains": {"const": "P6"}}}, "required": ["accountableExecutive"]}},
+    {"if": {"properties": {"autonomyLevel": {"const": "A4"}}}, "then": {"required": ["accountableExecutive", "humanOversight"]}}
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "semver": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"},
+    "party": {"type": "object", "required": ["id", "name", "role"], "properties": {"id": {"type": "string", "minLength": 1, "maxLength": 200}, "name": {"type": "string", "minLength": 1, "maxLength": 200}, "role": {"type": "string", "minLength": 1, "maxLength": 200}}, "additionalProperties": false},
+    "nonEmptyStrings": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 3, "maxLength": 1000}}
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://open-ai-engineering-standard.org/schemas/v1/mcp-server-record.schema.json",
+  "title": "OAIES MCP Server Record v1",
+  "description": "Governance record for a Model Context Protocol server deployment.",
+  "type": "object",
+  "required": ["schemaVersion", "id", "systemRef", "name", "version", "protocolVersion", "owner", "maximumImpactLevel", "requiredAutonomyLevel", "deployment", "capabilities", "authorization", "trustBoundary", "dataClassification", "securityReview", "status"],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{2,127}$"},
+    "systemRef": {"type": "string", "format": "uri-reference"},
+    "name": {"type": "string", "minLength": 1, "maxLength": 200},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "protocolVersion": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "owner": {"type": "string", "minLength": 1, "maxLength": 200},
+    "maximumImpactLevel": {"enum": ["I0", "I1", "I2", "I3"]},
+    "requiredAutonomyLevel": {"enum": ["A0", "A1", "A2", "A3", "A4"]},
+    "deployment": {
+      "type": "object",
+      "required": ["transport", "endpoint", "environment"],
+      "properties": {
+        "transport": {"enum": ["stdio", "streamable-http"]},
+        "endpoint": {"type": "string", "minLength": 1, "maxLength": 500},
+        "environment": {"enum": ["development", "test", "staging", "production"]},
+        "networkZone": {"type": "string", "minLength": 1, "maxLength": 100}
+      },
+      "additionalProperties": false
+    },
+    "capabilities": {
+      "type": "object",
+      "required": ["tools", "resources", "prompts"],
+      "properties": {
+        "tools": {"type": "array", "uniqueItems": true, "items": {"type": "string", "format": "uri-reference"}},
+        "resources": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 500}},
+        "prompts": {"type": "array", "uniqueItems": true, "items": {"type": "string", "format": "uri-reference"}}
+      },
+      "additionalProperties": false
+    },
+    "authorization": {
+      "type": "object",
+      "required": ["mode", "authorizationServer", "resourceMetadata", "audienceValidated", "tokenForwardingProhibited", "scopes"],
+      "properties": {
+        "mode": {"enum": ["oauth2.1", "workload-identity", "local-process"]},
+        "authorizationServer": {"type": ["string", "null"], "format": "uri"},
+        "resourceMetadata": {"type": ["string", "null"], "format": "uri"},
+        "audienceValidated": {"type": "boolean"},
+        "tokenForwardingProhibited": {"const": true},
+        "scopes": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 200}}
+      },
+      "additionalProperties": false
+    },
+    "trustBoundary": {"type": "string", "minLength": 10, "maxLength": 2000},
+    "dataClassification": {"enum": ["public", "internal", "confidential", "restricted"]},
+    "securityReview": {
+      "type": "object",
+      "required": ["status", "reviewedAt", "reviewedBy", "evidenceRefs"],
+      "properties": {
+        "status": {"enum": ["passed", "passed-with-exception", "failed"]},
+        "reviewedAt": {"type": "string", "format": "date-time"},
+        "reviewedBy": {"type": "string", "minLength": 1, "maxLength": 200},
+        "evidenceRefs": {"type": "array", "minItems": 1, "items": {"type": "string", "format": "uri-reference"}}
+      },
+      "additionalProperties": false
+    },
+    "status": {"enum": ["proposed", "approved", "active", "suspended", "retired"]}
+  },
+  "additionalProperties": false
+}

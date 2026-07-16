@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "labels": [
+    "CONFORMANT",
+    "MINOR",
+    "MAJOR",
+    "NOT_APPLICABLE",
+    "INSUFFICIENT_EVIDENCE"
+  ],
+  "counts": {
+    "assessorA": 20,
+    "assessorB": 20,
+    "union": 20,
+    "paired": 20,
+    "matches": 16,
+    "disagreements": 4
+  },
+  "coverage": {
+    "pairedRate": 1,
+    "missingFromA": [],
+    "missingFromB": []
+  },
+  "exactAgreement": {
+    "estimate": 0.8,
+    "wilson95": [
+      0.583983,
+      0.919342
+    ]
+  },
+  "cohensKappa": {
+    "estimate": 0.71223,
+    "bootstrap95": [
+      0.411765,
+      0.929577
+    ],
+    "seed": "oaies-synthetic-v1",
+    "requestedReplicates": 10000
+  },
+  "criticalDisagreements": [
+    {
+      "itemId": "SYNTH-019",
+      "controlId": "OAIES-SYN-019",
+      "ratingA": "MAJOR",
+      "ratingB": "CONFORMANT"
+    }
+  ],
+  "ratingDistributions": {
+    "assessorA": {
+      "CONFORMANT": {
+        "count": 9,
+        "proportion": 0.45
+      },
+      "MINOR": {
+        "count": 4,
+        "proportion": 0.2
+      },
+      "MAJOR": {
+        "count": 3,
+        "proportion": 0.15
+      },
+      "NOT_APPLICABLE": {
+        "count": 2,
+        "proportion": 0.1
+      },
+      "INSUFFICIENT_EVIDENCE": {
+        "count": 2,
+        "proportion": 0.1
+      }
+    },
+    "assessorB": {
+      "CONFORMANT": {
+        "count": 10,
+        "proportion": 0.5
+      },
+      "MINOR": {
+        "count": 5,
+        "proportion": 0.25
+      },
+      "MAJOR": {
+        "count": 2,
+        "proportion": 0.1
+      },
+      "NOT_APPLICABLE": {
+        "count": 2,
+        "proportion": 0.1
+      },
+      "INSUFFICIENT_EVIDENCE": {
+        "count": 1,
+        "proportion": 0.05
+      }
+    }
+  },
+  "strata": {
+    "data": {
+      "paired": 5,
+      "matches": 5,
+      "exactAgreement": 1,
+      "wilson95": null,
+      "criticalDisagreements": 0
+    },
+    "evaluation": {
+      "paired": 4,
+      "matches": 3,
+      "exactAgreement": 0.75,
+      "wilson95": null,
+      "criticalDisagreements": 0
+    },
+    "governance": {
+      "paired": 6,
+      "matches": 5,
+      "exactAgreement": 0.833333,
+      "wilson95": null,
+      "criticalDisagreements": 0
+    },
+    "security": {
+      "paired": 5,
+      "matches": 3,
+      "exactAgreement": 0.6,
+      "wilson95": null,
+      "criticalDisagreements": 1
+    }
+  },
+  "disagreements": [
+    {
+      "itemId": "SYNTH-002",
+      "controlId": "OAIES-SYN-002",
+      "ratingA": "CONFORMANT",
+      "ratingB": "MINOR",
+      "stratumA": "governance",
+      "stratumB": "governance"
+    },
+    {
+      "itemId": "SYNTH-008",
+      "controlId": "OAIES-SYN-008",
+      "ratingA": "MINOR",
+      "ratingB": "CONFORMANT",
+      "stratumA": "evaluation",
+      "stratumB": "evaluation"
+    },
+    {
+      "itemId": "SYNTH-015",
+      "controlId": "OAIES-SYN-015",
+      "ratingA": "INSUFFICIENT_EVIDENCE",
+      "ratingB": "MINOR",
+      "stratumA": "security",
+      "stratumB": "security"
+    },
+    {
+      "itemId": "SYNTH-019",
+      "controlId": "OAIES-SYN-019",
+      "ratingA": "MAJOR",
+      "ratingB": "CONFORMANT",
+      "stratumA": "security",
+      "stratumB": "security"
+    }
+  ]
+}

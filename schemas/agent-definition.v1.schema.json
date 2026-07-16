@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://open-ai-engineering-standard.org/schemas/v1/agent-definition.schema.json",
+  "title": "OAIES Agent Definition v1",
+  "description": "Deployable contract for an autonomous or semi-autonomous AI agent.",
+  "type": "object",
+  "required": ["schemaVersion", "id", "name", "version", "role", "owner", "workloadProfiles", "autonomyLevel", "impactLevel", "modelRefs", "promptRef", "toolRefs", "memory", "authority", "communicationProtocol", "failurePolicy", "terminationCriteria", "successMetrics", "status"],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{2,127}$"},
+    "name": {"type": "string", "minLength": 1, "maxLength": 200},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "role": {"type": "string", "minLength": 10, "maxLength": 2000},
+    "owner": {"type": "string", "minLength": 1, "maxLength": 200},
+    "workloadProfiles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["P1", "P2", "P3", "P4", "P5", "P6"]}},
+    "autonomyLevel": {"enum": ["A0", "A1", "A2", "A3", "A4"]},
+    "impactLevel": {"enum": ["I0", "I1", "I2", "I3"]},
+    "modelRefs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "format": "uri-reference"}},
+    "promptRef": {"type": "string", "format": "uri-reference"},
+    "toolRefs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "format": "uri-reference"}},
+    "memory": {
+      "type": "object",
+      "required": ["mode", "retention", "dataClassification", "crossTenantAccess"],
+      "properties": {
+        "mode": {"enum": ["none", "session", "episodic", "semantic", "hybrid"]},
+        "retention": {"type": "string", "minLength": 3, "maxLength": 500},
+        "dataClassification": {"enum": ["public", "internal", "confidential", "restricted"]},
+        "crossTenantAccess": {"const": false}
+      },
+      "additionalProperties": false
+    },
+    "authority": {
+      "type": "object",
+      "required": ["allowedActions", "prohibitedActions", "approvalGates", "defaultDeny", "suspensionOutsideModel"],
+      "properties": {
+        "allowedActions": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 3, "maxLength": 500}},
+        "prohibitedActions": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 3, "maxLength": 500}},
+        "approvalGates": {"type": "array", "items": {"type": "string", "minLength": 3, "maxLength": 500}},
+        "defaultDeny": {"const": true},
+        "suspensionOutsideModel": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "communicationProtocol": {
+      "type": "object",
+      "required": ["protocol", "messageSchema", "authentication"],
+      "properties": {
+        "protocol": {"enum": ["internal", "a2a", "mcp", "http", "event-bus"]},
+        "messageSchema": {"type": "string", "format": "uri-reference"},
+        "authentication": {"enum": ["none", "oauth2", "mtls", "workload-identity", "signed-message"]}
+      },
+      "additionalProperties": false
+    },
+    "failurePolicy": {
+      "type": "object",
+      "required": ["maxRetries", "onToolFailure", "onPolicyViolation", "safeState"],
+      "properties": {
+        "maxRetries": {"type": "integer", "minimum": 0, "maximum": 10},
+        "onToolFailure": {"enum": ["stop", "retry", "fallback", "escalate"]},
+        "onPolicyViolation": {"enum": ["stop-and-alert", "quarantine", "escalate"]},
+        "safeState": {"type": "string", "minLength": 5, "maxLength": 1000}
+      },
+      "additionalProperties": false
+    },
+    "terminationCriteria": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 5, "maxLength": 1000}},
+    "successMetrics": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "operator", "threshold"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1, "maxLength": 100},
+          "operator": {"enum": [">", ">=", "=", "<=", "<"]},
+          "threshold": {"type": "number"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "status": {"enum": ["draft", "approved", "active", "suspended", "retired"]}
+  },
+  "allOf": [
+    {"if": {"properties": {"autonomyLevel": {"enum": ["A2", "A3", "A4"]}}, "required": ["autonomyLevel"]}, "then": {"properties": {"authority": {"properties": {"suspensionOutsideModel": {"const": true}}}}}},
+    {"if": {"properties": {"impactLevel": {"const": "I3"}}, "required": ["impactLevel"]}, "then": {"properties": {"workloadProfiles": {"contains": {"const": "P6"}}}}}
+  ],
+  "additionalProperties": false
+}

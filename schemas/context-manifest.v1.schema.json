@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://open-ai-engineering-standard.org/schemas/v1/context-manifest.schema.json",
+  "title": "OAIES Context Manifest v1",
+  "description": "Provenance, access, freshness, and injection-control manifest for agent context.",
+  "type": "object",
+  "required": ["schemaVersion", "id", "systemRef", "systemVersion", "version", "workloadProfiles", "sources", "assemblyPolicy", "dataClassification", "retentionPolicy", "owner", "createdAt"],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{2,127}$"},
+    "systemRef": {"type": "string", "format": "uri-reference"},
+    "systemVersion": {"type": "string", "minLength": 1, "maxLength": 200},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "workloadProfiles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["P1", "P2", "P3", "P4", "P5", "P6"]}},
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "uri", "provenance", "trustLevel", "dataClassification", "authorization", "freshness", "contentPolicy"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1, "maxLength": 128},
+          "type": {"enum": ["system-instruction", "user-input", "retrieval", "memory", "tool-result", "policy", "external-message"]},
+          "uri": {"type": "string", "format": "uri-reference"},
+          "provenance": {"type": "string", "minLength": 5, "maxLength": 1000},
+          "trustLevel": {"enum": ["trusted", "verified-external", "untrusted", "hostile"]},
+          "dataClassification": {"enum": ["public", "internal", "confidential", "restricted"]},
+          "authorization": {"type": "string", "minLength": 5, "maxLength": 1000},
+          "freshness": {
+            "type": "object",
+            "required": ["retrievedAt", "maxAgeSeconds"],
+            "properties": {
+              "retrievedAt": {"type": "string", "format": "date-time"},
+              "maxAgeSeconds": {"type": "integer", "minimum": 0}
+            },
+            "additionalProperties": false
+          },
+          "contentPolicy": {
+            "type": "object",
+            "required": ["instructionsExecutable", "sanitize", "integrityCheck"],
+            "properties": {
+              "instructionsExecutable": {"type": "boolean"},
+              "sanitize": {"type": "boolean"},
+              "integrityCheck": {"type": "boolean"}
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "assemblyPolicy": {
+      "type": "object",
+      "required": ["priorityOrder", "tokenBudget", "conflictRule", "isolateUntrustedContent"],
+      "properties": {
+        "priorityOrder": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1, "maxLength": 128}},
+        "tokenBudget": {"type": "integer", "minimum": 1},
+        "conflictRule": {"enum": ["higher-trust-wins", "deny-and-escalate", "policy-wins"]},
+        "isolateUntrustedContent": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "dataClassification": {"enum": ["public", "internal", "confidential", "restricted"]},
+    "retentionPolicy": {"type": "string", "minLength": 10, "maxLength": 2000},
+    "owner": {"type": "string", "minLength": 1, "maxLength": 200},
+    "createdAt": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": false
+}

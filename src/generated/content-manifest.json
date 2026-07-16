@@ -1,0 +1,3408 @@
+{
+  "schemaVersion": 1,
+  "documentCount": 567,
+  "documents": [
+    {
+      "slug": "00-foundations/01-how-llms-think",
+      "sourcePath": "content/00-foundations/01-how-llms-think.md",
+      "title": "How Language Models Process Information",
+      "description": "Define the model mechanics that affect production design without anthropomorphizing the model or treating implementation details as guarantees."
+    },
+    {
+      "slug": "00-foundations/02-the-harness-principle",
+      "sourcePath": "content/00-foundations/02-the-harness-principle.md",
+      "title": "The Harness Principle",
+      "description": "Production systems need deterministic controls wherever model output crosses a correctness, data, authorization, financial, or side-effect boundary. This wrappe"
+    },
+    {
+      "slug": "00-foundations/03-50-50-rule",
+      "sourcePath": "content/00-foundations/03-50-50-rule.md",
+      "title": "The Deterministic Boundary",
+      "description": "Place probabilistic judgment and deterministic enforcement on the correct sides of an AI system boundary."
+    },
+    {
+      "slug": "00-foundations/04-failure-modes",
+      "sourcePath": "content/00-foundations/04-failure-modes.md",
+      "title": "LLM Failure Mode Taxonomy",
+      "description": "Model-based systems add probabilistic and semantic failures to familiar software failures. A model can return a plausible but unsupported answer without an expl"
+    },
+    {
+      "slug": "00-foundations/05-provider-landscape",
+      "sourcePath": "content/00-foundations/05-provider-landscape.md",
+      "title": "Provider Selection Standard",
+      "description": "Select and govern model providers using measured workload fitness rather than brand preference or benchmark headlines."
+    },
+    {
+      "slug": "00-foundations/06-cost-mental-models",
+      "sourcePath": "content/00-foundations/06-cost-mental-models.md",
+      "title": "Cost Engineering for Model Workloads",
+      "description": "Turn model spend into a forecastable, attributable engineering constraint."
+    },
+    {
+      "slug": "00-foundations/07-latency-tradeoffs",
+      "sourcePath": "content/00-foundations/07-latency-tradeoffs.md",
+      "title": "Latency Engineering for Model Workloads",
+      "description": "Design latency budgets that preserve user experience and operational reliability without sacrificing required quality."
+    },
+    {
+      "slug": "00-foundations/checklists/foundations-readiness",
+      "sourcePath": "content/00-foundations/checklists/foundations-readiness.md",
+      "title": "Foundations Readiness Checklist",
+      "description": "Gate progression on demonstrated system-design readiness rather than document completion."
+    },
+    {
+      "slug": "00-foundations/README",
+      "sourcePath": "content/00-foundations/README.md",
+      "title": "Level 0: AI Foundations",
+      "description": "Establish the risk, reliability, cost, latency, and provider mental models required before production model integration."
+    },
+    {
+      "slug": "01-prompt-engineering/anti-patterns/prompt-anti-patterns",
+      "sourcePath": "content/01-prompt-engineering/anti-patterns/prompt-anti-patterns.md",
+      "title": "Prompt Anti-Patterns",
+      "description": "Identify prompt designs that cause measurable reliability, integration, privacy, or security failures."
+    },
+    {
+      "slug": "01-prompt-engineering/checklists/prompt-quality-checklist",
+      "sourcePath": "content/01-prompt-engineering/checklists/prompt-quality-checklist.md",
+      "title": "Prompt Quality Gate",
+      "description": "Provide a verifiable release gate for production prompt changes."
+    },
+    {
+      "slug": "01-prompt-engineering/patterns/chain-of-thought",
+      "sourcePath": "content/01-prompt-engineering/patterns/chain-of-thought.md",
+      "title": "Reasoning Without Exposed Chain-of-Thought",
+      "description": "Improve complex-task reliability without requiring, storing, or exposing a model's private reasoning trace."
+    },
+    {
+      "slug": "01-prompt-engineering/patterns/constraint-driven",
+      "sourcePath": "content/01-prompt-engineering/patterns/constraint-driven.md",
+      "title": "Constraint-Driven Prompting",
+      "description": "Express measurable task boundaries while assigning enforceable guarantees to code."
+    },
+    {
+      "slug": "01-prompt-engineering/patterns/few-shot",
+      "sourcePath": "content/01-prompt-engineering/patterns/few-shot.md",
+      "title": "Few-Shot Example Standard",
+      "description": "Use curated examples to clarify ambiguous labels, boundaries, and output structure."
+    },
+    {
+      "slug": "01-prompt-engineering/patterns/instruction-hierarchy",
+      "sourcePath": "content/01-prompt-engineering/patterns/instruction-hierarchy.md",
+      "title": "Instruction Hierarchy and Trust Boundaries",
+      "description": "Separate trusted instructions from untrusted content and resolve conflicts predictably."
+    },
+    {
+      "slug": "01-prompt-engineering/patterns/planning-first",
+      "sourcePath": "content/01-prompt-engineering/patterns/planning-first.md",
+      "title": "Planning Before High-Impact Execution",
+      "description": "Separate intent clarification and execution for complex, ambiguous, or high-impact work."
+    },
+    {
+      "slug": "01-prompt-engineering/patterns/react-pattern",
+      "sourcePath": "content/01-prompt-engineering/patterns/react-pattern.md",
+      "title": "Reason-and-Act Agent Loop",
+      "description": "Build bounded tool-use loops that alternate model proposals with deterministic execution and observation."
+    },
+    {
+      "slug": "01-prompt-engineering/patterns/reflection",
+      "sourcePath": "content/01-prompt-engineering/patterns/reflection.md",
+      "title": "Output Critique and Verification",
+      "description": "Use a bounded critique pass to find correctable defects before accepting model output."
+    },
+    {
+      "slug": "01-prompt-engineering/patterns/role-prompting",
+      "sourcePath": "content/01-prompt-engineering/patterns/role-prompting.md",
+      "title": "Role Prompting Standard",
+      "description": "Use role text to establish task perspective and quality criteria without implying authority the model does not possess."
+    },
+    {
+      "slug": "01-prompt-engineering/patterns/tree-of-thoughts",
+      "sourcePath": "content/01-prompt-engineering/patterns/tree-of-thoughts.md",
+      "title": "Multi-Candidate Search",
+      "description": "Explore multiple candidate solutions when the decision space is genuinely branching and evaluation can distinguish candidates."
+    },
+    {
+      "slug": "01-prompt-engineering/patterns/xml-structured",
+      "sourcePath": "content/01-prompt-engineering/patterns/xml-structured.md",
+      "title": "XML-Structured Prompting — OAIES Authoring Convention",
+      "description": "Establish a single convention for prompt artifacts authored in the OAIES repository while defining how equivalent runtime representations can preserve the same "
+    },
+    {
+      "slug": "01-prompt-engineering/README",
+      "sourcePath": "content/01-prompt-engineering/README.md",
+      "title": "Level 1: Prompt Engineering",
+      "description": "Prompt engineering is not about \"asking nicely.\" It is a software design discipline — structuring instructions so that they produce consistent, parseable, audit"
+    },
+    {
+      "slug": "01-prompt-engineering/templates/system-prompt.template",
+      "sourcePath": "content/01-prompt-engineering/templates/system-prompt.template.md",
+      "title": "System Prompt Template",
+      "description": "Provide a production prompt contract whose variables are explicit and whose behavior can be evaluated."
+    },
+    {
+      "slug": "02-context-engineering/anti-patterns/context-anti-patterns",
+      "sourcePath": "content/02-context-engineering/anti-patterns/context-anti-patterns.md",
+      "title": "Context Engineering Anti-Patterns",
+      "description": "Identify context assembly designs that create correctness, security, privacy, or operability failures."
+    },
+    {
+      "slug": "02-context-engineering/checklists/context-checklist",
+      "sourcePath": "content/02-context-engineering/checklists/context-checklist.md",
+      "title": "Context Quality Gate",
+      "description": "Block release of context pipelines that lack evidence quality, isolation, or lifecycle controls."
+    },
+    {
+      "slug": "02-context-engineering/principles/context-fidelity",
+      "sourcePath": "content/02-context-engineering/principles/context-fidelity.md",
+      "title": "Context Fidelity",
+      "description": "Deliver the minimum authorized evidence needed for the current task while preserving provenance and freshness."
+    },
+    {
+      "slug": "02-context-engineering/principles/fidelity-threshold",
+      "sourcePath": "content/02-context-engineering/principles/fidelity-threshold.md",
+      "title": "Context Capacity Evaluation",
+      "description": "Establish a workload-specific operating envelope for context length and composition."
+    },
+    {
+      "slug": "02-context-engineering/principles/lost-in-the-middle",
+      "sourcePath": "content/02-context-engineering/principles/lost-in-the-middle.md",
+      "title": "Long-Context Placement",
+      "description": "Evaluate and mitigate position-dependent failures in long model inputs."
+    },
+    {
+      "slug": "02-context-engineering/principles/progressive-disclosure",
+      "sourcePath": "content/02-context-engineering/principles/progressive-disclosure.md",
+      "title": "Progressive Context Disclosure",
+      "description": "Load task-relevant context incrementally through bounded, authorized retrieval."
+    },
+    {
+      "slug": "02-context-engineering/principles/structured-state-offloading",
+      "sourcePath": "content/02-context-engineering/principles/structured-state-offloading.md",
+      "title": "Structured State Offloading",
+      "description": "Move durable task state from conversation prose into typed, authoritative application storage."
+    },
+    {
+      "slug": "02-context-engineering/README",
+      "sourcePath": "content/02-context-engineering/README.md",
+      "title": "Level 2: Context Engineering",
+      "description": "Prompt engineering optimizes how you ask. Context engineering controls what the model receives. Both affect quality; context additionally carries authorization,"
+    },
+    {
+      "slug": "02-context-engineering/templates/CLAUDE.md.template",
+      "sourcePath": "content/02-context-engineering/templates/CLAUDE.md.template",
+      "title": "CLAUDE.md — Project Behavioral Contract Template",
+      "description": "Provide a reusable behavioral-contract template for repository-scoped model-assisted engineering."
+    },
+    {
+      "slug": "02-context-engineering/templates/project-context.template",
+      "sourcePath": "content/02-context-engineering/templates/project-context.template.md",
+      "title": "Project Context Template",
+      "description": "Provide a versioned, minimal project context artifact for model-assisted work."
+    },
+    {
+      "slug": "02-context-engineering/templates/task-brief.template",
+      "sourcePath": "content/02-context-engineering/templates/task-brief.template.md",
+      "title": "Task Context Brief Template",
+      "description": "Define the minimum complete, authorized context for one unit of model-assisted work."
+    },
+    {
+      "slug": "02-context-engineering/types/README",
+      "sourcePath": "content/02-context-engineering/types/README.md",
+      "title": "Context Type Catalog",
+      "description": "Classify context by source, lifecycle, authority, and inclusion trigger so assembly policy remains explicit."
+    },
+    {
+      "slug": "03-skill-engineering/README",
+      "sourcePath": "content/03-skill-engineering/README.md",
+      "title": "Level 3: Skill Engineering",
+      "description": "This library provides reusable, trigger-driven engineering procedures with objective verification and explicit recovery behavior."
+    },
+    {
+      "slug": "03-skill-engineering/skills/accessibility.skill",
+      "sourcePath": "content/03-skill-engineering/skills/accessibility.skill.md",
+      "title": "Accessibility Skill",
+      "description": "This skill activates when a user interface is created, reviewed, or changed. Its purpose is to verify keyboard, semantic, visual, and assistive-technology acces"
+    },
+    {
+      "slug": "03-skill-engineering/skills/architecture.skill",
+      "sourcePath": "content/03-skill-engineering/skills/architecture.skill.md",
+      "title": "Architecture Skill",
+      "description": "This skill activates when system architecture, service boundaries, or a major technical decision. Its purpose is to design a bounded architecture with explicit "
+    },
+    {
+      "slug": "03-skill-engineering/skills/aws.skill",
+      "sourcePath": "content/03-skill-engineering/skills/aws.skill.md",
+      "title": "Aws Skill",
+      "description": "This skill activates when an AWS workload, IAM, network, data, or deployment change is requested. Its purpose is to design and verify AWS changes using least pr"
+    },
+    {
+      "slug": "03-skill-engineering/skills/azure.skill",
+      "sourcePath": "content/03-skill-engineering/skills/azure.skill.md",
+      "title": "Azure Skill",
+      "description": "This skill activates when an Azure workload, identity, network, data, or deployment change is requested. Its purpose is to design and verify Azure changes using"
+    },
+    {
+      "slug": "03-skill-engineering/skills/code-review.skill",
+      "sourcePath": "content/03-skill-engineering/skills/code-review.skill.md",
+      "title": "Code Review Skill",
+      "description": "This skill activates when a diff, pull request, or explicit review request is provided. Its purpose is to find consequential defects and provide actionable, evi"
+    },
+    {
+      "slug": "03-skill-engineering/skills/context.skill",
+      "sourcePath": "content/03-skill-engineering/skills/context.skill.md",
+      "title": "Context Skill",
+      "description": "This skill activates when an agent receives irrelevant, stale, excessive, or missing task context. Its purpose is to assemble minimal, authoritative context wit"
+    },
+    {
+      "slug": "03-skill-engineering/skills/data-engineering.skill",
+      "sourcePath": "content/03-skill-engineering/skills/data-engineering.skill.md",
+      "title": "Data Engineering Skill",
+      "description": "This skill activates when a batch, streaming, transformation, lineage, or data quality pipeline is requested. Its purpose is to build idempotent, observable dat"
+    },
+    {
+      "slug": "03-skill-engineering/skills/debug.skill",
+      "sourcePath": "content/03-skill-engineering/skills/debug.skill.md",
+      "title": "Debug Skill",
+      "description": "This skill activates when a reproducible defect, failed test, or unexpected runtime behavior is reported. Its purpose is to isolate evidence-backed root cause a"
+    },
+    {
+      "slug": "03-skill-engineering/skills/devops.skill",
+      "sourcePath": "content/03-skill-engineering/skills/devops.skill.md",
+      "title": "Devops Skill",
+      "description": "This skill activates when CI/CD, infrastructure-as-code, build, release, or environment automation is requested. Its purpose is to create reproducible delivery "
+    },
+    {
+      "slug": "03-skill-engineering/skills/documentation.skill",
+      "sourcePath": "content/03-skill-engineering/skills/documentation.skill.md",
+      "title": "Documentation Skill",
+      "description": "This skill activates when an API, operational process, decision, or system needs durable documentation. Its purpose is to produce task-oriented, accurate docume"
+    },
+    {
+      "slug": "03-skill-engineering/skills/dotnet.skill",
+      "sourcePath": "content/03-skill-engineering/skills/dotnet.skill.md",
+      "title": "Dotnet Skill",
+      "description": "This skill activates when .NET or C# API, worker, library, or data-access work is requested. Its purpose is to implement idiomatic, nullable-safe .NET code with"
+    },
+    {
+      "slug": "03-skill-engineering/skills/evaluation.skill",
+      "sourcePath": "content/03-skill-engineering/skills/evaluation.skill.md",
+      "title": "Evaluation Skill",
+      "description": "This skill activates when an AI behavior, model, prompt, or agent change needs a release decision. Its purpose is to build reproducible evals with representativ"
+    },
+    {
+      "slug": "03-skill-engineering/skills/java.skill",
+      "sourcePath": "content/03-skill-engineering/skills/java.skill.md",
+      "title": "Java Skill",
+      "description": "This skill activates when Java or Spring service, library, concurrency, or persistence work is requested. Its purpose is to implement production Java with expli"
+    },
+    {
+      "slug": "03-skill-engineering/skills/memory.skill",
+      "sourcePath": "content/03-skill-engineering/skills/memory.skill.md",
+      "title": "Memory Skill",
+      "description": "This skill activates when an agent must retain user, task, or organizational state across turns or sessions. Its purpose is to design scoped memory with lifecyc"
+    },
+    {
+      "slug": "03-skill-engineering/skills/nextjs.skill",
+      "sourcePath": "content/03-skill-engineering/skills/nextjs.skill.md",
+      "title": "Nextjs Skill",
+      "description": "This skill activates when Next.js routing, rendering, caching, middleware, or server/client boundary work is requested. Its purpose is to implement against the "
+    },
+    {
+      "slug": "03-skill-engineering/skills/node.skill",
+      "sourcePath": "content/03-skill-engineering/skills/node.skill.md",
+      "title": "Node Skill",
+      "description": "This skill activates when a Node.js service, package, stream, worker, or API change is requested. Its purpose is to implement resilient Node.js code with bounde"
+    },
+    {
+      "slug": "03-skill-engineering/skills/observability.skill",
+      "sourcePath": "content/03-skill-engineering/skills/observability.skill.md",
+      "title": "Observability Skill",
+      "description": "This skill activates when an AI system needs traces, metrics, logs, cost, or quality monitoring. Its purpose is to instrument end-to-end AI operations with acti"
+    },
+    {
+      "slug": "03-skill-engineering/skills/performance.skill",
+      "sourcePath": "content/03-skill-engineering/skills/performance.skill.md",
+      "title": "Performance Skill",
+      "description": "This skill activates when latency, throughput, resource use, or capacity misses a measurable objective. Its purpose is to measure and remove the dominant perfor"
+    },
+    {
+      "slug": "03-skill-engineering/skills/planning.skill",
+      "sourcePath": "content/03-skill-engineering/skills/planning.skill.md",
+      "title": "Planning Skill",
+      "description": "This skill activates when an approved requirement must be decomposed into implementation work. Its purpose is to produce an ordered, reviewable implementation p"
+    },
+    {
+      "slug": "03-skill-engineering/skills/prompt.skill",
+      "sourcePath": "content/03-skill-engineering/skills/prompt.skill.md",
+      "title": "Prompt Skill",
+      "description": "This skill activates when a production prompt must be created, changed, or evaluated. Its purpose is to author an XML-structured prompt with testable output con"
+    },
+    {
+      "slug": "03-skill-engineering/skills/python.skill",
+      "sourcePath": "content/03-skill-engineering/skills/python.skill.md",
+      "title": "Python Skill",
+      "description": "This skill activates when Python application, library, automation, or data-processing work is requested. Its purpose is to implement typed, testable Python foll"
+    },
+    {
+      "slug": "03-skill-engineering/skills/rag.skill",
+      "sourcePath": "content/03-skill-engineering/skills/rag.skill.md",
+      "title": "Rag Skill",
+      "description": "This skill activates when a system must retrieve external knowledge for grounded generation. Its purpose is to build a retrieval pipeline measured for relevance"
+    },
+    {
+      "slug": "03-skill-engineering/skills/react.skill",
+      "sourcePath": "content/03-skill-engineering/skills/react.skill.md",
+      "title": "React Skill",
+      "description": "This skill activates when React component, state, rendering, or client interaction work is requested. Its purpose is to implement accessible React behavior with"
+    },
+    {
+      "slug": "03-skill-engineering/skills/security.skill",
+      "sourcePath": "content/03-skill-engineering/skills/security.skill.md",
+      "title": "Security Skill",
+      "description": "This skill activates when code crosses trust boundaries or handles identity, secrets, external input, or sensitive data. Its purpose is to perform a threat-led "
+    },
+    {
+      "slug": "03-skill-engineering/skills/seo.skill",
+      "sourcePath": "content/03-skill-engineering/skills/seo.skill.md",
+      "title": "Seo Skill",
+      "description": "This skill activates when a public web page needs discoverability, crawlability, or structured metadata review. Its purpose is to implement technically correct "
+    },
+    {
+      "slug": "03-skill-engineering/skills/testing.skill",
+      "sourcePath": "content/03-skill-engineering/skills/testing.skill.md",
+      "title": "Testing Skill",
+      "description": "This skill activates when behavior changes require automated confidence or a regression must be prevented. Its purpose is to design risk-proportionate tests tha"
+    },
+    {
+      "slug": "04-agent-engineering/agents/architect.agent",
+      "sourcePath": "content/04-agent-engineering/agents/architect.agent.md",
+      "title": "Architect Agent",
+      "description": "The architect agent exists to make bounded system design decisions and architecture records. It owns only the delegated architecture scope and returns evidence,"
+    },
+    {
+      "slug": "04-agent-engineering/agents/backend.agent",
+      "sourcePath": "content/04-agent-engineering/agents/backend.agent.md",
+      "title": "Backend Agent",
+      "description": "The backend agent exists to implement secure service interfaces and domain behavior. It owns only the delegated backend scope and returns evidence, not confiden"
+    },
+    {
+      "slug": "04-agent-engineering/agents/coder.agent",
+      "sourcePath": "content/04-agent-engineering/agents/coder.agent.md",
+      "title": "Coder Agent",
+      "description": "The coder agent exists to implement an approved, file-bounded plan with tests. It owns only the delegated implementation scope and returns evidence, not confide"
+    },
+    {
+      "slug": "04-agent-engineering/agents/context-engineer.agent",
+      "sourcePath": "content/04-agent-engineering/agents/context-engineer.agent.md",
+      "title": "Context Engineer Agent",
+      "description": "The context-engineer agent exists to assemble minimal, authoritative, provenance-aware agent context. It owns only the delegated context scope and returns evide"
+    },
+    {
+      "slug": "04-agent-engineering/agents/database.agent",
+      "sourcePath": "content/04-agent-engineering/agents/database.agent.md",
+      "title": "Database Agent",
+      "description": "The database agent exists to design schemas, queries, migrations, and data integrity controls. It owns only the delegated database scope and returns evidence, n"
+    },
+    {
+      "slug": "04-agent-engineering/agents/devops.agent",
+      "sourcePath": "content/04-agent-engineering/agents/devops.agent.md",
+      "title": "Devops Agent",
+      "description": "The devops agent exists to build and verify delivery and infrastructure automation. It owns only the delegated delivery scope and returns evidence, not confiden"
+    },
+    {
+      "slug": "04-agent-engineering/agents/documentation.agent",
+      "sourcePath": "content/04-agent-engineering/agents/documentation.agent.md",
+      "title": "Documentation Agent",
+      "description": "The documentation agent exists to create implementation-verified technical documentation. It owns only the delegated documentation scope and returns evidence, n"
+    },
+    {
+      "slug": "04-agent-engineering/agents/frontend.agent",
+      "sourcePath": "content/04-agent-engineering/agents/frontend.agent.md",
+      "title": "Frontend Agent",
+      "description": "The frontend agent exists to implement accessible, resilient user-interface behavior. It owns only the delegated frontend scope and returns evidence, not confid"
+    },
+    {
+      "slug": "04-agent-engineering/agents/incident-response.agent",
+      "sourcePath": "content/04-agent-engineering/agents/incident-response.agent.md",
+      "title": "Incident Response Agent",
+      "description": "The incident-response agent exists to coordinate evidence-preserving incident diagnosis and recovery. It owns only the delegated incident scope and returns evid"
+    },
+    {
+      "slug": "04-agent-engineering/agents/knowledge.agent",
+      "sourcePath": "content/04-agent-engineering/agents/knowledge.agent.md",
+      "title": "Knowledge Agent",
+      "description": "The knowledge agent exists to curate governed organizational knowledge and retrieval metadata. It owns only the delegated knowledge scope and returns evidence, "
+    },
+    {
+      "slug": "04-agent-engineering/agents/migration.agent",
+      "sourcePath": "content/04-agent-engineering/agents/migration.agent.md",
+      "title": "Migration Agent",
+      "description": "The migration agent exists to plan and execute reversible application or data migrations. It owns only the delegated migration scope and returns evidence, not c"
+    },
+    {
+      "slug": "04-agent-engineering/agents/observability.agent",
+      "sourcePath": "content/04-agent-engineering/agents/observability.agent.md",
+      "title": "Observability Agent",
+      "description": "The observability agent exists to define telemetry, service objectives, and diagnostic evidence. It owns only the delegated observability scope and returns evid"
+    },
+    {
+      "slug": "04-agent-engineering/agents/planner.agent",
+      "sourcePath": "content/04-agent-engineering/agents/planner.agent.md",
+      "title": "Planner Agent",
+      "description": "The planner agent exists to convert approved outcomes into executable implementation plans. It owns only the delegated planning scope and returns evidence, not "
+    },
+    {
+      "slug": "04-agent-engineering/agents/prompt-engineer.agent",
+      "sourcePath": "content/04-agent-engineering/agents/prompt-engineer.agent.md",
+      "title": "Prompt Engineer Agent",
+      "description": "The prompt-engineer agent exists to author and evaluate production prompts with explicit contracts. It owns only the delegated prompt scope and returns evidence"
+    },
+    {
+      "slug": "04-agent-engineering/agents/rag.agent",
+      "sourcePath": "content/04-agent-engineering/agents/rag.agent.md",
+      "title": "Rag Agent",
+      "description": "The rag agent exists to design and evaluate retrieval-augmented generation pipelines. It owns only the delegated retrieval scope and returns evidence, not confi"
+    },
+    {
+      "slug": "04-agent-engineering/agents/release.agent",
+      "sourcePath": "content/04-agent-engineering/agents/release.agent.md",
+      "title": "Release Agent",
+      "description": "The release agent exists to assemble evidence and control promotion of approved releases. It owns only the delegated release scope and returns evidence, not con"
+    },
+    {
+      "slug": "04-agent-engineering/agents/research.agent",
+      "sourcePath": "content/04-agent-engineering/agents/research.agent.md",
+      "title": "Research Agent",
+      "description": "The research agent exists to collect, rank, and synthesize authoritative evidence. It owns only the delegated research scope and returns evidence, not confidenc"
+    },
+    {
+      "slug": "04-agent-engineering/agents/reviewer.agent",
+      "sourcePath": "content/04-agent-engineering/agents/reviewer.agent.md",
+      "title": "Reviewer Agent",
+      "description": "The reviewer agent exists to review diffs for correctness, maintainability, and regression risk. It owns only the delegated review scope and returns evidence, n"
+    },
+    {
+      "slug": "04-agent-engineering/agents/security.agent",
+      "sourcePath": "content/04-agent-engineering/agents/security.agent.md",
+      "title": "Security Agent",
+      "description": "The security agent exists to threat-model and assess application security controls. It owns only the delegated security scope and returns evidence, not confiden"
+    },
+    {
+      "slug": "04-agent-engineering/agents/testing.agent",
+      "sourcePath": "content/04-agent-engineering/agents/testing.agent.md",
+      "title": "Testing Agent",
+      "description": "The testing agent exists to design and execute risk-based automated tests. It owns only the delegated testing scope and returns evidence, not confidence."
+    },
+    {
+      "slug": "04-agent-engineering/hooks/README",
+      "sourcePath": "content/04-agent-engineering/hooks/README.md",
+      "title": "Deterministic Hooks",
+      "description": "These 12 POSIX sh hooks enforce lifecycle preconditions independently of model reasoning."
+    },
+    {
+      "slug": "04-agent-engineering/README",
+      "sourcePath": "content/04-agent-engineering/README.md",
+      "title": "Level 4: Agent Engineering",
+      "description": "This library defines bounded agents and deterministic hooks for reliable, auditable engineering automation."
+    },
+    {
+      "slug": "04-agent-engineering/subagents/accessibility.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/accessibility.subagent.md",
+      "title": "Accessibility Subagent",
+      "description": "The accessibility subagent exists to perform isolated Web accessibility work covering WCAG 2.2 AA semantics, keyboard, contrast, and assistive technology. It ow"
+    },
+    {
+      "slug": "04-agent-engineering/subagents/aws.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/aws.subagent.md",
+      "title": "Aws Subagent",
+      "description": "The aws subagent exists to perform isolated AWS work covering IAM, workload architecture, policy, and deployment validation. It owns only the delegated aws scop"
+    },
+    {
+      "slug": "04-agent-engineering/subagents/azure.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/azure.subagent.md",
+      "title": "Azure Subagent",
+      "description": "The azure subagent exists to perform isolated Azure work covering managed identity, policy, networking, and deployment validation. It owns only the delegated az"
+    },
+    {
+      "slug": "04-agent-engineering/subagents/docker.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/docker.subagent.md",
+      "title": "Docker Subagent",
+      "description": "The docker subagent exists to perform isolated Docker work covering minimal images, deterministic builds, and runtime hardening. It owns only the delegated dock"
+    },
+    {
+      "slug": "04-agent-engineering/subagents/dotnet.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/dotnet.subagent.md",
+      "title": "Dotnet Subagent",
+      "description": "The dotnet subagent exists to perform isolated .NET work covering nullable-safe services, dependency injection, async I/O, and diagnostics. It owns only the del"
+    },
+    {
+      "slug": "04-agent-engineering/subagents/github-actions.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/github-actions.subagent.md",
+      "title": "Github Actions Subagent",
+      "description": "The github-actions subagent exists to perform isolated GitHub Actions work covering least-privilege workflows, caching, and supply-chain controls. It owns only "
+    },
+    {
+      "slug": "04-agent-engineering/subagents/kafka.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/kafka.subagent.md",
+      "title": "Kafka Subagent",
+      "description": "The kafka subagent exists to perform isolated Apache Kafka work covering schemas, partitions, delivery semantics, and consumer recovery. It owns only the delega"
+    },
+    {
+      "slug": "04-agent-engineering/subagents/kubernetes.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/kubernetes.subagent.md",
+      "title": "Kubernetes Subagent",
+      "description": "The kubernetes subagent exists to perform isolated Kubernetes work covering workloads, policy, rollout safety, and diagnostics. It owns only the delegated kuber"
+    },
+    {
+      "slug": "04-agent-engineering/subagents/nextjs-routing.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/nextjs-routing.subagent.md",
+      "title": "Nextjs Routing Subagent",
+      "description": "The nextjs-routing subagent exists to perform isolated Next.js work covering version-specific routes, middleware, caching, and server/client boundaries. It owns"
+    },
+    {
+      "slug": "04-agent-engineering/subagents/openai-api.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/openai-api.subagent.md",
+      "title": "Openai Api Subagent",
+      "description": "The openai-api subagent exists to perform isolated OpenAI API work covering model integration, structured outputs, tool safety, and evals. It owns only the dele"
+    },
+    {
+      "slug": "04-agent-engineering/subagents/playwright.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/playwright.subagent.md",
+      "title": "Playwright Subagent",
+      "description": "The playwright subagent exists to perform isolated Playwright work covering deterministic browser tests, fixtures, traces, and accessibility. It owns only the d"
+    },
+    {
+      "slug": "04-agent-engineering/subagents/postgres.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/postgres.subagent.md",
+      "title": "Postgres Subagent",
+      "description": "The postgres subagent exists to perform isolated PostgreSQL work covering schema, query plans, locking, indexes, and reversible migrations. It owns only the del"
+    },
+    {
+      "slug": "04-agent-engineering/subagents/python.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/python.subagent.md",
+      "title": "Python Subagent",
+      "description": "The python subagent exists to perform isolated Python work covering typed packages, async behavior, testing, and packaging. It owns only the delegated python sc"
+    },
+    {
+      "slug": "04-agent-engineering/subagents/react.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/react.subagent.md",
+      "title": "React Subagent",
+      "description": "The react subagent exists to perform isolated React work covering components, state ownership, rendering, and accessibility. It owns only the delegated react sc"
+    },
+    {
+      "slug": "04-agent-engineering/subagents/redis.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/redis.subagent.md",
+      "title": "Redis Subagent",
+      "description": "The redis subagent exists to perform isolated Redis work covering data structures, expiry, consistency, memory, and failover. It owns only the delegated redis s"
+    },
+    {
+      "slug": "04-agent-engineering/subagents/spring.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/spring.subagent.md",
+      "title": "Spring Subagent",
+      "description": "The spring subagent exists to perform isolated Spring work covering dependency injection, transactions, security, and service testing. It owns only the delegate"
+    },
+    {
+      "slug": "04-agent-engineering/subagents/terraform.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/terraform.subagent.md",
+      "title": "Terraform Subagent",
+      "description": "The terraform subagent exists to perform isolated Terraform work covering state-safe modules, plans, policy checks, and drift. It owns only the delegated terraf"
+    },
+    {
+      "slug": "04-agent-engineering/subagents/typescript.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/typescript.subagent.md",
+      "title": "Typescript Subagent",
+      "description": "The typescript subagent exists to perform isolated TypeScript work covering strict typing, module boundaries, and compiler diagnostics. It owns only the delegat"
+    },
+    {
+      "slug": "04-agent-engineering/subagents/vector-database.subagent",
+      "sourcePath": "content/04-agent-engineering/subagents/vector-database.subagent.md",
+      "title": "Vector Database Subagent",
+      "description": "The vector-database subagent exists to perform isolated Vector databases work covering indexing, filters, retrieval quality, and tenancy. It owns only the deleg"
+    },
+    {
+      "slug": "05-multi-agent-systems/frameworks/autogen/README",
+      "sourcePath": "content/05-multi-agent-systems/frameworks/autogen/README.md",
+      "title": "AutoGen Production Integration",
+      "description": "Apply OAIES controls when Microsoft AutoGen is selected for multi-agent messaging and teams."
+    },
+    {
+      "slug": "05-multi-agent-systems/frameworks/crewai/README",
+      "sourcePath": "content/05-multi-agent-systems/frameworks/crewai/README.md",
+      "title": "CrewAI Production Integration",
+      "description": "Apply OAIES controls when CrewAI crews or flows are selected as the orchestration layer."
+    },
+    {
+      "slug": "05-multi-agent-systems/frameworks/langgraph/README",
+      "sourcePath": "content/05-multi-agent-systems/frameworks/langgraph/README.md",
+      "title": "LangGraph Production Integration",
+      "description": "Apply OAIES controls when LangGraph is selected as the workflow runtime."
+    },
+    {
+      "slug": "05-multi-agent-systems/README",
+      "sourcePath": "content/05-multi-agent-systems/README.md",
+      "title": "Level 5: Multi-Agent Systems",
+      "description": "Define the production control plane for systems in which independently executing agents delegate, communicate, and mutate durable state."
+    },
+    {
+      "slug": "05-multi-agent-systems/standards/architecture-and-benefit",
+      "sourcePath": "content/05-multi-agent-systems/standards/architecture-and-benefit.md",
+      "title": "Architecture and Multi-Agent Benefit Standard",
+      "description": "Prevent unjustified agent decomposition and define evidence required to claim a multi-agent benefit."
+    },
+    {
+      "slug": "05-multi-agent-systems/standards/cost-and-termination",
+      "sourcePath": "content/05-multi-agent-systems/standards/cost-and-termination.md",
+      "title": "Cost, Budgets, and Termination",
+      "description": "Bound resource consumption and guarantee every multi-agent workflow reaches an explicit terminal outcome."
+    },
+    {
+      "slug": "05-multi-agent-systems/standards/durable-state-checkpoints",
+      "sourcePath": "content/05-multi-agent-systems/standards/durable-state-checkpoints.md",
+      "title": "Durable State and Checkpoints",
+      "description": "Provide recoverable, conflict-safe workflow state independent of model context and worker lifetime."
+    },
+    {
+      "slug": "05-multi-agent-systems/standards/identity-and-delegation",
+      "sourcePath": "content/05-multi-agent-systems/standards/identity-and-delegation.md",
+      "title": "Agent Identity and Authenticated Delegation",
+      "description": "Bind every agent action to a verifiable workload identity and a constrained delegation chain."
+    },
+    {
+      "slug": "05-multi-agent-systems/standards/message-provenance",
+      "sourcePath": "content/05-multi-agent-systems/standards/message-provenance.md",
+      "title": "Message Provenance and Non-Repudiation",
+      "description": "Make agent messages attributable, integrity-protected, replay-resistant, and auditable."
+    },
+    {
+      "slug": "05-multi-agent-systems/standards/threat-controls",
+      "sourcePath": "content/05-multi-agent-systems/standards/threat-controls.md",
+      "title": "Multi-Agent Threat Controls",
+      "description": "Control loop, collusion, confused-deputy, prompt-injection, and privilege-propagation risks unique to delegated agent execution."
+    },
+    {
+      "slug": "06-memory-knowledge/knowledge-graphs/construction",
+      "sourcePath": "content/06-memory-knowledge/knowledge-graphs/construction.md",
+      "title": "Knowledge Graph Construction",
+      "description": "Construct relationship-centric knowledge with explicit ontology, provenance, and review."
+    },
+    {
+      "slug": "06-memory-knowledge/knowledge-graphs/maintenance",
+      "sourcePath": "content/06-memory-knowledge/knowledge-graphs/maintenance.md",
+      "title": "Knowledge Graph Maintenance",
+      "description": "Keep graph knowledge current, correctable, and reconstructable as sources and ontologies change."
+    },
+    {
+      "slug": "06-memory-knowledge/knowledge-graphs/querying",
+      "sourcePath": "content/06-memory-knowledge/knowledge-graphs/querying.md",
+      "title": "Knowledge Graph Querying",
+      "description": "Use graph traversal safely for entity, relationship, temporal, and multi-hop retrieval."
+    },
+    {
+      "slug": "06-memory-knowledge/memory-types/episodic",
+      "sourcePath": "content/06-memory-knowledge/memory-types/episodic.md",
+      "title": "Episodic Memory",
+      "description": "Store attributable records of past events and decisions for later task-relevant recall."
+    },
+    {
+      "slug": "06-memory-knowledge/memory-types/external",
+      "sourcePath": "content/06-memory-knowledge/memory-types/external.md",
+      "title": "External Durable Memory",
+      "description": "Store cross-session facts, preferences, and task state in durable systems with transactional governance."
+    },
+    {
+      "slug": "06-memory-knowledge/memory-types/in-context",
+      "sourcePath": "content/06-memory-knowledge/memory-types/in-context.md",
+      "title": "In-Context Working Memory",
+      "description": "Manage ephemeral task context and compaction without making the model context authoritative state."
+    },
+    {
+      "slug": "06-memory-knowledge/memory-types/procedural",
+      "sourcePath": "content/06-memory-knowledge/memory-types/procedural.md",
+      "title": "Procedural Memory",
+      "description": "Govern reusable prompts, skills, policies, and workflows as executable production artifacts."
+    },
+    {
+      "slug": "06-memory-knowledge/memory-types/semantic",
+      "sourcePath": "content/06-memory-knowledge/memory-types/semantic.md",
+      "title": "Semantic Memory",
+      "description": "Serve governed factual and conceptual knowledge with source-level attribution and temporal validity."
+    },
+    {
+      "slug": "06-memory-knowledge/rag/advanced-rag",
+      "sourcePath": "content/06-memory-knowledge/rag/advanced-rag.md",
+      "title": "Advanced RAG",
+      "description": "Add query transformation, multi-query retrieval, reranking, and contextual assembly only where baseline error analysis justifies them."
+    },
+    {
+      "slug": "06-memory-knowledge/rag/agentic-rag",
+      "sourcePath": "content/06-memory-knowledge/rag/agentic-rag.md",
+      "title": "Agentic RAG",
+      "description": "Govern agent-directed retrieval planning for queries that deterministic pipelines cannot handle within requirements."
+    },
+    {
+      "slug": "06-memory-knowledge/rag/hybrid-rag",
+      "sourcePath": "content/06-memory-knowledge/rag/hybrid-rag.md",
+      "title": "Hybrid RAG",
+      "description": "Fuse complementary retrieval modes when workload evidence shows that one mode is insufficient."
+    },
+    {
+      "slug": "06-memory-knowledge/rag/naive-rag",
+      "sourcePath": "content/06-memory-knowledge/rag/naive-rag.md",
+      "title": "Baseline RAG",
+      "description": "Define the minimum retrieval-generation baseline used before adding rewriting, fusion, graphs, or agents."
+    },
+    {
+      "slug": "06-memory-knowledge/README",
+      "sourcePath": "content/06-memory-knowledge/README.md",
+      "title": "Level 6: Memory and Knowledge Systems",
+      "description": "Define production memory and retrieval systems that are attributable, tenant-safe, correctable, deletable, and measurably useful."
+    },
+    {
+      "slug": "06-memory-knowledge/standards/memory-lifecycle-governance",
+      "sourcePath": "content/06-memory-knowledge/standards/memory-lifecycle-governance.md",
+      "title": "Memory Lifecycle Governance",
+      "description": "Control memory from authorized creation through correction, expiry, deletion, and verifiable destruction."
+    },
+    {
+      "slug": "06-memory-knowledge/standards/retrieval-citation-evaluation",
+      "sourcePath": "content/06-memory-knowledge/standards/retrieval-citation-evaluation.md",
+      "title": "Retrieval, Citation, and Compaction Evaluation",
+      "description": "Define workload-specific evidence for retrieval quality, citation support, and memory-compaction safety."
+    },
+    {
+      "slug": "06-memory-knowledge/standards/security-and-poisoning",
+      "sourcePath": "content/06-memory-knowledge/standards/security-and-poisoning.md",
+      "title": "Memory Security and Poisoning Recovery",
+      "description": "Prevent cross-tenant disclosure and detect, contain, and recover from poisoned memory or retrieval indexes."
+    },
+    {
+      "slug": "06-memory-knowledge/vector-databases/indexing-patterns",
+      "sourcePath": "content/06-memory-knowledge/vector-databases/indexing-patterns.md",
+      "title": "Indexing Patterns",
+      "description": "Create reconstructable lexical, vector, and graph derivatives without losing provenance or access policy."
+    },
+    {
+      "slug": "06-memory-knowledge/vector-databases/retrieval-optimization",
+      "sourcePath": "content/06-memory-knowledge/vector-databases/retrieval-optimization.md",
+      "title": "Retrieval Optimization and Mode Selection",
+      "description": "Select vector, keyword, graph, and fused retrieval by evaluated query class."
+    },
+    {
+      "slug": "06-memory-knowledge/vector-databases/selection-guide",
+      "sourcePath": "content/06-memory-knowledge/vector-databases/selection-guide.md",
+      "title": "Retrieval Store Selection Guide",
+      "description": "Select vector infrastructure from measured workload, control, and lifecycle requirements."
+    },
+    {
+      "slug": "07-llmops/cost-optimization/caching-strategies",
+      "sourcePath": "content/07-llmops/cost-optimization/caching-strategies.md",
+      "title": "LLM Caching Strategies",
+      "description": "Use exact, semantic, and provider caching without serving stale, cross-tenant, or unauthorized outputs."
+    },
+    {
+      "slug": "07-llmops/cost-optimization/model-routing",
+      "sourcePath": "content/07-llmops/cost-optimization/model-routing.md",
+      "title": "Risk-Aware Model Routing",
+      "description": "Route each request to the least costly qualified model without reducing required quality or control."
+    },
+    {
+      "slug": "07-llmops/cost-optimization/token-budgets",
+      "sourcePath": "content/07-llmops/cost-optimization/token-budgets.md",
+      "title": "Token Budget Standard",
+      "description": "Enforce per-task input, output, retry, and monthly token budgets."
+    },
+    {
+      "slug": "07-llmops/evaluation/continuous-eval",
+      "sourcePath": "content/07-llmops/evaluation/continuous-eval.md",
+      "title": "Continuous Evaluation",
+      "description": "Detect quality drift between releases and close the production-to-test feedback loop."
+    },
+    {
+      "slug": "07-llmops/evaluation/framework-selection",
+      "sourcePath": "content/07-llmops/evaluation/framework-selection.md",
+      "title": "Evaluation Framework Selection",
+      "description": "Define a qualified evaluation stack instead of selecting tools by popularity."
+    },
+    {
+      "slug": "07-llmops/evaluation/golden-set-management",
+      "sourcePath": "content/07-llmops/evaluation/golden-set-management.md",
+      "title": "Golden Set Management",
+      "description": "Build representative, versioned evaluation datasets that support release decisions."
+    },
+    {
+      "slug": "07-llmops/evaluation/llm-as-judge",
+      "sourcePath": "content/07-llmops/evaluation/llm-as-judge.md",
+      "title": "LLM-as-Judge Standard",
+      "description": "Use model graders only when calibrated, bounded, and backed by human adjudication."
+    },
+    {
+      "slug": "07-llmops/evaluation/metrics/README",
+      "sourcePath": "content/07-llmops/evaluation/metrics/README.md",
+      "title": "Evaluation Metrics Catalog",
+      "description": "Define claim-level faithfulness, groundedness, context recall, hallucination rate, and decision rules."
+    },
+    {
+      "slug": "07-llmops/observability/alerting",
+      "sourcePath": "content/07-llmops/observability/alerting.md",
+      "title": "LLMOps Alerting",
+      "description": "Page on actionable user-impacting conditions and ticket slower quality or cost drift."
+    },
+    {
+      "slug": "07-llmops/observability/dashboards",
+      "sourcePath": "content/07-llmops/observability/dashboards.md",
+      "title": "LLMOps Dashboard Standard",
+      "description": "Provide role-specific operational, quality, cost, and governance views."
+    },
+    {
+      "slug": "07-llmops/observability/metrics",
+      "sourcePath": "content/07-llmops/observability/metrics.md",
+      "title": "LLMOps Metrics",
+      "description": "Measure reliability, quality, safety, latency, cost, and human intervention with defined denominators."
+    },
+    {
+      "slug": "07-llmops/observability/tracing",
+      "sourcePath": "content/07-llmops/observability/tracing.md",
+      "title": "OpenTelemetry LLM Tracing",
+      "description": "Create vendor-neutral end-to-end traces across gateway, retrieval, model, tools, and approvals."
+    },
+    {
+      "slug": "07-llmops/promptops/ab-testing",
+      "sourcePath": "content/07-llmops/promptops/ab-testing.md",
+      "title": "Prompt A/B Testing",
+      "description": "Compare prompt releases with controlled exposure and safety guardrails."
+    },
+    {
+      "slug": "07-llmops/promptops/registries",
+      "sourcePath": "content/07-llmops/promptops/registries.md",
+      "title": "Prompt Registry Standard",
+      "description": "Operate a governed registry for prompt lifecycle, lineage, access, and export."
+    },
+    {
+      "slug": "07-llmops/promptops/regression-gates",
+      "sourcePath": "content/07-llmops/promptops/regression-gates.md",
+      "title": "Prompt Regression Gates",
+      "description": "Block releases that exceed justified quality, safety, latency, or cost tolerances."
+    },
+    {
+      "slug": "07-llmops/promptops/staged-deployment",
+      "sourcePath": "content/07-llmops/promptops/staged-deployment.md",
+      "title": "Staged Prompt Deployment",
+      "description": "Promote qualified prompt releases through development, staging, canary, and production."
+    },
+    {
+      "slug": "07-llmops/promptops/versioning",
+      "sourcePath": "content/07-llmops/promptops/versioning.md",
+      "title": "Prompt Versioning",
+      "description": "Treat prompts, schemas, tools, policies, and model settings as one immutable release unit."
+    },
+    {
+      "slug": "07-llmops/README",
+      "sourcePath": "content/07-llmops/README.md",
+      "title": "Level 7: LLMOps",
+      "description": "Operate model-backed systems with qualified evaluation, immutable PromptOps, controlled cost, and portable observability."
+    },
+    {
+      "slug": "08-ai-sdlc/prompts/architecture-review.prompt",
+      "sourcePath": "content/08-ai-sdlc/prompts/architecture-review.prompt.md",
+      "title": "Architecture Review Prompt",
+      "description": "Assess architecture fitness, risks, reversibility, and operational controls."
+    },
+    {
+      "slug": "08-ai-sdlc/prompts/coding.prompt",
+      "sourcePath": "content/08-ai-sdlc/prompts/coding.prompt.md",
+      "title": "Coding Prompt",
+      "description": "Implement an approved plan with bounded scope and verifiable tests."
+    },
+    {
+      "slug": "08-ai-sdlc/prompts/documentation.prompt",
+      "sourcePath": "content/08-ai-sdlc/prompts/documentation.prompt.md",
+      "title": "Documentation Prompt",
+      "description": "Produce accurate user, operator, API, and decision documentation from verified implementation evidence."
+    },
+    {
+      "slug": "08-ai-sdlc/prompts/implementation-plan.prompt",
+      "sourcePath": "content/08-ai-sdlc/prompts/implementation-plan.prompt.md",
+      "title": "Implementation Plan Prompt",
+      "description": "Create a file-level, testable, reversible implementation plan for human approval."
+    },
+    {
+      "slug": "08-ai-sdlc/prompts/incident.prompt",
+      "sourcePath": "content/08-ai-sdlc/prompts/incident.prompt.md",
+      "title": "AI Incident Response Prompt",
+      "description": "Coordinate evidence-preserving response to AI quality, safety, security, provider, and cost incidents."
+    },
+    {
+      "slug": "08-ai-sdlc/prompts/knowledge-capture.prompt",
+      "sourcePath": "content/08-ai-sdlc/prompts/knowledge-capture.prompt.md",
+      "title": "Knowledge Capture Prompt",
+      "description": "Convert verified delivery and incident evidence into searchable institutional knowledge."
+    },
+    {
+      "slug": "08-ai-sdlc/prompts/migration.prompt",
+      "sourcePath": "content/08-ai-sdlc/prompts/migration.prompt.md",
+      "title": "Migration Prompt",
+      "description": "Plan and execute reversible data, API, model, prompt, or provider migrations."
+    },
+    {
+      "slug": "08-ai-sdlc/prompts/performance-review.prompt",
+      "sourcePath": "content/08-ai-sdlc/prompts/performance-review.prompt.md",
+      "title": "Performance Review Prompt",
+      "description": "Validate latency, throughput, resource, and token-cost objectives under representative load."
+    },
+    {
+      "slug": "08-ai-sdlc/prompts/refactoring.prompt",
+      "sourcePath": "content/08-ai-sdlc/prompts/refactoring.prompt.md",
+      "title": "Refactoring Prompt",
+      "description": "Improve internal design while proving observable behavior is preserved."
+    },
+    {
+      "slug": "08-ai-sdlc/prompts/release.prompt",
+      "sourcePath": "content/08-ai-sdlc/prompts/release.prompt.md",
+      "title": "Release Prompt",
+      "description": "Produce a controlled release decision, deployment sequence, validation, and rollback plan."
+    },
+    {
+      "slug": "08-ai-sdlc/prompts/root-cause-analysis.prompt",
+      "sourcePath": "content/08-ai-sdlc/prompts/root-cause-analysis.prompt.md",
+      "title": "Root Cause Analysis Prompt",
+      "description": "Identify systemic causes, detection gaps, and measurable prevention after an incident."
+    },
+    {
+      "slug": "08-ai-sdlc/prompts/security-review.prompt",
+      "sourcePath": "content/08-ai-sdlc/prompts/security-review.prompt.md",
+      "title": "Security Review Prompt",
+      "description": "Perform evidence-based application and AI security review before deployment."
+    },
+    {
+      "slug": "08-ai-sdlc/prompts/story-kickoff.prompt",
+      "sourcePath": "content/08-ai-sdlc/prompts/story-kickoff.prompt.md",
+      "title": "Story Kickoff Prompt",
+      "description": "Transform a feature idea into testable scope, evidence requirements, and risk-based lifecycle tailoring."
+    },
+    {
+      "slug": "08-ai-sdlc/prompts/technical-debt.prompt",
+      "sourcePath": "content/08-ai-sdlc/prompts/technical-debt.prompt.md",
+      "title": "Technical Debt Prompt",
+      "description": "Convert technical debt into evidence-backed, prioritized, bounded work."
+    },
+    {
+      "slug": "08-ai-sdlc/prompts/test-generation.prompt",
+      "sourcePath": "content/08-ai-sdlc/prompts/test-generation.prompt.md",
+      "title": "Test Generation Prompt",
+      "description": "Generate risk-based deterministic tests from requirements and failure history."
+    },
+    {
+      "slug": "08-ai-sdlc/quality-standards/agent-quality-standard",
+      "sourcePath": "content/08-ai-sdlc/quality-standards/agent-quality-standard.md",
+      "title": "Agent Quality Standard",
+      "description": "Require bounded authority, observable state, termination, recovery, and human control for agents."
+    },
+    {
+      "slug": "08-ai-sdlc/quality-standards/code-quality-standard",
+      "sourcePath": "content/08-ai-sdlc/quality-standards/code-quality-standard.md",
+      "title": "AI-Assisted Code Quality Standard",
+      "description": "Hold AI-authored code to the same or higher evidence bar as human-authored code."
+    },
+    {
+      "slug": "08-ai-sdlc/quality-standards/definition-of-done",
+      "sourcePath": "content/08-ai-sdlc/quality-standards/definition-of-done.md",
+      "title": "Definition of Done",
+      "description": "Define release completion as verified behavior, operational readiness, and closed learning loops."
+    },
+    {
+      "slug": "08-ai-sdlc/quality-standards/definition-of-ready",
+      "sourcePath": "content/08-ai-sdlc/quality-standards/definition-of-ready.md",
+      "title": "Definition of Ready",
+      "description": "Prevent implementation from starting before outcome, scope, evidence, risk, and ownership are clear."
+    },
+    {
+      "slug": "08-ai-sdlc/quality-standards/prompt-quality-standard",
+      "sourcePath": "content/08-ai-sdlc/quality-standards/prompt-quality-standard.md",
+      "title": "Prompt Quality Standard",
+      "description": "Set the minimum production bar for structured, testable, versioned prompts."
+    },
+    {
+      "slug": "08-ai-sdlc/README",
+      "sourcePath": "content/08-ai-sdlc/README.md",
+      "title": "Level 8: AI SDLC",
+      "description": "Preserve the complete 26-stage v1.0 lifecycle while applying a mandatory baseline and risk-based control depth."
+    },
+    {
+      "slug": "09-enterprise-ai/architecture-patterns/centralized-prompt-registry",
+      "sourcePath": "content/09-enterprise-ai/architecture-patterns/centralized-prompt-registry.md",
+      "title": "Centralized Enterprise Prompt Registry",
+      "description": "Govern prompt releases, ownership, lineage, promotion, and emergency rollback across teams."
+    },
+    {
+      "slug": "09-enterprise-ai/architecture-patterns/model-routing-gateway",
+      "sourcePath": "content/09-enterprise-ai/architecture-patterns/model-routing-gateway.md",
+      "title": "Enterprise Model Routing Gateway",
+      "description": "Centralize policy-aware model selection, quotas, observability, and failover."
+    },
+    {
+      "slug": "09-enterprise-ai/architecture-patterns/provider-neutral-harness",
+      "sourcePath": "content/09-enterprise-ai/architecture-patterns/provider-neutral-harness.md",
+      "title": "Provider-Neutral AI Harness",
+      "description": "Decouple applications from provider SDKs while preserving provider-specific safety and capability controls."
+    },
+    {
+      "slug": "09-enterprise-ai/governance/audit-logging",
+      "sourcePath": "content/09-enterprise-ai/governance/audit-logging.md",
+      "title": "Enterprise AI Audit Logging",
+      "description": "Record tamper-evident decision and action lineage while minimizing sensitive content."
+    },
+    {
+      "slug": "09-enterprise-ai/governance/eu-ai-act",
+      "sourcePath": "content/09-enterprise-ai/governance/eu-ai-act.md",
+      "title": "EU AI Act Engineering Control Map",
+      "description": "Translate Regulation (EU) 2024/1689 obligations into engineering evidence without presenting legal advice."
+    },
+    {
+      "slug": "09-enterprise-ai/governance/gdpr-for-ai",
+      "sourcePath": "content/09-enterprise-ai/governance/gdpr-for-ai.md",
+      "title": "GDPR for AI Systems",
+      "description": "Implement data-protection controls for personal data used in AI systems."
+    },
+    {
+      "slug": "09-enterprise-ai/governance/rbac-patterns",
+      "sourcePath": "content/09-enterprise-ai/governance/rbac-patterns.md",
+      "title": "RBAC and ABAC for AI",
+      "description": "Authorize AI users, agents, tools, data, and actions with policy enforced outside the model."
+    },
+    {
+      "slug": "09-enterprise-ai/governance/responsible-ai",
+      "sourcePath": "content/09-enterprise-ai/governance/responsible-ai.md",
+      "title": "Responsible AI Operating Standard",
+      "description": "Govern validity, safety, fairness, privacy, transparency, accountability, and human control throughout the lifecycle."
+    },
+    {
+      "slug": "09-enterprise-ai/README",
+      "sourcePath": "content/09-enterprise-ai/README.md",
+      "title": "Level 9: Enterprise AI",
+      "description": "Provide governance, security, architecture, and evidence templates for enterprise AI systems."
+    },
+    {
+      "slug": "09-enterprise-ai/security/least-privilege",
+      "sourcePath": "content/09-enterprise-ai/security/least-privilege.md",
+      "title": "Least Privilege for AI Agents",
+      "description": "Grant the minimum identity, data, tool, and action authority for one bounded task."
+    },
+    {
+      "slug": "09-enterprise-ai/security/oauth-for-mcp",
+      "sourcePath": "content/09-enterprise-ai/security/oauth-for-mcp.md",
+      "title": "OAuth 2.1 for MCP Servers",
+      "description": "Secure MCP access with standards-based delegated authorization and resource-bound tokens."
+    },
+    {
+      "slug": "09-enterprise-ai/security/prompt-injection-defense",
+      "sourcePath": "content/09-enterprise-ai/security/prompt-injection-defense.md",
+      "title": "Prompt Injection Defense",
+      "description": "Contain direct and indirect prompt injection with deterministic trust boundaries."
+    },
+    {
+      "slug": "09-enterprise-ai/security/red-teaming",
+      "sourcePath": "content/09-enterprise-ai/security/red-teaming.md",
+      "title": "Enterprise AI Red Teaming",
+      "description": "Exercise realistic abuse paths across model, data, tools, users, and operations."
+    },
+    {
+      "slug": "09-enterprise-ai/security/sandboxing",
+      "sourcePath": "content/09-enterprise-ai/security/sandboxing.md",
+      "title": "Agent Tool Sandboxing",
+      "description": "Isolate code and tool execution from hosts, networks, credentials, and tenants."
+    },
+    {
+      "slug": "09-enterprise-ai/templates/adr.template",
+      "sourcePath": "content/09-enterprise-ai/templates/adr.template.md",
+      "title": "Architecture Decision Record Template",
+      "description": "Record an architectural decision, alternatives, evidence, consequences, and reversal conditions."
+    },
+    {
+      "slug": "09-enterprise-ai/templates/incident-report.template",
+      "sourcePath": "content/09-enterprise-ai/templates/incident-report.template.md",
+      "title": "AI Incident Report Template",
+      "description": "Record impact, evidence, decisions, containment, recovery, and communication during an incident."
+    },
+    {
+      "slug": "09-enterprise-ai/templates/prd.template",
+      "sourcePath": "content/09-enterprise-ai/templates/prd.template.md",
+      "title": "AI Product Requirements Document Template",
+      "description": "Define user outcome, intended use, measurable requirements, risk, and lifecycle controls."
+    },
+    {
+      "slug": "09-enterprise-ai/templates/rca.template",
+      "sourcePath": "content/09-enterprise-ai/templates/rca.template.md",
+      "title": "Root Cause Analysis Template",
+      "description": "Document evidence-backed systemic causes and verified prevention without individual blame."
+    },
+    {
+      "slug": "09-enterprise-ai/templates/rfc.template",
+      "sourcePath": "content/09-enterprise-ai/templates/rfc.template.md",
+      "title": "Request for Comments Template",
+      "description": "Obtain time-bounded, evidence-based review of a material technical proposal."
+    },
+    {
+      "slug": "09-enterprise-ai/templates/runbook.template",
+      "sourcePath": "content/09-enterprise-ai/templates/runbook.template.md",
+      "title": "AI Service Runbook Template",
+      "description": "Give operators tested procedures for diagnosis, containment, recovery, and escalation."
+    },
+    {
+      "slug": "10-ai-org-playbook/governance/adoption-and-assurance",
+      "sourcePath": "content/10-ai-org-playbook/governance/adoption-and-assurance.md",
+      "title": "AI Adoption and Assurance",
+      "description": "Scale AI use through measured enablement and risk-based assurance rather than seat counts."
+    },
+    {
+      "slug": "10-ai-org-playbook/governance/operating-model",
+      "sourcePath": "content/10-ai-org-playbook/governance/operating-model.md",
+      "title": "AI Organization Operating Model",
+      "description": "Establish a hybrid platform-and-product model with explicit service ownership and decision rights."
+    },
+    {
+      "slug": "10-ai-org-playbook/governance/roles-and-accountability",
+      "sourcePath": "content/10-ai-org-playbook/governance/roles-and-accountability.md",
+      "title": "AI Roles and Accountability",
+      "description": "Assign one accountable human for every AI system, release, control, incident, and provider relationship."
+    },
+    {
+      "slug": "10-ai-org-playbook/radar/technology-radar",
+      "sourcePath": "content/10-ai-org-playbook/radar/technology-radar.md",
+      "title": "OAIES Technology Radar",
+      "description": "Maintain an evidence-based Adopt, Trial, Assess, and Hold view of AI technologies and practices."
+    },
+    {
+      "slug": "10-ai-org-playbook/README",
+      "sourcePath": "content/10-ai-org-playbook/README.md",
+      "title": "Level 10: AI Organization Playbook",
+      "description": "Scale AI engineering through explicit operating models, accountability, measured adoption, and a governed technology radar."
+    },
+    {
+      "slug": "CHANGELOG",
+      "sourcePath": "content/CHANGELOG.md",
+      "title": "Changelog",
+      "description": "All notable changes to the Open AI Engineering Standard are documented here."
+    },
+    {
+      "slug": "checklists/README",
+      "sourcePath": "content/checklists/README.md",
+      "title": "OAIES Quality Checklists",
+      "description": "Checklists are not suggestions. They are gates. A stage is not complete until its checklist passes."
+    },
+    {
+      "slug": "CONTRIBUTING",
+      "sourcePath": "content/CONTRIBUTING.md",
+      "title": "Contributing to OAIES",
+      "description": "This repository defines a standard. Contributions that lower that standard are rejected — respectfully, but firmly."
+    },
+    {
+      "slug": "cookbook/accessibility/architecture/patterns",
+      "sourcePath": "content/cookbook/accessibility/architecture/patterns.md",
+      "title": "Accessibility Engineering Architecture Patterns",
+      "description": "Define the default production architecture for a Accessibility Engineering workload and the boundaries an AI-generated change must preserve."
+    },
+    {
+      "slug": "cookbook/accessibility/checklists/code-review",
+      "sourcePath": "content/cookbook/accessibility/checklists/code-review.md",
+      "title": "Accessibility Engineering Code Review Checklist",
+      "description": "Review a Accessibility Engineering change for correctness, security, operability, and maintainability before merge."
+    },
+    {
+      "slug": "cookbook/accessibility/checklists/deployment",
+      "sourcePath": "content/cookbook/accessibility/checklists/deployment.md",
+      "title": "Accessibility Engineering Deployment Checklist",
+      "description": "Block unsafe promotion of a Accessibility Engineering artifact and retain evidence for rollback and audit."
+    },
+    {
+      "slug": "cookbook/accessibility/debug-workflows/common-errors",
+      "sourcePath": "content/cookbook/accessibility/debug-workflows/common-errors.md",
+      "title": "Accessibility Engineering Common Error Workflow",
+      "description": "Diagnose recurring Accessibility Engineering failures from evidence and restore service without destructive trial and error."
+    },
+    {
+      "slug": "cookbook/accessibility/prompts/debug.prompt",
+      "sourcePath": "content/cookbook/accessibility/prompts/debug.prompt.md",
+      "title": "Accessibility Engineering Debug Prompt",
+      "description": "Diagnose an observed Accessibility Engineering failure from runtime evidence and produce a reversible repair."
+    },
+    {
+      "slug": "cookbook/accessibility/prompts/generate.prompt",
+      "sourcePath": "content/cookbook/accessibility/prompts/generate.prompt.md",
+      "title": "Accessibility Engineering Generate Prompt",
+      "description": "Generate a production-ready accessible component, user flow, audit, remediation plan, or conformance gate that conforms to repository and operational constraint"
+    },
+    {
+      "slug": "cookbook/accessibility/prompts/review.prompt",
+      "sourcePath": "content/cookbook/accessibility/prompts/review.prompt.md",
+      "title": "Accessibility Engineering Review Prompt",
+      "description": "Review a proposed accessible component, user flow, audit, remediation plan, or conformance gate and return only evidence-backed, actionable findings."
+    },
+    {
+      "slug": "cookbook/accessibility/README",
+      "sourcePath": "content/cookbook/accessibility/README.md",
+      "title": "Accessibility Engineering Cookbook",
+      "description": "This cookbook turns Accessibility Engineering production guidance into reusable prompts, a procedural skill, diagnostics, architecture patterns, and release gat"
+    },
+    {
+      "slug": "cookbook/accessibility/skills/accessibility.skill",
+      "sourcePath": "content/cookbook/accessibility/skills/accessibility.skill.md",
+      "title": "Accessibility Engineering Production Skill",
+      "description": "Provide a deterministic procedure for generating, changing, diagnosing, or releasing a accessible component, user flow, audit, remediation plan, or conformance "
+    },
+    {
+      "slug": "cookbook/aws/architecture/patterns",
+      "sourcePath": "content/cookbook/aws/architecture/patterns.md",
+      "title": "AWS Architecture Patterns",
+      "description": "Define the default production architecture for a AWS workload and the boundaries an AI-generated change must preserve."
+    },
+    {
+      "slug": "cookbook/aws/checklists/code-review",
+      "sourcePath": "content/cookbook/aws/checklists/code-review.md",
+      "title": "AWS Code Review Checklist",
+      "description": "Review a AWS change for correctness, security, operability, and maintainability before merge."
+    },
+    {
+      "slug": "cookbook/aws/checklists/deployment",
+      "sourcePath": "content/cookbook/aws/checklists/deployment.md",
+      "title": "AWS Deployment Checklist",
+      "description": "Block unsafe promotion of a AWS artifact and retain evidence for rollback and audit."
+    },
+    {
+      "slug": "cookbook/aws/debug-workflows/common-errors",
+      "sourcePath": "content/cookbook/aws/debug-workflows/common-errors.md",
+      "title": "AWS Common Error Workflow",
+      "description": "Diagnose recurring AWS failures from evidence and restore service without destructive trial and error."
+    },
+    {
+      "slug": "cookbook/aws/prompts/debug.prompt",
+      "sourcePath": "content/cookbook/aws/prompts/debug.prompt.md",
+      "title": "AWS Debug Prompt",
+      "description": "Diagnose an observed AWS failure from runtime evidence and produce a reversible repair."
+    },
+    {
+      "slug": "cookbook/aws/prompts/generate.prompt",
+      "sourcePath": "content/cookbook/aws/prompts/generate.prompt.md",
+      "title": "AWS Generate Prompt",
+      "description": "Generate a production-ready AWS workload, CloudFormation/CDK stack, Lambda function, or operational runbook that conforms to repository and operational constrai"
+    },
+    {
+      "slug": "cookbook/aws/prompts/review.prompt",
+      "sourcePath": "content/cookbook/aws/prompts/review.prompt.md",
+      "title": "AWS Review Prompt",
+      "description": "Review a proposed AWS workload, CloudFormation/CDK stack, Lambda function, or operational runbook and return only evidence-backed, actionable findings."
+    },
+    {
+      "slug": "cookbook/aws/README",
+      "sourcePath": "content/cookbook/aws/README.md",
+      "title": "AWS Cookbook",
+      "description": "This cookbook turns AWS production guidance into reusable prompts, a procedural skill, diagnostics, architecture patterns, and release gates."
+    },
+    {
+      "slug": "cookbook/aws/skills/aws.skill",
+      "sourcePath": "content/cookbook/aws/skills/aws.skill.md",
+      "title": "AWS Production Skill",
+      "description": "Provide a deterministic procedure for generating, changing, diagnosing, or releasing a AWS workload, CloudFormation/CDK stack, Lambda function, or operational r"
+    },
+    {
+      "slug": "cookbook/azure/architecture/patterns",
+      "sourcePath": "content/cookbook/azure/architecture/patterns.md",
+      "title": "Azure Architecture Patterns",
+      "description": "Define the default production architecture for a Azure workload and the boundaries an AI-generated change must preserve."
+    },
+    {
+      "slug": "cookbook/azure/checklists/code-review",
+      "sourcePath": "content/cookbook/azure/checklists/code-review.md",
+      "title": "Azure Code Review Checklist",
+      "description": "Review a Azure change for correctness, security, operability, and maintainability before merge."
+    },
+    {
+      "slug": "cookbook/azure/checklists/deployment",
+      "sourcePath": "content/cookbook/azure/checklists/deployment.md",
+      "title": "Azure Deployment Checklist",
+      "description": "Block unsafe promotion of a Azure artifact and retain evidence for rollback and audit."
+    },
+    {
+      "slug": "cookbook/azure/debug-workflows/common-errors",
+      "sourcePath": "content/cookbook/azure/debug-workflows/common-errors.md",
+      "title": "Azure Common Error Workflow",
+      "description": "Diagnose recurring Azure failures from evidence and restore service without destructive trial and error."
+    },
+    {
+      "slug": "cookbook/azure/prompts/debug.prompt",
+      "sourcePath": "content/cookbook/azure/prompts/debug.prompt.md",
+      "title": "Azure Debug Prompt",
+      "description": "Diagnose an observed Azure failure from runtime evidence and produce a reversible repair."
+    },
+    {
+      "slug": "cookbook/azure/prompts/generate.prompt",
+      "sourcePath": "content/cookbook/azure/prompts/generate.prompt.md",
+      "title": "Azure Generate Prompt",
+      "description": "Generate a production-ready Azure workload, Bicep module, deployment pipeline, or operational runbook that conforms to repository and operational constraints."
+    },
+    {
+      "slug": "cookbook/azure/prompts/review.prompt",
+      "sourcePath": "content/cookbook/azure/prompts/review.prompt.md",
+      "title": "Azure Review Prompt",
+      "description": "Review a proposed Azure workload, Bicep module, deployment pipeline, or operational runbook and return only evidence-backed, actionable findings."
+    },
+    {
+      "slug": "cookbook/azure/README",
+      "sourcePath": "content/cookbook/azure/README.md",
+      "title": "Azure Cookbook",
+      "description": "This cookbook turns Azure production guidance into reusable prompts, a procedural skill, diagnostics, architecture patterns, and release gates."
+    },
+    {
+      "slug": "cookbook/azure/skills/azure.skill",
+      "sourcePath": "content/cookbook/azure/skills/azure.skill.md",
+      "title": "Azure Production Skill",
+      "description": "Provide a deterministic procedure for generating, changing, diagnosing, or releasing a Azure workload, Bicep module, deployment pipeline, or operational runbook"
+    },
+    {
+      "slug": "cookbook/docker/architecture/patterns",
+      "sourcePath": "content/cookbook/docker/architecture/patterns.md",
+      "title": "Docker Architecture Patterns",
+      "description": "Define the default production architecture for a Docker workload and the boundaries an AI-generated change must preserve."
+    },
+    {
+      "slug": "cookbook/docker/checklists/code-review",
+      "sourcePath": "content/cookbook/docker/checklists/code-review.md",
+      "title": "Docker Code Review Checklist",
+      "description": "Review a Docker change for correctness, security, operability, and maintainability before merge."
+    },
+    {
+      "slug": "cookbook/docker/checklists/deployment",
+      "sourcePath": "content/cookbook/docker/checklists/deployment.md",
+      "title": "Docker Deployment Checklist",
+      "description": "Block unsafe promotion of a Docker artifact and retain evidence for rollback and audit."
+    },
+    {
+      "slug": "cookbook/docker/debug-workflows/common-errors",
+      "sourcePath": "content/cookbook/docker/debug-workflows/common-errors.md",
+      "title": "Docker Common Error Workflow",
+      "description": "Diagnose recurring Docker failures from evidence and restore service without destructive trial and error."
+    },
+    {
+      "slug": "cookbook/docker/prompts/debug.prompt",
+      "sourcePath": "content/cookbook/docker/prompts/debug.prompt.md",
+      "title": "Docker Debug Prompt",
+      "description": "Diagnose an observed Docker failure from runtime evidence and produce a reversible repair."
+    },
+    {
+      "slug": "cookbook/docker/prompts/generate.prompt",
+      "sourcePath": "content/cookbook/docker/prompts/generate.prompt.md",
+      "title": "Docker Generate Prompt",
+      "description": "Generate a production-ready Dockerfile, image, Compose service, or image release pipeline that conforms to repository and operational constraints."
+    },
+    {
+      "slug": "cookbook/docker/prompts/review.prompt",
+      "sourcePath": "content/cookbook/docker/prompts/review.prompt.md",
+      "title": "Docker Review Prompt",
+      "description": "Review a proposed Dockerfile, image, Compose service, or image release pipeline and return only evidence-backed, actionable findings."
+    },
+    {
+      "slug": "cookbook/docker/README",
+      "sourcePath": "content/cookbook/docker/README.md",
+      "title": "Docker Cookbook",
+      "description": "This cookbook turns Docker production guidance into reusable prompts, a procedural skill, diagnostics, architecture patterns, and release gates."
+    },
+    {
+      "slug": "cookbook/docker/skills/docker.skill",
+      "sourcePath": "content/cookbook/docker/skills/docker.skill.md",
+      "title": "Docker Production Skill",
+      "description": "Provide a deterministic procedure for generating, changing, diagnosing, or releasing a Dockerfile, image, Compose service, or image release pipeline with AI ass"
+    },
+    {
+      "slug": "cookbook/dotnet/architecture/patterns",
+      "sourcePath": "content/cookbook/dotnet/architecture/patterns.md",
+      "title": ".NET Architecture Patterns",
+      "description": "Define the default production architecture for a .NET workload and the boundaries an AI-generated change must preserve."
+    },
+    {
+      "slug": "cookbook/dotnet/checklists/code-review",
+      "sourcePath": "content/cookbook/dotnet/checklists/code-review.md",
+      "title": ".NET Code Review Checklist",
+      "description": "Review a .NET change for correctness, security, operability, and maintainability before merge."
+    },
+    {
+      "slug": "cookbook/dotnet/checklists/deployment",
+      "sourcePath": "content/cookbook/dotnet/checklists/deployment.md",
+      "title": ".NET Deployment Checklist",
+      "description": "Block unsafe promotion of a .NET artifact and retain evidence for rollback and audit."
+    },
+    {
+      "slug": "cookbook/dotnet/debug-workflows/common-errors",
+      "sourcePath": "content/cookbook/dotnet/debug-workflows/common-errors.md",
+      "title": ".NET Common Error Workflow",
+      "description": "Diagnose recurring .NET failures from evidence and restore service without destructive trial and error."
+    },
+    {
+      "slug": "cookbook/dotnet/prompts/debug.prompt",
+      "sourcePath": "content/cookbook/dotnet/prompts/debug.prompt.md",
+      "title": ".NET Debug Prompt",
+      "description": "Diagnose an observed .NET failure from runtime evidence and produce a reversible repair."
+    },
+    {
+      "slug": "cookbook/dotnet/prompts/generate.prompt",
+      "sourcePath": "content/cookbook/dotnet/prompts/generate.prompt.md",
+      "title": ".NET Generate Prompt",
+      "description": "Generate a production-ready ASP.NET Core endpoint, service, background worker, or EF Core operation that conforms to repository and operational constraints."
+    },
+    {
+      "slug": "cookbook/dotnet/prompts/review.prompt",
+      "sourcePath": "content/cookbook/dotnet/prompts/review.prompt.md",
+      "title": ".NET Review Prompt",
+      "description": "Review a proposed ASP.NET Core endpoint, service, background worker, or EF Core operation and return only evidence-backed, actionable findings."
+    },
+    {
+      "slug": "cookbook/dotnet/README",
+      "sourcePath": "content/cookbook/dotnet/README.md",
+      "title": ".NET Cookbook",
+      "description": "This cookbook turns .NET production guidance into reusable prompts, a procedural skill, diagnostics, architecture patterns, and release gates."
+    },
+    {
+      "slug": "cookbook/dotnet/skills/dotnet.skill",
+      "sourcePath": "content/cookbook/dotnet/skills/dotnet.skill.md",
+      "title": ".NET Production Skill",
+      "description": "Provide a deterministic procedure for generating, changing, diagnosing, or releasing a ASP.NET Core endpoint, service, background worker, or EF Core operation w"
+    },
+    {
+      "slug": "cookbook/graphql/architecture/patterns",
+      "sourcePath": "content/cookbook/graphql/architecture/patterns.md",
+      "title": "GraphQL Architecture Patterns",
+      "description": "Define the default production architecture for a GraphQL workload and the boundaries an AI-generated change must preserve."
+    },
+    {
+      "slug": "cookbook/graphql/checklists/code-review",
+      "sourcePath": "content/cookbook/graphql/checklists/code-review.md",
+      "title": "GraphQL Code Review Checklist",
+      "description": "Review a GraphQL change for correctness, security, operability, and maintainability before merge."
+    },
+    {
+      "slug": "cookbook/graphql/checklists/deployment",
+      "sourcePath": "content/cookbook/graphql/checklists/deployment.md",
+      "title": "GraphQL Deployment Checklist",
+      "description": "Block unsafe promotion of a GraphQL artifact and retain evidence for rollback and audit."
+    },
+    {
+      "slug": "cookbook/graphql/debug-workflows/common-errors",
+      "sourcePath": "content/cookbook/graphql/debug-workflows/common-errors.md",
+      "title": "GraphQL Common Error Workflow",
+      "description": "Diagnose recurring GraphQL failures from evidence and restore service without destructive trial and error."
+    },
+    {
+      "slug": "cookbook/graphql/prompts/debug.prompt",
+      "sourcePath": "content/cookbook/graphql/prompts/debug.prompt.md",
+      "title": "GraphQL Debug Prompt",
+      "description": "Diagnose an observed GraphQL failure from runtime evidence and produce a reversible repair."
+    },
+    {
+      "slug": "cookbook/graphql/prompts/generate.prompt",
+      "sourcePath": "content/cookbook/graphql/prompts/generate.prompt.md",
+      "title": "GraphQL Generate Prompt",
+      "description": "Generate a production-ready schema, resolver, data loader, gateway policy, or GraphQL operation that conforms to repository and operational constraints."
+    },
+    {
+      "slug": "cookbook/graphql/prompts/review.prompt",
+      "sourcePath": "content/cookbook/graphql/prompts/review.prompt.md",
+      "title": "GraphQL Review Prompt",
+      "description": "Review a proposed schema, resolver, data loader, gateway policy, or GraphQL operation and return only evidence-backed, actionable findings."
+    },
+    {
+      "slug": "cookbook/graphql/README",
+      "sourcePath": "content/cookbook/graphql/README.md",
+      "title": "GraphQL Cookbook",
+      "description": "This cookbook turns GraphQL production guidance into reusable prompts, a procedural skill, diagnostics, architecture patterns, and release gates."
+    },
+    {
+      "slug": "cookbook/graphql/skills/graphql.skill",
+      "sourcePath": "content/cookbook/graphql/skills/graphql.skill.md",
+      "title": "GraphQL Production Skill",
+      "description": "Provide a deterministic procedure for generating, changing, diagnosing, or releasing a schema, resolver, data loader, gateway policy, or GraphQL operation with "
+    },
+    {
+      "slug": "cookbook/java/architecture/patterns",
+      "sourcePath": "content/cookbook/java/architecture/patterns.md",
+      "title": "Java Architecture Patterns",
+      "description": "Define the default production architecture for a Java workload and the boundaries an AI-generated change must preserve."
+    },
+    {
+      "slug": "cookbook/java/checklists/code-review",
+      "sourcePath": "content/cookbook/java/checklists/code-review.md",
+      "title": "Java Code Review Checklist",
+      "description": "Review a Java change for correctness, security, operability, and maintainability before merge."
+    },
+    {
+      "slug": "cookbook/java/checklists/deployment",
+      "sourcePath": "content/cookbook/java/checklists/deployment.md",
+      "title": "Java Deployment Checklist",
+      "description": "Block unsafe promotion of a Java artifact and retain evidence for rollback and audit."
+    },
+    {
+      "slug": "cookbook/java/debug-workflows/common-errors",
+      "sourcePath": "content/cookbook/java/debug-workflows/common-errors.md",
+      "title": "Java Common Error Workflow",
+      "description": "Diagnose recurring Java failures from evidence and restore service without destructive trial and error."
+    },
+    {
+      "slug": "cookbook/java/prompts/debug.prompt",
+      "sourcePath": "content/cookbook/java/prompts/debug.prompt.md",
+      "title": "Java Debug Prompt",
+      "description": "Diagnose an observed Java failure from runtime evidence and produce a reversible repair."
+    },
+    {
+      "slug": "cookbook/java/prompts/generate.prompt",
+      "sourcePath": "content/cookbook/java/prompts/generate.prompt.md",
+      "title": "Java Generate Prompt",
+      "description": "Generate a production-ready Spring service, controller, repository, or domain module that conforms to repository and operational constraints."
+    },
+    {
+      "slug": "cookbook/java/prompts/review.prompt",
+      "sourcePath": "content/cookbook/java/prompts/review.prompt.md",
+      "title": "Java Review Prompt",
+      "description": "Review a proposed Spring service, controller, repository, or domain module and return only evidence-backed, actionable findings."
+    },
+    {
+      "slug": "cookbook/java/README",
+      "sourcePath": "content/cookbook/java/README.md",
+      "title": "Java Cookbook",
+      "description": "This cookbook turns Java production guidance into reusable prompts, a procedural skill, diagnostics, architecture patterns, and release gates."
+    },
+    {
+      "slug": "cookbook/java/skills/java.skill",
+      "sourcePath": "content/cookbook/java/skills/java.skill.md",
+      "title": "Java Production Skill",
+      "description": "Provide a deterministic procedure for generating, changing, diagnosing, or releasing a Spring service, controller, repository, or domain module with AI assistan"
+    },
+    {
+      "slug": "cookbook/kubernetes/architecture/patterns",
+      "sourcePath": "content/cookbook/kubernetes/architecture/patterns.md",
+      "title": "Kubernetes Architecture Patterns",
+      "description": "Define the default production architecture for a Kubernetes workload and the boundaries an AI-generated change must preserve."
+    },
+    {
+      "slug": "cookbook/kubernetes/checklists/code-review",
+      "sourcePath": "content/cookbook/kubernetes/checklists/code-review.md",
+      "title": "Kubernetes Code Review Checklist",
+      "description": "Review a Kubernetes change for correctness, security, operability, and maintainability before merge."
+    },
+    {
+      "slug": "cookbook/kubernetes/checklists/deployment",
+      "sourcePath": "content/cookbook/kubernetes/checklists/deployment.md",
+      "title": "Kubernetes Deployment Checklist",
+      "description": "Block unsafe promotion of a Kubernetes artifact and retain evidence for rollback and audit."
+    },
+    {
+      "slug": "cookbook/kubernetes/debug-workflows/common-errors",
+      "sourcePath": "content/cookbook/kubernetes/debug-workflows/common-errors.md",
+      "title": "Kubernetes Common Error Workflow",
+      "description": "Diagnose recurring Kubernetes failures from evidence and restore service without destructive trial and error."
+    },
+    {
+      "slug": "cookbook/kubernetes/prompts/debug.prompt",
+      "sourcePath": "content/cookbook/kubernetes/prompts/debug.prompt.md",
+      "title": "Kubernetes Debug Prompt",
+      "description": "Diagnose an observed Kubernetes failure from runtime evidence and produce a reversible repair."
+    },
+    {
+      "slug": "cookbook/kubernetes/prompts/generate.prompt",
+      "sourcePath": "content/cookbook/kubernetes/prompts/generate.prompt.md",
+      "title": "Kubernetes Generate Prompt",
+      "description": "Generate a production-ready Kubernetes workload, controller manifest, Helm/Kustomize release, or runbook that conforms to repository and operational constraints"
+    },
+    {
+      "slug": "cookbook/kubernetes/prompts/review.prompt",
+      "sourcePath": "content/cookbook/kubernetes/prompts/review.prompt.md",
+      "title": "Kubernetes Review Prompt",
+      "description": "Review a proposed Kubernetes workload, controller manifest, Helm/Kustomize release, or runbook and return only evidence-backed, actionable findings."
+    },
+    {
+      "slug": "cookbook/kubernetes/README",
+      "sourcePath": "content/cookbook/kubernetes/README.md",
+      "title": "Kubernetes Cookbook",
+      "description": "This cookbook turns Kubernetes production guidance into reusable prompts, a procedural skill, diagnostics, architecture patterns, and release gates."
+    },
+    {
+      "slug": "cookbook/kubernetes/skills/kubernetes.skill",
+      "sourcePath": "content/cookbook/kubernetes/skills/kubernetes.skill.md",
+      "title": "Kubernetes Production Skill",
+      "description": "Provide a deterministic procedure for generating, changing, diagnosing, or releasing a Kubernetes workload, controller manifest, Helm/Kustomize release, or runb"
+    },
+    {
+      "slug": "cookbook/microfrontends/architecture/patterns",
+      "sourcePath": "content/cookbook/microfrontends/architecture/patterns.md",
+      "title": "Microfrontends Architecture Patterns",
+      "description": "Define the default production architecture for a Microfrontends workload and the boundaries an AI-generated change must preserve."
+    },
+    {
+      "slug": "cookbook/microfrontends/checklists/code-review",
+      "sourcePath": "content/cookbook/microfrontends/checklists/code-review.md",
+      "title": "Microfrontends Code Review Checklist",
+      "description": "Review a Microfrontends change for correctness, security, operability, and maintainability before merge."
+    },
+    {
+      "slug": "cookbook/microfrontends/checklists/deployment",
+      "sourcePath": "content/cookbook/microfrontends/checklists/deployment.md",
+      "title": "Microfrontends Deployment Checklist",
+      "description": "Block unsafe promotion of a Microfrontends artifact and retain evidence for rollback and audit."
+    },
+    {
+      "slug": "cookbook/microfrontends/debug-workflows/common-errors",
+      "sourcePath": "content/cookbook/microfrontends/debug-workflows/common-errors.md",
+      "title": "Microfrontends Common Error Workflow",
+      "description": "Diagnose recurring Microfrontends failures from evidence and restore service without destructive trial and error."
+    },
+    {
+      "slug": "cookbook/microfrontends/prompts/debug.prompt",
+      "sourcePath": "content/cookbook/microfrontends/prompts/debug.prompt.md",
+      "title": "Microfrontends Debug Prompt",
+      "description": "Diagnose an observed Microfrontends failure from runtime evidence and produce a reversible repair."
+    },
+    {
+      "slug": "cookbook/microfrontends/prompts/generate.prompt",
+      "sourcePath": "content/cookbook/microfrontends/prompts/generate.prompt.md",
+      "title": "Microfrontends Generate Prompt",
+      "description": "Generate a production-ready frontend slice, shell contract, federated module, routing boundary, or release runbook that conforms to repository and operational c"
+    },
+    {
+      "slug": "cookbook/microfrontends/prompts/review.prompt",
+      "sourcePath": "content/cookbook/microfrontends/prompts/review.prompt.md",
+      "title": "Microfrontends Review Prompt",
+      "description": "Review a proposed frontend slice, shell contract, federated module, routing boundary, or release runbook and return only evidence-backed, actionable findings."
+    },
+    {
+      "slug": "cookbook/microfrontends/README",
+      "sourcePath": "content/cookbook/microfrontends/README.md",
+      "title": "Microfrontends Cookbook",
+      "description": "This cookbook turns Microfrontends production guidance into reusable prompts, a procedural skill, diagnostics, architecture patterns, and release gates."
+    },
+    {
+      "slug": "cookbook/microfrontends/skills/microfrontends.skill",
+      "sourcePath": "content/cookbook/microfrontends/skills/microfrontends.skill.md",
+      "title": "Microfrontends Production Skill",
+      "description": "Provide a deterministic procedure for generating, changing, diagnosing, or releasing a frontend slice, shell contract, federated module, routing boundary, or re"
+    },
+    {
+      "slug": "cookbook/mongo/architecture/patterns",
+      "sourcePath": "content/cookbook/mongo/architecture/patterns.md",
+      "title": "MongoDB Architecture Patterns",
+      "description": "Define the default production architecture for a MongoDB workload and the boundaries an AI-generated change must preserve."
+    },
+    {
+      "slug": "cookbook/mongo/checklists/code-review",
+      "sourcePath": "content/cookbook/mongo/checklists/code-review.md",
+      "title": "MongoDB Code Review Checklist",
+      "description": "Review a MongoDB change for correctness, security, operability, and maintainability before merge."
+    },
+    {
+      "slug": "cookbook/mongo/checklists/deployment",
+      "sourcePath": "content/cookbook/mongo/checklists/deployment.md",
+      "title": "MongoDB Deployment Checklist",
+      "description": "Block unsafe promotion of a MongoDB artifact and retain evidence for rollback and audit."
+    },
+    {
+      "slug": "cookbook/mongo/debug-workflows/common-errors",
+      "sourcePath": "content/cookbook/mongo/debug-workflows/common-errors.md",
+      "title": "MongoDB Common Error Workflow",
+      "description": "Diagnose recurring MongoDB failures from evidence and restore service without destructive trial and error."
+    },
+    {
+      "slug": "cookbook/mongo/prompts/debug.prompt",
+      "sourcePath": "content/cookbook/mongo/prompts/debug.prompt.md",
+      "title": "MongoDB Debug Prompt",
+      "description": "Diagnose an observed MongoDB failure from runtime evidence and produce a reversible repair."
+    },
+    {
+      "slug": "cookbook/mongo/prompts/generate.prompt",
+      "sourcePath": "content/cookbook/mongo/prompts/generate.prompt.md",
+      "title": "MongoDB Generate Prompt",
+      "description": "Generate a production-ready collection schema, query, aggregation, index, migration, or MongoDB runbook that conforms to repository and operational constraints."
+    },
+    {
+      "slug": "cookbook/mongo/prompts/review.prompt",
+      "sourcePath": "content/cookbook/mongo/prompts/review.prompt.md",
+      "title": "MongoDB Review Prompt",
+      "description": "Review a proposed collection schema, query, aggregation, index, migration, or MongoDB runbook and return only evidence-backed, actionable findings."
+    },
+    {
+      "slug": "cookbook/mongo/README",
+      "sourcePath": "content/cookbook/mongo/README.md",
+      "title": "MongoDB Cookbook",
+      "description": "This cookbook turns MongoDB production guidance into reusable prompts, a procedural skill, diagnostics, architecture patterns, and release gates."
+    },
+    {
+      "slug": "cookbook/mongo/skills/mongo.skill",
+      "sourcePath": "content/cookbook/mongo/skills/mongo.skill.md",
+      "title": "MongoDB Production Skill",
+      "description": "Provide a deterministic procedure for generating, changing, diagnosing, or releasing a collection schema, query, aggregation, index, migration, or MongoDB runbo"
+    },
+    {
+      "slug": "cookbook/nextjs/architecture/patterns",
+      "sourcePath": "content/cookbook/nextjs/architecture/patterns.md",
+      "title": "Next.js Architecture Patterns",
+      "description": "Define the default production architecture for a Next.js workload and the boundaries an AI-generated change must preserve."
+    },
+    {
+      "slug": "cookbook/nextjs/checklists/code-review",
+      "sourcePath": "content/cookbook/nextjs/checklists/code-review.md",
+      "title": "Next.js Code Review Checklist",
+      "description": "Review a Next.js change for correctness, security, operability, and maintainability before merge."
+    },
+    {
+      "slug": "cookbook/nextjs/checklists/deployment",
+      "sourcePath": "content/cookbook/nextjs/checklists/deployment.md",
+      "title": "Next.js Deployment Checklist",
+      "description": "Block unsafe promotion of a Next.js artifact and retain evidence for rollback and audit."
+    },
+    {
+      "slug": "cookbook/nextjs/debug-workflows/common-errors",
+      "sourcePath": "content/cookbook/nextjs/debug-workflows/common-errors.md",
+      "title": "Next.js Common Error Workflow",
+      "description": "Diagnose recurring Next.js failures from evidence and restore service without destructive trial and error."
+    },
+    {
+      "slug": "cookbook/nextjs/prompts/debug.prompt",
+      "sourcePath": "content/cookbook/nextjs/prompts/debug.prompt.md",
+      "title": "Next.js Debug Prompt",
+      "description": "Diagnose an observed Next.js failure from runtime evidence and produce a reversible repair."
+    },
+    {
+      "slug": "cookbook/nextjs/prompts/generate.prompt",
+      "sourcePath": "content/cookbook/nextjs/prompts/generate.prompt.md",
+      "title": "Next.js Generate Prompt",
+      "description": "Generate a production-ready route, layout, Server Component, or Route Handler that conforms to repository and operational constraints."
+    },
+    {
+      "slug": "cookbook/nextjs/prompts/review.prompt",
+      "sourcePath": "content/cookbook/nextjs/prompts/review.prompt.md",
+      "title": "Next.js Review Prompt",
+      "description": "Review a proposed route, layout, Server Component, or Route Handler and return only evidence-backed, actionable findings."
+    },
+    {
+      "slug": "cookbook/nextjs/README",
+      "sourcePath": "content/cookbook/nextjs/README.md",
+      "title": "Next.js Cookbook",
+      "description": "This cookbook turns Next.js production guidance into reusable prompts, a procedural skill, diagnostics, architecture patterns, and release gates."
+    },
+    {
+      "slug": "cookbook/nextjs/skills/nextjs.skill",
+      "sourcePath": "content/cookbook/nextjs/skills/nextjs.skill.md",
+      "title": "Next.js Production Skill",
+      "description": "Provide a deterministic procedure for generating, changing, diagnosing, or releasing a route, layout, Server Component, or Route Handler with AI assistance."
+    },
+    {
+      "slug": "cookbook/node/architecture/patterns",
+      "sourcePath": "content/cookbook/node/architecture/patterns.md",
+      "title": "Node.js Architecture Patterns",
+      "description": "Define the default production architecture for a Node.js workload and the boundaries an AI-generated change must preserve."
+    },
+    {
+      "slug": "cookbook/node/checklists/code-review",
+      "sourcePath": "content/cookbook/node/checklists/code-review.md",
+      "title": "Node.js Code Review Checklist",
+      "description": "Review a Node.js change for correctness, security, operability, and maintainability before merge."
+    },
+    {
+      "slug": "cookbook/node/checklists/deployment",
+      "sourcePath": "content/cookbook/node/checklists/deployment.md",
+      "title": "Node.js Deployment Checklist",
+      "description": "Block unsafe promotion of a Node.js artifact and retain evidence for rollback and audit."
+    },
+    {
+      "slug": "cookbook/node/debug-workflows/common-errors",
+      "sourcePath": "content/cookbook/node/debug-workflows/common-errors.md",
+      "title": "Node.js Common Error Workflow",
+      "description": "Diagnose recurring Node.js failures from evidence and restore service without destructive trial and error."
+    },
+    {
+      "slug": "cookbook/node/prompts/debug.prompt",
+      "sourcePath": "content/cookbook/node/prompts/debug.prompt.md",
+      "title": "Node.js Debug Prompt",
+      "description": "Diagnose an observed Node.js failure from runtime evidence and produce a reversible repair."
+    },
+    {
+      "slug": "cookbook/node/prompts/generate.prompt",
+      "sourcePath": "content/cookbook/node/prompts/generate.prompt.md",
+      "title": "Node.js Generate Prompt",
+      "description": "Generate a production-ready service, API handler, worker, or library module that conforms to repository and operational constraints."
+    },
+    {
+      "slug": "cookbook/node/prompts/review.prompt",
+      "sourcePath": "content/cookbook/node/prompts/review.prompt.md",
+      "title": "Node.js Review Prompt",
+      "description": "Review a proposed service, API handler, worker, or library module and return only evidence-backed, actionable findings."
+    },
+    {
+      "slug": "cookbook/node/README",
+      "sourcePath": "content/cookbook/node/README.md",
+      "title": "Node.js Cookbook",
+      "description": "This cookbook turns Node.js production guidance into reusable prompts, a procedural skill, diagnostics, architecture patterns, and release gates."
+    },
+    {
+      "slug": "cookbook/node/skills/node.skill",
+      "sourcePath": "content/cookbook/node/skills/node.skill.md",
+      "title": "Node.js Production Skill",
+      "description": "Provide a deterministic procedure for generating, changing, diagnosing, or releasing a service, API handler, worker, or library module with AI assistance."
+    },
+    {
+      "slug": "cookbook/performance/architecture/patterns",
+      "sourcePath": "content/cookbook/performance/architecture/patterns.md",
+      "title": "Performance Engineering Architecture Patterns",
+      "description": "Define the default production architecture for a Performance Engineering workload and the boundaries an AI-generated change must preserve."
+    },
+    {
+      "slug": "cookbook/performance/checklists/code-review",
+      "sourcePath": "content/cookbook/performance/checklists/code-review.md",
+      "title": "Performance Engineering Code Review Checklist",
+      "description": "Review a Performance Engineering change for correctness, security, operability, and maintainability before merge."
+    },
+    {
+      "slug": "cookbook/performance/checklists/deployment",
+      "sourcePath": "content/cookbook/performance/checklists/deployment.md",
+      "title": "Performance Engineering Deployment Checklist",
+      "description": "Block unsafe promotion of a Performance Engineering artifact and retain evidence for rollback and audit."
+    },
+    {
+      "slug": "cookbook/performance/debug-workflows/common-errors",
+      "sourcePath": "content/cookbook/performance/debug-workflows/common-errors.md",
+      "title": "Performance Engineering Common Error Workflow",
+      "description": "Diagnose recurring Performance Engineering failures from evidence and restore service without destructive trial and error."
+    },
+    {
+      "slug": "cookbook/performance/prompts/debug.prompt",
+      "sourcePath": "content/cookbook/performance/prompts/debug.prompt.md",
+      "title": "Performance Engineering Debug Prompt",
+      "description": "Diagnose an observed Performance Engineering failure from runtime evidence and produce a reversible repair."
+    },
+    {
+      "slug": "cookbook/performance/prompts/generate.prompt",
+      "sourcePath": "content/cookbook/performance/prompts/generate.prompt.md",
+      "title": "Performance Engineering Generate Prompt",
+      "description": "Generate a production-ready performance investigation, benchmark, budget, capacity model, or regression gate that conforms to repository and operational constra"
+    },
+    {
+      "slug": "cookbook/performance/prompts/review.prompt",
+      "sourcePath": "content/cookbook/performance/prompts/review.prompt.md",
+      "title": "Performance Engineering Review Prompt",
+      "description": "Review a proposed performance investigation, benchmark, budget, capacity model, or regression gate and return only evidence-backed, actionable findings."
+    },
+    {
+      "slug": "cookbook/performance/README",
+      "sourcePath": "content/cookbook/performance/README.md",
+      "title": "Performance Engineering Cookbook",
+      "description": "This cookbook turns Performance Engineering production guidance into reusable prompts, a procedural skill, diagnostics, architecture patterns, and release gates"
+    },
+    {
+      "slug": "cookbook/performance/skills/performance.skill",
+      "sourcePath": "content/cookbook/performance/skills/performance.skill.md",
+      "title": "Performance Engineering Production Skill",
+      "description": "Provide a deterministic procedure for generating, changing, diagnosing, or releasing a performance investigation, benchmark, budget, capacity model, or regressi"
+    },
+    {
+      "slug": "cookbook/postgres/architecture/patterns",
+      "sourcePath": "content/cookbook/postgres/architecture/patterns.md",
+      "title": "PostgreSQL Architecture Patterns",
+      "description": "Define the default production architecture for a PostgreSQL workload and the boundaries an AI-generated change must preserve."
+    },
+    {
+      "slug": "cookbook/postgres/checklists/code-review",
+      "sourcePath": "content/cookbook/postgres/checklists/code-review.md",
+      "title": "PostgreSQL Code Review Checklist",
+      "description": "Review a PostgreSQL change for correctness, security, operability, and maintainability before merge."
+    },
+    {
+      "slug": "cookbook/postgres/checklists/deployment",
+      "sourcePath": "content/cookbook/postgres/checklists/deployment.md",
+      "title": "PostgreSQL Deployment Checklist",
+      "description": "Block unsafe promotion of a PostgreSQL artifact and retain evidence for rollback and audit."
+    },
+    {
+      "slug": "cookbook/postgres/debug-workflows/common-errors",
+      "sourcePath": "content/cookbook/postgres/debug-workflows/common-errors.md",
+      "title": "PostgreSQL Common Error Workflow",
+      "description": "Diagnose recurring PostgreSQL failures from evidence and restore service without destructive trial and error."
+    },
+    {
+      "slug": "cookbook/postgres/prompts/debug.prompt",
+      "sourcePath": "content/cookbook/postgres/prompts/debug.prompt.md",
+      "title": "PostgreSQL Debug Prompt",
+      "description": "Diagnose an observed PostgreSQL failure from runtime evidence and produce a reversible repair."
+    },
+    {
+      "slug": "cookbook/postgres/prompts/generate.prompt",
+      "sourcePath": "content/cookbook/postgres/prompts/generate.prompt.md",
+      "title": "PostgreSQL Generate Prompt",
+      "description": "Generate a production-ready schema migration, query, index, transaction, or database runbook that conforms to repository and operational constraints."
+    },
+    {
+      "slug": "cookbook/postgres/prompts/review.prompt",
+      "sourcePath": "content/cookbook/postgres/prompts/review.prompt.md",
+      "title": "PostgreSQL Review Prompt",
+      "description": "Review a proposed schema migration, query, index, transaction, or database runbook and return only evidence-backed, actionable findings."
+    },
+    {
+      "slug": "cookbook/postgres/README",
+      "sourcePath": "content/cookbook/postgres/README.md",
+      "title": "PostgreSQL Cookbook",
+      "description": "This cookbook turns PostgreSQL production guidance into reusable prompts, a procedural skill, diagnostics, architecture patterns, and release gates."
+    },
+    {
+      "slug": "cookbook/postgres/skills/postgres.skill",
+      "sourcePath": "content/cookbook/postgres/skills/postgres.skill.md",
+      "title": "PostgreSQL Production Skill",
+      "description": "Provide a deterministic procedure for generating, changing, diagnosing, or releasing a schema migration, query, index, transaction, or database runbook with AI "
+    },
+    {
+      "slug": "cookbook/python/architecture/patterns",
+      "sourcePath": "content/cookbook/python/architecture/patterns.md",
+      "title": "Python Architecture Patterns",
+      "description": "Define the default production architecture for a Python workload and the boundaries an AI-generated change must preserve."
+    },
+    {
+      "slug": "cookbook/python/checklists/code-review",
+      "sourcePath": "content/cookbook/python/checklists/code-review.md",
+      "title": "Python Code Review Checklist",
+      "description": "Review a Python change for correctness, security, operability, and maintainability before merge."
+    },
+    {
+      "slug": "cookbook/python/checklists/deployment",
+      "sourcePath": "content/cookbook/python/checklists/deployment.md",
+      "title": "Python Deployment Checklist",
+      "description": "Block unsafe promotion of a Python artifact and retain evidence for rollback and audit."
+    },
+    {
+      "slug": "cookbook/python/debug-workflows/common-errors",
+      "sourcePath": "content/cookbook/python/debug-workflows/common-errors.md",
+      "title": "Python Common Error Workflow",
+      "description": "Diagnose recurring Python failures from evidence and restore service without destructive trial and error."
+    },
+    {
+      "slug": "cookbook/python/prompts/debug.prompt",
+      "sourcePath": "content/cookbook/python/prompts/debug.prompt.md",
+      "title": "Python Debug Prompt",
+      "description": "Diagnose an observed Python failure from runtime evidence and produce a reversible repair."
+    },
+    {
+      "slug": "cookbook/python/prompts/generate.prompt",
+      "sourcePath": "content/cookbook/python/prompts/generate.prompt.md",
+      "title": "Python Generate Prompt",
+      "description": "Generate a production-ready package, service endpoint, task, or library function that conforms to repository and operational constraints."
+    },
+    {
+      "slug": "cookbook/python/prompts/review.prompt",
+      "sourcePath": "content/cookbook/python/prompts/review.prompt.md",
+      "title": "Python Review Prompt",
+      "description": "Review a proposed package, service endpoint, task, or library function and return only evidence-backed, actionable findings."
+    },
+    {
+      "slug": "cookbook/python/README",
+      "sourcePath": "content/cookbook/python/README.md",
+      "title": "Python Cookbook",
+      "description": "This cookbook turns Python production guidance into reusable prompts, a procedural skill, diagnostics, architecture patterns, and release gates."
+    },
+    {
+      "slug": "cookbook/python/skills/python.skill",
+      "sourcePath": "content/cookbook/python/skills/python.skill.md",
+      "title": "Python Production Skill",
+      "description": "Provide a deterministic procedure for generating, changing, diagnosing, or releasing a package, service endpoint, task, or library function with AI assistance."
+    },
+    {
+      "slug": "cookbook/react/architecture/patterns",
+      "sourcePath": "content/cookbook/react/architecture/patterns.md",
+      "title": "React Architecture Patterns",
+      "description": "Define the default production architecture for a React workload and the boundaries an AI-generated change must preserve."
+    },
+    {
+      "slug": "cookbook/react/checklists/code-review",
+      "sourcePath": "content/cookbook/react/checklists/code-review.md",
+      "title": "React Code Review Checklist",
+      "description": "Review a React change for correctness, security, operability, and maintainability before merge."
+    },
+    {
+      "slug": "cookbook/react/checklists/deployment",
+      "sourcePath": "content/cookbook/react/checklists/deployment.md",
+      "title": "React Deployment Checklist",
+      "description": "Block unsafe promotion of a React artifact and retain evidence for rollback and audit."
+    },
+    {
+      "slug": "cookbook/react/debug-workflows/common-errors",
+      "sourcePath": "content/cookbook/react/debug-workflows/common-errors.md",
+      "title": "React Common Error Workflow",
+      "description": "Diagnose recurring React failures from evidence and restore service without destructive trial and error."
+    },
+    {
+      "slug": "cookbook/react/prompts/debug.prompt",
+      "sourcePath": "content/cookbook/react/prompts/debug.prompt.md",
+      "title": "React Debug Prompt",
+      "description": "Diagnose an observed React failure from runtime evidence and produce a reversible repair."
+    },
+    {
+      "slug": "cookbook/react/prompts/generate.prompt",
+      "sourcePath": "content/cookbook/react/prompts/generate.prompt.md",
+      "title": "React Generate Prompt",
+      "description": "Generate a production-ready component or custom hook that conforms to repository and operational constraints."
+    },
+    {
+      "slug": "cookbook/react/prompts/review.prompt",
+      "sourcePath": "content/cookbook/react/prompts/review.prompt.md",
+      "title": "React Review Prompt",
+      "description": "Review a proposed component or custom hook and return only evidence-backed, actionable findings."
+    },
+    {
+      "slug": "cookbook/react/README",
+      "sourcePath": "content/cookbook/react/README.md",
+      "title": "React Cookbook",
+      "description": "This cookbook turns React production guidance into reusable prompts, a procedural skill, diagnostics, architecture patterns, and release gates."
+    },
+    {
+      "slug": "cookbook/react/skills/react.skill",
+      "sourcePath": "content/cookbook/react/skills/react.skill.md",
+      "title": "React Production Skill",
+      "description": "Provide a deterministic procedure for generating, changing, diagnosing, or releasing a component or custom hook with AI assistance."
+    },
+    {
+      "slug": "cookbook/react-native/architecture/patterns",
+      "sourcePath": "content/cookbook/react-native/architecture/patterns.md",
+      "title": "React Native Architecture Patterns",
+      "description": "Define the default production architecture for a React Native workload and the boundaries an AI-generated change must preserve."
+    },
+    {
+      "slug": "cookbook/react-native/checklists/code-review",
+      "sourcePath": "content/cookbook/react-native/checklists/code-review.md",
+      "title": "React Native Code Review Checklist",
+      "description": "Review a React Native change for correctness, security, operability, and maintainability before merge."
+    },
+    {
+      "slug": "cookbook/react-native/checklists/deployment",
+      "sourcePath": "content/cookbook/react-native/checklists/deployment.md",
+      "title": "React Native Deployment Checklist",
+      "description": "Block unsafe promotion of a React Native artifact and retain evidence for rollback and audit."
+    },
+    {
+      "slug": "cookbook/react-native/debug-workflows/common-errors",
+      "sourcePath": "content/cookbook/react-native/debug-workflows/common-errors.md",
+      "title": "React Native Common Error Workflow",
+      "description": "Diagnose recurring React Native failures from evidence and restore service without destructive trial and error."
+    },
+    {
+      "slug": "cookbook/react-native/prompts/debug.prompt",
+      "sourcePath": "content/cookbook/react-native/prompts/debug.prompt.md",
+      "title": "React Native Debug Prompt",
+      "description": "Diagnose an observed React Native failure from runtime evidence and produce a reversible repair."
+    },
+    {
+      "slug": "cookbook/react-native/prompts/generate.prompt",
+      "sourcePath": "content/cookbook/react-native/prompts/generate.prompt.md",
+      "title": "React Native Generate Prompt",
+      "description": "Generate a production-ready screen, native module boundary, navigation flow, list, or mobile release that conforms to repository and operational constraints."
+    },
+    {
+      "slug": "cookbook/react-native/prompts/review.prompt",
+      "sourcePath": "content/cookbook/react-native/prompts/review.prompt.md",
+      "title": "React Native Review Prompt",
+      "description": "Review a proposed screen, native module boundary, navigation flow, list, or mobile release and return only evidence-backed, actionable findings."
+    },
+    {
+      "slug": "cookbook/react-native/README",
+      "sourcePath": "content/cookbook/react-native/README.md",
+      "title": "React Native Cookbook",
+      "description": "This cookbook turns React Native production guidance into reusable prompts, a procedural skill, diagnostics, architecture patterns, and release gates."
+    },
+    {
+      "slug": "cookbook/react-native/skills/react-native.skill",
+      "sourcePath": "content/cookbook/react-native/skills/react-native.skill.md",
+      "title": "React Native Production Skill",
+      "description": "Provide a deterministic procedure for generating, changing, diagnosing, or releasing a screen, native module boundary, navigation flow, list, or mobile release "
+    },
+    {
+      "slug": "cookbook/README",
+      "sourcePath": "content/cookbook/README.md",
+      "title": "AI Cookbook",
+      "description": "The AI Cookbook provides 18 production playbooks that constrain AI-assisted engineering with technology-specific invariants, diagnostics, architecture, and rele"
+    },
+    {
+      "slug": "cookbook/redis/architecture/patterns",
+      "sourcePath": "content/cookbook/redis/architecture/patterns.md",
+      "title": "Redis Architecture Patterns",
+      "description": "Define the default production architecture for a Redis workload and the boundaries an AI-generated change must preserve."
+    },
+    {
+      "slug": "cookbook/redis/checklists/code-review",
+      "sourcePath": "content/cookbook/redis/checklists/code-review.md",
+      "title": "Redis Code Review Checklist",
+      "description": "Review a Redis change for correctness, security, operability, and maintainability before merge."
+    },
+    {
+      "slug": "cookbook/redis/checklists/deployment",
+      "sourcePath": "content/cookbook/redis/checklists/deployment.md",
+      "title": "Redis Deployment Checklist",
+      "description": "Block unsafe promotion of a Redis artifact and retain evidence for rollback and audit."
+    },
+    {
+      "slug": "cookbook/redis/debug-workflows/common-errors",
+      "sourcePath": "content/cookbook/redis/debug-workflows/common-errors.md",
+      "title": "Redis Common Error Workflow",
+      "description": "Diagnose recurring Redis failures from evidence and restore service without destructive trial and error."
+    },
+    {
+      "slug": "cookbook/redis/prompts/debug.prompt",
+      "sourcePath": "content/cookbook/redis/prompts/debug.prompt.md",
+      "title": "Redis Debug Prompt",
+      "description": "Diagnose an observed Redis failure from runtime evidence and produce a reversible repair."
+    },
+    {
+      "slug": "cookbook/redis/prompts/generate.prompt",
+      "sourcePath": "content/cookbook/redis/prompts/generate.prompt.md",
+      "title": "Redis Generate Prompt",
+      "description": "Generate a production-ready cache, rate limiter, session store, stream consumer, or Redis runbook that conforms to repository and operational constraints."
+    },
+    {
+      "slug": "cookbook/redis/prompts/review.prompt",
+      "sourcePath": "content/cookbook/redis/prompts/review.prompt.md",
+      "title": "Redis Review Prompt",
+      "description": "Review a proposed cache, rate limiter, session store, stream consumer, or Redis runbook and return only evidence-backed, actionable findings."
+    },
+    {
+      "slug": "cookbook/redis/README",
+      "sourcePath": "content/cookbook/redis/README.md",
+      "title": "Redis Cookbook",
+      "description": "This cookbook turns Redis production guidance into reusable prompts, a procedural skill, diagnostics, architecture patterns, and release gates."
+    },
+    {
+      "slug": "cookbook/redis/skills/redis.skill",
+      "sourcePath": "content/cookbook/redis/skills/redis.skill.md",
+      "title": "Redis Production Skill",
+      "description": "Provide a deterministic procedure for generating, changing, diagnosing, or releasing a cache, rate limiter, session store, stream consumer, or Redis runbook wit"
+    },
+    {
+      "slug": "mcps/browser-testing/chrome-devtools.mcp",
+      "sourcePath": "content/mcps/browser-testing/chrome-devtools.mcp.md",
+      "title": "Chrome DevTools MCP Integration",
+      "description": "Provide agent-safe access to isolated pages, DOM, console, network, performance traces. Use this integration only when those capabilities are required and a nam"
+    },
+    {
+      "slug": "mcps/browser-testing/playwright.mcp",
+      "sourcePath": "content/mcps/browser-testing/playwright.mcp.md",
+      "title": "Playwright MCP Integration",
+      "description": "Provide agent-safe access to isolated browser contexts, pages, accessibility snapshots, interactions, screenshots. Use this integration only when those capabili"
+    },
+    {
+      "slug": "mcps/communication/discord.mcp",
+      "sourcePath": "content/mcps/communication/discord.mcp.md",
+      "title": "Discord MCP Integration",
+      "description": "Provide agent-safe access to guilds, channels, threads, messages. Use this integration only when those capabilities are required and a named owner accepts the d"
+    },
+    {
+      "slug": "mcps/communication/microsoft-teams.mcp",
+      "sourcePath": "content/mcps/communication/microsoft-teams.mcp.md",
+      "title": "Microsoft Teams MCP Integration",
+      "description": "Provide agent-safe access to teams, channels, chats, messages, meetings. Use this integration only when those capabilities are required and a named owner accept"
+    },
+    {
+      "slug": "mcps/communication/slack.mcp",
+      "sourcePath": "content/mcps/communication/slack.mcp.md",
+      "title": "Slack MCP Integration",
+      "description": "Provide agent-safe access to workspaces, channels, threads, messages, search. Use this integration only when those capabilities are required and a named owner a"
+    },
+    {
+      "slug": "mcps/infrastructure-data/docker.mcp",
+      "sourcePath": "content/mcps/infrastructure-data/docker.mcp.md",
+      "title": "Docker MCP Integration",
+      "description": "Provide agent-safe access to approved images, containers, logs, and Compose projects. Use this integration only when those capabilities are required and a named"
+    },
+    {
+      "slug": "mcps/infrastructure-data/filesystem.mcp",
+      "sourcePath": "content/mcps/infrastructure-data/filesystem.mcp.md",
+      "title": "Filesystem MCP Integration",
+      "description": "Provide agent-safe access to approved roots, files, directories, metadata. Use this integration only when those capabilities are required and a named owner acce"
+    },
+    {
+      "slug": "mcps/infrastructure-data/kubernetes.mcp",
+      "sourcePath": "content/mcps/infrastructure-data/kubernetes.mcp.md",
+      "title": "Kubernetes MCP Integration",
+      "description": "Provide agent-safe access to clusters, namespaces, workloads, events, logs. Use this integration only when those capabilities are required and a named owner acc"
+    },
+    {
+      "slug": "mcps/infrastructure-data/postgresql.mcp",
+      "sourcePath": "content/mcps/infrastructure-data/postgresql.mcp.md",
+      "title": "PostgreSQL MCP Integration",
+      "description": "Provide agent-safe access to schemas, tables, query plans, read-only queries. Use this integration only when those capabilities are required and a named owner a"
+    },
+    {
+      "slug": "mcps/infrastructure-data/redis.mcp",
+      "sourcePath": "content/mcps/infrastructure-data/redis.mcp.md",
+      "title": "Redis MCP Integration",
+      "description": "Provide agent-safe access to keys, types, TTLs, memory diagnostics, bounded reads. Use this integration only when those capabilities are required and a named ow"
+    },
+    {
+      "slug": "mcps/infrastructure-data/supabase.mcp",
+      "sourcePath": "content/mcps/infrastructure-data/supabase.mcp.md",
+      "title": "Supabase MCP Integration",
+      "description": "Provide agent-safe access to projects, database metadata, migrations, logs, edge functions. Use this integration only when those capabilities are required and a"
+    },
+    {
+      "slug": "mcps/observability/datadog.mcp",
+      "sourcePath": "content/mcps/observability/datadog.mcp.md",
+      "title": "Datadog MCP Integration",
+      "description": "Provide agent-safe access to sites, metrics, logs, traces, monitors, incidents. Use this integration only when those capabilities are required and a named owner"
+    },
+    {
+      "slug": "mcps/observability/grafana.mcp",
+      "sourcePath": "content/mcps/observability/grafana.mcp.md",
+      "title": "Grafana MCP Integration",
+      "description": "Provide agent-safe access to instances, dashboards, data sources, alerts, incidents. Use this integration only when those capabilities are required and a named "
+    },
+    {
+      "slug": "mcps/observability/opentelemetry.mcp",
+      "sourcePath": "content/mcps/observability/opentelemetry.mcp.md",
+      "title": "OpenTelemetry MCP Integration",
+      "description": "Provide agent-safe access to traces, metrics, logs, service graphs. Use this integration only when those capabilities are required and a named owner accepts the"
+    },
+    {
+      "slug": "mcps/observability/sentry.mcp",
+      "sourcePath": "content/mcps/observability/sentry.mcp.md",
+      "title": "Sentry MCP Integration",
+      "description": "Provide agent-safe access to organizations, projects, issues, events, traces, releases. Use this integration only when those capabilities are required and a nam"
+    },
+    {
+      "slug": "mcps/project-management/asana.mcp",
+      "sourcePath": "content/mcps/project-management/asana.mcp.md",
+      "title": "Asana MCP Integration",
+      "description": "Provide agent-safe access to workspaces, projects, tasks, comments, users. Use this integration only when those capabilities are required and a named owner acce"
+    },
+    {
+      "slug": "mcps/project-management/jira.mcp",
+      "sourcePath": "content/mcps/project-management/jira.mcp.md",
+      "title": "Jira Cloud MCP Integration",
+      "description": "Provide agent-safe access to sites, projects, issues, comments, sprints. Use this integration only when those capabilities are required and a named owner accept"
+    },
+    {
+      "slug": "mcps/project-management/linear.mcp",
+      "sourcePath": "content/mcps/project-management/linear.mcp.md",
+      "title": "Linear MCP Integration",
+      "description": "Provide agent-safe access to workspaces, teams, issues, projects, cycles. Use this integration only when those capabilities are required and a named owner accep"
+    },
+    {
+      "slug": "mcps/project-management/monday.mcp",
+      "sourcePath": "content/mcps/project-management/monday.mcp.md",
+      "title": "monday.com MCP Integration",
+      "description": "Provide agent-safe access to accounts, workspaces, boards, items, updates. Use this integration only when those capabilities are required and a named owner acce"
+    },
+    {
+      "slug": "mcps/project-management/notion.mcp",
+      "sourcePath": "content/mcps/project-management/notion.mcp.md",
+      "title": "Notion MCP Integration",
+      "description": "Provide agent-safe access to pages, data sources, comments, search. Use this integration only when those capabilities are required and a named owner accepts the"
+    },
+    {
+      "slug": "mcps/README",
+      "sourcePath": "content/mcps/README.md",
+      "title": "MCP Integration Standard",
+      "description": "Define the production contract for connecting agents to external systems through Model Context Protocol (MCP). This inventory provides exactly 24 service-specif"
+    },
+    {
+      "slug": "mcps/version-control/azure-devops.mcp",
+      "sourcePath": "content/mcps/version-control/azure-devops.mcp.md",
+      "title": "Azure DevOps MCP Integration",
+      "description": "Provide agent-safe access to organizations, projects, work items, repositories, pipelines. Use this integration only when those capabilities are required and a "
+    },
+    {
+      "slug": "mcps/version-control/bitbucket-cloud.mcp",
+      "sourcePath": "content/mcps/version-control/bitbucket-cloud.mcp.md",
+      "title": "Bitbucket Cloud MCP Integration",
+      "description": "Provide agent-safe access to workspaces, repositories, pull requests, issues, pipelines. Use this integration only when those capabilities are required and a na"
+    },
+    {
+      "slug": "mcps/version-control/github.mcp",
+      "sourcePath": "content/mcps/version-control/github.mcp.md",
+      "title": "GitHub MCP Integration",
+      "description": "Connect agents to GitHub repositories, issues, pull requests, Actions, and security findings through GitHub's official MCP server. Use it for bounded software-d"
+    },
+    {
+      "slug": "mcps/version-control/gitlab.mcp",
+      "sourcePath": "content/mcps/version-control/gitlab.mcp.md",
+      "title": "GitLab MCP Integration",
+      "description": "Provide agent-safe access to projects, merge requests, issues, pipelines. Use this integration only when those capabilities are required and a named owner accep"
+    },
+    {
+      "slug": "patterns/architecture-pattern/agent",
+      "sourcePath": "content/patterns/architecture-pattern/agent.md",
+      "title": "Architecture: Agent Contract",
+      "description": "Bound the autonomous operator for choose and govern a system design against quantified quality-attribute scenarios."
+    },
+    {
+      "slug": "patterns/architecture-pattern/checklist",
+      "sourcePath": "content/patterns/architecture-pattern/checklist.md",
+      "title": "Architecture: Quality Gate",
+      "description": "Unchecked boxes, screenshots without source IDs, and self-attestation do not satisfy a gate. For the Architecture checklist contract, gate 1 is evidenced by \"al"
+    },
+    {
+      "slug": "patterns/architecture-pattern/context",
+      "sourcePath": "content/patterns/architecture-pattern/context.md",
+      "title": "Architecture: Context Contract",
+      "description": "Make the evidence needed to choose and govern a system design against quantified quality-attribute scenarios authoritative, bounded, and reproducible."
+    },
+    {
+      "slug": "patterns/architecture-pattern/enterprise-notes",
+      "sourcePath": "content/patterns/architecture-pattern/enterprise-notes.md",
+      "title": "Architecture: Enterprise Operations",
+      "description": "Scale architecture practice across regulated and multi-team environments without weakening its domain controls."
+    },
+    {
+      "slug": "patterns/architecture-pattern/examples/example",
+      "sourcePath": "content/patterns/architecture-pattern/examples/example.md",
+      "title": "Architecture: Worked Production Example",
+      "description": "Choose ingestion topology for 120k events/s. ADR-088 compares Kafka, Pub/Sub, and current queue against p99<2s, regional RTO 15m, and $38/TB. Prototype ARC-P7 f"
+    },
+    {
+      "slug": "patterns/architecture-pattern/failures",
+      "sourcePath": "content/patterns/architecture-pattern/failures.md",
+      "title": "Architecture: Failure Modes",
+      "description": "Detect domain-specific failure before it becomes false assurance. For the Architecture failures contract, gate 1 is evidenced by \"all priority scenarios have me"
+    },
+    {
+      "slug": "patterns/architecture-pattern/hooks",
+      "sourcePath": "content/patterns/architecture-pattern/hooks.md",
+      "title": "Architecture: Lifecycle Hooks",
+      "description": "Enforce architecture gates outside model discretion."
+    },
+    {
+      "slug": "patterns/architecture-pattern/problem",
+      "sourcePath": "content/patterns/architecture-pattern/problem.md",
+      "title": "Architecture: Problem",
+      "description": "The Architecture pattern exists because teams need to choose and govern a system design against quantified quality-attribute scenarios, yet commonly act before "
+    },
+    {
+      "slug": "patterns/architecture-pattern/prompt",
+      "sourcePath": "content/patterns/architecture-pattern/prompt.md",
+      "title": "Architecture: Production Prompt",
+      "description": "Constrain an AI operator to the Architecture method without requesting private reasoning."
+    },
+    {
+      "slug": "patterns/architecture-pattern/README",
+      "sourcePath": "content/patterns/architecture-pattern/README.md",
+      "title": "Architecture Pattern",
+      "description": "Choose and govern a system design against quantified quality-attribute scenarios."
+    },
+    {
+      "slug": "patterns/architecture-pattern/skills",
+      "sourcePath": "content/patterns/architecture-pattern/skills.md",
+      "title": "Architecture: Skills",
+      "description": "Define the procedures unique to competent architecture work."
+    },
+    {
+      "slug": "patterns/architecture-pattern/subagents",
+      "sourcePath": "content/patterns/architecture-pattern/subagents.md",
+      "title": "Architecture: Subagents",
+      "description": "Separate specialist collection, analysis, and challenge while the parent retains accountability. For the Architecture subagents contract, gate 1 is evidenced by"
+    },
+    {
+      "slug": "patterns/architecture-pattern/workflow",
+      "sourcePath": "content/patterns/architecture-pattern/workflow.md",
+      "title": "Architecture: Workflow",
+      "description": "Execute the domain method for choose and govern a system design against quantified quality-attribute scenarios."
+    },
+    {
+      "slug": "patterns/context-pattern/agent",
+      "sourcePath": "content/patterns/context-pattern/agent.md",
+      "title": "Context: Agent Contract",
+      "description": "Bound the autonomous operator for construct a minimal, provenance-bearing information package that preserves decision quality."
+    },
+    {
+      "slug": "patterns/context-pattern/checklist",
+      "sourcePath": "content/patterns/context-pattern/checklist.md",
+      "title": "Context: Quality Gate",
+      "description": "Unchecked boxes, screenshots without source IDs, and self-attestation do not satisfy a gate. For the Context checklist contract, gate 1 is evidenced by \"require"
+    },
+    {
+      "slug": "patterns/context-pattern/context",
+      "sourcePath": "content/patterns/context-pattern/context.md",
+      "title": "Context: Context Contract",
+      "description": "Make the evidence needed to construct a minimal, provenance-bearing information package that preserves decision quality authoritative, bounded, and reproducible"
+    },
+    {
+      "slug": "patterns/context-pattern/enterprise-notes",
+      "sourcePath": "content/patterns/context-pattern/enterprise-notes.md",
+      "title": "Context: Enterprise Operations",
+      "description": "Scale context practice across regulated and multi-team environments without weakening its domain controls."
+    },
+    {
+      "slug": "patterns/context-pattern/examples/example",
+      "sourcePath": "content/patterns/context-pattern/examples/example.md",
+      "title": "Context: Worked Production Example",
+      "description": "Prepare context for changing tax rounding. Manifest CTX-209 contains TAX-14 rev 7, money.ts@81b2aa, ADR-019, jurisdiction table 2026-07-01, and four anchored pr"
+    },
+    {
+      "slug": "patterns/context-pattern/failures",
+      "sourcePath": "content/patterns/context-pattern/failures.md",
+      "title": "Context: Failure Modes",
+      "description": "Detect domain-specific failure before it becomes false assurance. For the Context failures contract, gate 1 is evidenced by \"required-decision source recall = 1"
+    },
+    {
+      "slug": "patterns/context-pattern/hooks",
+      "sourcePath": "content/patterns/context-pattern/hooks.md",
+      "title": "Context: Lifecycle Hooks",
+      "description": "Enforce context gates outside model discretion."
+    },
+    {
+      "slug": "patterns/context-pattern/problem",
+      "sourcePath": "content/patterns/context-pattern/problem.md",
+      "title": "Context: Problem",
+      "description": "The Context pattern exists because teams need to construct a minimal, provenance-bearing information package that preserves decision quality, yet commonly act b"
+    },
+    {
+      "slug": "patterns/context-pattern/prompt",
+      "sourcePath": "content/patterns/context-pattern/prompt.md",
+      "title": "Context: Production Prompt",
+      "description": "Constrain an AI operator to the Context method without requesting private reasoning."
+    },
+    {
+      "slug": "patterns/context-pattern/README",
+      "sourcePath": "content/patterns/context-pattern/README.md",
+      "title": "Context Pattern",
+      "description": "Construct a minimal, provenance-bearing information package that preserves decision quality."
+    },
+    {
+      "slug": "patterns/context-pattern/skills",
+      "sourcePath": "content/patterns/context-pattern/skills.md",
+      "title": "Context: Skills",
+      "description": "Define the procedures unique to competent context work."
+    },
+    {
+      "slug": "patterns/context-pattern/subagents",
+      "sourcePath": "content/patterns/context-pattern/subagents.md",
+      "title": "Context: Subagents",
+      "description": "Separate specialist collection, analysis, and challenge while the parent retains accountability. For the Context subagents contract, gate 1 is evidenced by \"req"
+    },
+    {
+      "slug": "patterns/context-pattern/workflow",
+      "sourcePath": "content/patterns/context-pattern/workflow.md",
+      "title": "Context: Workflow",
+      "description": "Execute the domain method for construct a minimal, provenance-bearing information package that preserves decision quality."
+    },
+    {
+      "slug": "patterns/debug-pattern/agent",
+      "sourcePath": "content/patterns/debug-pattern/agent.md",
+      "title": "Debug: Agent Contract",
+      "description": "Bound the autonomous operator for isolate a software defect through reproducible observations and falsifiable experiments."
+    },
+    {
+      "slug": "patterns/debug-pattern/checklist",
+      "sourcePath": "content/patterns/debug-pattern/checklist.md",
+      "title": "Debug: Quality Gate",
+      "description": "Unchecked boxes, screenshots without source IDs, and self-attestation do not satisfy a gate. For the Debug checklist contract, gate 1 is evidenced by \"reproduct"
+    },
+    {
+      "slug": "patterns/debug-pattern/context",
+      "sourcePath": "content/patterns/debug-pattern/context.md",
+      "title": "Debug: Context Contract",
+      "description": "Make the evidence needed to isolate a software defect through reproducible observations and falsifiable experiments authoritative, bounded, and reproducible."
+    },
+    {
+      "slug": "patterns/debug-pattern/enterprise-notes",
+      "sourcePath": "content/patterns/debug-pattern/enterprise-notes.md",
+      "title": "Debug: Enterprise Operations",
+      "description": "Scale debug practice across regulated and multi-team environments without weakening its domain controls."
+    },
+    {
+      "slug": "patterns/debug-pattern/examples/example",
+      "sourcePath": "content/patterns/debug-pattern/examples/example.md",
+      "title": "Debug: Worked Production Example",
+      "description": "Orders intermittently stay PENDING. Repro DEBUG-551 uses event e-442 and clock skew +31s. Trace t-81 proves lease expiry compares database UTC with worker local"
+    },
+    {
+      "slug": "patterns/debug-pattern/failures",
+      "sourcePath": "content/patterns/debug-pattern/failures.md",
+      "title": "Debug: Failure Modes",
+      "description": "Detect domain-specific failure before it becomes false assurance. For the Debug failures contract, gate 1 is evidenced by \"reproduction rate before fix is recor"
+    },
+    {
+      "slug": "patterns/debug-pattern/hooks",
+      "sourcePath": "content/patterns/debug-pattern/hooks.md",
+      "title": "Debug: Lifecycle Hooks",
+      "description": "Enforce debug gates outside model discretion."
+    },
+    {
+      "slug": "patterns/debug-pattern/problem",
+      "sourcePath": "content/patterns/debug-pattern/problem.md",
+      "title": "Debug: Problem",
+      "description": "The Debug pattern exists because teams need to isolate a software defect through reproducible observations and falsifiable experiments, yet commonly act before "
+    },
+    {
+      "slug": "patterns/debug-pattern/prompt",
+      "sourcePath": "content/patterns/debug-pattern/prompt.md",
+      "title": "Debug: Production Prompt",
+      "description": "Constrain an AI operator to the Debug method without requesting private reasoning."
+    },
+    {
+      "slug": "patterns/debug-pattern/README",
+      "sourcePath": "content/patterns/debug-pattern/README.md",
+      "title": "Debug Pattern",
+      "description": "Isolate a software defect through reproducible observations and falsifiable experiments."
+    },
+    {
+      "slug": "patterns/debug-pattern/skills",
+      "sourcePath": "content/patterns/debug-pattern/skills.md",
+      "title": "Debug: Skills",
+      "description": "Define the procedures unique to competent debug work."
+    },
+    {
+      "slug": "patterns/debug-pattern/subagents",
+      "sourcePath": "content/patterns/debug-pattern/subagents.md",
+      "title": "Debug: Subagents",
+      "description": "Separate specialist collection, analysis, and challenge while the parent retains accountability. For the Debug subagents contract, gate 1 is evidenced by \"repro"
+    },
+    {
+      "slug": "patterns/debug-pattern/workflow",
+      "sourcePath": "content/patterns/debug-pattern/workflow.md",
+      "title": "Debug: Workflow",
+      "description": "Execute the domain method for isolate a software defect through reproducible observations and falsifiable experiments."
+    },
+    {
+      "slug": "patterns/enterprise-pattern/agent",
+      "sourcePath": "content/patterns/enterprise-pattern/agent.md",
+      "title": "Enterprise: Agent Contract",
+      "description": "Bound the autonomous operator for operate AI capabilities with enforceable governance across tenants, jurisdictions, and risk tiers."
+    },
+    {
+      "slug": "patterns/enterprise-pattern/checklist",
+      "sourcePath": "content/patterns/enterprise-pattern/checklist.md",
+      "title": "Enterprise: Quality Gate",
+      "description": "Unchecked boxes, screenshots without source IDs, and self-attestation do not satisfy a gate. For the Enterprise checklist contract, gate 1 is evidenced by \"inve"
+    },
+    {
+      "slug": "patterns/enterprise-pattern/context",
+      "sourcePath": "content/patterns/enterprise-pattern/context.md",
+      "title": "Enterprise: Context Contract",
+      "description": "Make the evidence needed to operate AI capabilities with enforceable governance across tenants, jurisdictions, and risk tiers authoritative, bounded, and reprod"
+    },
+    {
+      "slug": "patterns/enterprise-pattern/enterprise-notes",
+      "sourcePath": "content/patterns/enterprise-pattern/enterprise-notes.md",
+      "title": "Enterprise: Enterprise Operations",
+      "description": "Scale enterprise practice across regulated and multi-team environments without weakening its domain controls."
+    },
+    {
+      "slug": "patterns/enterprise-pattern/examples/example",
+      "sourcePath": "content/patterns/enterprise-pattern/examples/example.md",
+      "title": "Enterprise: Worked Production Example",
+      "description": "Approve support summarization for EU customers. AIR-61 uses model bundle mb-4.2, DPIA-31, red-team RT-204, residency route eu-west, retention 30 days, and human"
+    },
+    {
+      "slug": "patterns/enterprise-pattern/failures",
+      "sourcePath": "content/patterns/enterprise-pattern/failures.md",
+      "title": "Enterprise: Failure Modes",
+      "description": "Detect domain-specific failure before it becomes false assurance. For the Enterprise failures contract, gate 1 is evidenced by \"inventory completeness = 100%\"; "
+    },
+    {
+      "slug": "patterns/enterprise-pattern/hooks",
+      "sourcePath": "content/patterns/enterprise-pattern/hooks.md",
+      "title": "Enterprise: Lifecycle Hooks",
+      "description": "Enforce enterprise gates outside model discretion."
+    },
+    {
+      "slug": "patterns/enterprise-pattern/problem",
+      "sourcePath": "content/patterns/enterprise-pattern/problem.md",
+      "title": "Enterprise: Problem",
+      "description": "The Enterprise pattern exists because teams need to operate AI capabilities with enforceable governance across tenants, jurisdictions, and risk tiers, yet commo"
+    },
+    {
+      "slug": "patterns/enterprise-pattern/prompt",
+      "sourcePath": "content/patterns/enterprise-pattern/prompt.md",
+      "title": "Enterprise: Production Prompt",
+      "description": "Constrain an AI operator to the Enterprise method without requesting private reasoning."
+    },
+    {
+      "slug": "patterns/enterprise-pattern/README",
+      "sourcePath": "content/patterns/enterprise-pattern/README.md",
+      "title": "Enterprise Pattern",
+      "description": "Operate AI capabilities with enforceable governance across tenants, jurisdictions, and risk tiers."
+    },
+    {
+      "slug": "patterns/enterprise-pattern/skills",
+      "sourcePath": "content/patterns/enterprise-pattern/skills.md",
+      "title": "Enterprise: Skills",
+      "description": "Define the procedures unique to competent enterprise work."
+    },
+    {
+      "slug": "patterns/enterprise-pattern/subagents",
+      "sourcePath": "content/patterns/enterprise-pattern/subagents.md",
+      "title": "Enterprise: Subagents",
+      "description": "Separate specialist collection, analysis, and challenge while the parent retains accountability. For the Enterprise subagents contract, gate 1 is evidenced by \""
+    },
+    {
+      "slug": "patterns/enterprise-pattern/workflow",
+      "sourcePath": "content/patterns/enterprise-pattern/workflow.md",
+      "title": "Enterprise: Workflow",
+      "description": "Execute the domain method for operate AI capabilities with enforceable governance across tenants, jurisdictions, and risk tiers."
+    },
+    {
+      "slug": "patterns/hotfix-pattern/agent",
+      "sourcePath": "content/patterns/hotfix-pattern/agent.md",
+      "title": "Hotfix: Agent Contract",
+      "description": "Bound the autonomous operator for contain an active production defect with the smallest reversible intervention."
+    },
+    {
+      "slug": "patterns/hotfix-pattern/checklist",
+      "sourcePath": "content/patterns/hotfix-pattern/checklist.md",
+      "title": "Hotfix: Quality Gate",
+      "description": "Unchecked boxes, screenshots without source IDs, and self-attestation do not satisfy a gate. For the Hotfix checklist contract, gate 1 is evidenced by \"time to "
+    },
+    {
+      "slug": "patterns/hotfix-pattern/context",
+      "sourcePath": "content/patterns/hotfix-pattern/context.md",
+      "title": "Hotfix: Context Contract",
+      "description": "Make the evidence needed to contain an active production defect with the smallest reversible intervention authoritative, bounded, and reproducible."
+    },
+    {
+      "slug": "patterns/hotfix-pattern/enterprise-notes",
+      "sourcePath": "content/patterns/hotfix-pattern/enterprise-notes.md",
+      "title": "Hotfix: Enterprise Operations",
+      "description": "Scale hotfix practice across regulated and multi-team environments without weakening its domain controls."
+    },
+    {
+      "slug": "patterns/hotfix-pattern/examples/example",
+      "sourcePath": "content/patterns/hotfix-pattern/examples/example.md",
+      "title": "Hotfix: Worked Production Example",
+      "description": "INC-884: OAuth refresh loop drives 38% login failures. Commander disables refresh-v3 for 90% traffic, patch HOT-884 pins issuer normalization in one file, test "
+    },
+    {
+      "slug": "patterns/hotfix-pattern/failures",
+      "sourcePath": "content/patterns/hotfix-pattern/failures.md",
+      "title": "Hotfix: Failure Modes",
+      "description": "Detect domain-specific failure before it becomes false assurance. For the Hotfix failures contract, gate 1 is evidenced by \"time to containment meets severity t"
+    },
+    {
+      "slug": "patterns/hotfix-pattern/hooks",
+      "sourcePath": "content/patterns/hotfix-pattern/hooks.md",
+      "title": "Hotfix: Lifecycle Hooks",
+      "description": "Enforce hotfix gates outside model discretion."
+    },
+    {
+      "slug": "patterns/hotfix-pattern/problem",
+      "sourcePath": "content/patterns/hotfix-pattern/problem.md",
+      "title": "Hotfix: Problem",
+      "description": "The Hotfix pattern exists because teams need to contain an active production defect with the smallest reversible intervention, yet commonly act before the domai"
+    },
+    {
+      "slug": "patterns/hotfix-pattern/prompt",
+      "sourcePath": "content/patterns/hotfix-pattern/prompt.md",
+      "title": "Hotfix: Production Prompt",
+      "description": "Constrain an AI operator to the Hotfix method without requesting private reasoning."
+    },
+    {
+      "slug": "patterns/hotfix-pattern/README",
+      "sourcePath": "content/patterns/hotfix-pattern/README.md",
+      "title": "Hotfix Pattern",
+      "description": "Contain an active production defect with the smallest reversible intervention."
+    },
+    {
+      "slug": "patterns/hotfix-pattern/skills",
+      "sourcePath": "content/patterns/hotfix-pattern/skills.md",
+      "title": "Hotfix: Skills",
+      "description": "Define the procedures unique to competent hotfix work."
+    },
+    {
+      "slug": "patterns/hotfix-pattern/subagents",
+      "sourcePath": "content/patterns/hotfix-pattern/subagents.md",
+      "title": "Hotfix: Subagents",
+      "description": "Separate specialist collection, analysis, and challenge while the parent retains accountability. For the Hotfix subagents contract, gate 1 is evidenced by \"time"
+    },
+    {
+      "slug": "patterns/hotfix-pattern/workflow",
+      "sourcePath": "content/patterns/hotfix-pattern/workflow.md",
+      "title": "Hotfix: Workflow",
+      "description": "Execute the domain method for contain an active production defect with the smallest reversible intervention."
+    },
+    {
+      "slug": "patterns/legacy-modernization-pattern/agent",
+      "sourcePath": "content/patterns/legacy-modernization-pattern/agent.md",
+      "title": "Legacy Modernization: Agent Contract",
+      "description": "Bound the autonomous operator for replace obsolete internals incrementally while preserving observed business behavior."
+    },
+    {
+      "slug": "patterns/legacy-modernization-pattern/checklist",
+      "sourcePath": "content/patterns/legacy-modernization-pattern/checklist.md",
+      "title": "Legacy Modernization: Quality Gate",
+      "description": "Unchecked boxes, screenshots without source IDs, and self-attestation do not satisfy a gate. For the Legacy Modernization checklist contract, gate 1 is evidence"
+    },
+    {
+      "slug": "patterns/legacy-modernization-pattern/context",
+      "sourcePath": "content/patterns/legacy-modernization-pattern/context.md",
+      "title": "Legacy Modernization: Context Contract",
+      "description": "Make the evidence needed to replace obsolete internals incrementally while preserving observed business behavior authoritative, bounded, and reproducible."
+    },
+    {
+      "slug": "patterns/legacy-modernization-pattern/enterprise-notes",
+      "sourcePath": "content/patterns/legacy-modernization-pattern/enterprise-notes.md",
+      "title": "Legacy Modernization: Enterprise Operations",
+      "description": "Scale legacy modernization practice across regulated and multi-team environments without weakening its domain controls."
+    },
+    {
+      "slug": "patterns/legacy-modernization-pattern/examples/example",
+      "sourcePath": "content/patterns/legacy-modernization-pattern/examples/example.md",
+      "title": "Legacy Modernization: Worked Production Example",
+      "description": "Modernize COBOL credit-limit calculation. MOD-73 records 2,400 golden cases from sanitized production, exposes /limits/v2 behind route flag limit-v2, shadows fo"
+    },
+    {
+      "slug": "patterns/legacy-modernization-pattern/failures",
+      "sourcePath": "content/patterns/legacy-modernization-pattern/failures.md",
+      "title": "Legacy Modernization: Failure Modes",
+      "description": "Detect domain-specific failure before it becomes false assurance. For the Legacy Modernization failures contract, gate 1 is evidenced by \"characterized critical"
+    },
+    {
+      "slug": "patterns/legacy-modernization-pattern/hooks",
+      "sourcePath": "content/patterns/legacy-modernization-pattern/hooks.md",
+      "title": "Legacy Modernization: Lifecycle Hooks",
+      "description": "Enforce legacy modernization gates outside model discretion."
+    },
+    {
+      "slug": "patterns/legacy-modernization-pattern/problem",
+      "sourcePath": "content/patterns/legacy-modernization-pattern/problem.md",
+      "title": "Legacy Modernization: Problem",
+      "description": "The Legacy Modernization pattern exists because teams need to replace obsolete internals incrementally while preserving observed business behavior, yet commonly"
+    },
+    {
+      "slug": "patterns/legacy-modernization-pattern/prompt",
+      "sourcePath": "content/patterns/legacy-modernization-pattern/prompt.md",
+      "title": "Legacy Modernization: Production Prompt",
+      "description": "Constrain an AI operator to the Legacy Modernization method without requesting private reasoning."
+    },
+    {
+      "slug": "patterns/legacy-modernization-pattern/README",
+      "sourcePath": "content/patterns/legacy-modernization-pattern/README.md",
+      "title": "Legacy Modernization Pattern",
+      "description": "Replace obsolete internals incrementally while preserving observed business behavior."
+    },
+    {
+      "slug": "patterns/legacy-modernization-pattern/skills",
+      "sourcePath": "content/patterns/legacy-modernization-pattern/skills.md",
+      "title": "Legacy Modernization: Skills",
+      "description": "Define the procedures unique to competent legacy modernization work."
+    },
+    {
+      "slug": "patterns/legacy-modernization-pattern/subagents",
+      "sourcePath": "content/patterns/legacy-modernization-pattern/subagents.md",
+      "title": "Legacy Modernization: Subagents",
+      "description": "Separate specialist collection, analysis, and challenge while the parent retains accountability. For the Legacy Modernization subagents contract, gate 1 is evid"
+    },
+    {
+      "slug": "patterns/legacy-modernization-pattern/workflow",
+      "sourcePath": "content/patterns/legacy-modernization-pattern/workflow.md",
+      "title": "Legacy Modernization: Workflow",
+      "description": "Execute the domain method for replace obsolete internals incrementally while preserving observed business behavior."
+    },
+    {
+      "slug": "patterns/migration-pattern/agent",
+      "sourcePath": "content/patterns/migration-pattern/agent.md",
+      "title": "Migration: Agent Contract",
+      "description": "Bound the autonomous operator for transition data or services while preserving invariants and a tested return path."
+    },
+    {
+      "slug": "patterns/migration-pattern/checklist",
+      "sourcePath": "content/patterns/migration-pattern/checklist.md",
+      "title": "Migration: Quality Gate",
+      "description": "Unchecked boxes, screenshots without source IDs, and self-attestation do not satisfy a gate. For the Migration checklist contract, gate 1 is evidenced by \"recor"
+    },
+    {
+      "slug": "patterns/migration-pattern/context",
+      "sourcePath": "content/patterns/migration-pattern/context.md",
+      "title": "Migration: Context Contract",
+      "description": "Make the evidence needed to transition data or services while preserving invariants and a tested return path authoritative, bounded, and reproducible."
+    },
+    {
+      "slug": "patterns/migration-pattern/enterprise-notes",
+      "sourcePath": "content/patterns/migration-pattern/enterprise-notes.md",
+      "title": "Migration: Enterprise Operations",
+      "description": "Scale migration practice across regulated and multi-team environments without weakening its domain controls."
+    },
+    {
+      "slug": "patterns/migration-pattern/examples/example",
+      "sourcePath": "content/patterns/migration-pattern/examples/example.md",
+      "title": "Migration: Worked Production Example",
+      "description": "Move 48,219,771 ledger rows from PostgreSQL to Spanner. MIG-204 defines sum(amount) by currency and account as invariants; backfill checkpoint cp-188; comparato"
+    },
+    {
+      "slug": "patterns/migration-pattern/failures",
+      "sourcePath": "content/patterns/migration-pattern/failures.md",
+      "title": "Migration: Failure Modes",
+      "description": "Detect domain-specific failure before it becomes false assurance. For the Migration failures contract, gate 1 is evidenced by \"record and monetary reconciliatio"
+    },
+    {
+      "slug": "patterns/migration-pattern/hooks",
+      "sourcePath": "content/patterns/migration-pattern/hooks.md",
+      "title": "Migration: Lifecycle Hooks",
+      "description": "Enforce migration gates outside model discretion."
+    },
+    {
+      "slug": "patterns/migration-pattern/problem",
+      "sourcePath": "content/patterns/migration-pattern/problem.md",
+      "title": "Migration: Problem",
+      "description": "The Migration pattern exists because teams need to transition data or services while preserving invariants and a tested return path, yet commonly act before the"
+    },
+    {
+      "slug": "patterns/migration-pattern/prompt",
+      "sourcePath": "content/patterns/migration-pattern/prompt.md",
+      "title": "Migration: Production Prompt",
+      "description": "Constrain an AI operator to the Migration method without requesting private reasoning."
+    },
+    {
+      "slug": "patterns/migration-pattern/README",
+      "sourcePath": "content/patterns/migration-pattern/README.md",
+      "title": "Migration Pattern",
+      "description": "Transition data or services while preserving invariants and a tested return path."
+    },
+    {
+      "slug": "patterns/migration-pattern/skills",
+      "sourcePath": "content/patterns/migration-pattern/skills.md",
+      "title": "Migration: Skills",
+      "description": "Define the procedures unique to competent migration work."
+    },
+    {
+      "slug": "patterns/migration-pattern/subagents",
+      "sourcePath": "content/patterns/migration-pattern/subagents.md",
+      "title": "Migration: Subagents",
+      "description": "Separate specialist collection, analysis, and challenge while the parent retains accountability. For the Migration subagents contract, gate 1 is evidenced by \"r"
+    },
+    {
+      "slug": "patterns/migration-pattern/workflow",
+      "sourcePath": "content/patterns/migration-pattern/workflow.md",
+      "title": "Migration: Workflow",
+      "description": "Execute the domain method for transition data or services while preserving invariants and a tested return path."
+    },
+    {
+      "slug": "patterns/optimization-pattern/agent",
+      "sourcePath": "content/patterns/optimization-pattern/agent.md",
+      "title": "Optimization: Agent Contract",
+      "description": "Bound the autonomous operator for improve a profiled bottleneck while protecting correctness and downstream guardrails."
+    },
+    {
+      "slug": "patterns/optimization-pattern/checklist",
+      "sourcePath": "content/patterns/optimization-pattern/checklist.md",
+      "title": "Optimization: Quality Gate",
+      "description": "Unchecked boxes, screenshots without source IDs, and self-attestation do not satisfy a gate. For the Optimization checklist contract, gate 1 is evidenced by \"ap"
+    },
+    {
+      "slug": "patterns/optimization-pattern/context",
+      "sourcePath": "content/patterns/optimization-pattern/context.md",
+      "title": "Optimization: Context Contract",
+      "description": "Make the evidence needed to improve a profiled bottleneck while protecting correctness and downstream guardrails authoritative, bounded, and reproducible."
+    },
+    {
+      "slug": "patterns/optimization-pattern/enterprise-notes",
+      "sourcePath": "content/patterns/optimization-pattern/enterprise-notes.md",
+      "title": "Optimization: Enterprise Operations",
+      "description": "Scale optimization practice across regulated and multi-team environments without weakening its domain controls."
+    },
+    {
+      "slug": "patterns/optimization-pattern/examples/example",
+      "sourcePath": "content/patterns/optimization-pattern/examples/example.md",
+      "title": "Optimization: Worked Production Example",
+      "description": "Reduce catalog p99 from 840ms under 2k RPS. Flame graph PROF-118 assigns 61% CPU to JSON schema compilation. Revision opt-77 caches 500 bounded schemas; 30-run "
+    },
+    {
+      "slug": "patterns/optimization-pattern/failures",
+      "sourcePath": "content/patterns/optimization-pattern/failures.md",
+      "title": "Optimization: Failure Modes",
+      "description": "Detect domain-specific failure before it becomes false assurance. For the Optimization failures contract, gate 1 is evidenced by \"approved effect size reached w"
+    },
+    {
+      "slug": "patterns/optimization-pattern/hooks",
+      "sourcePath": "content/patterns/optimization-pattern/hooks.md",
+      "title": "Optimization: Lifecycle Hooks",
+      "description": "Enforce optimization gates outside model discretion."
+    },
+    {
+      "slug": "patterns/optimization-pattern/problem",
+      "sourcePath": "content/patterns/optimization-pattern/problem.md",
+      "title": "Optimization: Problem",
+      "description": "The Optimization pattern exists because teams need to improve a profiled bottleneck while protecting correctness and downstream guardrails, yet commonly act bef"
+    },
+    {
+      "slug": "patterns/optimization-pattern/prompt",
+      "sourcePath": "content/patterns/optimization-pattern/prompt.md",
+      "title": "Optimization: Production Prompt",
+      "description": "Constrain an AI operator to the Optimization method without requesting private reasoning."
+    },
+    {
+      "slug": "patterns/optimization-pattern/README",
+      "sourcePath": "content/patterns/optimization-pattern/README.md",
+      "title": "Optimization Pattern",
+      "description": "Improve a profiled bottleneck while protecting correctness and downstream guardrails."
+    },
+    {
+      "slug": "patterns/optimization-pattern/skills",
+      "sourcePath": "content/patterns/optimization-pattern/skills.md",
+      "title": "Optimization: Skills",
+      "description": "Define the procedures unique to competent optimization work."
+    },
+    {
+      "slug": "patterns/optimization-pattern/subagents",
+      "sourcePath": "content/patterns/optimization-pattern/subagents.md",
+      "title": "Optimization: Subagents",
+      "description": "Separate specialist collection, analysis, and challenge while the parent retains accountability. For the Optimization subagents contract, gate 1 is evidenced by"
+    },
+    {
+      "slug": "patterns/optimization-pattern/workflow",
+      "sourcePath": "content/patterns/optimization-pattern/workflow.md",
+      "title": "Optimization: Workflow",
+      "description": "Execute the domain method for improve a profiled bottleneck while protecting correctness and downstream guardrails."
+    },
+    {
+      "slug": "patterns/planner-pattern/agent",
+      "sourcePath": "content/patterns/planner-pattern/agent.md",
+      "title": "Planner: Agent Contract",
+      "description": "Bound the autonomous operator for turn ambiguous engineering work into a decision-complete execution contract."
+    },
+    {
+      "slug": "patterns/planner-pattern/checklist",
+      "sourcePath": "content/patterns/planner-pattern/checklist.md",
+      "title": "Planner: Quality Gate",
+      "description": "Unchecked boxes, screenshots without source IDs, and self-attestation do not satisfy a gate. For the Planner checklist contract, gate 1 is evidenced by \"decisio"
+    },
+    {
+      "slug": "patterns/planner-pattern/context",
+      "sourcePath": "content/patterns/planner-pattern/context.md",
+      "title": "Planner: Context Contract",
+      "description": "Make the evidence needed to turn ambiguous engineering work into a decision-complete execution contract authoritative, bounded, and reproducible."
+    },
+    {
+      "slug": "patterns/planner-pattern/enterprise-notes",
+      "sourcePath": "content/patterns/planner-pattern/enterprise-notes.md",
+      "title": "Planner: Enterprise Operations",
+      "description": "Scale planner practice across regulated and multi-team environments without weakening its domain controls."
+    },
+    {
+      "slug": "patterns/planner-pattern/examples/example",
+      "sourcePath": "content/patterns/planner-pattern/examples/example.md",
+      "title": "Planner: Worked Production Example",
+      "description": "Split invoice generation from a billing monolith. Artifacts: ADR-042, graph billing-dag.mmd, contracts/invoice-v2.yaml, plan PLAN-318. Sequence: shadow read, du"
+    },
+    {
+      "slug": "patterns/planner-pattern/failures",
+      "sourcePath": "content/patterns/planner-pattern/failures.md",
+      "title": "Planner: Failure Modes",
+      "description": "Detect domain-specific failure before it becomes false assurance. For the Planner failures contract, gate 1 is evidenced by \"decision completeness = 100%\"; fail"
+    },
+    {
+      "slug": "patterns/planner-pattern/hooks",
+      "sourcePath": "content/patterns/planner-pattern/hooks.md",
+      "title": "Planner: Lifecycle Hooks",
+      "description": "Enforce planner gates outside model discretion."
+    },
+    {
+      "slug": "patterns/planner-pattern/problem",
+      "sourcePath": "content/patterns/planner-pattern/problem.md",
+      "title": "Planner: Problem",
+      "description": "The Planner pattern exists because teams need to turn ambiguous engineering work into a decision-complete execution contract, yet commonly act before the domain"
+    },
+    {
+      "slug": "patterns/planner-pattern/prompt",
+      "sourcePath": "content/patterns/planner-pattern/prompt.md",
+      "title": "Planner: Production Prompt",
+      "description": "Constrain an AI operator to the Planner method without requesting private reasoning."
+    },
+    {
+      "slug": "patterns/planner-pattern/README",
+      "sourcePath": "content/patterns/planner-pattern/README.md",
+      "title": "Planner Pattern",
+      "description": "Turn ambiguous engineering work into a decision-complete execution contract."
+    },
+    {
+      "slug": "patterns/planner-pattern/skills",
+      "sourcePath": "content/patterns/planner-pattern/skills.md",
+      "title": "Planner: Skills",
+      "description": "Define the procedures unique to competent planner work."
+    },
+    {
+      "slug": "patterns/planner-pattern/subagents",
+      "sourcePath": "content/patterns/planner-pattern/subagents.md",
+      "title": "Planner: Subagents",
+      "description": "Separate specialist collection, analysis, and challenge while the parent retains accountability. For the Planner subagents contract, gate 1 is evidenced by \"dec"
+    },
+    {
+      "slug": "patterns/planner-pattern/workflow",
+      "sourcePath": "content/patterns/planner-pattern/workflow.md",
+      "title": "Planner: Workflow",
+      "description": "Execute the domain method for turn ambiguous engineering work into a decision-complete execution contract."
+    },
+    {
+      "slug": "patterns/README",
+      "sourcePath": "content/patterns/README.md",
+      "title": "OAIES Pattern Library",
+      "description": "Provide twelve distinct production methods for consequential AI-assisted engineering. The thirteen files in each pattern are operational specifications, not ren"
+    },
+    {
+      "slug": "patterns/release-pattern/agent",
+      "sourcePath": "content/patterns/release-pattern/agent.md",
+      "title": "Release: Agent Contract",
+      "description": "Bound the autonomous operator for promote a signed artifact through progressive exposure with objective abort criteria."
+    },
+    {
+      "slug": "patterns/release-pattern/checklist",
+      "sourcePath": "content/patterns/release-pattern/checklist.md",
+      "title": "Release: Quality Gate",
+      "description": "Unchecked boxes, screenshots without source IDs, and self-attestation do not satisfy a gate. For the Release checklist contract, gate 1 is evidenced by \"artifac"
+    },
+    {
+      "slug": "patterns/release-pattern/context",
+      "sourcePath": "content/patterns/release-pattern/context.md",
+      "title": "Release: Context Contract",
+      "description": "Make the evidence needed to promote a signed artifact through progressive exposure with objective abort criteria authoritative, bounded, and reproducible."
+    },
+    {
+      "slug": "patterns/release-pattern/enterprise-notes",
+      "sourcePath": "content/patterns/release-pattern/enterprise-notes.md",
+      "title": "Release: Enterprise Operations",
+      "description": "Scale release practice across regulated and multi-team environments without weakening its domain controls."
+    },
+    {
+      "slug": "patterns/release-pattern/examples/example",
+      "sourcePath": "content/patterns/release-pattern/examples/example.md",
+      "title": "Release: Worked Production Example",
+      "description": "Release checkout 2026.07.16+5 digest sha256:91ab. REL-712 includes SLSA provenance, SBOM-712, rollback drill rb-44 at 6m12s. Canary 1% for 30m then 10% for 60m;"
+    },
+    {
+      "slug": "patterns/release-pattern/failures",
+      "sourcePath": "content/patterns/release-pattern/failures.md",
+      "title": "Release: Failure Modes",
+      "description": "Detect domain-specific failure before it becomes false assurance. For the Release failures contract, gate 1 is evidenced by \"artifact-to-runtime digest match = "
+    },
+    {
+      "slug": "patterns/release-pattern/hooks",
+      "sourcePath": "content/patterns/release-pattern/hooks.md",
+      "title": "Release: Lifecycle Hooks",
+      "description": "Enforce release gates outside model discretion."
+    },
+    {
+      "slug": "patterns/release-pattern/problem",
+      "sourcePath": "content/patterns/release-pattern/problem.md",
+      "title": "Release: Problem",
+      "description": "The Release pattern exists because teams need to promote a signed artifact through progressive exposure with objective abort criteria, yet commonly act before t"
+    },
+    {
+      "slug": "patterns/release-pattern/prompt",
+      "sourcePath": "content/patterns/release-pattern/prompt.md",
+      "title": "Release: Production Prompt",
+      "description": "Constrain an AI operator to the Release method without requesting private reasoning."
+    },
+    {
+      "slug": "patterns/release-pattern/README",
+      "sourcePath": "content/patterns/release-pattern/README.md",
+      "title": "Release Pattern",
+      "description": "Promote a signed artifact through progressive exposure with objective abort criteria."
+    },
+    {
+      "slug": "patterns/release-pattern/skills",
+      "sourcePath": "content/patterns/release-pattern/skills.md",
+      "title": "Release: Skills",
+      "description": "Define the procedures unique to competent release work."
+    },
+    {
+      "slug": "patterns/release-pattern/subagents",
+      "sourcePath": "content/patterns/release-pattern/subagents.md",
+      "title": "Release: Subagents",
+      "description": "Separate specialist collection, analysis, and challenge while the parent retains accountability. For the Release subagents contract, gate 1 is evidenced by \"art"
+    },
+    {
+      "slug": "patterns/release-pattern/workflow",
+      "sourcePath": "content/patterns/release-pattern/workflow.md",
+      "title": "Release: Workflow",
+      "description": "Execute the domain method for promote a signed artifact through progressive exposure with objective abort criteria."
+    },
+    {
+      "slug": "patterns/reviewer-pattern/agent",
+      "sourcePath": "content/patterns/reviewer-pattern/agent.md",
+      "title": "Reviewer: Agent Contract",
+      "description": "Bound the autonomous operator for detect consequential defects with requirement-traceable, severity-calibrated findings."
+    },
+    {
+      "slug": "patterns/reviewer-pattern/checklist",
+      "sourcePath": "content/patterns/reviewer-pattern/checklist.md",
+      "title": "Reviewer: Quality Gate",
+      "description": "Unchecked boxes, screenshots without source IDs, and self-attestation do not satisfy a gate. For the Reviewer checklist contract, gate 1 is evidenced by \"100% f"
+    },
+    {
+      "slug": "patterns/reviewer-pattern/context",
+      "sourcePath": "content/patterns/reviewer-pattern/context.md",
+      "title": "Reviewer: Context Contract",
+      "description": "Make the evidence needed to detect consequential defects with requirement-traceable, severity-calibrated findings authoritative, bounded, and reproducible."
+    },
+    {
+      "slug": "patterns/reviewer-pattern/enterprise-notes",
+      "sourcePath": "content/patterns/reviewer-pattern/enterprise-notes.md",
+      "title": "Reviewer: Enterprise Operations",
+      "description": "Scale reviewer practice across regulated and multi-team environments without weakening its domain controls."
+    },
+    {
+      "slug": "patterns/reviewer-pattern/examples/example",
+      "sourcePath": "content/patterns/reviewer-pattern/examples/example.md",
+      "title": "Reviewer: Worked Production Example",
+      "description": "Review payment retry PR #184. Artifacts: commit 6ab91e2, REQ-PAY-77, failing test retryduplicatecharge.spec.ts, trace tr-992. Finding R-03 proves an idempotency"
+    },
+    {
+      "slug": "patterns/reviewer-pattern/failures",
+      "sourcePath": "content/patterns/reviewer-pattern/failures.md",
+      "title": "Reviewer: Failure Modes",
+      "description": "Detect domain-specific failure before it becomes false assurance. For the Reviewer failures contract, gate 1 is evidenced by \"100% findings include file/line an"
+    },
+    {
+      "slug": "patterns/reviewer-pattern/hooks",
+      "sourcePath": "content/patterns/reviewer-pattern/hooks.md",
+      "title": "Reviewer: Lifecycle Hooks",
+      "description": "Enforce reviewer gates outside model discretion."
+    },
+    {
+      "slug": "patterns/reviewer-pattern/problem",
+      "sourcePath": "content/patterns/reviewer-pattern/problem.md",
+      "title": "Reviewer: Problem",
+      "description": "The Reviewer pattern exists because teams need to detect consequential defects with requirement-traceable, severity-calibrated findings, yet commonly act before"
+    },
+    {
+      "slug": "patterns/reviewer-pattern/prompt",
+      "sourcePath": "content/patterns/reviewer-pattern/prompt.md",
+      "title": "Reviewer: Production Prompt",
+      "description": "Constrain an AI operator to the Reviewer method without requesting private reasoning."
+    },
+    {
+      "slug": "patterns/reviewer-pattern/README",
+      "sourcePath": "content/patterns/reviewer-pattern/README.md",
+      "title": "Reviewer Pattern",
+      "description": "Detect consequential defects with requirement-traceable, severity-calibrated findings."
+    },
+    {
+      "slug": "patterns/reviewer-pattern/skills",
+      "sourcePath": "content/patterns/reviewer-pattern/skills.md",
+      "title": "Reviewer: Skills",
+      "description": "Define the procedures unique to competent reviewer work."
+    },
+    {
+      "slug": "patterns/reviewer-pattern/subagents",
+      "sourcePath": "content/patterns/reviewer-pattern/subagents.md",
+      "title": "Reviewer: Subagents",
+      "description": "Separate specialist collection, analysis, and challenge while the parent retains accountability. For the Reviewer subagents contract, gate 1 is evidenced by \"10"
+    },
+    {
+      "slug": "patterns/reviewer-pattern/workflow",
+      "sourcePath": "content/patterns/reviewer-pattern/workflow.md",
+      "title": "Reviewer: Workflow",
+      "description": "Execute the domain method for detect consequential defects with requirement-traceable, severity-calibrated findings."
+    },
+    {
+      "slug": "patterns/root-cause-pattern/agent",
+      "sourcePath": "content/patterns/root-cause-pattern/agent.md",
+      "title": "Root Cause: Agent Contract",
+      "description": "Bound the autonomous operator for explain why an incident occurred and prioritize controls that prevent or limit recurrence."
+    },
+    {
+      "slug": "patterns/root-cause-pattern/checklist",
+      "sourcePath": "content/patterns/root-cause-pattern/checklist.md",
+      "title": "Root Cause: Quality Gate",
+      "description": "Unchecked boxes, screenshots without source IDs, and self-attestation do not satisfy a gate. For the Root Cause checklist contract, gate 1 is evidenced by \"100%"
+    },
+    {
+      "slug": "patterns/root-cause-pattern/context",
+      "sourcePath": "content/patterns/root-cause-pattern/context.md",
+      "title": "Root Cause: Context Contract",
+      "description": "Make the evidence needed to explain why an incident occurred and prioritize controls that prevent or limit recurrence authoritative, bounded, and reproducible."
+    },
+    {
+      "slug": "patterns/root-cause-pattern/enterprise-notes",
+      "sourcePath": "content/patterns/root-cause-pattern/enterprise-notes.md",
+      "title": "Root Cause: Enterprise Operations",
+      "description": "Scale root cause practice across regulated and multi-team environments without weakening its domain controls."
+    },
+    {
+      "slug": "patterns/root-cause-pattern/examples/example",
+      "sourcePath": "content/patterns/root-cause-pattern/examples/example.md",
+      "title": "Root Cause: Worked Production Example",
+      "description": "INC-447 delayed payroll for 18,204 employees. Timeline TL-447 reconciles NTP offsets across deploy d-993, queue q-payroll, and alert a-81. Graph CG-447 shows ma"
+    },
+    {
+      "slug": "patterns/root-cause-pattern/failures",
+      "sourcePath": "content/patterns/root-cause-pattern/failures.md",
+      "title": "Root Cause: Failure Modes",
+      "description": "Detect domain-specific failure before it becomes false assurance. For the Root Cause failures contract, gate 1 is evidenced by \"100% causal edges cite evidence\""
+    },
+    {
+      "slug": "patterns/root-cause-pattern/hooks",
+      "sourcePath": "content/patterns/root-cause-pattern/hooks.md",
+      "title": "Root Cause: Lifecycle Hooks",
+      "description": "Enforce root cause gates outside model discretion."
+    },
+    {
+      "slug": "patterns/root-cause-pattern/problem",
+      "sourcePath": "content/patterns/root-cause-pattern/problem.md",
+      "title": "Root Cause: Problem",
+      "description": "The Root Cause pattern exists because teams need to explain why an incident occurred and prioritize controls that prevent or limit recurrence, yet commonly act "
+    },
+    {
+      "slug": "patterns/root-cause-pattern/prompt",
+      "sourcePath": "content/patterns/root-cause-pattern/prompt.md",
+      "title": "Root Cause: Production Prompt",
+      "description": "Constrain an AI operator to the Root Cause method without requesting private reasoning."
+    },
+    {
+      "slug": "patterns/root-cause-pattern/README",
+      "sourcePath": "content/patterns/root-cause-pattern/README.md",
+      "title": "Root Cause Pattern",
+      "description": "Explain why an incident occurred and prioritize controls that prevent or limit recurrence."
+    },
+    {
+      "slug": "patterns/root-cause-pattern/skills",
+      "sourcePath": "content/patterns/root-cause-pattern/skills.md",
+      "title": "Root Cause: Skills",
+      "description": "Define the procedures unique to competent root cause work."
+    },
+    {
+      "slug": "patterns/root-cause-pattern/subagents",
+      "sourcePath": "content/patterns/root-cause-pattern/subagents.md",
+      "title": "Root Cause: Subagents",
+      "description": "Separate specialist collection, analysis, and challenge while the parent retains accountability. For the Root Cause subagents contract, gate 1 is evidenced by \""
+    },
+    {
+      "slug": "patterns/root-cause-pattern/workflow",
+      "sourcePath": "content/patterns/root-cause-pattern/workflow.md",
+      "title": "Root Cause: Workflow",
+      "description": "Execute the domain method for explain why an incident occurred and prioritize controls that prevent or limit recurrence."
+    },
+    {
+      "slug": "README",
+      "sourcePath": "content/README.md",
+      "title": "Open AI Engineering Standard (OAIES)",
+      "description": "License: MIT"
+    },
+    {
+      "slug": "resources/README",
+      "sourcePath": "content/resources/README.md",
+      "title": "Curated Resources",
+      "description": "Open AI Engineering Standard — production-grade AI engineering documentation."
+    },
+    {
+      "slug": "standard/01-kernel-and-applicability",
+      "sourcePath": "content/standard/01-kernel-and-applicability.md",
+      "title": "OAIES Kernel and Applicability",
+      "description": "Define the boundary, language, identifiers, classifications, and applicability rules used by every OAIES conformance claim."
+    },
+    {
+      "slug": "standard/02-normative-controls",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "title": "OAIES Normative Controls",
+      "description": "Define the minimum control baseline for OAIES-conformant AI systems. Each requirement is testable and names the objective evidence expected by an assessor."
+    },
+    {
+      "slug": "standard/03-evidence-exceptions-conformance",
+      "sourcePath": "content/standard/03-evidence-exceptions-conformance.md",
+      "title": "OAIES Evidence, Exceptions, and Conformance",
+      "description": "Define admissible evidence, the Statement of Applicability, exception and risk-acceptance governance, and the exact semantics of an OAIES conformance claim."
+    },
+    {
+      "slug": "standard/04-lifecycle-and-assessment",
+      "sourcePath": "content/standard/04-lifecycle-and-assessment.md",
+      "title": "OAIES Lifecycle and Assessor Methodology",
+      "description": "Define OAIES versioning and deprecation rules and the reproducible method assessors use to reach, report, and maintain conformance conclusions."
+    },
+    {
+      "slug": "standard/crosswalks/iso-ai-management-risk-impact",
+      "sourcePath": "content/standard/crosswalks/iso-ai-management-risk-impact.md",
+      "title": "ISO AI Management, Risk, and Impact Crosswalk",
+      "description": "Version: 1.0.0"
+    },
+    {
+      "slug": "standard/crosswalks/nist-ai-risk",
+      "sourcePath": "content/standard/crosswalks/nist-ai-risk.md",
+      "title": "NIST AI Risk Crosswalk",
+      "description": "Version: 1.0.0"
+    },
+    {
+      "slug": "standard/crosswalks/owasp-ai-security",
+      "sourcePath": "content/standard/crosswalks/owasp-ai-security.md",
+      "title": "OWASP LLM and Agentic Security Crosswalk",
+      "description": "Version: 1.0.0"
+    },
+    {
+      "slug": "standard/crosswalks/protocols-and-observability",
+      "sourcePath": "content/standard/crosswalks/protocols-and-observability.md",
+      "title": "MCP, A2A, and GenAI Observability Crosswalk",
+      "description": "Version: 1.0.0"
+    },
+    {
+      "slug": "standard/crosswalks/README",
+      "sourcePath": "content/standard/crosswalks/README.md",
+      "title": "OAIES Standards Crosswalks",
+      "description": "Version: 1.0.0"
+    },
+    {
+      "slug": "standard/crosswalks/secure-software-supply-chain",
+      "sourcePath": "content/standard/crosswalks/secure-software-supply-chain.md",
+      "title": "Secure Software and AI Supply-Chain Crosswalk",
+      "description": "Version: 1.0.0"
+    },
+    {
+      "slug": "standard/README",
+      "sourcePath": "content/standard/README.md",
+      "title": "OAIES Normative Standard Kernel",
+      "description": "This kernel defines the minimum auditable requirements for claiming conformance with the Open AI Engineering Standard (OAIES). It establishes one vocabulary, ap"
+    },
+    {
+      "slug": "standard/templates/assessment-report.template",
+      "sourcePath": "content/standard/templates/assessment-report.template.md",
+      "title": "OAIES Conformance Assessment Report Template",
+      "description": "Produce a bounded, evidence-based, independently reviewable OAIES conformance conclusion."
+    },
+    {
+      "slug": "standard/templates/exception-risk-acceptance.template",
+      "sourcePath": "content/standard/templates/exception-risk-acceptance.template.md",
+      "title": "OAIES Exception and Risk-Acceptance Template",
+      "description": "Record a time-bound, accountable decision to tolerate incomplete implementation of one applicable OAIES control."
+    },
+    {
+      "slug": "standard/templates/statement-of-applicability.template",
+      "sourcePath": "content/standard/templates/statement-of-applicability.template.md",
+      "title": "OAIES Statement of Applicability Template",
+      "description": "Create the authoritative, auditable record of control applicability and implementation for one bounded AI system."
+    },
+    {
+      "slug": "validation/design-partner-program",
+      "sourcePath": "content/validation/design-partner-program.md",
+      "title": "OAIES Design-Partner and System-Selection Protocol",
+      "description": "Select lawful, informative external pilots without misrepresenting prospects as partners or choosing only systems likely to produce favorable outcomes."
+    },
+    {
+      "slug": "validation/evidence-and-release-gates",
+      "sourcePath": "content/validation/evidence-and-release-gates.md",
+      "title": "OAIES Validation Evidence Package and Release Gates",
+      "description": "Define the immutable evidence package, review controls, publication boundary, and release decision required before OAIES may claim external validation."
+    },
+    {
+      "slug": "validation/inter-assessor-methodology",
+      "sourcePath": "content/validation/inter-assessor-methodology.md",
+      "title": "OAIES Blind Inter-Assessor Methodology",
+      "description": "Measure whether qualified, independent assessors reach reproducible OAIES conclusions from the same authorized evidence without consensus contamination."
+    },
+    {
+      "slug": "validation/README",
+      "sourcePath": "content/validation/README.md",
+      "title": "OAIES External Validation Program",
+      "description": "Define the controlled program OAIES maintainers use to obtain independent, reproducible evidence that the standard is understandable, applicable, and consistent"
+    },
+    {
+      "slug": "validation/templates/anonymized-case-study.template",
+      "sourcePath": "content/validation/templates/anonymized-case-study.template.md",
+      "title": "OAIES Anonymized External-Pilot Case Study Template",
+      "description": "Publish useful external-pilot evidence while bounding claims and reducing participant, personnel, customer, and system re-identification risk."
+    },
+    {
+      "slug": "validation/templates/assessor-qualification-independence.template",
+      "sourcePath": "content/validation/templates/assessor-qualification-independence.template.md",
+      "title": "OAIES Assessor Qualification and Independence Record Template",
+      "description": "Create an evidence-backed decision that an assessor is competent and independent for a specific OAIES pilot."
+    },
+    {
+      "slug": "validation/templates/specification-issue.template",
+      "sourcePath": "content/validation/templates/specification-issue.template.md",
+      "title": "OAIES Validation-to-Specification Issue Template",
+      "description": "Convert an independently observed pilot disagreement or limitation into a traceable, testable OAIES specification decision."
+    }
+  ]
+}

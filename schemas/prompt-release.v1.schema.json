@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://open-ai-engineering-standard.org/schemas/v1/prompt-release.schema.json",
+  "title": "OAIES Prompt Release v1",
+  "description": "Immutable release record for a production prompt artifact.",
+  "type": "object",
+  "required": ["schemaVersion", "id", "systemRef", "name", "version", "status", "artifact", "purpose", "inputContract", "outputContract", "dataClassification", "modelCompatibility", "securityReview", "evaluationRefs", "materialChangeAssessment", "approvedBy", "releasedAt"],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{2,127}$"},
+    "systemRef": {"type": "string", "format": "uri-reference"},
+    "name": {"type": "string", "minLength": 1, "maxLength": 200},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "status": {"enum": ["candidate", "approved", "active", "deprecated", "revoked"]},
+    "artifact": {"$ref": "#/$defs/digestRef"},
+    "purpose": {"type": "string", "minLength": 10, "maxLength": 2000},
+    "inputContract": {"type": "string", "format": "uri-reference"},
+    "outputContract": {"type": "string", "format": "uri-reference"},
+    "dataClassification": {"enum": ["public", "internal", "confidential", "restricted"]},
+    "variables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "type", "required", "dataClassification"],
+        "properties": {
+          "name": {"type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]{0,63}$"},
+          "type": {"enum": ["string", "number", "integer", "boolean", "object", "array"]},
+          "required": {"type": "boolean"},
+          "dataClassification": {"enum": ["public", "internal", "confidential", "restricted"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    "modelCompatibility": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["provider", "modelPattern", "verified"],
+        "properties": {
+          "provider": {"type": "string", "minLength": 1, "maxLength": 100},
+          "modelPattern": {"type": "string", "minLength": 1, "maxLength": 200},
+          "verified": {"type": "boolean"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "securityReview": {
+      "type": "object",
+      "required": ["status", "reviewedBy", "reviewedAt", "threatsTested"],
+      "properties": {
+        "status": {"enum": ["passed", "passed-with-exception", "failed"]},
+        "reviewedBy": {"type": "string", "minLength": 1, "maxLength": 200},
+        "reviewedAt": {"type": "string", "format": "date-time"},
+        "threatsTested": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 3, "maxLength": 200}},
+        "exceptionRef": {"type": "string", "format": "uri-reference"}
+      },
+      "additionalProperties": false
+    },
+    "evaluationRefs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "format": "uri-reference"}},
+    "changeSummary": {"type": "string", "minLength": 3, "maxLength": 2000},
+    "materialChangeAssessment": {
+      "type": "object",
+      "required": ["material", "rationale", "assessmentRef"],
+      "properties": {
+        "material": {"type": "boolean"},
+        "rationale": {"type": "string", "minLength": 10, "maxLength": 2000},
+        "assessmentRef": {"type": "string", "format": "uri-reference"}
+      },
+      "additionalProperties": false
+    },
+    "rollbackVersion": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "approvedBy": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 200}},
+    "releasedAt": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "digestRef": {
+      "type": "object",
+      "required": ["uri", "algorithm", "digest"],
+      "properties": {
+        "uri": {"type": "string", "format": "uri-reference"},
+        "algorithm": {"enum": ["sha256", "sha384", "sha512"]},
+        "digest": {"type": "string", "pattern": "^(?:[A-Fa-f0-9]{64}|[A-Fa-f0-9]{96}|[A-Fa-f0-9]{128})$"}
+      },
+      "allOf": [
+        {"if": {"properties": {"algorithm": {"const": "sha256"}}, "required": ["algorithm"]}, "then": {"properties": {"digest": {"pattern": "^[A-Fa-f0-9]{64}$"}}}},
+        {"if": {"properties": {"algorithm": {"const": "sha384"}}, "required": ["algorithm"]}, "then": {"properties": {"digest": {"pattern": "^[A-Fa-f0-9]{96}$"}}}},
+        {"if": {"properties": {"algorithm": {"const": "sha512"}}, "required": ["algorithm"]}, "then": {"properties": {"digest": {"pattern": "^[A-Fa-f0-9]{128}$"}}}}
+      ],
+      "additionalProperties": false
+    }
+  }
+}

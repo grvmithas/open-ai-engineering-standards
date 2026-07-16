@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oaies.dev/schemas/conformance/manifest-1.0.0.json",
+  "title": "OAIES Conformance Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "standardVersion", "assessmentId", "system", "controls"],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "standardVersion": { "type": "string", "minLength": 1 },
+    "assessmentId": { "type": "string", "pattern": "^[A-Za-z0-9._-]+$" },
+    "system": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "environment", "capabilities", "dataClasses", "deployment"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "environment": { "enum": ["development", "test", "staging", "production"] },
+        "capabilities": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "dataClasses": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "deployment": { "enum": ["internal", "external", "hybrid"] }
+      }
+    },
+    "controls": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "applicability", "requirements"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[A-Z][A-Z0-9-]+$" },
+          "title": { "type": "string", "minLength": 1 },
+          "applicability": { "$ref": "#/$defs/expression" },
+          "requirements": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "evidenceTypes"],
+              "properties": {
+                "id": { "type": "string", "minLength": 1 },
+                "evidenceTypes": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": { "enum": ["test", "attestation", "configuration", "trace", "review"] }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "exceptions": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["controlId", "reason", "approvedBy", "expiresAt"],
+        "properties": {
+          "controlId": { "type": "string" },
+          "reason": { "type": "string", "minLength": 10 },
+          "approvedBy": { "type": "string", "minLength": 1 },
+          "expiresAt": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "expression": {
+      "oneOf": [
+        { "type": "boolean" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["field", "operator"],
+          "properties": {
+            "field": { "enum": ["environment", "capabilities", "dataClasses", "deployment"] },
+            "operator": { "enum": ["equals", "includes", "exists"] },
+            "value": {}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["all"],
+          "properties": { "all": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/expression" } } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["any"],
+          "properties": { "any": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/expression" } } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["not"],
+          "properties": { "not": { "$ref": "#/$defs/expression" } }
+        }
+      ]
+    }
+  }
+}

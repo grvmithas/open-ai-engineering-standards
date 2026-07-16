@@ -1,0 +1,1705 @@
+{
+  "schemaVersion": 1,
+  "generatedFrom": {
+    "normativeSources": [
+      "content/standard/01-kernel-and-applicability.md",
+      "content/standard/02-normative-controls.md",
+      "content/standard/03-evidence-exceptions-conformance.md",
+      "content/standard/04-lifecycle-and-assessment.md"
+    ],
+    "schemaDirectory": "schemas",
+    "crosswalkDirectory": "content/standard/crosswalks",
+    "conformanceTool": "tools/conformance"
+  },
+  "counts": {
+    "controls": 78,
+    "controlFamilies": 8,
+    "profiles": 6,
+    "schemas": 14,
+    "crosswalks": 5,
+    "normativeDocuments": 4,
+    "rfcs": 0
+  },
+  "controls": [
+    {
+      "id": "OAIES-GOV-001",
+      "family": "GOV",
+      "requirement": "The organization MUST maintain an approved system boundary covering every component and dependency capable of affecting outputs or actions.",
+      "applicability": "Universal",
+      "evidence": "Versioned boundary record, architecture/data-flow diagram, dependency inventory, owner approval",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/01-kernel-and-applicability.md",
+      "sourceSlug": "standard/01-kernel-and-applicability"
+    },
+    {
+      "id": "OAIES-GOV-002",
+      "family": "GOV",
+      "requirement": "The organization MUST name one system owner and a control owner for every applicable control.",
+      "applicability": "Universal",
+      "evidence": "Signed ownership register and SoA owner fields",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/01-kernel-and-applicability.md",
+      "sourceSlug": "standard/01-kernel-and-applicability"
+    },
+    {
+      "id": "OAIES-GOV-003",
+      "family": "GOV",
+      "requirement": "The system owner MUST classify all applicable workload profiles, autonomy level, and impact level before production use and after material change.",
+      "applicability": "Universal",
+      "evidence": "Dated classification record with rationale, approver, and change history",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/01-kernel-and-applicability.md",
+      "sourceSlug": "standard/01-kernel-and-applicability"
+    },
+    {
+      "id": "OAIES-GOV-004",
+      "family": "GOV",
+      "requirement": "The SoA MUST include every control in the claimed OAIES version and record its applicability disposition and rationale.",
+      "applicability": "Universal",
+      "evidence": "Complete version-controlled SoA; automated or manual completeness reconciliation",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/01-kernel-and-applicability.md",
+      "sourceSlug": "standard/01-kernel-and-applicability"
+    },
+    {
+      "id": "OAIES-GOV-005",
+      "family": "GOV",
+      "requirement": "A not-applicable disposition MUST NOT be used solely because implementation is costly, difficult, outsourced, or incomplete.",
+      "applicability": "Universal",
+      "evidence": "SoA rationales tied to boundary facts; assessor challenge log",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/01-kernel-and-applicability.md",
+      "sourceSlug": "standard/01-kernel-and-applicability"
+    },
+    {
+      "id": "OAIES-GOV-006",
+      "family": "GOV",
+      "requirement": "Third-party components MUST remain inside the system boundary wherever their behavior can affect conformance.",
+      "applicability": "Universal",
+      "evidence": "Supplier inventory, contracts/assurance reports, boundary diagram, shared-responsibility matrix",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/01-kernel-and-applicability.md",
+      "sourceSlug": "standard/01-kernel-and-applicability"
+    },
+    {
+      "id": "OAIES-RSK-001",
+      "family": "RSK",
+      "requirement": "A4 deployment MUST NOT enter production without documented executive authorization, independent risk assessment, bounded authority, and tested containment.",
+      "applicability": "A4",
+      "evidence": "Signed authorization, independent assessment report, authority policy, containment test results",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [
+        "A4"
+      ],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/01-kernel-and-applicability.md",
+      "sourceSlug": "standard/01-kernel-and-applicability"
+    },
+    {
+      "id": "OAIES-RSK-002",
+      "family": "RSK",
+      "requirement": "The system owner MUST maintain a risk register covering intended use, foreseeable misuse, affected parties, failure modes, likelihood, impact, safeguards, residual risk, and treatment owner.",
+      "applicability": "Universal",
+      "evidence": "Approved risk register linked to system version and review history",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-RSK-003",
+      "family": "RSK",
+      "requirement": "Residual risks above the organization’s approved tolerance MUST NOT be accepted by the system owner alone.",
+      "applicability": "Universal",
+      "evidence": "Risk policy, approval matrix, signed acceptance by authorized risk owner",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-MOD-001",
+      "family": "MOD",
+      "requirement": "The organization MUST define measurable acceptance criteria and evaluate the complete system against representative and adversarial cases before release.",
+      "applicability": "Universal",
+      "evidence": "Versioned evaluation plan, dataset lineage, executable results, threshold decision",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-MOD-002",
+      "family": "MOD",
+      "requirement": "Production model, prompt, policy, tool, and configuration versions MUST be uniquely identifiable and reproducible.",
+      "applicability": "Universal",
+      "evidence": "Immutable release manifest, hashes/versions, configuration snapshot, rebuild or replay result",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-MOD-003",
+      "family": "MOD",
+      "requirement": "Material model or prompt changes MUST NOT bypass regression, safety, and security gates.",
+      "applicability": "Universal",
+      "evidence": "Change diff, CI/release gate logs, evaluation comparison, approval record",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-DAT-001",
+      "family": "DAT",
+      "requirement": "Data used for training, tuning, retrieval, evaluation, or inference MUST have documented provenance, permitted purpose, sensitivity, retention, and responsible owner.",
+      "applicability": "Universal",
+      "evidence": "Data inventory, lineage records, legal basis/license, classification and retention policy",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-DAT-002",
+      "family": "DAT",
+      "requirement": "Sensitive data MUST be minimized and protected in prompts, logs, memory, evaluation sets, and outputs according to its classification.",
+      "applicability": "Where sensitive data is processed",
+      "evidence": "Data-flow map, minimization decision, access controls, encryption settings, DLP test results",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-SEC-001",
+      "family": "SEC",
+      "requirement": "Identity and access controls MUST enforce least privilege for models, tools, data stores, administrative interfaces, and service accounts.",
+      "applicability": "Universal",
+      "evidence": "Access matrix, policy configuration, entitlement review, denied-access tests",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-SEC-002",
+      "family": "SEC",
+      "requirement": "Untrusted input and model output MUST be treated as data rather than executable authority across trust boundaries.",
+      "applicability": "Universal",
+      "evidence": "Threat model, parser/validator policy, sandbox configuration, injection test results",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-SEC-003",
+      "family": "SEC",
+      "requirement": "Secrets MUST NOT be embedded in prompts, source artifacts, model context, logs, or generated output.",
+      "applicability": "Universal",
+      "evidence": "Secret-scanning results, vault references, redacted telemetry sample, incident review",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-OPS-001",
+      "family": "OPS",
+      "requirement": "Production releases MUST use an approved, attributable, reversible change process with separation appropriate to impact.",
+      "applicability": "Universal",
+      "evidence": "Release ticket, approver identity, deployment log, rollback plan and exercise",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-OPS-002",
+      "family": "OPS",
+      "requirement": "The organization MUST monitor safety, security, quality, availability, cost, and policy-relevant events at frequencies justified by risk.",
+      "applicability": "Universal",
+      "evidence": "Monitoring specification, dashboards/alerts, sampled events, alert test and response records",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-OPS-003",
+      "family": "OPS",
+      "requirement": "AI incidents MUST enter a documented response process that preserves evidence, limits harm, notifies accountable parties, and records corrective action.",
+      "applicability": "Universal",
+      "evidence": "Incident plan, exercise or incident record, preserved logs, notifications, corrective-action closure",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-OPS-004",
+      "family": "OPS",
+      "requirement": "Users MUST receive accurate notice when they interact with AI or when AI materially influences an outcome, except where lawfully exempted and documented.",
+      "applicability": "User-facing or decision-influencing systems",
+      "evidence": "Interface capture, notice text/version, exemption analysis, usability test",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-ASR-001",
+      "family": "ASR",
+      "requirement": "Applicable controls MUST be supported by evidence meeting the quality rules in 03.",
+      "applicability": "Universal",
+      "evidence": "Evidence index linked bidirectionally to SoA and immutable evidence objects",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-MOD-010",
+      "family": "MOD",
+      "requirement": "Assistant output MUST be constrained or reviewed where an unsupported claim could cause material harm.",
+      "applicability": "P1, I2–I3",
+      "evidence": "Output policy, enforcement configuration, test corpus and results, review records",
+      "universal": false,
+      "profiles": [
+        "P1"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [
+        "I2",
+        "I3"
+      ],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-MOD-011",
+      "family": "MOD",
+      "requirement": "The system MUST communicate material capability limits and uncertainty at the point where a user relies on output.",
+      "applicability": "P1",
+      "evidence": "Approved UX copy, rendered interface evidence, user-comprehension test",
+      "universal": false,
+      "profiles": [
+        "P1"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-MOD-012",
+      "family": "MOD",
+      "requirement": "Safety and refusal behavior MUST be tested against domain-relevant harmful, ambiguous, multilingual, and adversarial requests.",
+      "applicability": "P1",
+      "evidence": "Threat-informed test set, run metadata, results, defect remediation",
+      "universal": false,
+      "profiles": [
+        "P1"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-DAT-010",
+      "family": "DAT",
+      "requirement": "Retrieval authorization MUST be enforced at query time using the requesting principal and source permissions.",
+      "applicability": "P2 with restricted content",
+      "evidence": "Authorization design, index ACL mapping, positive/negative access tests, query audit logs",
+      "universal": false,
+      "profiles": [
+        "P2"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-DAT-011",
+      "family": "DAT",
+      "requirement": "Retrieved content MUST retain source identity, version or retrieval time, and trust metadata through generation.",
+      "applicability": "P2",
+      "evidence": "Indexed metadata schema, response trace, citation/provenance tests",
+      "universal": false,
+      "profiles": [
+        "P2"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-DAT-012",
+      "family": "DAT",
+      "requirement": "The system MUST evaluate retrieval relevance, coverage, grounding, and resistance to content-based instruction injection before release.",
+      "applicability": "P2",
+      "evidence": "Curated evaluation set, metric definitions, thresholds, run results, poisoning/injection tests",
+      "universal": false,
+      "profiles": [
+        "P2"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-DAT-013",
+      "family": "DAT",
+      "requirement": "Stale, revoked, or deleted source content MUST be removed from serving indexes within a documented risk-based service level.",
+      "applicability": "P2",
+      "evidence": "Freshness SLA, deletion propagation logs, reconciliation report, stale-content alert test",
+      "universal": false,
+      "profiles": [
+        "P2"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-AGT-010",
+      "family": "AGT",
+      "requirement": "Code execution MUST occur in an isolated environment with bounded network, filesystem, identity, compute, and time permissions.",
+      "applicability": "P3 with execution",
+      "evidence": "Sandbox policy/configuration, escape and egress tests, resource-limit logs",
+      "universal": false,
+      "profiles": [
+        "P3"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-AGT-011",
+      "family": "AGT",
+      "requirement": "Generated code MUST pass deterministic tests, static analysis, dependency, license, and secret checks appropriate to the repository before merge or deployment.",
+      "applicability": "P3 producing code",
+      "evidence": "Required-check configuration, CI logs, branch protection, blocked-failure example",
+      "universal": false,
+      "profiles": [
+        "P3"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-AGT-012",
+      "family": "AGT",
+      "requirement": "Security-sensitive or production-impacting code changes MUST receive independent human approval from an authorized reviewer.",
+      "applicability": "P3, I2–I3",
+      "evidence": "CODEOWNERS/approval policy, pull-request approvals, reviewer authorization record",
+      "universal": false,
+      "profiles": [
+        "P3"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [
+        "I2",
+        "I3"
+      ],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-SEC-010",
+      "family": "SEC",
+      "requirement": "Agent-selected dependencies MUST be resolved through approved registries and verified against integrity and vulnerability policy.",
+      "applicability": "P3 adding dependencies",
+      "evidence": "Registry policy, lockfile/signature or hash verification, SCA report, exception record",
+      "universal": false,
+      "profiles": [
+        "P3"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-AGT-020",
+      "family": "AGT",
+      "requirement": "Every external action MUST pass deterministic authorization, schema validation, policy, and idempotency controls outside the model.",
+      "applicability": "P4",
+      "evidence": "Policy-as-code/configuration, action schema, replay/idempotency tests, allow/deny logs",
+      "universal": false,
+      "profiles": [
+        "P4"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-AGT-021",
+      "family": "AGT",
+      "requirement": "Consequential or irreversible actions MUST require informed human approval bound to the exact action payload before execution.",
+      "applicability": "P4, I2–I3",
+      "evidence": "Approval UX capture, signed payload/hash, approver identity, execution correlation ID",
+      "universal": false,
+      "profiles": [
+        "P4"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [
+        "I2",
+        "I3"
+      ],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-AGT-022",
+      "family": "AGT",
+      "requirement": "Reversible actions MUST have a tested compensation or rollback path before autonomous production execution.",
+      "applicability": "P4, A2–A3",
+      "evidence": "Rollback procedure, test results, recovery objectives, exercise record",
+      "universal": false,
+      "profiles": [
+        "P4"
+      ],
+      "autonomyLevels": [
+        "A2",
+        "A3"
+      ],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-AGT-023",
+      "family": "AGT",
+      "requirement": "Action limits MUST bound value, rate, scope, destination, and cumulative exposure independently of model instructions.",
+      "applicability": "P4, A2–A3",
+      "evidence": "Runtime limit configuration, boundary tests, limit alerts, blocked-action logs",
+      "universal": false,
+      "profiles": [
+        "P4"
+      ],
+      "autonomyLevels": [
+        "A2",
+        "A3"
+      ],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-AGT-030",
+      "family": "AGT",
+      "requirement": "Delegation MUST NOT increase permissions, data access, or action authority beyond the initiating principal and approved workflow.",
+      "applicability": "P5",
+      "evidence": "Delegation protocol, capability tokens/policies, privilege-escalation tests, trace sample",
+      "universal": false,
+      "profiles": [
+        "P5"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-AGT-031",
+      "family": "AGT",
+      "requirement": "Every inter-agent message and action MUST be attributable to agent identity, version, parent task, and initiating principal.",
+      "applicability": "P5",
+      "evidence": "Trace schema, immutable end-to-end trace, correlation tests",
+      "universal": false,
+      "profiles": [
+        "P5"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-AGT-032",
+      "family": "AGT",
+      "requirement": "Orchestration MUST enforce termination conditions for cycles, fan-out, cost, time, and repeated failure.",
+      "applicability": "P5",
+      "evidence": "Orchestrator limits, loop/fan-out tests, cutoff telemetry, incident procedure",
+      "universal": false,
+      "profiles": [
+        "P5"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-AGT-033",
+      "family": "AGT",
+      "requirement": "Conflicting agent outputs MUST be resolved by an explicit deterministic or human-governed policy before consequential action.",
+      "applicability": "P5 producing consequential action",
+      "evidence": "Conflict policy, scenario tests, decision records and trace",
+      "universal": false,
+      "profiles": [
+        "P5"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-RSK-010",
+      "family": "RSK",
+      "requirement": "A high-impact system MUST complete an impact assessment covering affected groups, rights, safety, accessibility, discrimination, contestability, and cumulative effects before production use.",
+      "applicability": "P6 or I3",
+      "evidence": "Approved impact assessment, stakeholder input, mitigation tracking",
+      "universal": false,
+      "profiles": [
+        "P6"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [
+        "I3"
+      ],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-RSK-011",
+      "family": "RSK",
+      "requirement": "High-impact deployment MUST have independent pre-release assurance and an organization-approved reassessment interval derived from impact, change rate, incident history, applicable obligations, and claim period; that interval must be shorter than the approved interval for otherwise comparable lower-impact systems.",
+      "applicability": "P6 or I3",
+      "evidence": "Assessor independence declaration, assessment report, approved cadence decision with risk rationale and legal mapping, claim-period record, reassessment schedule",
+      "universal": false,
+      "profiles": [
+        "P6"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [
+        "I3"
+      ],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-RSK-012",
+      "family": "RSK",
+      "requirement": "Affected persons MUST have an accessible path to explanation, correction, contest, and human review of material adverse outcomes.",
+      "applicability": "P6 or I3 affecting persons",
+      "evidence": "Procedure, interface evidence, service metrics, sampled cases and resolutions",
+      "universal": false,
+      "profiles": [
+        "P6"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [
+        "I3"
+      ],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-MOD-020",
+      "family": "MOD",
+      "requirement": "High-impact performance MUST be evaluated for relevant subgroups, operating conditions, and foreseeable distribution shifts using domain-approved thresholds.",
+      "applicability": "P6 or I3",
+      "evidence": "Evaluation protocol, subgroup results, threshold approvals, drift tests",
+      "universal": false,
+      "profiles": [
+        "P6"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [
+        "I3"
+      ],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-OPS-010",
+      "family": "OPS",
+      "requirement": "The operator MUST maintain and test an immediate safe-stop, fallback, or service-withdrawal mechanism.",
+      "applicability": "P6 or I3; A3–A4",
+      "evidence": "Mechanism design, access authorization, exercise results, recovery record",
+      "universal": false,
+      "profiles": [
+        "P6"
+      ],
+      "autonomyLevels": [
+        "A3",
+        "A4"
+      ],
+      "impactLevels": [
+        "I3"
+      ],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-ASR-010",
+      "family": "ASR",
+      "requirement": "High-impact evidence MUST be retained under an approved records schedule that accounts for applicable jurisdictional, regulatory, contractual, claim-period, appeal, incident, investigation, and litigation-hold needs and receives independent legal or records-management approval before disposal.",
+      "applicability": "P6 or I3",
+      "evidence": "Approved records schedule and legal mapping, claim and appeal periods, hold register, disposition approval, integrity and retrieval tests",
+      "universal": false,
+      "profiles": [
+        "P6"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [
+        "I3"
+      ],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-AGT-040",
+      "family": "AGT",
+      "requirement": "Tool access MUST use explicit allowlists, least-privilege credentials, argument constraints, and default-deny behavior.",
+      "applicability": "A2–A4",
+      "evidence": "Tool registry, IAM/policy configuration, denied-tool and invalid-argument tests",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [
+        "A2",
+        "A4"
+      ],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-AGT-041",
+      "family": "AGT",
+      "requirement": "Memory that can influence future actions MUST have provenance, access control, retention, integrity protection, and a deletion mechanism.",
+      "applicability": "A2–A4 with persistent memory",
+      "evidence": "Memory schema, ACLs, integrity test, retention/deletion logs",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [
+        "A2",
+        "A4"
+      ],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-AGT-042",
+      "family": "AGT",
+      "requirement": "Operators MUST be able to suspend autonomous execution without model cooperation.",
+      "applicability": "A2–A4",
+      "evidence": "Out-of-band control design, authorized operator list, kill-switch exercise",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [
+        "A2",
+        "A4"
+      ],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-AGT-043",
+      "family": "AGT",
+      "requirement": "Autonomous decisions and actions MUST produce tamper-evident traces sufficient to reconstruct inputs, policy decisions, tool calls, approvals, outputs, and outcomes.",
+      "applicability": "A2–A4",
+      "evidence": "Trace specification, integrity controls, sampled reconstruction test",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [
+        "A2",
+        "A4"
+      ],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/02-normative-controls.md",
+      "sourceSlug": "standard/02-normative-controls"
+    },
+    {
+      "id": "OAIES-ASR-002",
+      "family": "ASR",
+      "requirement": "Each evidence item MUST identify source, custodian, collection time, covered period, system scope, control mapping, integrity mechanism, and retention date.",
+      "applicability": "Universal",
+      "evidence": "Evidence index and sampled evidence metadata",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/03-evidence-exceptions-conformance.md",
+      "sourceSlug": "standard/03-evidence-exceptions-conformance"
+    },
+    {
+      "id": "OAIES-ASR-003",
+      "family": "ASR",
+      "requirement": "Operating-effectiveness evidence MUST represent the full assessment period and include failures and exceptions in the sampled population.",
+      "applicability": "Controls expected to operate over time",
+      "evidence": "Population extract, sampling frame, failure records, sample rationale",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/03-evidence-exceptions-conformance.md",
+      "sourceSlug": "standard/03-evidence-exceptions-conformance"
+    },
+    {
+      "id": "OAIES-ASR-004",
+      "family": "ASR",
+      "requirement": "Evidence MUST NOT rely solely on a control owner’s uncorroborated assertion.",
+      "applicability": "Universal",
+      "evidence": "Independent system records, configuration export, reperformed test, or corroborating source",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/03-evidence-exceptions-conformance.md",
+      "sourceSlug": "standard/03-evidence-exceptions-conformance"
+    },
+    {
+      "id": "OAIES-ASR-005",
+      "family": "ASR",
+      "requirement": "The organization MUST protect evidence against unauthorized alteration and verify retrievability throughout retention.",
+      "applicability": "Universal",
+      "evidence": "Immutable/WORM or signed storage settings, access log, integrity and restore tests",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/03-evidence-exceptions-conformance.md",
+      "sourceSlug": "standard/03-evidence-exceptions-conformance"
+    },
+    {
+      "id": "OAIES-GOV-010",
+      "family": "GOV",
+      "requirement": "The SoA MUST identify system/version, boundary, profiles, autonomy, impact, OAIES version, every control disposition, rationale, owner, evidence, exception, approval, and review date.",
+      "applicability": "Universal",
+      "evidence": "Completed approved SoA and schema/completeness validation",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/03-evidence-exceptions-conformance.md",
+      "sourceSlug": "standard/03-evidence-exceptions-conformance"
+    },
+    {
+      "id": "OAIES-GOV-011",
+      "family": "GOV",
+      "requirement": "Each not-applicable decision MUST cite a factual boundary or applicability condition and receive system-owner approval.",
+      "applicability": "Universal",
+      "evidence": "SoA rationale, boundary reference, dated approval",
+      "universal": true,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/03-evidence-exceptions-conformance.md",
+      "sourceSlug": "standard/03-evidence-exceptions-conformance"
+    },
+    {
+      "id": "OAIES-RSK-020",
+      "family": "RSK",
+      "requirement": "Each exception MUST identify the unmet requirement, cause, exposure, affected assets/people, likelihood, impact, compensating controls, residual risk, remediation owner, due date, expiry, applicable maximum-duration policy, duration rationale, and approvers.",
+      "applicability": "Any exception",
+      "evidence": "Completed exception record, linked risk-register entry, approved duration policy, claim-period and jurisdictional/contractual mapping",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/03-evidence-exceptions-conformance.md",
+      "sourceSlug": "standard/03-evidence-exceptions-conformance"
+    },
+    {
+      "id": "OAIES-RSK-021",
+      "family": "RSK",
+      "requirement": "An exception MUST NOT remain valid beyond its expiry or after a material change without reassessment and new approval.",
+      "applicability": "Any exception",
+      "evidence": "Expiry automation, reassessment, approval history, blocked-release or alert record",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/03-evidence-exceptions-conformance.md",
+      "sourceSlug": "standard/03-evidence-exceptions-conformance"
+    },
+    {
+      "id": "OAIES-RSK-022",
+      "family": "RSK",
+      "requirement": "Compensating controls MUST be tested for the stated risk before exception approval.",
+      "applicability": "Exception using compensation",
+      "evidence": "Test plan/results, risk comparison, approver review",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/03-evidence-exceptions-conformance.md",
+      "sourceSlug": "standard/03-evidence-exceptions-conformance"
+    },
+    {
+      "id": "OAIES-RSK-023",
+      "family": "RSK",
+      "requirement": "Expired or rejected exceptions MUST cause the affected control to become nonconforming until remediated.",
+      "applicability": "Any expired/rejected exception",
+      "evidence": "SoA status transition, GRC workflow, claim update or suspension",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/03-evidence-exceptions-conformance.md",
+      "sourceSlug": "standard/03-evidence-exceptions-conformance"
+    },
+    {
+      "id": "OAIES-RSK-024",
+      "family": "RSK",
+      "requirement": "The organization MUST approve exception-duration maxima by residual-impact tier, make higher-impact maxima progressively shorter, and review the maxima when risk tolerance, applicable obligations, or claim periods change.",
+      "applicability": "Organization permitting exceptions",
+      "evidence": "Approved exception-duration policy, tier rationale, legal/contractual mapping, risk-committee approval and review history",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/03-evidence-exceptions-conformance.md",
+      "sourceSlug": "standard/03-evidence-exceptions-conformance"
+    },
+    {
+      "id": "OAIES-ASR-006",
+      "family": "ASR",
+      "requirement": "A conformance claim MUST state system boundary, environments, OAIES version, assessor, assessment period, status, active exceptions, issue date, expiry date, and material-change limitation.",
+      "applicability": "Any public or internal claim",
+      "evidence": "Signed claim or assessment report containing all fields",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/03-evidence-exceptions-conformance.md",
+      "sourceSlug": "standard/03-evidence-exceptions-conformance"
+    },
+    {
+      "id": "OAIES-ASR-007",
+      "family": "ASR",
+      "requirement": "An OAIES claim MUST NOT be described as certification, accreditation, regulatory approval, endorsement, or organization-wide assurance; any separately issued external certification must be clearly distinguished from the OAIES claim and attributed to its actual scheme and issuing body.",
+      "applicability": "Any claim",
+      "evidence": "Approved claim language, communications review, and separate external certificate/scheme record where referenced",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/03-evidence-exceptions-conformance.md",
+      "sourceSlug": "standard/03-evidence-exceptions-conformance"
+    },
+    {
+      "id": "OAIES-ASR-008",
+      "family": "ASR",
+      "requirement": "The organization MUST suspend or correct a claim when a major nonconformity, expired exception, material scope change, or unreliable evidence invalidates its basis.",
+      "applicability": "Active claim",
+      "evidence": "Claim register, trigger alert, withdrawal/correction notice, reassessment record",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/03-evidence-exceptions-conformance.md",
+      "sourceSlug": "standard/03-evidence-exceptions-conformance"
+    },
+    {
+      "id": "OAIES-GOV-020",
+      "family": "GOV",
+      "requirement": "The standard maintainer MUST publish versioned release notes identifying control-level additions, changes, deprecations, retirements, migrations, effective dates, and the evidence-based rationale for each migration window.",
+      "applicability": "Every OAIES release",
+      "evidence": "Signed/tagged release, changelog, control diff, compatibility/risk analysis, adopter migration evidence, migration notice",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/04-lifecycle-and-assessment.md",
+      "sourceSlug": "standard/04-lifecycle-and-assessment"
+    },
+    {
+      "id": "OAIES-GOV-021",
+      "family": "GOV",
+      "requirement": "A deprecated control MUST retain its ID and normative force until its published retirement date.",
+      "applicability": "Deprecated controls",
+      "evidence": "Version archive, release notice, control registry",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/04-lifecycle-and-assessment.md",
+      "sourceSlug": "standard/04-lifecycle-and-assessment"
+    },
+    {
+      "id": "OAIES-GOV-022",
+      "family": "GOV",
+      "requirement": "A retired control ID MUST NOT be reassigned to another requirement.",
+      "applicability": "Standard maintenance",
+      "evidence": "Automated registry uniqueness check and historical catalog",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/04-lifecycle-and-assessment.md",
+      "sourceSlug": "standard/04-lifecycle-and-assessment"
+    },
+    {
+      "id": "OAIES-GOV-023",
+      "family": "GOV",
+      "requirement": "Affected claims MUST be reassessed when a requirement is withdrawn for urgent safety, security, or legal reasons.",
+      "applicability": "Withdrawn requirement",
+      "evidence": "Withdrawal notice, claim register query, reassessment/suspension records",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/04-lifecycle-and-assessment.md",
+      "sourceSlug": "standard/04-lifecycle-and-assessment"
+    },
+    {
+      "id": "OAIES-ASR-020",
+      "family": "ASR",
+      "requirement": "The assessor MUST document scope, criteria, period, team competence, independence, limitations, methods, populations, samples, tests, evidence, findings, and conclusion.",
+      "applicability": "Every conformance assessment",
+      "evidence": "Complete signed assessment report and workpapers",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/04-lifecycle-and-assessment.md",
+      "sourceSlug": "standard/04-lifecycle-and-assessment"
+    },
+    {
+      "id": "OAIES-ASR-021",
+      "family": "ASR",
+      "requirement": "The assessor MUST validate SoA completeness and challenge not-applicable rationales against system-boundary facts.",
+      "applicability": "Every conformance assessment",
+      "evidence": "Catalog reconciliation, challenge log, corrected SoA",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/04-lifecycle-and-assessment.md",
+      "sourceSlug": "standard/04-lifecycle-and-assessment"
+    },
+    {
+      "id": "OAIES-ASR-022",
+      "family": "ASR",
+      "requirement": "The assessor MUST test both control design and operating effectiveness unless the report explicitly provides a design-only conclusion whose approved expiry is bounded by the claim period and whose wording excludes operating effectiveness.",
+      "applicability": "Every positive conclusion",
+      "evidence": "Test workpapers, control-frequency and operating-cycle analysis, period evidence, approved design-only expiry and claim language where applicable",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/04-lifecycle-and-assessment.md",
+      "sourceSlug": "standard/04-lifecycle-and-assessment"
+    },
+    {
+      "id": "OAIES-ASR-023",
+      "family": "ASR",
+      "requirement": "Sample selection MUST be reproducible and risk-based, derive size and census decisions from approved assurance and deviation criteria, include failures and overrides, apply stronger criteria to I3, and preserve the source population or immutable query.",
+      "applicability": "Assessment using samples",
+      "evidence": "Approved sampling methodology, population/control-frequency analysis, assurance and tolerable-deviation decisions, I3 escalation rationale, seed/query, population hash/export, selected records",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/04-lifecycle-and-assessment.md",
+      "sourceSlug": "standard/04-lifecycle-and-assessment"
+    },
+    {
+      "id": "OAIES-ASR-024",
+      "family": "ASR",
+      "requirement": "I3 assessments MUST use an assessor independent of control ownership, implementation, operation, and delivery reporting lines.",
+      "applicability": "P6 or I3",
+      "evidence": "Organization chart, role declarations, conflict check, engagement approval",
+      "universal": false,
+      "profiles": [
+        "P6"
+      ],
+      "autonomyLevels": [],
+      "impactLevels": [
+        "I3"
+      ],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/04-lifecycle-and-assessment.md",
+      "sourceSlug": "standard/04-lifecycle-and-assessment"
+    },
+    {
+      "id": "OAIES-ASR-025",
+      "family": "ASR",
+      "requirement": "A positive conclusion MUST NOT be issued when a major nonconformity remains open or a scope limitation prevents sufficient appropriate evidence.",
+      "applicability": "Every conformance assessment",
+      "evidence": "Finding register, limitation analysis, report conclusion, quality review",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/04-lifecycle-and-assessment.md",
+      "sourceSlug": "standard/04-lifecycle-and-assessment"
+    },
+    {
+      "id": "OAIES-ASR-026",
+      "family": "ASR",
+      "requirement": "Assessment reports MUST receive factual review and independent quality review before issuance.",
+      "applicability": "Every conformance assessment",
+      "evidence": "Management responses, review notes, reviewer sign-off, issued report hash",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/04-lifecycle-and-assessment.md",
+      "sourceSlug": "standard/04-lifecycle-and-assessment"
+    },
+    {
+      "id": "OAIES-ASR-027",
+      "family": "ASR",
+      "requirement": "Active claims MUST follow an organization-approved surveillance interval derived from impact, change rate, control frequency, incident history, applicable obligations, and claim period; I3 intervals must be shorter than otherwise comparable lower-impact intervals, and material change, major incident, invalid evidence, or withdrawal of relied-upon supplier assurance triggers immediate review.",
+      "applicability": "Active claim",
+      "evidence": "Approved cadence policy and system-specific rationale, legal/contractual mapping, claim-period record, I3 escalation comparison, surveillance reports, change/incident and supplier triggers",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/04-lifecycle-and-assessment.md",
+      "sourceSlug": "standard/04-lifecycle-and-assessment"
+    },
+    {
+      "id": "OAIES-ASR-028",
+      "family": "ASR",
+      "requirement": "Corrective actions MUST identify root cause, owner, due date, remediation, validation method, and closure evidence.",
+      "applicability": "Any nonconformity",
+      "evidence": "Corrective-action record, validation results, assessor closure",
+      "universal": false,
+      "profiles": [],
+      "autonomyLevels": [],
+      "impactLevels": [],
+      "lifecycle": "active",
+      "sourcePath": "content/standard/04-lifecycle-and-assessment.md",
+      "sourceSlug": "standard/04-lifecycle-and-assessment"
+    }
+  ],
+  "classification": {
+    "profiles": [
+      {
+        "code": "P1",
+        "name": "Assistant",
+        "inclusionTest": "Generates content or advice without executing external side effects",
+        "primaryRisk": "misleading, unsafe, or sensitive output"
+      },
+      {
+        "code": "P2",
+        "name": "RAG",
+        "inclusionTest": "Uses retrieved sources at inference time",
+        "primaryRisk": "poisoned, unauthorized, stale, or ungrounded context"
+      },
+      {
+        "code": "P3",
+        "name": "Coding agent",
+        "inclusionTest": "Reads, writes, reviews, or executes software artifacts",
+        "primaryRisk": "vulnerable code, secret exposure, destructive execution"
+      },
+      {
+        "code": "P4",
+        "name": "Transactional agent",
+        "inclusionTest": "Initiates or changes external records, payments, messages, permissions, or physical state",
+        "primaryRisk": "unauthorized or irreversible action"
+      },
+      {
+        "code": "P5",
+        "name": "Multi-agent",
+        "inclusionTest": "Delegates among two or more model-driven agents",
+        "primaryRisk": "authority propagation, coordination failure, opaque provenance"
+      },
+      {
+        "code": "P6",
+        "name": "High-impact",
+        "inclusionTest": "Meets I3 or a legal/policy high-impact designation",
+        "primaryRisk": "harm to rights, safety, essential access, or livelihood"
+      }
+    ],
+    "autonomyLevels": [
+      {
+        "code": "A0",
+        "definition": "No action; output is not used for a consequential decision",
+        "governancePosture": "standard review"
+      },
+      {
+        "code": "A1",
+        "definition": "Recommends; a human independently decides and executes",
+        "governancePosture": "meaningful human review"
+      },
+      {
+        "code": "A2",
+        "definition": "Executes reversible, bounded actions with pre-authorization",
+        "governancePosture": "least privilege, action logs, tested rollback"
+      },
+      {
+        "code": "A3",
+        "definition": "Executes consequential or externally visible actions without per-action approval",
+        "governancePosture": "independent assurance, runtime policy enforcement, emergency stop"
+      },
+      {
+        "code": "A4",
+        "definition": "Pursues open-ended goals or can alter its own authority, tools, or safeguards",
+        "governancePosture": "prohibited unless an approved high-impact governance program explicitly authorizes a bounded deployment"
+      }
+    ],
+    "impactLevels": [
+      {
+        "code": "I0",
+        "definition": "Negligible; no credible harm beyond inconvenience",
+        "examples": "internal drafting with no sensitive data"
+      },
+      {
+        "code": "I1",
+        "definition": "Limited, recoverable harm",
+        "examples": "low-value support error, reversible workflow delay"
+      },
+      {
+        "code": "I2",
+        "definition": "Material financial, security, privacy, operational, or reputational harm",
+        "examples": "production code change, customer transaction, sensitive-data disclosure"
+      },
+      {
+        "code": "I3",
+        "definition": "Severe or systemic harm to safety, rights, livelihood, essential services, or many affected persons",
+        "examples": "employment, credit, healthcare, critical infrastructure, biometric categorization"
+      }
+    ]
+  },
+  "assurance": {
+    "evidenceAttributes": [
+      {
+        "attribute": "Authentic",
+        "acceptanceTest": "Source identity and integrity can be verified."
+      },
+      {
+        "attribute": "Attributable",
+        "acceptanceTest": "Responsible person, service, or process is identifiable."
+      },
+      {
+        "attribute": "Scoped",
+        "acceptanceTest": "System, environment, component, control, and period are explicit."
+      },
+      {
+        "attribute": "Timely",
+        "acceptanceTest": "Evidence falls within the assessment period or proves current design."
+      },
+      {
+        "attribute": "Complete",
+        "acceptanceTest": "Relevant failures, exclusions, and populations are included."
+      },
+      {
+        "attribute": "Reproducible",
+        "acceptanceTest": "A competent reviewer can repeat the test or trace the result."
+      },
+      {
+        "attribute": "Protected",
+        "acceptanceTest": "Access, integrity, retention, and lawful handling are enforced."
+      }
+    ],
+    "evidenceClasses": [
+      {
+        "name": "Design",
+        "proves": "Safeguard is specified and appropriate",
+        "examples": "approved policy, threat model, architecture, test plan"
+      },
+      {
+        "name": "Implementation",
+        "proves": "Safeguard exists as configured",
+        "examples": "policy-as-code, IAM export, deployment manifest"
+      },
+      {
+        "name": "Operation",
+        "proves": "Safeguard worked during the period",
+        "examples": "logs, tickets, CI runs, alerts, sampled transactions"
+      },
+      {
+        "name": "Outcome",
+        "proves": "Risk-relevant result stayed within criteria",
+        "examples": "evaluation trend, incident rate, appeal outcome"
+      }
+    ],
+    "soaDispositions": [
+      {
+        "disposition": "Applicable — conforming",
+        "meaning": "Requirement implemented and evidenced",
+        "claimEffect": "Pass"
+      },
+      {
+        "disposition": "Applicable — exception",
+        "meaning": "Requirement not fully satisfied; active exception meets this document",
+        "claimEffect": "Conditional pass; disclosed in claim"
+      },
+      {
+        "disposition": "Applicable — nonconforming",
+        "meaning": "Requirement not satisfied and no valid exception exists",
+        "claimEffect": "Fail"
+      },
+      {
+        "disposition": "Not applicable",
+        "meaning": "Applicability condition is factually absent",
+        "claimEffect": "Excluded with rationale; assessor validates"
+      }
+    ]
+  },
+  "crosswalks": [
+    {
+      "title": "ISO AI Management, Risk, and Impact Crosswalk",
+      "description": "Map OAIES evidence artifacts to the management-system, AI risk-management, and AI system impact-assessment concerns in ISO/IEC 42001, ISO/IEC 23894, and ISO/IEC 42005.",
+      "version": "1.0.0",
+      "status": "Informative",
+      "published": "2026-07-16",
+      "frameworks": [
+        "ISO/IEC 42001",
+        "ISO/IEC 23894",
+        "ISO/IEC 42005",
+        "MCP",
+        "ISO/IEC 42001:2023",
+        "ISO/IEC 23894:2023",
+        "ISO/IEC 42005:2025"
+      ],
+      "sourcePath": "content/standard/crosswalks/iso-ai-management-risk-impact.md",
+      "sourceSlug": "standard/crosswalks/iso-ai-management-risk-impact"
+    },
+    {
+      "title": "NIST AI Risk Crosswalk",
+      "description": "Map OAIES artifacts to NIST AI Risk Management Framework 1.0 functions and the NIST AI 600-1 Generative AI Profile.",
+      "version": "1.0.0",
+      "status": "Informative",
+      "published": "2026-07-16",
+      "frameworks": [
+        "NIST AI Risk Crosswalk",
+        "NIST AI Risk Management Framework 1.0 functions and the NIST AI 600-1 Generative AI Profile",
+        "NIST AI 600-1 applies that structure to generative-AI risks",
+        "NIST AI RMF function/category",
+        "MCP",
+        "NIST AI 600-1 Generative AI Profile crosswalk",
+        "NIST AI 600-1 identifies generative-AI risks and recommended actions. The profile’s risk names should be preserved in the Risk Register rather than replaced with OAIES labels",
+        "NIST AI 600-1 risks using the source risk name and local scenario",
+        "NIST AI RMF and NIST AI 600-1 are voluntary risk-management resources unless another authority makes them mandatory. NIST does not certify implementations against them. OAIES mappings indicate evidence alignment",
+        "NIST compliance",
+        "NIST-certified claim: NIST AI RMF has no NIST certification mechanism",
+        "NIST AI Risk Management Framework 1.0](https://www.nist.gov/itl/ai-risk-management-framework"
+      ],
+      "sourcePath": "content/standard/crosswalks/nist-ai-risk.md",
+      "sourceSlug": "standard/crosswalks/nist-ai-risk"
+    },
+    {
+      "title": "OWASP LLM and Agentic Security Crosswalk",
+      "description": "Map OAIES prevention, detection, and response artifacts to the OWASP Top 10 for LLM Applications 2025 and OWASP Top 10 for Agentic Applications 2026.",
+      "version": "1.0.0",
+      "status": "Informative",
+      "published": "2026-07-16",
+      "frameworks": [
+        "OWASP LLM and Agentic Security Crosswalk",
+        "OWASP Top 10 for LLM Applications 2025 and OWASP Top 10 for Agentic Applications 2026",
+        "OWASP LLM Top 10 crosswalk",
+        "OWASP 2025 risk",
+        "OWASP Agentic Top 10 crosswalk",
+        "OWASP 2026 risk",
+        "MCP",
+        "A2A",
+        "OWASP risk before release and continuously in production",
+        "OWASP Top 10 documents are awareness and risk-prioritization resources",
+        "OWASP Top 10 for Large Language Model Applications](https://genai.owasp.org/llm-top-10",
+        "OWASP Top 10 for Agentic Applications](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026"
+      ],
+      "sourcePath": "content/standard/crosswalks/owasp-ai-security.md",
+      "sourceSlug": "standard/crosswalks/owasp-ai-security"
+    },
+    {
+      "title": "MCP, A2A, and GenAI Observability Crosswalk",
+      "description": "Define how OAIES contracts record security and telemetry evidence for Model Context Protocol authorization, Agent2Agent interoperability, and OpenTelemetry Generative AI semantic conventions.",
+      "version": "1.0.0",
+      "status": "Informative",
+      "published": "2026-07-16",
+      "frameworks": [
+        "MCP",
+        "A2A",
+        "OpenTelemetry",
+        "a2a",
+        "opentelemetry"
+      ],
+      "sourcePath": "content/standard/crosswalks/protocols-and-observability.md",
+      "sourceSlug": "standard/crosswalks/protocols-and-observability"
+    },
+    {
+      "title": "Secure Software and AI Supply-Chain Crosswalk",
+      "description": "Map OAIES artifacts to NIST SSDF SP 800-218, applicable NIST SP 800-53 Rev. 5 controls, SLSA, and OpenSSF practices.",
+      "version": "1.0.0",
+      "status": "Informative",
+      "published": "2026-07-16",
+      "frameworks": [
+        "NIST SSDF SP 800-218",
+        "NIST SP 800-53 Rev. 5 controls",
+        "SLSA",
+        "OpenSSF",
+        "NIST SSDF crosswalk",
+        "NIST SP 800-53 Rev. 5 crosswalk",
+        "MCP",
+        "NIST control baselines",
+        "NIST publications are not certification schemes",
+        "NIST SP 800-218 Secure Software Development Framework 1.1](https://doi.org/10.6028/NIST.SP.800-218",
+        "NIST SP 800-53 Rev. 5](https://doi.org/10.6028/NIST.SP.800-53r5",
+        "NIST SP 800-53A Rev. 5 assessment procedures](https://doi.org/10.6028/NIST.SP.800-53Ar5"
+      ],
+      "sourcePath": "content/standard/crosswalks/secure-software-supply-chain.md",
+      "sourceSlug": "standard/crosswalks/secure-software-supply-chain"
+    }
+  ],
+  "schemas": [
+    {
+      "name": "OAIES Agent Definition v1",
+      "description": "Deployable contract for an autonomous or semi-autonomous AI agent.",
+      "schemaId": "https://open-ai-engineering-standard.org/schemas/v1/agent-definition.schema.json",
+      "schemaVersion": "1.0.0",
+      "requiredFieldCount": 19,
+      "sourcePath": "schemas/agent-definition.v1.schema.json"
+    },
+    {
+      "name": "OAIES AI System Manifest v1",
+      "description": "Normative inventory, boundary, and kernel classification record for one AI system.",
+      "schemaId": "https://open-ai-engineering-standard.org/schemas/v1/ai-system-manifest.schema.json",
+      "schemaVersion": "1.0.0",
+      "requiredFieldCount": 25,
+      "sourcePath": "schemas/ai-system-manifest.v1.schema.json"
+    },
+    {
+      "name": "OAIES Context Manifest v1",
+      "description": "Provenance, access, freshness, and injection-control manifest for agent context.",
+      "schemaId": "https://open-ai-engineering-standard.org/schemas/v1/context-manifest.schema.json",
+      "schemaVersion": "1.0.0",
+      "requiredFieldCount": 12,
+      "sourcePath": "schemas/context-manifest.v1.schema.json"
+    },
+    {
+      "name": "OAIES Control Catalog v1",
+      "description": "Versioned catalog of testable AI governance and engineering controls.",
+      "schemaId": "https://open-ai-engineering-standard.org/schemas/v1/control-catalog.schema.json",
+      "schemaVersion": "1.0.0",
+      "requiredFieldCount": 8,
+      "sourcePath": "schemas/control-catalog.v1.schema.json"
+    },
+    {
+      "name": "OAIES Evaluation Result v1",
+      "description": "Reproducible result and release-gate decision for an AI evaluation run.",
+      "schemaId": "https://open-ai-engineering-standard.org/schemas/v1/evaluation-result.schema.json",
+      "schemaVersion": "1.0.0",
+      "requiredFieldCount": 19,
+      "sourcePath": "schemas/evaluation-result.v1.schema.json"
+    },
+    {
+      "name": "OAIES Evidence Bundle v1",
+      "description": "Integrity-protected index of design, implementation, operation, and outcome evidence.",
+      "schemaId": "https://open-ai-engineering-standard.org/schemas/v1/evidence-bundle.schema.json",
+      "schemaVersion": "1.0.0",
+      "requiredFieldCount": 14,
+      "sourcePath": "schemas/evidence-bundle.v1.schema.json"
+    },
+    {
+      "name": "OAIES Exception and Risk Acceptance v1",
+      "description": "Time-bound approval for one applicable control gap; never changes applicability.",
+      "schemaId": "https://open-ai-engineering-standard.org/schemas/v1/exception.schema.json",
+      "schemaVersion": "1.0.0",
+      "requiredFieldCount": 37,
+      "sourcePath": "schemas/exception.v1.schema.json"
+    },
+    {
+      "name": "OAIES AI Incident v1",
+      "description": "Lifecycle record for an AI security, safety, privacy, quality, or governance incident.",
+      "schemaId": "https://open-ai-engineering-standard.org/schemas/v1/incident.schema.json",
+      "schemaVersion": "1.0.0",
+      "requiredFieldCount": 19,
+      "sourcePath": "schemas/incident.v1.schema.json"
+    },
+    {
+      "name": "OAIES MCP Server Record v1",
+      "description": "Governance record for a Model Context Protocol server deployment.",
+      "schemaId": "https://open-ai-engineering-standard.org/schemas/v1/mcp-server-record.schema.json",
+      "schemaVersion": "1.0.0",
+      "requiredFieldCount": 16,
+      "sourcePath": "schemas/mcp-server-record.v1.schema.json"
+    },
+    {
+      "name": "OAIES Model Record v1",
+      "description": "Governed record for a first-party or third-party AI model version.",
+      "schemaId": "https://open-ai-engineering-standard.org/schemas/v1/model-record.schema.json",
+      "schemaVersion": "1.0.0",
+      "requiredFieldCount": 16,
+      "sourcePath": "schemas/model-record.v1.schema.json"
+    },
+    {
+      "name": "OAIES Prompt Release v1",
+      "description": "Immutable release record for a production prompt artifact.",
+      "schemaId": "https://open-ai-engineering-standard.org/schemas/v1/prompt-release.schema.json",
+      "schemaVersion": "1.0.0",
+      "requiredFieldCount": 17,
+      "sourcePath": "schemas/prompt-release.v1.schema.json"
+    },
+    {
+      "name": "OAIES Risk Register v1",
+      "description": "Portfolio of traceable AI risks, treatments, ownership, and residual decisions.",
+      "schemaId": "https://open-ai-engineering-standard.org/schemas/v1/risk-register.schema.json",
+      "schemaVersion": "1.0.0",
+      "requiredFieldCount": 13,
+      "sourcePath": "schemas/risk-register.v1.schema.json"
+    },
+    {
+      "name": "OAIES Statement of Applicability v1",
+      "description": "Authoritative control inventory and disposition for one assessed AI system.",
+      "schemaId": "https://open-ai-engineering-standard.org/schemas/v1/statement-of-applicability.schema.json",
+      "schemaVersion": "1.0.0",
+      "requiredFieldCount": 24,
+      "sourcePath": "schemas/statement-of-applicability.v1.schema.json"
+    },
+    {
+      "name": "OAIES Tool Contract v1",
+      "description": "Security and behavior contract for a tool callable by an AI agent.",
+      "schemaId": "https://open-ai-engineering-standard.org/schemas/v1/tool-contract.schema.json",
+      "schemaVersion": "1.0.0",
+      "requiredFieldCount": 17,
+      "sourcePath": "schemas/tool-contract.v1.schema.json"
+    }
+  ],
+  "conformanceCli": {
+    "status": "tooling-available",
+    "sourcePath": "tools/conformance/README.md",
+    "commands": [
+      "node tools/conformance/cli.mjs assess \\\n  --manifest tools/conformance/fixtures/manifest.valid.json \\\n  --evidence tools/conformance/fixtures/evidence.valid.json \\\n  --format json",
+      "node --test tools/conformance/test/*.test.mjs"
+    ],
+    "warning": "CLI output is a deterministic assessment of supplied artifacts, not external certification or regulatory approval."
+  },
+  "lifecycle": {
+    "documents": [
+      {
+        "title": "OAIES Kernel and Applicability",
+        "version": "1.0.0",
+        "status": "Normative",
+        "published": "2026-07-16",
+        "sourcePath": "content/standard/01-kernel-and-applicability.md",
+        "sourceSlug": "standard/01-kernel-and-applicability"
+      },
+      {
+        "title": "OAIES Normative Controls",
+        "version": "1.0.1",
+        "status": "Normative",
+        "published": "2026-07-16",
+        "sourcePath": "content/standard/02-normative-controls.md",
+        "sourceSlug": "standard/02-normative-controls"
+      },
+      {
+        "title": "OAIES Evidence, Exceptions, and Conformance",
+        "version": "1.0.1",
+        "status": "Normative",
+        "published": "2026-07-16",
+        "sourcePath": "content/standard/03-evidence-exceptions-conformance.md",
+        "sourceSlug": "standard/03-evidence-exceptions-conformance"
+      },
+      {
+        "title": "OAIES Lifecycle and Assessor Methodology",
+        "version": "1.0.1",
+        "status": "Normative",
+        "published": "2026-07-16",
+        "sourcePath": "content/standard/04-lifecycle-and-assessment.md",
+        "sourceSlug": "standard/04-lifecycle-and-assessment"
+      }
+    ],
+    "stages": [
+      {
+        "stage": "Active",
+        "meaning": "Current requirement",
+        "handling": "Assess normally"
+      },
+      {
+        "stage": "Deprecated",
+        "meaning": "Still valid; replacement or retirement announced",
+        "handling": "SoA identifies migration plan"
+      },
+      {
+        "stage": "Retired",
+        "meaning": "No longer accepted in new claims",
+        "handling": "Preserve ID and historical evidence"
+      },
+      {
+        "stage": "Withdrawn",
+        "meaning": "Unsafe, invalid, or legally incompatible",
+        "handling": "Suspend affected claim and reassess"
+      }
+    ],
+    "compatibilityPolicy": "COMPATIBILITY.md"
+  },
+  "governance": {
+    "documents": [
+      {
+        "title": "Project Governance",
+        "description": "This document defines how OAIES decisions are proposed, reviewed, approved, and reversed.",
+        "version": "1.0.0",
+        "status": "Informative",
+        "published": "2026-07-16",
+        "sourcePath": "GOVERNANCE.md"
+      },
+      {
+        "title": "Maintainer Policy",
+        "description": "This policy defines maintainer eligibility, responsibilities, access, inactivity, and removal.",
+        "version": "1.0.0",
+        "status": "Informative",
+        "published": "2026-07-16",
+        "sourcePath": "MAINTAINERS.md"
+      },
+      {
+        "title": "Request for Comments Process",
+        "description": "This process governs high-impact OAIES proposals before implementation.",
+        "version": "1.0.0",
+        "status": "Informative",
+        "published": "2026-07-16",
+        "sourcePath": "RFC_PROCESS.md"
+      },
+      {
+        "title": "Compatibility Policy",
+        "description": "This policy defines compatibility guarantees for OAIES documents, URLs, generated artifacts, website behavior, and releases.",
+        "version": "1.0.0",
+        "status": "Informative",
+        "published": "2026-07-16",
+        "sourcePath": "COMPATIBILITY.md"
+      }
+    ],
+    "rfcs": [],
+    "rfcRegistryStatus": "No RFC records are present in the canonical rfcs/ directory."
+  }
+}

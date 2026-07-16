@@ -1,0 +1,21 @@
+item_id,control_id,rating,confidence,evidence_refs,rationale,stratum
+SYNTH-001,OAIES-SYN-001,CONFORMANT,HIGH,SYNTH-E01,Synthetic control evidence met,governance
+SYNTH-002,OAIES-SYN-002,CONFORMANT,HIGH,SYNTH-E02,Synthetic control evidence met,governance
+SYNTH-003,OAIES-SYN-003,MINOR,MEDIUM,SYNTH-E03,Synthetic limited exception,governance
+SYNTH-004,OAIES-SYN-004,MAJOR,HIGH,SYNTH-E04,Synthetic material failure,security
+SYNTH-005,OAIES-SYN-005,NOT_APPLICABLE,HIGH,SYNTH-E05,Synthetic scope exclusion,security
+SYNTH-006,OAIES-SYN-006,INSUFFICIENT_EVIDENCE,LOW,SYNTH-E06,Synthetic evidence gap,data
+SYNTH-007,OAIES-SYN-007,CONFORMANT,HIGH,SYNTH-E07,Synthetic control evidence met,data
+SYNTH-008,OAIES-SYN-008,MINOR,MEDIUM,SYNTH-E08,Synthetic limited exception,evaluation
+SYNTH-009,OAIES-SYN-009,CONFORMANT,HIGH,SYNTH-E09,Synthetic control evidence met,evaluation
+SYNTH-010,OAIES-SYN-010,MAJOR,HIGH,SYNTH-E10,Synthetic material failure,security
+SYNTH-011,OAIES-SYN-011,CONFORMANT,MEDIUM,SYNTH-E11,Synthetic control evidence met,governance
+SYNTH-012,OAIES-SYN-012,MINOR,MEDIUM,SYNTH-E12,Synthetic limited exception,data
+SYNTH-013,OAIES-SYN-013,CONFORMANT,HIGH,SYNTH-E13,Synthetic control evidence met,evaluation
+SYNTH-014,OAIES-SYN-014,NOT_APPLICABLE,HIGH,SYNTH-E14,Synthetic scope exclusion,governance
+SYNTH-015,OAIES-SYN-015,INSUFFICIENT_EVIDENCE,LOW,SYNTH-E15,Synthetic evidence gap,security
+SYNTH-016,OAIES-SYN-016,CONFORMANT,HIGH,SYNTH-E16,Synthetic control evidence met,data
+SYNTH-017,OAIES-SYN-017,MINOR,MEDIUM,SYNTH-E17,Synthetic limited exception,evaluation
+SYNTH-018,OAIES-SYN-018,CONFORMANT,HIGH,SYNTH-E18,Synthetic control evidence met,governance
+SYNTH-019,OAIES-SYN-019,MAJOR,HIGH,SYNTH-E19,Synthetic material failure,security
+SYNTH-020,OAIES-SYN-020,CONFORMANT,HIGH,SYNTH-E20,Synthetic control evidence met,data

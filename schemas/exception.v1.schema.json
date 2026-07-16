@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://open-ai-engineering-standard.org/schemas/v1/exception.schema.json",
+  "title": "OAIES Exception and Risk Acceptance v1",
+  "description": "Time-bound approval for one applicable control gap; never changes applicability.",
+  "type": "object",
+  "required": ["schemaVersion", "id", "status", "systemRef", "systemVersion", "soaRef", "controlId", "controlVersion", "exactUnmetRequirement", "currentImplementation", "missingImplementation", "rootCause", "timeBoundJustification", "detectedAt", "exposure", "affectedParties", "affectedAssets", "inherentLikelihood", "inherentImpact", "riskRef", "compensatingControls", "residualLikelihood", "residualImpact", "residualRiskDisposition", "riskTolerancePolicyRef", "remediation", "durationPolicyRef", "maximumPermittedDuration", "durationRationale", "remainingClaimPeriodEnd", "approvals", "materialChangeInvalidates", "materialChangeTriggers", "effectiveAt", "expiresAt", "suspensionConditions", "createdAt"],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "id": {"type": "string", "pattern": "^EXC-[A-Z0-9][A-Z0-9-]{2,63}$"},
+    "status": {"enum": ["draft", "approved", "rejected", "active", "expired", "revoked", "closed"]},
+    "systemRef": {"type": "string", "format": "uri-reference"},
+    "systemVersion": {"type": "string", "minLength": 1, "maxLength": 200},
+    "soaRef": {"type": "string", "format": "uri-reference"},
+    "controlId": {"$ref": "#/$defs/controlId"},
+    "controlVersion": {"$ref": "#/$defs/semver"},
+    "exactUnmetRequirement": {"type": "string", "minLength": 20, "maxLength": 4000},
+    "currentImplementation": {"type": "string", "minLength": 10, "maxLength": 3000},
+    "missingImplementation": {"type": "string", "minLength": 10, "maxLength": 3000},
+    "rootCause": {"type": "string", "minLength": 10, "maxLength": 3000},
+    "timeBoundJustification": {"type": "string", "minLength": 20, "maxLength": 3000},
+    "detectedAt": {"type": "string", "format": "date-time"},
+    "detectionSourceRef": {"type": "string", "format": "uri-reference"},
+    "exposure": {
+      "type": "object",
+      "required": ["start", "end", "population", "environments", "scenarios"],
+      "properties": {
+        "start": {"type": "string", "format": "date-time"},
+        "end": {"type": "string", "format": "date-time"},
+        "population": {"type": "string", "minLength": 5, "maxLength": 2000},
+        "environments": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["development", "test", "staging", "production"]}},
+        "scenarios": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 10, "maxLength": 2000}}
+      },
+      "additionalProperties": false
+    },
+    "affectedParties": {"$ref": "#/$defs/nonEmptyStrings"},
+    "affectedAssets": {"$ref": "#/$defs/nonEmptyStrings"},
+    "inherentLikelihood": {"$ref": "#/$defs/likelihood"},
+    "inherentImpact": {"enum": ["I0", "I1", "I2", "I3"]},
+    "riskRef": {"type": "string", "format": "uri-reference"},
+    "compensatingControls": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["description", "owner", "sameRiskRationale", "testProcedure", "testResult", "evidenceRefs", "testedAt", "testedBy", "operatingFrequency"],
+        "properties": {
+          "description": {"type": "string", "minLength": 10, "maxLength": 2000},
+          "owner": {"type": "string", "minLength": 1, "maxLength": 200},
+          "sameRiskRationale": {"type": "string", "minLength": 20, "maxLength": 2000},
+          "testProcedure": {"type": "string", "minLength": 10, "maxLength": 2000},
+          "testResult": {"enum": ["pass", "fail"]},
+          "evidenceRefs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "format": "uri-reference"}},
+          "testedAt": {"type": "string", "format": "date-time"},
+          "testedBy": {"type": "string", "minLength": 1, "maxLength": 200},
+          "operatingFrequency": {"type": "string", "minLength": 3, "maxLength": 500}
+        },
+        "additionalProperties": false
+      }
+    },
+    "residualLikelihood": {"$ref": "#/$defs/likelihood"},
+    "residualImpact": {"enum": ["I0", "I1", "I2", "I3"]},
+    "residualRiskDisposition": {"enum": ["within-tolerance", "above-tolerance-authorized", "unacceptable"]},
+    "riskTolerancePolicyRef": {"type": "string", "format": "uri-reference"},
+    "remediation": {
+      "type": "object",
+      "required": ["action", "owner", "dueAt", "expectedEvidence", "validationOwner", "validationMethod"],
+      "properties": {
+        "action": {"type": "string", "minLength": 10, "maxLength": 3000},
+        "owner": {"type": "string", "minLength": 1, "maxLength": 200},
+        "dueAt": {"type": "string", "format": "date-time"},
+        "expectedEvidence": {"type": "string", "minLength": 5, "maxLength": 1000},
+        "validationOwner": {"type": "string", "minLength": 1, "maxLength": 200},
+        "validationMethod": {"type": "string", "minLength": 10, "maxLength": 2000}
+      },
+      "additionalProperties": false
+    },
+    "durationPolicyRef": {"type": "string", "format": "uri-reference"},
+    "maximumPermittedDuration": {"type": "string", "pattern": "^P(?=\\d|T\\d)(?:\\d+Y)?(?:\\d+M)?(?:\\d+D)?(?:T(?:\\d+H)?(?:\\d+M)?(?:\\d+S)?)?$"},
+    "durationRationale": {"type": "string", "minLength": 20, "maxLength": 3000},
+    "remainingClaimPeriodEnd": {"type": "string", "format": "date-time"},
+    "approvals": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/approval"}},
+    "materialChangeInvalidates": {"const": true},
+    "materialChangeTriggers": {"$ref": "#/$defs/nonEmptyStrings"},
+    "effectiveAt": {"type": "string", "format": "date-time"},
+    "expiresAt": {"type": "string", "format": "date-time"},
+    "suspensionConditions": {"$ref": "#/$defs/nonEmptyStrings"},
+    "createdAt": {"type": "string", "format": "date-time"},
+    "closedAt": {"type": "string", "format": "date-time"},
+    "closureEvidenceRefs": {"type": "array", "minItems": 1, "items": {"type": "string", "format": "uri-reference"}}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"enum": ["approved", "active"]}}, "required": ["status"]},
+      "then": {
+        "properties": {
+          "compensatingControls": {"items": {"properties": {"testResult": {"const": "pass"}}}},
+          "residualRiskDisposition": {"enum": ["within-tolerance", "above-tolerance-authorized"]}
+        }
+      }
+    },
+    {"if": {"properties": {"status": {"const": "closed"}}, "required": ["status"]}, "then": {"required": ["closedAt", "closureEvidenceRefs"]}},
+    {"if": {"properties": {"residualImpact": {"const": "I3"}}, "required": ["residualImpact"]}, "then": {"properties": {"approvals": {"contains": {"type": "object", "properties": {"role": {"const": "accountable-executive"}, "decision": {"const": "approve"}}, "required": ["role", "decision"], "additionalProperties": true}}}}}
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "semver": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"},
+    "controlId": {"type": "string", "pattern": "^OAIES-(GOV|RSK|DAT|MOD|AGT|SEC|OPS|ASR)-[0-9]{3}[a-z]?$"},
+    "likelihood": {"enum": ["rare", "unlikely", "possible", "likely", "almost-certain"]},
+    "nonEmptyStrings": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 3, "maxLength": 2000}},
+    "approval": {
+      "type": "object",
+      "required": ["role", "identity", "decision", "rationale", "decidedAt", "recordRef"],
+      "properties": {
+        "role": {"enum": ["control-owner", "system-owner", "business-owner", "independent-risk-owner", "legal-compliance", "accountable-executive"]},
+        "identity": {"type": "string", "minLength": 1, "maxLength": 200},
+        "decision": {"enum": ["approve", "reject", "not-required"]},
+        "rationale": {"type": "string", "minLength": 10, "maxLength": 2000},
+        "decidedAt": {"type": "string", "format": "date-time"},
+        "recordRef": {"type": "string", "format": "uri-reference"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

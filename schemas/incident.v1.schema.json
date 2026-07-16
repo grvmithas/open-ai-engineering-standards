@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://open-ai-engineering-standard.org/schemas/v1/incident.schema.json",
+  "title": "OAIES AI Incident v1",
+  "description": "Lifecycle record for an AI security, safety, privacy, quality, or governance incident.",
+  "type": "object",
+  "required": ["schemaVersion", "id", "systemRef", "systemVersion", "title", "category", "severity", "impactLevel", "status", "detectedAt", "reportedAt", "commander", "summary", "affectedAssets", "affectedParties", "containmentActions", "evidenceRefs", "notificationAssessment", "materialChangeAssessmentRequired"],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "id": {"type": "string", "pattern": "^INC-[A-Z0-9-]{3,64}$"},
+    "systemRef": {"type": "string", "format": "uri-reference"},
+    "systemVersion": {"type": "string", "minLength": 1, "maxLength": 200},
+    "title": {"type": "string", "minLength": 3, "maxLength": 200},
+    "category": {"enum": ["security", "safety", "privacy", "fairness", "reliability", "misuse", "policy", "data-quality", "supply-chain"]},
+    "severity": {"enum": ["sev1-critical", "sev2-high", "sev3-moderate", "sev4-low"]},
+    "impactLevel": {"enum": ["I0", "I1", "I2", "I3"]},
+    "status": {"enum": ["declared", "triage", "contained", "eradicated", "recovering", "resolved", "closed"]},
+    "detectedAt": {"type": "string", "format": "date-time"},
+    "reportedAt": {"type": "string", "format": "date-time"},
+    "resolvedAt": {"type": "string", "format": "date-time"},
+    "commander": {"type": "string", "minLength": 1, "maxLength": 200},
+    "summary": {"type": "string", "minLength": 20, "maxLength": 5000},
+    "affectedAssets": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1, "maxLength": 500}},
+    "affectedParties": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1, "maxLength": 500}},
+    "impact": {
+      "type": "object",
+      "required": ["description", "recordsAffected", "serviceImpact"],
+      "properties": {
+        "description": {"type": "string", "minLength": 10, "maxLength": 3000},
+        "recordsAffected": {"type": "integer", "minimum": 0},
+        "serviceImpact": {"enum": ["none", "degraded", "partial-outage", "full-outage", "unknown"]}
+      },
+      "additionalProperties": false
+    },
+    "containmentActions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["action", "owner", "status"],
+        "properties": {
+          "action": {"type": "string", "minLength": 5, "maxLength": 1000},
+          "owner": {"type": "string", "minLength": 1, "maxLength": 200},
+          "status": {"enum": ["planned", "in-progress", "complete", "blocked"]},
+          "completedAt": {"type": "string", "format": "date-time"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "rootCause": {"type": "string", "minLength": 10, "maxLength": 5000},
+    "correctiveActions": {"type": "array", "items": {"type": "string", "minLength": 5, "maxLength": 1000}},
+    "evidenceRefs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "format": "uri-reference"}},
+    "materialChangeAssessmentRequired": {"const": true},
+    "notificationAssessment": {
+      "type": "object",
+      "required": ["regulatoryNotificationRequired", "customerNotificationRequired", "assessedBy", "assessedAt"],
+      "properties": {
+        "regulatoryNotificationRequired": {"type": "boolean"},
+        "customerNotificationRequired": {"type": "boolean"},
+        "assessedBy": {"type": "string", "minLength": 1, "maxLength": 200},
+        "assessedAt": {"type": "string", "format": "date-time"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

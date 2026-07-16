@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://open-ai-engineering-standard.org/schemas/v1/evidence-bundle.schema.json",
+  "title": "OAIES Evidence Bundle v1",
+  "description": "Integrity-protected index of design, implementation, operation, and outcome evidence.",
+  "type": "object",
+  "required": ["schemaVersion", "id", "systemRef", "systemVersion", "purpose", "scope", "assessmentPeriod", "producer", "items", "manifestDigest", "createdAt", "retentionUntil", "recordsScheduleRef", "dataClassification"],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "id": {"type": "string", "pattern": "^EVD-[A-Z0-9][A-Z0-9-]{2,63}$"},
+    "systemRef": {"type": "string", "format": "uri-reference"},
+    "systemVersion": {"type": "string", "minLength": 1, "maxLength": 200},
+    "purpose": {"enum": ["control-verification", "release-gate", "risk-assessment", "audit", "incident", "regulatory-response"]},
+    "scope": {"type": "string", "minLength": 20, "maxLength": 3000},
+    "assessmentPeriod": {"$ref": "#/$defs/period"},
+    "producer": {
+      "type": "object",
+      "required": ["id", "name", "type", "version"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 200},
+        "name": {"type": "string", "minLength": 1, "maxLength": 200},
+        "type": {"enum": ["human", "system", "pipeline", "auditor"]},
+        "version": {"type": "string", "minLength": 1, "maxLength": 100}
+      },
+      "additionalProperties": false
+    },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "evidenceClass", "type", "sourceRef", "sourceIdentity", "custodian", "uri", "mediaType", "digest", "collectedAt", "coveredPeriod", "scope", "controlRefs", "integrityMechanism", "retentionUntil", "reproductionProcedure", "includesFailuresAndExceptions", "classification"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^EVI-[A-Z0-9][A-Z0-9-]{2,63}$"},
+          "evidenceClass": {"enum": ["design", "implementation", "operation", "outcome"]},
+          "type": {"enum": ["configuration", "log", "test-result", "approval", "attestation", "report", "ticket", "artifact", "snapshot", "population", "sample"]},
+          "sourceRef": {"type": "string", "format": "uri-reference"},
+          "sourceIdentity": {"type": "string", "minLength": 1, "maxLength": 300},
+          "custodian": {"type": "string", "minLength": 1, "maxLength": 200},
+          "uri": {"type": "string", "format": "uri-reference"},
+          "mediaType": {"type": "string", "pattern": "^[A-Za-z0-9!#$&^_.+-]+/[A-Za-z0-9!#$&^_.+-]+$"},
+          "digest": {"$ref": "#/$defs/digest"},
+          "collectedAt": {"type": "string", "format": "date-time"},
+          "coveredPeriod": {"$ref": "#/$defs/period"},
+          "scope": {
+            "type": "object",
+            "required": ["systemRef", "environment", "componentRefs"],
+            "properties": {
+              "systemRef": {"type": "string", "format": "uri-reference"},
+              "environment": {"enum": ["development", "test", "staging", "production"]},
+              "componentRefs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "format": "uri-reference"}}
+            },
+            "additionalProperties": false
+          },
+          "controlRefs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/controlId"}},
+          "integrityMechanism": {"enum": ["cryptographic-digest", "digital-signature", "append-only-store", "worm-storage"]},
+          "retentionUntil": {"type": "string", "format": "date-time"},
+          "reproductionProcedure": {"type": "string", "minLength": 10, "maxLength": 3000},
+          "populationRef": {"type": "string", "format": "uri-reference"},
+          "samplingMethod": {"type": "string", "minLength": 10, "maxLength": 2000},
+          "includesFailuresAndExceptions": {"type": "boolean"},
+          "classification": {"enum": ["public", "internal", "confidential", "restricted"]},
+          "chainOfCustody": {"type": "array", "items": {"type": "string", "minLength": 5, "maxLength": 1000}}
+        },
+        "allOf": [
+          {"if": {"properties": {"evidenceClass": {"enum": ["operation", "outcome"]}}, "required": ["evidenceClass"]}, "then": {"properties": {"includesFailuresAndExceptions": {"const": true}}, "required": ["populationRef"]}}
+        ],
+        "additionalProperties": false
+      }
+    },
+    "manifestDigest": {"$ref": "#/$defs/digest"},
+    "signature": {
+      "type": "object",
+      "required": ["algorithm", "keyId", "value"],
+      "properties": {
+        "algorithm": {"enum": ["ed25519", "ecdsa-p256-sha256", "rsa-pss-sha256"]},
+        "keyId": {"type": "string", "minLength": 1, "maxLength": 500},
+        "value": {"type": "string", "minLength": 32, "maxLength": 8192}
+      },
+      "additionalProperties": false
+    },
+    "createdAt": {"type": "string", "format": "date-time"},
+    "retentionUntil": {"type": "string", "format": "date-time"},
+    "recordsScheduleRef": {"type": "string", "format": "uri-reference"},
+    "dataClassification": {"enum": ["public", "internal", "confidential", "restricted"]}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "controlId": {"type": "string", "pattern": "^OAIES-(GOV|RSK|DAT|MOD|AGT|SEC|OPS|ASR)-[0-9]{3}[a-z]?$"},
+    "digest": {"type": "string", "pattern": "^(?:sha256:[A-Fa-f0-9]{64}|sha384:[A-Fa-f0-9]{96}|sha512:[A-Fa-f0-9]{128})$"},
+    "period": {"type": "object", "required": ["start", "end"], "properties": {"start": {"type": "string", "format": "date-time"}, "end": {"type": "string", "format": "date-time"}}, "additionalProperties": false}
+  }
+}

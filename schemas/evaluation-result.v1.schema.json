@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://open-ai-engineering-standard.org/schemas/v1/evaluation-result.schema.json",
+  "title": "OAIES Evaluation Result v1",
+  "description": "Reproducible result and release-gate decision for an AI evaluation run.",
+  "type": "object",
+  "required": ["schemaVersion", "id", "systemRef", "systemVersion", "workloadProfiles", "autonomyLevel", "impactLevel", "evaluationClass", "subject", "suite", "environment", "dataset", "startedAt", "completedAt", "metrics", "gateDecision", "executor", "limitations", "evidenceRefs"],
+  "properties": {
+    "schemaVersion": {"const": "1.0.0"},
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{2,127}$"},
+    "systemRef": {"type": "string", "format": "uri-reference"},
+    "systemVersion": {"type": "string", "minLength": 1, "maxLength": 200},
+    "workloadProfiles": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["P1", "P2", "P3", "P4", "P5", "P6"]}},
+    "autonomyLevel": {"enum": ["A0", "A1", "A2", "A3", "A4"]},
+    "impactLevel": {"enum": ["I0", "I1", "I2", "I3"]},
+    "evaluationClass": {"enum": ["design", "implementation", "operation", "outcome"]},
+    "subject": {
+      "type": "object",
+      "required": ["type", "ref", "version", "digest"],
+      "properties": {
+        "type": {"enum": ["system", "model", "prompt", "agent", "tool", "context-pipeline"]},
+        "ref": {"type": "string", "format": "uri-reference"},
+        "version": {"type": "string", "minLength": 1, "maxLength": 200},
+        "digest": {"type": "string", "pattern": "^sha256:[A-Fa-f0-9]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "suite": {"$ref": "#/$defs/versionedArtifact"},
+    "environment": {"enum": ["development", "ci", "staging", "production", "offline-lab"]},
+    "dataset": {"$ref": "#/$defs/versionedArtifact"},
+    "startedAt": {"type": "string", "format": "date-time"},
+    "completedAt": {"type": "string", "format": "date-time"},
+    "metrics": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "value", "threshold", "operator", "passed", "sampleSize"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1, "maxLength": 200},
+          "value": {"type": "number"},
+          "threshold": {"type": "number"},
+          "operator": {"enum": [">", ">=", "=", "<=", "<"]},
+          "passed": {"type": "boolean"},
+          "sampleSize": {"type": "integer", "minimum": 1},
+          "confidenceInterval": {
+            "type": "object",
+            "required": ["level", "lower", "upper"],
+            "properties": {
+              "level": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
+              "lower": {"type": "number"},
+              "upper": {"type": "number"}
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "gateDecision": {"enum": ["pass", "fail", "conditional-pass", "not-gated"]},
+    "exceptions": {"type": "array", "uniqueItems": true, "items": {"type": "string", "format": "uri-reference"}},
+    "executor": {"type": "string", "minLength": 1, "maxLength": 200},
+    "limitations": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 3, "maxLength": 1000}},
+    "evidenceRefs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "format": "uri-reference"}}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "versionedArtifact": {
+      "type": "object",
+      "required": ["uri", "version", "digest"],
+      "properties": {
+        "uri": {"type": "string", "format": "uri-reference"},
+        "version": {"type": "string", "minLength": 1, "maxLength": 200},
+        "digest": {"type": "string", "pattern": "^sha256:[A-Fa-f0-9]{64}$"}
+      },
+      "additionalProperties": false
+    }
+  }
+}

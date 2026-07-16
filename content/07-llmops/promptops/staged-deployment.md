@@ -1,0 +1,69 @@
+# Staged Prompt Deployment
+
+> **Version:** 1.0.0
+> **Last updated:** 2026-07-16
+> **Status:** Informative OAIES implementation profile
+
+## Purpose
+Promote qualified prompt releases through development, staging, canary, and production.
+
+## Why
+Blast radius must grow only as evidence grows.
+
+## When
+Use for every prompt or model-envelope release.
+
+## How
+1. Validate locally against schema and unit cases.
+2. Run locked regression and adversarial gates in CI.
+3. Deploy to staging with production-like data contracts.
+4. Canary to a bounded cohort with automatic abort thresholds.
+5. Promote gradually; retain previous release for instant rollback.
+
+## Evidence contract
+The decision record is the **promotion ledger**. It records manifest digest; environment; gate result; canary cohort; exposure; abort threshold; approver. The release manager owns completeness; the evidence is invalid when staging differs materially from production policy or data contracts. Evidence must reference immutable source, release, dataset, policy, and provider identifiers rather than screenshots alone.
+
+## Failure response and recovery
+**Trigger:** canary SLO burn or severe-quality threshold breaches.
+
+**Immediate response:** set the production alias to the prior digest and drain in-flight agent work. Preserve the promotion ledger, affected trace IDs, timestamps, and decision logs before mutation. Open an incident when users, data, money, authorization, or a release decision may have been affected; closure requires a regression case and verified control change specific to staged prompt deployment.
+
+## Decision authority
+The **release manager** accepts the operational decision. The **service on-call** provides independent challenge for high-risk scope, failed gates, or exceptions. Automation may calculate or enforce a declared rule, but it cannot accept residual risk or approve its own bypass.
+
+## Tradeoffs
+| Choice | Benefit | Cost |
+|---|---|---|
+| Gradual rollout | Limits blast radius | Longer lead time |
+
+## Anti-patterns
+- Promoting directly from development.
+- Canarying without automatic abort.
+
+## Enterprise considerations
+- Require change records for high-risk systems.
+- Keep regional rollout controls.
+
+## Framework relationship
+This profile is informative. It helps implement the following relationships and creates no certification, conformity, or regulator-approval claim.
+
+| Source | Relationship for Staged Prompt Deployment | Boundary |
+|---|---|---|
+| NIST AI RMF | MANAGE 2.4 | Use the cited outcomes as governance questions; NIST does not approve implementations |
+| ISO/IEC 42001 | 42001 clauses 8.1 and 8.4 | Evidence may support an organization’s management system; certification requires an accredited, scoped assessment |
+| Domain threat/control source | Unsafe output and excessive agency | Test only the threats applicable to the documented system and release |
+
+## Checklist
+- [ ] Each environment is immutable.
+- [ ] Abort thresholds are live.
+- [ ] Previous release remains deployable.
+
+## References
+- NIST, [AI RMF 1.0](https://doi.org/10.6028/NIST.AI.100-1), GOVERN 1.7 and MANAGE 2 (accessed 2026-07-16).
+- SLSA, [Provenance](https://slsa.dev/spec/v1.1/provenance) (accessed 2026-07-16); apply the provenance pattern to prompt release envelopes, not as a claim of SLSA conformance.
+
+## Changelog
+| Version | Date | Change |
+|---|---|---|
+| 1.1.0 | 2026-07-16 | Replaced generic assurance text with the promotion ledger, failure trigger, accountable decision, and scoped framework relationships for staged prompt deployment. |
+| 1.0.0 | 2026-07-16 | Initial complete profile. |

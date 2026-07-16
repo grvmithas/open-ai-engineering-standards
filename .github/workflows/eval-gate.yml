@@ -1,0 +1,50 @@
+name: Evaluation Gate
+
+on:
+  pull_request:
+    paths:
+      - 'content/**/*.prompt.md'
+      - 'content/**/*.agent.md'
+      - 'content/**/*.skill.md'
+      - 'eval/**'
+      - '.github/workflows/eval-gate.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  evaluation-gate:
+    name: LLM Evaluation Gate
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install evaluation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install deepeval
+
+      - name: Require evaluation credentials
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "::error::OPENAI_API_KEY is required; no evaluation result was produced."
+            exit 1
+          fi
+          
+      - name: Run DeepEval test suite
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DEEPEVAL_API_KEY: ${{ secrets.DEEPEVAL_API_KEY }}
+        run: |
+          deepeval test run eval/ --verbose
+          

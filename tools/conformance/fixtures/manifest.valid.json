@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0.0",
+  "standardVersion": "1.0.0",
+  "assessmentId": "checkout-prod-2026-07",
+  "system": {
+    "id": "checkout-assistant",
+    "environment": "production",
+    "capabilities": ["retrieval", "tools"],
+    "dataClasses": ["internal"],
+    "deployment": "external"
+  },
+  "controls": [
+    {
+      "id": "AUTHZ-01",
+      "title": "Authorize before retrieval",
+      "applicability": { "field": "capabilities", "operator": "includes", "value": "retrieval" },
+      "requirements": [{ "id": "retrieval-order", "evidenceTypes": ["test", "trace"] }]
+    },
+    {
+      "id": "BUDGET-01",
+      "title": "Enforce token and cost budgets",
+      "applicability": true,
+      "requirements": [{ "id": "budget-gate", "evidenceTypes": ["test", "configuration"] }]
+    },
+    {
+      "id": "MEMORY-01",
+      "title": "Protect durable memory",
+      "applicability": { "field": "capabilities", "operator": "includes", "value": "memory" },
+      "requirements": [{ "id": "memory-policy", "evidenceTypes": ["test"] }]
+    },
+    {
+      "id": "POLICY-01",
+      "title": "Enforce output policy",
+      "applicability": {
+        "all": [
+          { "field": "environment", "operator": "equals", "value": "production" },
+          { "not": { "field": "deployment", "operator": "equals", "value": "internal" } }
+        ]
+      },
+      "requirements": [{ "id": "policy-test", "evidenceTypes": ["test", "review"] }]
+    },
+    {
+      "id": "TRACE-01",
+      "title": "Emit interoperable traces",
+      "applicability": { "field": "capabilities", "operator": "exists" },
+      "requirements": [{ "id": "trace-shape", "evidenceTypes": ["trace"] }]
+    }
+  ],
+  "exceptions": [
+    {
+      "controlId": "TRACE-01",
+      "reason": "Collector migration is approved for this assessment window.",
+      "approvedBy": "risk-owner@example.com",
+      "expiresAt": "2026-08-01T00:00:00.000Z"
+    }
+  ]
+}
