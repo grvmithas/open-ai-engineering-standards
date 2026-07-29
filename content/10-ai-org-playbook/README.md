@@ -18,9 +18,9 @@ Levels 0-9 cover the technical standards. Level 10 covers the organizational inf
 
 ---
 
-## AI Engineering Roles (OAIES Definitions)
+## AI Engineering Roles (AIES Definitions)
 
-The industry has not standardized these roles. This is the OAIES standard.
+The industry has not standardized these roles. This is the AIES standard.
 
 ### AI Engineer
 **Core competency:** Building production AI systems (Levels 0-6)
@@ -87,12 +87,12 @@ CTO
 **When to use:** Multiple product teams with AI needs. Strong existing engineering culture.
 **Tradeoffs:** Standards drift risk without strong guild governance. Harder to share infrastructure.
 
-### Model 3: Hybrid (OAIES Recommended for Scale)
+### Model 3: Hybrid (AIES Recommended for Scale)
 ```
 CTO
 ├── AI Platform Team (centralized)
 │   ├── Shared infrastructure (eval, LLMOps, observability)
-│   ├── Standards and OAIES compliance
+│   ├── Standards and AIES compliance
 │   └── AI Architects
 └── Product Teams (federated)
     ├── AI Engineers (embedded in product)
@@ -139,9 +139,9 @@ AI capabilities are advancing faster than trust is established. The default shou
 **Cultural practice:** Human approval gates are celebrated, not resented. They are how trust is built.
 
 ### 4. Standards Discipline
-The OAIES standard works when followed consistently. Teams that apply it selectively ("just this once") erode the standard for everyone.
+The AIES standard works when followed consistently. Teams that apply it selectively ("just this once") erode the standard for everyone.
 
-**Cultural practice:** Code review includes OAIES checklist compliance. Non-compliance is a review comment, not a personal judgment.
+**Cultural practice:** Code review includes AIES checklist compliance. Non-compliance is a review comment, not a personal judgment.
 
 ---
 
@@ -151,7 +151,7 @@ Quarterly review of emerging technologies, techniques, and practices. Every team
 
 **Format:** Adopt / Trial / Assess / Hold (same as ThoughtWorks Technology Radar)
 
-See [radar/technology-radar.md](./radar/technology-radar.md) for the current OAIES radar.
+See [radar/technology-radar.md](./radar/technology-radar.md) for the current AIES radar.
 
 **Cadence:** Quarterly update, with emergency additions for breakthrough developments.
 

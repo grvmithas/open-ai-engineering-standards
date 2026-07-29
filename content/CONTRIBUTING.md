@@ -1,4 +1,4 @@
-# Contributing to OAIES
+# Contributing to AIES
 
 ## The Standard for Contributing
 
@@ -111,4 +111,4 @@ If your PR is rejected, the feedback will be specific and constructive. Use it t
 
 ---
 
-*OAIES — "The standard doesn't tell you what you can do. It tells you what you must do."*
+*AIES — "The standard doesn't tell you what you can do. It tells you what you must do."*

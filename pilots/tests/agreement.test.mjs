@@ -30,7 +30,7 @@ test('synthetic fixture reproduces the committed report', () => {
 test('CSV parser handles quoted commas, quotes, CRLF, and BOM', () => {
   const rows = parseCsv(
     '\uFEFFitem_id,control_id,rating,rationale\r\n' +
-      'SYNTH-X,OAIES-SYN-X,CONFORMANT,"Evidence says ""yes"", reproducibly"\r\n',
+      'SYNTH-X,AIES-SYN-X,CONFORMANT,"Evidence says ""yes"", reproducibly"\r\n',
   );
   assert.equal(rows[0].rationale, 'Evidence says "yes", reproducibly');
 });

@@ -2,35 +2,45 @@
 
 > **Pattern:** Hotfix  
 > **Component:** problem.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
 ## Statement
 
-During production harm, teams that skip incident command and containment ship oversized “hotfixes,” conflict with each other, and extend customer impact — often creating a second incident during recovery.
+SEVs invite speculative coding and mass restarts: no IC, out-of-path edits, and evidence destroyed before RCA can start.
 
 ## Measurable symptoms
 
 | Symptom | How you detect it |
 |---------|-------------------|
-| Slow containment | Time from declare → harm reduced misses SEV target |
-| Scope bloat | Hotfix diff touches unrelated paths or deps |
-| Dual deploy | Two “fixes” land without IC authorization |
-| Evidence loss | Logs rotated / pods deleted before capture |
-| Comms chaos | Customers hear conflicting status |
+| No IC | Multiple people mutate prod |
+| Path explosion | Hotfix PR touches unrelated modules |
+| Evidence wipe | Restarts before log capture |
+| Customer data in chat | PII pasted into incident channels |
 
 ## Root cause
 
-Organizations reward “finding root cause live” over stopping impact with a known-good state. Emergency process without roles and abort criteria becomes freestyle engineering.
+Incident adrenaline rewards visible action. Containment and evidence look passive even when they are the correct first moves.
+
+## What breaks when this pattern is skipped
+
+- Blast radius expands during “fix”
+- RCA impossible after the fact
+- Repeat SEVs from the same hole
 
 ## Non-goals of this pattern
 
-- Not the durable architectural fix (schedule after containment)
-- Not the RCA document (use [root-cause-pattern](../root-cause-pattern/README.md))
-- Not a bypass for criminal/security forensics holds when those apply
-- Not performance optimization theater under a SEV label
+- Not a feature delivery shortcut
+- Not a full RCA (that follows containment)
+- Not unscoped refactors during SEV
 
-## Related failure modes
+## Related
 
-See [failures.md](./failures.md).
+- [Failures](./failures.md) — recovery table  
+- [Workflow](./workflow.md) — ordered steps  
+- [Checklist](./checklist.md) — exit criteria  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Hotfix problem page expanded with skip-impact and operator symptoms.

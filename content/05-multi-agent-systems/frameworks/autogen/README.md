@@ -4,7 +4,7 @@
 
 ## Purpose
 
-Apply OAIES controls when Microsoft AutoGen is selected for multi-agent messaging and teams.
+Apply AIES controls when Microsoft AutoGen is selected for multi-agent messaging and teams.
 
 ## Why
 

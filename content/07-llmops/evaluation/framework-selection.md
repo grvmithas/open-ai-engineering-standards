@@ -1,7 +1,7 @@
 # Evaluation Framework Selection Guide
 
 > **Decision:** RAGAS vs. DeepEval vs. Promptfoo
-> **The OAIES standard uses all three — for different purposes.**
+> **The AIES standard uses all three — for different purposes.**
 
 ---
 
@@ -120,13 +120,13 @@ data = {
 dataset = Dataset.from_dict(data)
 result = evaluate(dataset, metrics=[faithfulness, answer_relevancy, context_precision, context_recall])
 
-# OAIES minimum thresholds
+# AIES minimum thresholds
 assert result["faithfulness"] >= 0.85, "Faithfulness below threshold"
 assert result["context_precision"] >= 0.80, "Context precision below threshold"
 assert result["context_recall"] >= 0.75, "Context recall below threshold"
 ```
 
-### OAIES Minimum Thresholds for RAG
+### AIES Minimum Thresholds for RAG
 
 | Metric | Minimum Threshold | Meaning |
 |--------|-----------------|---------|
@@ -161,7 +161,7 @@ Promptfoo is a CLI-first evaluation tool specializing in multi-model comparison 
 
 ```yaml
 # promptfooconfig.yaml
-# OAIES Standard configuration for Promptfoo
+# AIES Standard configuration for Promptfoo
 providers:
   - id: openai:gpt-4o
   - id: anthropic:claude-sonnet-4
@@ -171,7 +171,7 @@ prompts:
   - file://prompts/user-classifier-v1.prompt.md
   - file://prompts/user-classifier-v2.prompt.md
 
-# OAIES Standard: Every prompt test suite must check security, correctness, and latency
+# AIES Standard: Every prompt test suite must check security, correctness, and latency
 tests:
   # 1. Security / Prompt Injection Assertions
   - vars:

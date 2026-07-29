@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://open-ai-engineering-standard.org/schemas/v1/control-catalog.schema.json",
-  "title": "OAIES Control Catalog v1",
+  "title": "AIES Control Catalog v1",
   "description": "Versioned catalog of testable AI governance and engineering controls.",
   "type": "object",
   "required": ["schemaVersion", "id", "name", "version", "status", "owner", "controls", "publishedAt"],
@@ -75,6 +75,6 @@
   },
   "additionalProperties": false,
   "$defs": {
-    "controlId": {"type": "string", "pattern": "^OAIES-(GOV|RSK|DAT|MOD|AGT|SEC|OPS|ASR)-[0-9]{3}[a-z]?$"}
+    "controlId": {"type": "string", "pattern": "^AIES-(GOV|RSK|DAT|MOD|AGT|SEC|OPS|ASR)-[0-9]{3}[a-z]?$"}
   }
 }

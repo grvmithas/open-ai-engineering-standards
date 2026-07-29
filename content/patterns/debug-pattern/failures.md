@@ -2,36 +2,41 @@
 
 > **Pattern:** Debug  
 > **Component:** failures.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Failure 1: Symptom → fix
+## Purpose
 
-**Symptom:** Catch-all handler returns 200; underlying race remains.  
-**Cause:** No hypothesis testing.  
-**Recovery:** Revert masking change; restart debug workflow; fix cause.
+Recover when the Debug pattern is misapplied — without abandoning the gate.
 
-## Failure 2: Multi-variable thrash
+## Failure → detection → recovery
 
-**Symptom:** “It works” after changing code, config, and infra together.  
-**Cause:** Experiments not isolated.  
-**Recovery:** Bisect; re-confirm with one variable; discard unrelated changes.
+| Failure | Detection | Recovery |
+|---------|-----------|----------|
+| Single hypothesis | First patch fails | Write ≥2 ranked hypotheses before next patch |
+| Local-only verify | Prod still broken | Require failing-env confirmation |
+| Catch-and-swallow | Errors hidden | Remove swallow; add regression test |
+| Restart as fix | Fingerprint returns | Preserve evidence; treat restart as containment only |
 
-## Failure 3: No regression test
+## Escalation from Debug failures
 
-**Symptom:** Bug returns after a refactor.  
-**Cause:** Fix merged without failing-first test.  
-**Recovery:** Add test; keep it in CI; treat absence as process defect.
+- Security-class impact during Debug → [Security skill](../../03-skill-engineering/skills/security.skill.md) + human security owner  
+- Production SEV while misusing Debug → [Hotfix](../hotfix-pattern/README.md) containment first  
+- Learning after Debug containment → [Root Cause](../root-cause-pattern/README.md)
 
-## Failure 4: Cannot reproduce → guess
+## Do not
 
-**Symptom:** Patch based on intuition; prod still broken.  
-**Cause:** Skipped repro locking.  
-**Recovery:** Capture more telemetry; improve repro; avoid prod speculation patches.
+- Skip the Debug human gate “just this once” after a failure  
+- Delete Debug evidence to hide a bad run  
+- Replace Debug with unstructured chat under pressure  
 
-## Failure 5: Fix everywhere silently
+## Related
 
-**Symptom:** Huge PR “while debugging” touches unrelated modules.  
-**Cause:** Similarity scan turned into drive-by rewrite.  
-**Recovery:** Split follow-ups; merge only causal fix + test.
+- [Checklist](./checklist.md)  
+- [Enterprise notes](./enterprise-notes.md)  
+- [Example](./examples/example.md)  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Debug failure recovery table and escalation paths expanded.

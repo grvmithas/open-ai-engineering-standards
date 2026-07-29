@@ -159,7 +159,7 @@ function exceptionProblems(exceptionRecord, control, decision, context) {
     exceptionRecord.timeBoundJustification,
   ].join(" ");
   if (
-    exceptionRecord.controlId === "OAIES-RSK-001" ||
+    exceptionRecord.controlId === "AIES-RSK-001" ||
     /legal obligation|prohibited (?:ai )?practice|evidence falsification|unbounded a4|imminent i3 harm/i.test(prohibitedText)
   ) problems.push("exception applies to a prohibited condition");
   return [...new Set(problems)].sort();

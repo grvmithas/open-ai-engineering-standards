@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://open-ai-engineering-standard.org/schemas/v1/risk-register.schema.json",
-  "title": "OAIES Risk Register v1",
+  "title": "AIES Risk Register v1",
   "description": "Portfolio of traceable AI risks, treatments, ownership, and residual decisions.",
   "type": "object",
   "required": ["schemaVersion", "id", "systemRef", "systemVersion", "workloadProfiles", "autonomyLevel", "impactLevel", "method", "riskAppetite", "owner", "risks", "approvedAt", "nextReviewAt"],
@@ -69,6 +69,6 @@
       },
       "additionalProperties": false
     },
-    "controlId": {"type": "string", "pattern": "^OAIES-(GOV|RSK|DAT|MOD|AGT|SEC|OPS|ASR)-[0-9]{3}[a-z]?$"}
+    "controlId": {"type": "string", "pattern": "^AIES-(GOV|RSK|DAT|MOD|AGT|SEC|OPS|ASR)-[0-9]{3}[a-z]?$"}
   }
 }

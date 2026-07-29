@@ -4,7 +4,7 @@
 
 ## Purpose
 
-Apply OAIES controls when LangGraph is selected as the workflow runtime.
+Apply AIES controls when LangGraph is selected as the workflow runtime.
 
 ## Why
 

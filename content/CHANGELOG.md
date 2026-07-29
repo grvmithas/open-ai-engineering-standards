@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the Open AI Engineering Standard are documented here.
+All notable changes to the AI Engineering Standard are documented here.
 
 Format: `[Version] — YYYY-MM-DD`
 Each entry includes: Added, Changed, Deprecated, Removed, Fixed, Security.

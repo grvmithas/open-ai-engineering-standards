@@ -4,7 +4,7 @@
 
 ## Purpose
 
-Make every agent-to-agent message attributable, integrity-protected, delivery-safe, and auditable — using the OAIES `AgentMessage` schema as the wire format.
+Make every agent-to-agent message attributable, integrity-protected, delivery-safe, and auditable — using the AIES `AgentMessage` schema as the wire format.
 
 ## Why
 
@@ -114,7 +114,7 @@ async function acceptMessage(msg: AgentMessage, inbox: Inbox): Promise<"process"
 | `at_least_once` | Retry until ack | **Must be idempotent** | Default for task/result/question |
 | `exactly_once_effect` | At-least-once + outbox | Deduplicate by `idempotency_key` and apply side effects once | Tool calls, gate writes, payments |
 
-**OAIES default:** `at_least_once` on the bus; **exactly-once effects** at the state/tool boundary via idempotency keys and transactional outbox.
+**AIES default:** `at_least_once` on the bus; **exactly-once effects** at the state/tool boundary via idempotency keys and transactional outbox.
 
 ```mermaid
 sequenceDiagram

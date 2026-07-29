@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://open-ai-engineering-standard.org/schemas/v1/statement-of-applicability.schema.json",
-  "title": "OAIES Statement of Applicability v1",
+  "title": "AIES Statement of Applicability v1",
   "description": "Authoritative control inventory and disposition for one assessed AI system.",
   "type": "object",
   "required": ["schemaVersion", "id", "version", "status", "oaiesVersion", "systemRef", "systemVersion", "systemOwner", "boundaryRef", "scope", "environments", "assessmentPeriod", "catalogRef", "catalogVersion", "workloadProfiles", "autonomyLevel", "impactLevel", "classificationEvidenceRef", "materialChangeTriggers", "decisions", "reconciliation", "approvals", "createdAt", "nextReviewAt"],
@@ -78,7 +78,7 @@
   "additionalProperties": false,
   "$defs": {
     "semver": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"},
-    "controlId": {"type": "string", "pattern": "^OAIES-(GOV|RSK|DAT|MOD|AGT|SEC|OPS|ASR)-[0-9]{3}[a-z]?$"},
+    "controlId": {"type": "string", "pattern": "^AIES-(GOV|RSK|DAT|MOD|AGT|SEC|OPS|ASR)-[0-9]{3}[a-z]?$"},
     "period": {"type": "object", "required": ["start", "end"], "properties": {"start": {"type": "string", "format": "date-time"}, "end": {"type": "string", "format": "date-time"}}, "additionalProperties": false},
     "approval": {"type": "object", "required": ["role", "identity", "decision", "decidedAt", "recordRef"], "properties": {"role": {"enum": ["system-owner", "independent-risk-owner", "assessor"]}, "identity": {"type": "string", "minLength": 1, "maxLength": 200}, "decision": {"enum": ["approve", "reject", "validated", "not-validated"]}, "decidedAt": {"type": "string", "format": "date-time"}, "recordRef": {"type": "string", "format": "uri-reference"}}, "additionalProperties": false}
   }

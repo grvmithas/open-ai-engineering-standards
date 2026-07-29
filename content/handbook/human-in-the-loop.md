@@ -122,7 +122,7 @@ Add `risk_tier: R0|R1|R2|R3` to the task brief. Wrong classification is cheaper 
 sequenceDiagram
   participant Agent
   participant Harness
-  participant Hook as OAIES hooks
+  participant Hook as AIES hooks
   participant Human
   Agent->>Harness: Request tool effect=deployment target=prod
   Harness->>Hook: pre-tool-call

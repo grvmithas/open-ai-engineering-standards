@@ -2,35 +2,45 @@
 
 > **Pattern:** Migration  
 > **Component:** problem.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
 ## Statement
 
-Schema, API, and data-store changes cause downtime or silent corruption when teams cut over in one step without consumer inventory, expand/contract phases, reconciliation, or phase-specific rollback.
+Data or service moves ship as big-bang cuts: no dual-write/verify window, secrets in scripts, and irreversible drops without a rollback owner.
 
 ## Measurable symptoms
 
 | Symptom | How you detect it |
 |---------|-------------------|
-| Irreversible deploy | Old column/path removed in same change as cutover |
-| Consumer surprise | Unknown reader breaks after deploy |
-| Silent skew | Row counts or checksums diverge post-cutover |
-| Endless dual-write | Compatibility layer still present quarters later |
-| Backup unproven | Restore never rehearsed before point of no return |
+| No return path | Rollback is “restore from backup someday” |
+| Integrity surprises | Parity checks appear after cutover |
+| Secret leakage | Connection strings in migration PRs |
+| Digest drift | Unpinned images/jobs run “latest” |
 
 ## Root cause
 
-Migrations are scheduled like app deploys. Compatibility is a multi-phase project: expand, dual/shadow, reconcile, cutover, contract — with quantitative gates and an explicit point of no return.
+Migrations look like engineering chores until they are irreversible. Speed bias deletes verify windows that are the only safe abort.
+
+## What breaks when this pattern is skipped
+
+- Cutover war rooms become default
+- Data class incidents during move
+- Follow-up migrations to undo the last migration
 
 ## Non-goals of this pattern
 
-- Not a general feature planner (use planner-pattern for product work)
-- Not legacy rewrite strategy (use legacy-modernization-pattern)
-- Not CI database fixture resets
-- Not required for unused additive expand-only columns with no cutover
+- Not a rewrite of product behavior (use Legacy Modernization)
+- Not a license to skip security on “temporary” scripts
+- Not MCP-driven DROP without a phase gate
 
-## Related failure modes
+## Related
 
-See [failures.md](./failures.md).
+- [Failures](./failures.md) — recovery table  
+- [Workflow](./workflow.md) — ordered steps  
+- [Checklist](./checklist.md) — exit criteria  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Migration problem page expanded with skip-impact and operator symptoms.

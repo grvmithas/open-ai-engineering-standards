@@ -1,8 +1,8 @@
 # Planning Skill
 
 > **Skill ID:** `planning`  
-> **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Version:** 2.1  
+> **Updated:** 2026-07-29
 
 ## Purpose
 Activate this skill when An approved feature or remediation must be decomposed into executable repository changes.
@@ -46,15 +46,17 @@ Plan an idempotent billing webhook: enumerate schema, handler, replay tests, met
 Do not use to invent requirements, approve architecture, or implement the plan.
 
 ## Tradeoffs
-The required domain artifacts and verification cost more than a generic implementation pass, but they expose assumptions, safety gates, and operational limits before release.
+A dependency-ordered plan with exact files, AC mapping, verification commands, and rollback slows the start of coding, but catches scope leakage and missing recovery before anyone mutates the repo. Over-planning a single-file fix wastes calendar time; under-planning a multi-service change creates thrash, rework, and unowned irreversible steps.
 
 ## Anti-Patterns
-- Substituting a generic checklist for the domain procedure above.
-- Claiming a gate passed without retaining the exact command, inspected artifact, or observed signal.
-- Expanding scope or executing an external effect without target-specific approval.
+- Emitting a task dump without file paths, verification commands, expected evidence, or rollback per increment.
+- Planning implementation before acceptance criteria, non-goals, and definition of done are locked.
+- Leaving investigation spikes open-ended instead of time-boxed with a concrete artifact output.
+- Smuggling architecture decisions into the plan that belong in an ADR, then treating the plan as approved design.
+- Starting coding mid-plan without closing the plan-review gate for completeness and scope leakage.
 
 ## Enterprise Considerations
-Apply repository ownership, separation of duties, data residency and retention, audit evidence, and approved-tool policies to every produced artifact. Redact secrets and regulated data from examples and logs.
+Plans that touch regulated data, customer-facing behavior, or irreversible mutations need named approvers at each approval point. Retain plan revisions linked to the implementing PR as change-management evidence. Explicit irreversibility approval is mandatory before schema drops, destructive backfills, or one-way migrations.
 
 ## Checklist
 - [ ] Trigger and anti-trigger evaluated
@@ -68,5 +70,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [Atlassian Definition of Done](https://www.atlassian.com/agile/project-management/definition-of-done)
 
 ## Changelog
+- **2.1 (2026-07-29):** De-boilerplated Tradeoffs, Anti-Patterns, and Enterprise Considerations with planning-domain content (AC-mapped increments, rollback, irreversibility gates).
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

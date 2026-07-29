@@ -6,15 +6,15 @@
 
 ## Purpose
 
-Define how OAIES contracts record security and telemetry evidence for Model Context Protocol authorization, Agent2Agent interoperability, and OpenTelemetry Generative AI semantic conventions.
+Define how AIES contracts record security and telemetry evidence for Model Context Protocol authorization, Agent2Agent interoperability, and OpenTelemetry Generative AI semantic conventions.
 
 ## Why
 
-Protocol compatibility does not establish authorization, trustworthy delegation, or operational assurance. OAIES records the policy boundary and evidence references around protocol-native messages and telemetry without redefining those protocols.
+Protocol compatibility does not establish authorization, trustworthy delegation, or operational assurance. AIES records the policy boundary and evidence references around protocol-native messages and telemetry without redefining those protocols.
 
 ## MCP authorization crosswalk
 
-| MCP authorization concern | OAIES evidence | Relationship |
+| MCP authorization concern | AIES evidence | Relationship |
 |---|---|---|
 | Protected-resource metadata and authorization-server discovery | MCP Server Record `authorization.resourceMetadata` and `authorizationServer` | `evidence-supports` |
 | OAuth authorization-code flow with PKCE for user-delegated access | MCP authorization mode/scopes and evidence reference | `partial` |
@@ -28,7 +28,7 @@ MCP servers must validate that tokens were issued for that server. A token recei
 
 ## A2A crosswalk
 
-| A2A concern | OAIES evidence | Relationship |
+| A2A concern | AIES evidence | Relationship |
 |---|---|---|
 | Agent discovery and Agent Card | Agent Definition identity, role, communication protocol, capabilities through tool refs | `partial` |
 | Authentication scheme declaration | Agent communication `authentication`; deployment security evidence | `evidence-supports` |
@@ -42,7 +42,7 @@ A2A interoperability does not mean one agent may exercise another agent’s priv
 
 ## OpenTelemetry GenAI crosswalk
 
-| GenAI semantic-convention signal | OAIES correlation | Required handling |
+| GenAI semantic-convention signal | AIES correlation | Required handling |
 |---|---|---|
 | Model/provider operation spans | Model Record ID/version and AI System Manifest component ref | Record stable registry IDs in addition to provider attributes |
 | Agent spans | Agent Definition ID/version | Correlate delegated tasks without treating trace context as authorization |
@@ -66,7 +66,7 @@ OpenTelemetry semantic conventions can be marked stable, experimental, or develo
 
 ## Equivalence limits
 
-OAIES does not certify MCP or A2A protocol conformance and does not redefine their wire formats. OpenTelemetry-compatible telemetry does not prove control effectiveness, complete trace coverage, or correct authorization. Protocol projects and OpenTelemetry do not endorse this crosswalk.
+AIES does not certify MCP or A2A protocol conformance and does not redefine their wire formats. OpenTelemetry-compatible telemetry does not prove control effectiveness, complete trace coverage, or correct authorization. Protocol projects and OpenTelemetry do not endorse this crosswalk.
 
 ## Tradeoffs
 
@@ -105,7 +105,7 @@ Sources accessed 2026-07-16. The deployment record must pin the exact protocol a
 - [ ] Protocol versions and message schemas are pinned
 - [ ] Trace context is used only for correlation
 - [ ] Content telemetry is disabled by default and explicitly approved
-- [ ] No protocol-conformance or endorsement claim is inferred from OAIES validation
+- [ ] No protocol-conformance or endorsement claim is inferred from AIES validation
 
 ## Changelog
 

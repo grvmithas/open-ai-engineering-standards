@@ -6,7 +6,7 @@
 
 ## Purpose
 
-Map OAIES evidence artifacts to the management-system, AI risk-management, and AI system impact-assessment concerns in ISO/IEC 42001, ISO/IEC 23894, and ISO/IEC 42005.
+Map AIES evidence artifacts to the management-system, AI risk-management, and AI system impact-assessment concerns in ISO/IEC 42001, ISO/IEC 23894, and ISO/IEC 42005.
 
 ## Why
 
@@ -14,7 +14,7 @@ These standards operate at different layers: ISO/IEC 42001 specifies an organiza
 
 ## Crosswalk
 
-| External reference | Requirement theme | OAIES evidence | Relationship | Limit |
+| External reference | Requirement theme | AIES evidence | Relationship | Limit |
 |---|---|---|---|---|
 | ISO/IEC 42001 Clauses 4–5 | Context, interested parties, scope, leadership, policy, roles | AI System Manifest: `purpose`, `systemOwner`, `accountableExecutive`, `affectedParties`; Control Catalog | `partial` | Does not prove organization-wide policy, leadership commitment, or management-system scope |
 | ISO/IEC 42001 Clause 6 | Risks, opportunities, objectives, change planning | Risk Register; Statement of Applicability; Exception | `partial` | Objectives, resources, and organization-level planning require separate records |
@@ -24,7 +24,7 @@ These standards operate at different layers: ISO/IEC 42001 specifies an organiza
 | ISO/IEC 42001 Annex A.2–A.4 | Policies, internal organization, resources | Control Catalog; Statement of Applicability; AI System Manifest | `partial` | Organization-wide implementation is not proven |
 | ISO/IEC 42001 Annex A.5–A.6 | Impact assessment and AI lifecycle | Risk Register; AI System Manifest; Prompt Release; Model Record; Evaluation Result | `evidence-supports` | Evidence remains insufficient unless lifecycle controls operate across the full deployed system |
 | ISO/IEC 42001 Annex A.7–A.10 | Data, transparency, responsible use, third parties | Context Manifest; Model Record; Tool Contract; MCP Server Record; Evidence Bundle | `partial` | Notices, contracts, and supplier governance require external evidence |
-| ISO/IEC 23894 risk process | Communication/consultation, scope/context, assessment, treatment, monitoring, recording | AI System Manifest; Risk Register; Evaluation Result; Incident; Evidence Bundle | `partial` | ISO/IEC 23894 is guidance; OAIES records do not establish the complete process |
+| ISO/IEC 23894 risk process | Communication/consultation, scope/context, assessment, treatment, monitoring, recording | AI System Manifest; Risk Register; Evaluation Result; Incident; Evidence Bundle | `partial` | ISO/IEC 23894 is guidance; AIES records do not establish the complete process |
 | ISO/IEC 42005 impact-assessment lifecycle | Plan, scope, analyze impacts, evaluate significance, treat, document, review | AI System Manifest; Risk Register; Evaluation Result; Evidence Bundle | `partial` | Rights, societal, and environmental impacts require methods and stakeholder evidence beyond these artifacts |
 
 ## How
@@ -38,7 +38,7 @@ These standards operate at different layers: ISO/IEC 42001 specifies an organiza
 
 ## Evidence minimum
 
-| Decision | Minimum OAIES evidence |
+| Decision | Minimum AIES evidence |
 |---|---|
 | System enters validation | Approved manifest, initial impact assessment, risk register, model and supplier records |
 | System enters production | Approved applicability statement, passing evaluations, prompt/agent/tool releases, evidence bundle |
@@ -47,7 +47,7 @@ These standards operate at different layers: ISO/IEC 42001 specifies an organiza
 
 ## Equivalence limits
 
-OAIES artifacts are implementation evidence, not ISO requirements text and not a complete AI management system. Crosswalk rows are not statements of equivalence. Use the licensed editions and applicable amendments for assessment. Nothing here authorizes an ISO/IEC 42001 certification claim.
+AIES artifacts are implementation evidence, not ISO requirements text and not a complete AI management system. Crosswalk rows are not statements of equivalence. Use the licensed editions and applicable amendments for assessment. Nothing here authorizes an ISO/IEC 42001 certification claim.
 
 ## Tradeoffs
 

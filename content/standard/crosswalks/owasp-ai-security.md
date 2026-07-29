@@ -6,7 +6,7 @@
 
 ## Purpose
 
-Map OAIES prevention, detection, and response artifacts to the OWASP Top 10 for LLM Applications 2025 and OWASP Top 10 for Agentic Applications 2026.
+Map AIES prevention, detection, and response artifacts to the OWASP Top 10 for LLM Applications 2025 and OWASP Top 10 for Agentic Applications 2026.
 
 ## Why
 
@@ -14,7 +14,7 @@ LLM risks focus on model-integrated applications; agentic risks add delegated id
 
 ## OWASP LLM Top 10 crosswalk
 
-| OWASP 2025 risk | OAIES controls and evidence | Relationship |
+| OWASP 2025 risk | AIES controls and evidence | Relationship |
 |---|---|---|
 | LLM01 Prompt Injection | Context Manifest trust levels, instruction isolation, sanitization; Prompt Release adversarial review; Tool Contract authorization | `evidence-supports` |
 | LLM02 Sensitive Information Disclosure | Data classification, source authorization, redaction policy, output contract, evidence access controls | `evidence-supports` |
@@ -29,7 +29,7 @@ LLM risks focus on model-integrated applications; agentic risks add delegated id
 
 ## OWASP Agentic Top 10 crosswalk
 
-| OWASP 2026 risk | OAIES controls and evidence | Relationship |
+| OWASP 2026 risk | AIES controls and evidence | Relationship |
 |---|---|---|
 | ASI01 Agent Goal Hijack | Immutable role/prompt refs, context trust hierarchy, conflict rule, prohibited actions | `evidence-supports` |
 | ASI02 Tool Misuse and Exploitation | Tool schemas, side-effect class, least privilege, approval gates, audit and safe-state behavior | `evidence-supports` |

@@ -1,7 +1,8 @@
 import {
+  PRODUCT_HERO,
   PRODUCT_NAME,
   PRODUCT_SHORT,
-  PRODUCT_TAGLINE,
+  PRODUCT_USP,
   REPOSITORY_URL,
   STEWARD,
 } from '@/lib/site';
@@ -35,7 +36,7 @@ export const SEO_KEYWORDS = [
 ] as const;
 
 export const DEFAULT_DESCRIPTION =
-  `${PRODUCT_TAGLINE}. Open handbook for AIDLC, prompt & context engineering, agents, MCP, evals, LLMOps, and enterprise AI governance. Maintained by ${STEWARD.name}.`;
+  `${PRODUCT_USP} ${PRODUCT_HERO}. Handbook for AIDLC, patterns, agents, MCP, evals, LLMOps, and enterprise SoA. Maintained by ${STEWARD.name}.`;
 
 export function absoluteUrl(path = '/'): string {
   if (!path || path === '/') return SITE_URL;
@@ -47,7 +48,7 @@ export function organizationJsonLd() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: `${PRODUCT_SHORT} — ${PRODUCT_NAME}`,
-    alternateName: ['AIES', 'AI Engineering Standard', 'Open AI Engineering Standard'],
+    alternateName: ['AIES', 'AI Engineering Standard'],
     url: SITE_URL,
     logo: absoluteUrl('/opengraph-image'),
     description: DEFAULT_DESCRIPTION,

@@ -5,7 +5,7 @@
 
 ## Purpose
 
-This document defines how OAIES decisions are proposed, reviewed, approved, and reversed.
+This document defines how AIES decisions are proposed, reviewed, approved, and reversed.
 
 ## Why
 
@@ -51,7 +51,7 @@ Maintainers may make an emergency security or legal change without the normal re
 
 ## Enterprise considerations
 
-Organizations may fork OAIES and define stricter approval controls. Forks must identify deviations and owners; they must not present local policy as upstream OAIES.
+Organizations may fork AIES and define stricter approval controls. Forks must identify deviations and owners; they must not present local policy as upstream AIES.
 
 ## Checklist
 

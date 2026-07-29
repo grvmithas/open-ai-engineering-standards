@@ -9,11 +9,11 @@
 
 Prompt engineering is not about "asking nicely." It is a **software design discipline** — structuring instructions so that they produce consistent, parseable, auditable outputs across thousands of invocations.
 
-This level establishes the **OAIES prompt standard:** XML-structured, role-defined, constraint-driven. One format. Not three.
+This level establishes the **AIES prompt standard:** XML-structured, role-defined, constraint-driven. One format. Not three.
 
 ---
 
-## The OAIES Prompt Format
+## The AIES Prompt Format
 
 This is the standard. Not a suggestion.
 
@@ -46,7 +46,7 @@ Structured. No noise. No repeated information.]
 </constraints>
 ```
 
-**Why XML?** Claude and all frontier models are trained with XML-like structure. It creates unambiguous section boundaries that survive long contexts. It is parseable by both humans and code. It is the only format the OAIES standard uses.
+**Why XML?** Claude and all frontier models are trained with XML-like structure. It creates unambiguous section boundaries that survive long contexts. It is parseable by both humans and code. It is the only format the AIES standard uses.
 
 ---
 

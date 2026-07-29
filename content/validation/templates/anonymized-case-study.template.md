@@ -1,4 +1,4 @@
-# OAIES Anonymized External-Pilot Case Study Template
+# AIES Anonymized External-Pilot Case Study Template
 
 > **Template version:** 1.0.0  
 > **Published:** 2026-07-16  
@@ -22,7 +22,7 @@ Replace every `{FIELD}`. Delete instructional text only after independent privac
 |---|---|
 | Case-study ID/version | `{CASE_STUDY_ID_VERSION}` |
 | Pilot/cohort IDs | `{OPAQUE_IDS}` |
-| OAIES/protocol versions | `{VERSIONS}` |
+| AIES/protocol versions | `{VERSIONS}` |
 | Evidence period | `{COARSE_PERIOD}` |
 | Publication approval IDs/dates | `{PARTICIPANT_LEGAL_PROGRAM_APPROVALS}` |
 | De-identification reviewer | `{INDEPENDENT_REVIEWER_ROLE}` |
@@ -47,7 +47,7 @@ Report only categories approved for publication.
 | Organization type/size band | `{NON_IDENTIFYING_BAND}` |
 | Sector/geography band | `{COARSE_CATEGORY}` |
 | System purpose and users | `{PURPOSE_WITHOUT_IDENTIFIERS}` |
-| OAIES workload profiles | `{P1_TO_P6}` |
+| AIES workload profiles | `{P1_TO_P6}` |
 | Impact/autonomy bands | `{I_LEVEL_A_LEVEL}` |
 | Lifecycle maturity | `{DESIGN_ONLY_OR_COARSE_OPERATING_PERIOD}` |
 | Architecture | `{GENERALIZED_MODEL_RETRIEVAL_TOOL_AGENT_DEPLOYMENT_PATTERN}` |
@@ -98,7 +98,7 @@ State whether issues change normative meaning, guidance, tooling, or training. O
 
 `{OBSERVED_PROCESS_OR_CONTROL_CHANGES_WITHOUT_CAUSAL_OVERCLAIM}`
 
-Do not attribute safety, quality, compliance, cost, or performance improvement to OAIES unless the pilot included a pre-registered causal design capable of supporting that conclusion.
+Do not attribute safety, quality, compliance, cost, or performance improvement to AIES unless the pilot included a pre-registered causal design capable of supporting that conclusion.
 
 ### Limitations and Attrition
 
@@ -168,7 +168,7 @@ Privacy, legal, security, communications, and the participant must approve the f
 
 - UK ICO, [Anonymisation guidance](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/data-sharing/anonymisation/).
 - NIST, [Privacy Framework 1.0](https://www.nist.gov/privacy-framework).
-- [OAIES Validation Evidence Package and Release Gates](../evidence-and-release-gates.md).
+- [AIES Validation Evidence Package and Release Gates](../evidence-and-release-gates.md).
 
 ## Changelog
 

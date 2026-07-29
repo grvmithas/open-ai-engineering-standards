@@ -1,11 +1,11 @@
-# Open AI Engineering Standard Website
+# AI Engineering Standard (AIES) Website
 
 **Version:** 1.0.0  
-**Last updated:** 2026-07-16
+**Last updated:** 2026-07-29
 
 ## Purpose
 
-This repository publishes the Open AI Engineering Standard as a statically generated Next.js documentation site. Canonical authored content lives in `content/`; the application, search index, navigation, and deployment configuration live at the repository root.
+This repository publishes the AI Engineering Standard as a statically generated Next.js documentation site. Canonical authored content lives in `content/`; the application, search index, navigation, and deployment configuration live at the repository root.
 
 ## Why
 
@@ -77,6 +77,6 @@ Vercel uses native Next.js auto-detection and runs `npm run build`.
 
 ### 1.0.0 — 2026-07-16
 
-- Migrated the OAIES content and website into one root-level Next.js repository.
+- Migrated the AIES content and website into one root-level Next.js repository.
 - Preserved all canonical documents, routes, search, diagrams, assets, and evaluation workflows.
 - Removed deployment configuration that caused Vercel to serve `.next` as a static directory.

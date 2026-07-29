@@ -53,7 +53,7 @@ Bind each agent identity to **code/config digest**, environment, tenant scope, a
 | **ABAC** | Per-request constraints | `tenant_id`, `env=prod`, `residency=eu`, `risk_tier=high`, `data_class=restricted` |
 | **ReBAC / relationships** (optional) | Object-level ownership | User owns project → retrieve project corpus |
 
-**OAIES default:** RBAC for coarse roles + ABAC attributes on every retrieval and tool call. Roles alone are insufficient for multi-tenant AI.
+**AIES default:** RBAC for coarse roles + ABAC attributes on every retrieval and tool call. Roles alone are insufficient for multi-tenant AI.
 
 ```typescript
 interface AuthzRequest {

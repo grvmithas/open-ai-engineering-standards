@@ -2,47 +2,46 @@
 
 > **Pattern:** Enterprise  
 > **Component:** context.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Preconditions (must be true before activation)
+## Purpose
 
-- [ ] Named business owner and technical owner for the use case
-- [ ] Data classes in scope identified (and “none / synthetic only” is explicit if true)
-- [ ] Jurisdictions / residency constraints known
-- [ ] Risk-tier rubric exists (or this engagement adopts the org standard)
-- [ ] There is a policy enforcement point (API gateway, AI gateway, agent runtime allowlist)
-- [ ] Logging destination capable of retaining prompts/tool calls per retention policy (redaction rules included)
+Define the **minimum evidence package** required before the Enterprise pattern may start — and when to refuse to start.
 
-## Trigger conditions (apply the pattern)
+## Required before activation
 
-Apply when **any** of the following hold:
+- [ ] Data class and tenant model
+- [ ] MODEL_POLICY / SoA draft rows
+- [ ] Eval gates for user-visible behavior
+- [ ] Named owners for allowlists
 
-- Production or production-like data will be processed
-- AI output influences access, money, health, safety, employment, or legal rights
-- Multi-tenant or multi-region shared platform
-- Agents/tools can mutate external systems
-- Executive or risk asks for a go-live gate with evidence
+## Refuse to start when
 
-## Do not apply when
+- Org-wide write tools without SoA
+- Shared filesystem roots across tenants
+- Compliance claims requested as marketing copy
 
-- Throwaway prototype on synthetic data, no production path planned
-- Offline analysis with no automated action and no customer exposure
-- Use case already has a current inventory entry — **update** it via this pattern’s workflow rather than creating a duplicate system
-- SEV containment in progress — disable first, govern after
+## Trust and data class
 
-## Required inputs
+- Label segments as trusted, internal, or untrusted for **Enterprise** packs.  
+- Keep untrusted retrieval out of the Enterprise system channel.  
+- Enterprise MCP enablement follows data class in [mcps.md](./mcps.md).
 
-| Input | Source | Minimum quality |
-|-------|--------|-----------------|
-| Use-case description | Product / eng | Users, actions, success metric |
-| Data flow | Security / privacy | Classes, stores, processors, regions |
-| Model/vendor list | Platform | Versions, regions, DPA status |
-| Tool/MCP catalog | Platform | Allowlist + auth mode |
-| Risk rubric | Risk / AI governance | Tier definitions + required controls |
-| Incident contacts | On-call roster | 24×7 path for high tier |
+## Pack shape for Enterprise
 
-## Authority boundary
+1. Trigger / AC (human-owned)  
+2. Ranked evidence inside the Enterprise budget  
+3. Constraints and non-goals for this activation  
+4. Open questions (empty before irreversible Enterprise steps)
 
-The governance agent **drafts the go-live package**. Risk/privacy/security humans assign tier acceptance. Platform humans bind the gateway. Nobody “self-certifies” high-risk enablement from a markdown file alone.
+## Related
+
+- [Context pattern](../context-pattern/README.md) when packing is itself the hard problem  
+- [Prompt](./prompt.md) variable bindings  
+- [Skills](./skills.md) activation triggers  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Enterprise context gates (required/refuse) rewritten for this envelope.

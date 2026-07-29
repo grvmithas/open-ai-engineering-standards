@@ -1,4 +1,4 @@
-# OAIES Quality Checklists
+# AIES Quality Checklists
 
 > **Gate every stage. Skip none. These checklists are the standard.**
 
@@ -122,7 +122,7 @@ Checklists are not suggestions. They are gates. A stage is not complete until it
 **Gate:** No prompt deployed to production without passing this checklist.
 
 ### Structure
-- [ ] Uses explicit structure (OAIES authoring convention: role, context, instructions, output_format, constraints — or an equivalent that preserves those semantics)
+- [ ] Uses explicit structure (AIES authoring convention: role, context, instructions, output_format, constraints — or an equivalent that preserves those semantics)
 - [ ] Role definition is specific with explicit exclusions
 - [ ] Context is complete and noise-free (no irrelevant information)
 - [ ] Instructions are numbered and imperative

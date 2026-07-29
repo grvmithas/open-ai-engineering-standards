@@ -1,4 +1,4 @@
-# OAIES External Validation Pilot Runbook
+# AIES External Validation Pilot Runbook
 
 > **Version:** 1.0.0  
 > **Published:** 2026-07-16  
@@ -6,7 +6,7 @@
 
 ## Purpose
 
-Execute one lawful, blind, reproducible OAIES external-validation pilot from authorization through closeout.
+Execute one lawful, blind, reproducible AIES external-validation pilot from authorization through closeout.
 
 ## Why
 
@@ -50,7 +50,7 @@ Exit evidence: approved gate checklist, signed agreements/register references, r
 
 Entry: Phase 0 `GO`.
 
-1. Pin OAIES and protocol versions.
+1. Pin AIES and protocol versions.
 2. Record system boundary, profiles, impact/autonomy, period, legal overlays, and authoritative evidence sources.
 3. Export and hash the sampling frame; select certainty units and strata.
 4. Publish the sampling seed after frame lock; execute deterministic selection.
@@ -129,7 +129,7 @@ Exit evidence: primary report, reproduction record, software/input/output hashes
 4. Convene the independent panel and classify causes.
 5. Preserve originals; issue separate adjudication dispositions and optional corrected-secondary metric.
 6. Open one specification issue per distinct ambiguity/root cause, with acceptance test and version impact.
-7. Track participant corrective actions separately from OAIES specification defects.
+7. Track participant corrective actions separately from AIES specification defects.
 
 Stop: no forced consensus and no change to primary results.
 
@@ -215,9 +215,9 @@ Integrate the runbook with enterprise GRC, identity, records, incident, legal-ho
 
 ## Authoritative References
 
-- [OAIES External Validation Program](../content/validation/README.md).
-- [OAIES Blind Inter-Assessor Methodology](../content/validation/inter-assessor-methodology.md).
-- [OAIES Lifecycle and Assessor Methodology](../content/standard/04-lifecycle-and-assessment.md).
+- [AIES External Validation Program](../content/validation/README.md).
+- [AIES Blind Inter-Assessor Methodology](../content/validation/inter-assessor-methodology.md).
+- [AIES Lifecycle and Assessor Methodology](../content/standard/04-lifecycle-and-assessment.md).
 - ISO, [ISO 19011:2018](https://www.iso.org/standard/70017.html).
 - NIST, [SP 800-53A Rev. 5](https://doi.org/10.6028/NIST.SP.800-53Ar5).
 

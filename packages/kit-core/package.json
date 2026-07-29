@@ -1,0 +1,17 @@
+{
+  "name": "@aies/kit-core",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared AIES starter-kit generator (site + CLI)",
+  "exports": {
+    ".": "./lib/generate.js",
+    "./options": "./lib/options.js"
+  },
+  "files": [
+    "lib"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}

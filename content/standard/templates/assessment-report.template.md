@@ -1,12 +1,12 @@
-# OAIES Conformance Assessment Report Template
+# AIES Conformance Assessment Report Template
 
 > **Template version:** 1.0.1  
 > **Published:** 2026-07-16  
-> **Applies to:** OAIES 1.x
+> **Applies to:** AIES 1.x
 
 ## Purpose
 
-Produce a bounded, evidence-based, independently reviewable OAIES conformance conclusion.
+Produce a bounded, evidence-based, independently reviewable AIES conformance conclusion.
 
 ## Why
 
@@ -23,7 +23,7 @@ Replace every `{VARIABLE_FIELD}`. Preserve failed tests, contradictory evidence,
 | Report ID/version | `{REPORT_ID_VERSION}` |
 | Status | `{DRAFT_FINAL_SUPERSEDED}` |
 | Issue date | `{YYYY-MM-DD}` |
-| OAIES version | `{OAIES_VERSION}` |
+| AIES version | `{AIES_VERSION}` |
 | Assessment type | `{READINESS_INITIAL_SURVEILLANCE_RENEWAL_TRIGGERED}` |
 | Assessment period | `{START_DATE_TO_END_DATE}` |
 | Claim expiry | `{YYYY-MM-DD_OR_NO_CLAIM_WITH_REASON}` |
@@ -151,7 +151,7 @@ Classify and protect reports because they can contain security, privacy, supplie
 
 ## Authoritative References
 
-- [OAIES Lifecycle and Assessor Methodology](../04-lifecycle-and-assessment.md)
+- [AIES Lifecycle and Assessor Methodology](../04-lifecycle-and-assessment.md)
 - [ISO 19011:2018](https://www.iso.org/standard/70017.html)
 - [NIST SP 800-53A Rev. 5](https://doi.org/10.6028/NIST.SP.800-53Ar5)
 

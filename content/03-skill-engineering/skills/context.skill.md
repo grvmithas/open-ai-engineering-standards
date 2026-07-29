@@ -1,8 +1,8 @@
 # Context Skill
 
 > **Skill ID:** `context`  
-> **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Version:** 2.1  
+> **Updated:** 2026-07-29
 
 ## Purpose
 Activate this skill when An agent is missing relevant evidence, overloaded by noise, or vulnerable to stale/untrusted context.
@@ -47,15 +47,17 @@ Build a code-migration context pack containing pinned framework docs, affected A
 Do not use context expansion to compensate for an unclear task or missing authorization.
 
 ## Tradeoffs
-The required domain artifacts and verification cost more than a generic implementation pass, but they expose assumptions, safety gates, and operational limits before release.
+Curated manifests with trust labels, freshness rules, and token budgets add retrieval engineering overhead; dumping the whole repo into context is simpler and quietly poisons answers with stale or untrusted text. Aggressive pruning saves tokens but can drop the one authoritative source—optimize for answerability and citation accuracy, not prompt size alone.
 
 ## Anti-Patterns
-- Substituting a generic checklist for the domain procedure above.
-- Claiming a gate passed without retaining the exact command, inspected artifact, or observed signal.
-- Expanding scope or executing an external effect without target-specific approval.
+- Stuffing unranked search hits without provenance, freshness, or trust labels.
+- Mixing system instructions with untrusted retrieved or user content in one undifferentiated block.
+- Truncating from the tail when over budget instead of pruning by decision value.
+- Skipping tenant isolation filters on multi-tenant retrieval paths.
+- Expanding context to compensate for an ambiguous task or missing authorization.
 
 ## Enterprise Considerations
-Apply repository ownership, separation of duties, data residency and retention, audit evidence, and approved-tool policies to every produced artifact. Redact secrets and regulated data from examples and logs.
+Context packs inherit the data classification of their sources—block restricted content from leaving its residency boundary into unapproved model providers. When agents act on retrieved evidence, retain source URIs, versions, and trust labels for audit. Conflict resolution (authority vs freshness) must be explicit for regulated or customer-facing decision support.
 
 ## Checklist
 - [ ] Trigger and anti-trigger evaluated
@@ -69,5 +71,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [NIST AI RMF](https://www.nist.gov/itl/ai-risk-management-framework)
 
 ## Changelog
+- **2.1 (2026-07-29):** De-boilerplated Tradeoffs, Anti-Patterns, and Enterprise Considerations with context-domain content (trust labels, token budgets, tenant isolation, injection resistance).
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

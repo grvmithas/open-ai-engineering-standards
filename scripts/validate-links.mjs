@@ -52,6 +52,10 @@ for (const source of files) {
   for (const match of links) {
     const href = match[1];
     if (/^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(href)) continue;
+    
+    // Ignore dynamic Next.js application routes
+    const KNOWN_ROUTES = ['/start', '/quickstart', '/workflows', '/portal', '/about', '/'];
+    if (KNOWN_ROUTES.some(route => href === route || href.startsWith(route + '?') || href.startsWith(route + '/'))) continue;
 
     const { filePath, fragment, attempted } = resolveTarget(source, href);
     if (!filePath) {

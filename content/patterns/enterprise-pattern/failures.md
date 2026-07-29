@@ -2,36 +2,41 @@
 
 > **Pattern:** Enterprise  
 > **Component:** failures.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Failure 1: Policy PDF as control
+## Purpose
 
-**Symptom:** Auditor asks how tool X is blocked; team opens a Confluence page.  
-**Cause:** Controls never bound at the gateway/runtime.  
-**Recovery:** BLOCK expansion; bind deny-by-default allowlist; re-run disable drill; attach gateway version to inventory.
+Recover when the Enterprise pattern is misapplied — without abandoning the gate.
 
-## Failure 2: Shadow tools / debug bypass
+## Failure → detection → recovery
 
-**Symptom:** Traces show MCP servers or APIs not on the allowlist.  
-**Cause:** “Temporary” debug mode or local agent config leaked to prod.  
-**Recovery:** Revoke credentials; force gateway allowlist; alert on unknown tool names; treat as security incident if data exfil possible.
+| Failure | Detection | Recovery |
+|---------|-----------|----------|
+| Deny-by-default skipped | Incident via tool | Disable writes; write SoA; re-enable narrowly |
+| Tenant assumption | Cross-talk in retrieval | Add isolation tests; fix pack roots |
+| Eval optional | Regressions in prod answers | Make eval release-blocking |
+| Paper NIST | Auditor pushback | Map evidence IDs; drop logo claims |
 
-## Failure 3: Inventory drift
+## Escalation from Enterprise failures
 
-**Symptom:** Incident commander finds a second model endpoint mid-outage.  
-**Cause:** Inventory updated at launch, never at material change.  
-**Recovery:** Reconcile from gateway logs and cloud accounts; make inventory ID a release gate; schedule recurring drift scan.
+- Security-class impact during Enterprise → [Security skill](../../03-skill-engineering/skills/security.skill.md) + human security owner  
+- Production SEV while misusing Enterprise → [Hotfix](../hotfix-pattern/README.md) containment first  
+- Learning after Enterprise containment → [Root Cause](../root-cause-pattern/README.md)
 
-## Failure 4: Immortal exceptions
+## Do not
 
-**Symptom:** High-tier use case runs for months under a “temporary” waiver.  
-**Cause:** Exception lacked expiry or owner accountability.  
-**Recovery:** Expire immediately; either meet controls or disable; require new time-boxed exception with executive sponsor if truly needed.
+- Skip the Enterprise human gate “just this once” after a failure  
+- Delete Enterprise evidence to hide a bad run  
+- Replace Enterprise with unstructured chat under pressure  
 
-## Failure 5: Unrehearsed kill switch
+## Related
 
-**Symptom:** On-call cannot disable during a harmful-output incident.  
-**Cause:** Disable path existed only in the author’s head.  
-**Recovery:** Write runbook steps; drill quarterly; fail go-live hooks until drill log exists.
+- [Checklist](./checklist.md)  
+- [Enterprise notes](./enterprise-notes.md)  
+- [Example](./examples/example.md)  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Enterprise failure recovery table and escalation paths expanded.

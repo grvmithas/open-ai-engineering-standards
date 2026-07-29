@@ -2,36 +2,41 @@
 
 > **Pattern:** Legacy Modernization  
 > **Component:** failures.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Failure 1: Big-bang rewrite
+## Purpose
 
-**Symptom:** Multi-year rewrite; never cuts over; morale collapse.  
-**Cause:** No capability slices or seams.  
-**Recovery:** Freeze rewrite scope; pick one slice; strangler with parity.
+Recover when the Legacy Modernization pattern is misapplied — without abandoning the gate.
 
-## Failure 2: Parity by demo
+## Failure → detection → recovery
 
-**Symptom:** Exec demo succeeds; month-end batch diverges.  
-**Cause:** No characterization harness.  
-**Recovery:** Capture legacy golden outputs; block ramp on harness.
+| Failure | Detection | Recovery |
+|---------|-----------|----------|
+| No golden tests | Parity bugs in prod | Stop rewrite; build characterization first |
+| Orphan seam | Dual-run confusion | Assign boundary owner; redraw map |
+| Dump context | Agent reimplements myths | Rebuild legacy pack with ranking |
+| Flag day | Rollback impossible | Reintroduce incremental slices |
 
-## Failure 3: Dual forever
+## Escalation from Legacy Modernization failures
 
-**Symptom:** New and legacy both paid indefinitely.  
-**Cause:** No retirement Definition of Done.  
-**Recovery:** Add retirement checklist; calendar the decommission.
+- Security-class impact during Legacy Modernization → [Security skill](../../03-skill-engineering/skills/security.skill.md) + human security owner  
+- Production SEV while misusing Legacy Modernization → [Hotfix](../hotfix-pattern/README.md) containment first  
+- Learning after Legacy Modernization containment → [Root Cause](../root-cause-pattern/README.md)
 
-## Failure 4: Seam churn
+## Do not
 
-**Symptom:** Every sprint invents a new integration style.  
-**Cause:** No seam ADR.  
-**Recovery:** Lock one seam per slice; revisit only on hard failure.
+- Skip the Legacy Modernization human gate “just this once” after a failure  
+- Delete Legacy Modernization evidence to hide a bad run  
+- Replace Legacy Modernization with unstructured chat under pressure  
 
-## Failure 5: Premature legacy delete
+## Related
 
-**Symptom:** Rolled to 40%; deleted batch job; cannot fall back.  
-**Cause:** Skipped retirement hooks.  
-**Recovery:** Restore legacy; reduce traffic; fix process gates.
+- [Checklist](./checklist.md)  
+- [Enterprise notes](./enterprise-notes.md)  
+- [Example](./examples/example.md)  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Legacy Modernization failure recovery table and escalation paths expanded.

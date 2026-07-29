@@ -15,7 +15,10 @@ const slugs = new Set();
 for (const document of manifest.documents) {
   if (slugs.has(document.slug)) failures.push(`Duplicate slug: ${document.slug}`);
   slugs.add(document.slug);
-  const markdown = fs.readFileSync(path.join(ROOT, document.sourcePath), 'utf8');
+  let markdown = fs.readFileSync(path.join(ROOT, document.sourcePath), 'utf8');
+  if (markdown.charCodeAt(0) === 0xFEFF) {
+    markdown = markdown.slice(1);
+  }
   if (!/^#\s+\S/m.test(stripFencedCode(markdown))) {
     failures.push(`${document.sourcePath}: missing one H1 title`);
   }

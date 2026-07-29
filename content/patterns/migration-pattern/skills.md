@@ -2,24 +2,32 @@
 
 > **Pattern:** Migration  
 > **Component:** skills.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.3 | **Updated:** 2026-07-29
 
 ---
 
 | Skill | Path | Why required |
 |-------|------|--------------|
-| Migration planning | [`../../08-ai-sdlc/prompts/migration.prompt.md`](../../08-ai-sdlc/prompts/migration.prompt.md) | Expand/dual/cutover/contract |
-| Observability | llmops/observability or SRE practice | Gate on lag/error/latency |
-| Data validation | recon query design | Prove equivalence before cutover |
+| [Planning](../../03-skill-engineering/skills/planning.skill.md) | [`skills/planning.skill.md`](../../03-skill-engineering/skills/planning.skill.md) | Phased cutover with rollback |
+| [DevOps](../../03-skill-engineering/skills/devops.skill.md) | [`skills/devops.skill.md`](../../03-skill-engineering/skills/devops.skill.md) | Promotion, digests, canaries |
+| [Testing](../../03-skill-engineering/skills/testing.skill.md) | [`skills/testing.skill.md`](../../03-skill-engineering/skills/testing.skill.md) | Parity and data integrity checks |
+| [Security](../../03-skill-engineering/skills/security.skill.md) | [`skills/security.skill.md`](../../03-skill-engineering/skills/security.skill.md) | Data class and access during move |
+
+## Related agents
+
+- [Migration agent](../../04-agent-engineering/agents/migration.agent.md)
+- [Planner pattern agent](../planner-pattern/agent.md)
 
 ## Skill activation triggers
 
-1. **Migration planning** — always  
-2. **Observability** — before dual and cutover  
-3. **Data validation** — before cutover approval
+Run Planning to freeze phases and return paths. Run DevOps for digest-pinned promotion and canaries. Run Testing for parity/integrity windows. Run Security whenever data class or access paths change mid-move.
 
 ## Verification that skills worked
 
-- Plan has all five phase types or an explicit justified skip  
-- Gates cite metrics and thresholds  
-- Recon output attached to the approval record
+- Each phase has an explicit rollback owner and command
+- Dual-write or verify window evidence exists before irreversible drops
+- Secrets never appear in migration scripts committed to git
+
+## Changelog
+
+- **1.3 (2026-07-29):** Migration skill activation and verification rewritten for this envelope.

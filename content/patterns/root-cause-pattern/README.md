@@ -2,7 +2,7 @@
 
 > **Pattern:** Root Cause  
 > **Category:** Post-Incident Learning & Prevention  
-> **Maturity:** Stable v1.1 | **Updated:** 2026-07-16
+> **Maturity:** Stable v1.1 | **Updated:** 2026-07-29
 
 ---
 
@@ -167,3 +167,24 @@ See [examples/example.md](./examples/example.md) — inline RCA for checkout NPE
 - Accountability ≠ blame: owned actions with due dates are required; personal punishment is out of scope for this pattern.
 - Regulated post-incidents may need legal review before external sharing — publish internal first.
 - No certification claims from completing an RCA template.
+
+## Tradeoffs
+
+Evidence-bound RCA costs calendar time after containment; skipping it guarantees recurrence.
+
+## Anti-patterns
+
+Blame without timeline; “fixed” without regression test; closing RCA without follow-up owners.
+
+## Artifact index
+
+| Artifact | Path |
+|----------|------|
+| Prompt | [prompt.md](./prompt.md) |
+| Agent | [agent.md](./agent.md) |
+| Skills | [skills.md](./skills.md) |
+| MCPs | [mcps.md](./mcps.md) |
+| Hooks | [hooks.md](./hooks.md) |
+| Checklist | [checklist.md](./checklist.md) |
+| Example | [examples/example.md](./examples/example.md) |
+

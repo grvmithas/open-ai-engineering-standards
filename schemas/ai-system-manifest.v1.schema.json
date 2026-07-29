@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://open-ai-engineering-standard.org/schemas/v1/ai-system-manifest.schema.json",
-  "title": "OAIES AI System Manifest v1",
+  "title": "AIES AI System Manifest v1",
   "description": "Normative inventory, boundary, and kernel classification record for one AI system.",
   "type": "object",
   "required": ["schemaVersion", "id", "name", "version", "lifecycleStatus", "purpose", "systemOwner", "businessOwner", "boundaryRef", "workloadProfiles", "autonomyLevel", "impactLevel", "classificationRationale", "classificationApprovedBy", "classificationApprovedAt", "dataClassification", "components", "intendedUses", "foreseeableMisuse", "prohibitedUses", "affectedParties", "environments", "materialChangeTriggers", "createdAt", "updatedAt"],

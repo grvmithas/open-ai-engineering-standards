@@ -14,7 +14,7 @@ Use hooks as **deterministic evidence gates** on the AI delivery lifecycle — n
 
 Agents invent procedure. Humans forget steps under deadline pressure. Soft “please run tests” instructions get skipped. Hooks encode the **minimum machine-checkable contract** between stages:
 
-| Without hooks | With hooks (OAIES v2) |
+| Without hooks | With hooks (AIES v2) |
 |---------------|------------------------|
 | Code before approved plan | `pre-code` requires plan + `effect=workspace-write` approval |
 | Commit without test/scan evidence | `pre-commit` requires both evidence files; blocks staged private-key headers |

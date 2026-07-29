@@ -1,0 +1,49 @@
+{
+  "name": "@grvmithas/create-aies-kit",
+  "version": "1.3.0",
+  "description": "Scaffold a complete AIES (AI Engineering Standard) harness into IDE-native paths — prompts, skills, cookbook, agents, MCP stubs, AGENTS.md.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "create-aies-kit": "bin/create-aies-kit.js"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "vendor": "node ../kit-core/scripts/embed-corpus.mjs && node ./scripts/vendor-kit-core.mjs",
+    "prepublishOnly": "npm run vendor",
+    "prepack": "npm run vendor"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "aies",
+    "ai-engineering",
+    "starter-kit",
+    "cursor",
+    "claude-code",
+    "copilot",
+    "mcp",
+    "aidlc",
+    "create-aies-kit",
+    "agents.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grvmithas/open-ai-engineering-standards.git",
+    "directory": "packages/create-aies-kit"
+  },
+  "homepage": "https://www.ai-standards.dev/quickstart",
+  "bugs": {
+    "url": "https://github.com/grvmithas/open-ai-engineering-standards/issues"
+  },
+  "author": "Gaurav Mithas",
+  "publishConfig": {
+    "access": "public"
+  }
+}

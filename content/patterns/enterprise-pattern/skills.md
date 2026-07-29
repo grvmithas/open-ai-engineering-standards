@@ -2,30 +2,32 @@
 
 > **Pattern:** Enterprise  
 > **Component:** skills.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.3 | **Updated:** 2026-07-29
 
 ---
 
-| Skill | Domain path | Why required |
-|-------|-------------|--------------|
-| Responsible AI / risk | `09-enterprise-ai/governance/` | Tiering and oversight obligations |
-| Least privilege | `09-enterprise-ai/security/least-privilege.md` | Tool and data scope minimization |
-| OAuth for MCP | `09-enterprise-ai/security/oauth-for-mcp.md` | Safe tool credentials |
-| Prompt-injection defense | `09-enterprise-ai/security/prompt-injection-defense.md` | Untrusted content boundaries |
-| Audit logging | `09-enterprise-ai/governance/audit-logging.md` | Evidence and forensics |
-| Sandboxing | `09-enterprise-ai/security/sandboxing.md` | Contain tool side effects |
+| Skill | Path | Why required |
+|-------|------|--------------|
+| [Security](../../03-skill-engineering/skills/security.skill.md) | [`skills/security.skill.md`](../../03-skill-engineering/skills/security.skill.md) | Least privilege, injection, tool PEP |
+| [Evaluation](../../03-skill-engineering/skills/evaluation.skill.md) | [`skills/evaluation.skill.md`](../../03-skill-engineering/skills/evaluation.skill.md) | Org-wide quality gates |
+| [DevOps](../../03-skill-engineering/skills/devops.skill.md) | [`skills/devops.skill.md`](../../03-skill-engineering/skills/devops.skill.md) | Promotion controls and evidence |
+| [Context](../../03-skill-engineering/skills/context.skill.md) | [`skills/context.skill.md`](../../03-skill-engineering/skills/context.skill.md) | Tenant isolation in retrieval |
+
+## Related agents
+
+- [Security agent](../../04-agent-engineering/agents/security.agent.md)
+- [Release agent](../../04-agent-engineering/agents/release.agent.md)
 
 ## Skill activation triggers
 
-1. **Risk** — every new use case and every material change  
-2. **Least privilege / MCP OAuth** — any tool with side effects  
-3. **Injection defense** — any untrusted user or retrieved content in context  
-4. **Audit logging** — before pilot enablement  
-5. **Sandboxing** — code execution or high-impact tools
+Run Security before enabling org-wide tools or write MCP. Run Evaluation for release-blocking quality gates. Run DevOps for promotion evidence. Run Context whenever retrieval can cross tenants.
 
 ## Verification that skills worked
 
-- Risk: tier matches rubric criteria written in the package  
-- Privilege: tool allowlist is deny-by-default  
-- Logging: redaction rules exist for sensitive fields  
-- Kill switch: drill log shows disable without engineering heroics
+- SoA / MODEL_POLICY records tool allowlists and data class
+- Write MCP tools are off by default until HITL approval
+- Tenant isolation is tested, not assumed, for retrieval paths
+
+## Changelog
+
+- **1.3 (2026-07-29):** Enterprise skill activation and verification rewritten for this envelope.

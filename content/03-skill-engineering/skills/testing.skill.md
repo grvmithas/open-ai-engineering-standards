@@ -1,8 +1,8 @@
 # Testing Skill
 
 > **Skill ID:** `testing`  
-> **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Version:** 2.1  
+> **Updated:** 2026-07-29
 
 ## Purpose
 Activate this skill when A behavior change, defect, integration boundary, or release risk needs automated evidence.
@@ -46,15 +46,17 @@ Test payment idempotency with duplicate delivery, timeout-after-commit, reordere
 Do not chase line coverage without a behavior or risk model.
 
 ## Tradeoffs
-The required domain artifacts and verification cost more than a generic implementation pass, but they expose assumptions, safety gates, and operational limits before release.
+Risk-ranked layered tests cost more authoring than chasing line-coverage percentages, but they fail for the intended defect and stay deterministic. Heavy e2e suites catch integration bugs late and flake; pushing truth to unit/contract layers speeds CI at the cost of less end-to-end confidence—compensate with a thin, deterministic critical-path e2e set, not a mirror of production.
 
 ## Anti-Patterns
-- Substituting a generic checklist for the domain procedure above.
-- Claiming a gate passed without retaining the exact command, inspected artifact, or observed signal.
-- Expanding scope or executing an external effect without target-specific approval.
+- Maximizing line coverage while leaving failure modes, boundaries, and concurrency untested.
+- Shared mutable fixtures that produce order-dependent green runs.
+- Permanent quarantines without an owner, ticket, and expiry date.
+- Asserting private implementation details instead of observable behavior and contracts.
+- Mocking away the real transaction or network boundary for the bug class under test (e.g., payment idempotency).
 
 ## Enterprise Considerations
-Apply repository ownership, separation of duties, data residency and retention, audit evidence, and approved-tool policies to every produced artifact. Redact secrets and regulated data from examples and logs.
+CI must use synthetic or scrubbed fixtures—no production customer dumps in pipelines. Flaky-test budgets and quarantine policy are enforced with named owners. Retain failing command output, seeds, and traces for nondeterministic failures as part of release evidence packs.
 
 ## Checklist
 - [ ] Trigger and anti-trigger evaluated
@@ -68,5 +70,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [Google Testing Blog](https://testing.googleblog.com/)
 
 ## Changelog
+- **2.1 (2026-07-29):** De-boilerplated Tradeoffs, Anti-Patterns, and Enterprise Considerations with testing-domain content (pyramid layers, flaky quarantine, fixture isolation).
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

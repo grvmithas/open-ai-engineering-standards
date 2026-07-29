@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import AppHeader from '@/components/AppHeader';
 import PatternsMegaMenu from '@/components/PatternsMegaMenu';
 import {
   PRODUCT_NAME,
@@ -85,190 +86,224 @@ const paperCard: CSSProperties = {
 
 export default function HomePage() {
   return (
-    <main id="main-content" style={{ minHeight: '100vh', background: 'var(--shell)', color: 'var(--shell-text)' }}>
-      <header style={{
-        position: 'sticky', top: 0, zIndex: 50,
-        background: 'rgba(17, 24, 39, 0.92)',
-        backdropFilter: 'blur(12px)',
-        borderBottom: '1px solid var(--shell-border)',
-        height: 'var(--header-h)',
-        display: 'flex', alignItems: 'center',
-      }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', width: '100%', padding: '0 2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-            <span style={{ fontSize: '1.25rem' }} aria-hidden>⚡</span>
-            <span style={{ fontWeight: 800, letterSpacing: '-0.02em', color: '#fff', fontSize: '0.95rem' }}>{PRODUCT_SHORT}</span>
-            <span style={{
-              padding: '0.1rem 0.45rem',
-              background: 'rgba(245, 158, 11, 0.15)',
-              color: '#fcd34d',
-              borderRadius: 4,
-              fontSize: '0.6rem',
-              fontWeight: 700,
-              letterSpacing: '0.04em',
-              textTransform: 'uppercase',
-              border: '1px solid rgba(245, 158, 11, 0.35)',
-            }}>
-              {RELEASE_STATUS}
-            </span>
-          </Link>
-          <nav aria-label="Primary" style={{ display: 'flex', alignItems: 'center', gap: '0.1rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
-            <Link href="/docs/principles" style={navLink}>Principles</Link>
-            <Link href="/docs/roadmap" style={navLink}>Roadmap</Link>
-            <Link href="/docs/handbook/README" style={navLink}>Handbook</Link>
-            <PatternsMegaMenu />
-            <Link href="/docs/08-ai-sdlc/README" style={navLink}>AIDLC</Link>
-            <Link href="/portal" style={navLink}>Portal</Link>
-            <Link href="/about" style={navLink}>About</Link>
-            <Link href="/docs/CONTRIBUTING" style={navLink}>Contribute</Link>
-            <a href={REPOSITORY_URL} target="_blank" rel="noopener noreferrer" style={{
-              marginLeft: '0.35rem',
-              padding: '0.4rem 0.85rem',
-              borderRadius: 8,
-              background: 'var(--accent)',
-              color: '#fff',
-              fontSize: '0.85rem',
-              textDecoration: 'none',
-              fontWeight: 600,
-            }}>
-              Repository →
-            </a>
-          </nav>
-        </div>
-      </header>
+    <main id="main-content" className="min-h-screen bg-[var(--shell)] text-[var(--shell-text)]">
+      <AppHeader />
 
-      <section style={{
-        padding: '4.5rem 2rem 3.5rem',
-        borderBottom: '1px solid var(--shell-border)',
-        background: 'linear-gradient(180deg, #111827 0%, var(--shell) 100%)',
-      }}>
-        <div style={{ maxWidth: 880, margin: '0 auto', textAlign: 'center' }}>
-          <p style={{
-            display: 'inline-block',
-            marginBottom: '1.1rem',
-            padding: '0.35rem 0.9rem',
-            borderRadius: 999,
-            background: 'rgba(37, 99, 235, 0.15)',
-            color: '#93c5fd',
-            fontSize: '0.72rem',
-            fontWeight: 700,
-            letterSpacing: '0.07em',
-            textTransform: 'uppercase',
-            border: '1px solid rgba(37, 99, 235, 0.35)',
-          }}>
-            Open · Community driven · Vendor neutral
+      {/* Hero — inverse band for contrast in both themes */}
+      <section className="hero-band relative overflow-hidden border-b border-[var(--inverse-border)]">
+        <div className="hero-band-grid pointer-events-none absolute inset-0" aria-hidden />
+        <div className="hero-band-glow pointer-events-none absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full" aria-hidden />
+        <div className="relative mx-auto max-w-4xl px-4 py-16 text-center md:px-6 lg:py-24">
+          <p className="inline-block rounded-full border border-[var(--inverse-border)] bg-white/5 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[var(--inverse-accent)] mb-5">
+            Community · Vendor Neutral · Working Standard
           </p>
-          <h1 style={{
-            fontSize: 'clamp(2.3rem, 5vw, 3.5rem)',
-            fontWeight: 800,
-            letterSpacing: '-0.03em',
-            lineHeight: 1.1,
-            marginBottom: '0.9rem',
-            color: '#fff',
-          }}>
+          <h1 className="text-3xl font-black tracking-tight text-[var(--inverse-text)] sm:text-5xl lg:text-6xl mb-4">
             {PRODUCT_NAME}
           </h1>
-          <p style={{ fontSize: '1.15rem', color: '#d1d5db', maxWidth: 640, margin: '0 auto 0.65rem', lineHeight: 1.65 }}>
+          <p className="mx-auto max-w-2xl text-base text-[var(--inverse-muted)] sm:text-xl leading-relaxed mb-3">
             {PRODUCT_TAGLINE}
           </p>
-          <p style={{ fontSize: '0.92rem', color: 'var(--shell-muted)', maxWidth: 560, margin: '0 auto 1.75rem', lineHeight: 1.6 }}>
+          <p className="mx-auto max-w-xl text-xs text-[var(--inverse-muted)]/90 sm:text-sm leading-relaxed mb-8">
             {RELEASE_STATUS_NOTE}
           </p>
-          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href={REPOSITORY_URL} target="_blank" rel="noopener noreferrer" style={{
-              padding: '0.75rem 1.5rem', borderRadius: 10, background: 'var(--accent)', color: '#fff',
-              fontWeight: 700, fontSize: '0.92rem', textDecoration: 'none',
-            }}>
-              Open the repository →
-            </a>
-            <Link href="/docs/handbook/README" style={{
-              padding: '0.75rem 1.5rem', borderRadius: 10, background: 'var(--paper)', color: 'var(--ink)',
-              fontWeight: 600, fontSize: '0.92rem', textDecoration: 'none', border: '1px solid var(--paper-border)',
-            }}>
-              Practitioner handbook
+
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link
+              href="/quickstart"
+              className="cta-solid rounded-xl bg-[var(--accent)] px-6 py-3.5 text-sm font-bold text-[var(--on-accent)] shadow-lg transition-all duration-200 hover:bg-[var(--accent-hover)] hover:shadow-xl hover:-translate-y-0.5"
+            >
+              Quickstart Guide →
             </Link>
-            <Link href="/docs/roadmap" style={{
-              padding: '0.75rem 1.5rem', borderRadius: 10,
-              background: 'transparent', color: '#93c5fd',
-              fontWeight: 600, fontSize: '0.92rem', textDecoration: 'none',
-              border: '1px solid rgba(147, 197, 253, 0.4)',
-            }}>
-              View roadmap
+            <Link
+              href="/docs/README"
+              className="rounded-xl border border-[var(--inverse-border)] bg-white/5 px-6 py-3.5 text-sm font-semibold text-[var(--inverse-text)] backdrop-blur-sm transition-all duration-200 hover:border-[var(--inverse-accent)] hover:bg-white/10 hover:-translate-y-0.5"
+            >
+              Read Docs
+            </Link>
+            <a
+              href={REPOSITORY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-xl border border-[var(--inverse-border)] bg-transparent px-6 py-3.5 text-sm font-semibold text-[var(--inverse-accent)] transition-all duration-200 hover:bg-white/5 hover:-translate-y-0.5"
+            >
+              GitHub
+            </a>
+          </div>
+
+          <p className="mt-7 text-xs text-[var(--inverse-muted)]">
+            Maintained in the open. Attribution:{' '}
+            <Link href="/about" className="font-medium text-[var(--inverse-accent)] hover:underline">project steward</Link>
+            {' '}· open standard specification.
+          </p>
+        </div>
+      </section>
+
+      {/* Featured gateway cards — light paper on dark / dark band feel */}
+      <section className="section-band border-b px-4 py-12 md:px-6">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-8 text-center sm:text-left">
+            <h2 className="text-xl font-extrabold tracking-tight text-[var(--inverse-text)] sm:text-2xl">
+              Get Started with Documentation
+            </h2>
+            <p className="mt-1 text-sm text-[var(--inverse-muted)]">
+              Choose your entry point into the AI Engineering Standard.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            {/* Card 1: Quickstart */}
+            <Link
+              href="/quickstart"
+              className="tile-card group flex flex-col justify-between rounded-2xl p-6 md:p-8"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-500">
+                    ⚡ Quickstart
+                  </span>
+                  <span className="text-xs font-mono text-[var(--ink-muted)]">2 min setup</span>
+                </div>
+                <h3 className="text-xl font-bold text-[var(--ink)] group-hover:text-[var(--accent)] transition-colors mb-2">
+                  Quickstart Guide
+                </h3>
+                <p className="text-sm text-[var(--ink-secondary)] leading-relaxed mb-4">
+                  Rapidly install IDE-native skills, prompt standards, and stage gate configurations into your project harness with `npx`.
+                </p>
+              </div>
+              <div className="flex items-center text-xs font-bold text-[var(--accent)] group-hover:translate-x-1 transition-transform">
+                Start Quickstart →
+              </div>
+            </Link>
+
+            {/* Card 2: Read Docs */}
+            <Link
+              href="/docs/README"
+              className="tile-card group flex flex-col justify-between rounded-2xl p-6 md:p-8"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-indigo-500">
+                    📖 Read Docs
+                  </span>
+                  <span className="text-xs font-mono text-[var(--ink-muted)]">Full sidebar</span>
+                </div>
+                <h3 className="text-xl font-bold text-[var(--ink)] group-hover:text-[var(--accent)] transition-colors mb-2">
+                  Read Docs
+                </h3>
+                <p className="text-sm text-[var(--ink-secondary)] leading-relaxed mb-4">
+                  Explore full interactive documentation with sidepanel navigation covering AIDLC, Evals, Prompt Engineering, MCP, and Org Playbooks.
+                </p>
+              </div>
+              <div className="flex items-center text-xs font-bold text-[var(--accent)] group-hover:translate-x-1 transition-transform">
+                Read Docs →
+              </div>
             </Link>
           </div>
-          <p style={{ marginTop: '1.75rem', fontSize: '0.8rem', color: 'var(--shell-muted)' }}>
-            Maintained in the open. Attribution:{' '}
-            <Link href="/about" style={{ color: '#d1d5db' }}>project steward</Link>
-            {' '}· not a personal portfolio.
-          </p>
         </div>
       </section>
 
-      {/* White content band */}
-      <section style={{ background: 'var(--paper-subtle)', color: 'var(--ink)', padding: '3rem 2rem', borderBottom: '1px solid var(--paper-border)' }}>
-        <div style={{ maxWidth: 900, margin: '0 auto' }}>
-          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.65rem', letterSpacing: '-0.02em' }}>
-            Why AI engineering needs a standard
-          </h2>
-          <p style={{ color: 'var(--ink-secondary)', lineHeight: 1.7, marginBottom: '0.85rem' }}>
-            Teams invent private dialects for prompts, agents, evals, and approvals. The result is unreproducible delivery,
-            silent security gaps, and tools that cannot interoperate. AIES exists so organizations share one vocabulary,
-            one set of gates, and one way to evidence production readiness — without locking to a single model vendor.
-          </p>
-          <p style={{ color: 'var(--ink-muted)', fontSize: '0.9rem', lineHeight: 1.6 }}>
-            Trust comes from documentation, versioning, and community critique — not from declaring “the standard” on day one.
-          </p>
+      {/* Core Mission & Manifesto Section (Prominently Featured) */}
+      <section className="border-b border-[var(--paper-border)] bg-gradient-to-r from-[var(--paper)] via-[var(--accent-soft)] to-[var(--paper)] px-4 py-14 md:px-6">
+        <div className="mx-auto max-w-5xl">
+          <div className="tile-card relative overflow-hidden rounded-3xl border-2 border-[var(--accent-border)] bg-[var(--paper)] p-8 md:p-12 shadow-xl">
+            <div className="absolute top-0 right-0 -mt-8 -mr-8 h-36 w-36 rounded-full bg-[var(--accent)]/10 blur-2xl pointer-events-none" />
+            
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--accent-border)] bg-[var(--accent-soft)] px-3.5 py-1 text-xs font-black uppercase tracking-widest text-[var(--accent)]">
+                  ⚡ Core Mission & Justification
+                </span>
+              </div>
+
+              <h2 className="text-2xl font-black tracking-tight text-[var(--ink)] sm:text-4xl leading-tight mb-6">
+                Why AI engineering needs a standard
+              </h2>
+
+              <blockquote className="border-l-4 border-[var(--accent)] pl-5 md:pl-6 my-4">
+                <p className="text-base font-medium text-[var(--ink)] sm:text-lg leading-relaxed mb-4">
+                  Teams invent private dialects for prompts, agents, evals, and approvals. The result is unreproducible delivery,
+                  silent security gaps, and tools that cannot interoperate.{' '}
+                  <strong className="font-extrabold text-[var(--accent)] underline decoration-[var(--accent-border)]">
+                    AIES exists so organizations share one vocabulary, one set of gates, and one way to evidence production readiness
+                  </strong>{' '}
+                  — without locking to a single model vendor.
+                </p>
+                <p className="text-sm font-semibold text-[var(--ink-secondary)] italic">
+                  &ldquo;Trust comes from documentation, versioning, and community critique — not from declaring &lsquo;the standard&rsquo; on day one.&rdquo;
+                </p>
+              </blockquote>
+
+              <div className="mt-8 flex flex-wrap items-center gap-4 pt-4 border-t border-[var(--paper-border)]">
+                <Link
+                  href="/docs/principles"
+                  className="cta-solid inline-flex items-center gap-2 rounded-xl bg-[var(--accent)] px-5 py-2.5 text-xs font-extrabold text-[var(--on-accent)] shadow-md transition hover:bg-[var(--accent-hover)] hover:shadow-lg"
+                >
+                  Explore Standard Principles →
+                </Link>
+                <Link
+                  href="/docs/handbook/README"
+                  className="inline-flex items-center gap-2 rounded-xl border border-[var(--paper-border)] bg-[var(--paper-subtle)] px-5 py-2.5 text-xs font-bold text-[var(--ink)] transition hover:border-[var(--accent)]"
+                >
+                  Read Practitioner Handbook
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section style={{ background: 'var(--paper-subtle)', color: 'var(--ink)', padding: '1rem 2rem 3.5rem' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div style={{ marginBottom: '1.5rem' }}>
-            <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--ink)', letterSpacing: '-0.02em', marginBottom: '0.35rem' }}>
+      {/* Capabilities Section */}
+      <section className="bg-[var(--paper-subtle)] px-4 py-12 md:px-6">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-6">
+            <h2 className="text-xl font-extrabold tracking-tight text-[var(--ink)] sm:text-2xl mb-1">
               Standards by capability
             </h2>
-            <p style={{ color: 'var(--ink-muted)', maxWidth: 560 }}>
+            <p className="text-xs text-[var(--ink-muted)]">
               Organized by engineering concern — not by a laundry list of frameworks.
             </p>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '0.75rem' }}>
+          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             {CAPABILITIES.map(item => (
-              <Link key={item.title} href={item.href} style={{
-                ...paperCard,
-                display: 'block',
-                padding: '1rem 1.1rem',
-                textDecoration: 'none',
-              }}>
-                <div style={{ fontWeight: 700, color: 'var(--ink)', fontSize: '0.9rem', marginBottom: '0.3rem' }}>{item.title}</div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--ink-muted)', lineHeight: 1.5 }}>{item.desc}</div>
+              <Link
+                key={item.title}
+                href={item.href}
+                className="tile-card group block rounded-xl p-4 text-decoration-none"
+              >
+                <div className="text-xs font-bold text-[var(--ink)] group-hover:text-[var(--accent)] transition-colors mb-1">
+                  {item.title}
+                </div>
+                <div className="text-[11px] text-[var(--ink-muted)] leading-normal">
+                  {item.desc}
+                </div>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      <section style={{ background: 'var(--paper)', color: 'var(--ink)', padding: '2.5rem 2rem', borderTop: '1px solid var(--paper-border)', borderBottom: '1px solid var(--paper-border)' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', gap: 16, flexWrap: 'wrap', marginBottom: '1rem' }}>
+      {/* Engineering Principles */}
+      <section className="border-t border-b border-[var(--paper-border)] bg-[var(--paper)] px-4 py-10 md:px-6">
+        <div className="mx-auto max-w-5xl">
+          <div className="flex flex-wrap items-end justify-between gap-4 mb-6">
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--ink)', letterSpacing: '-0.02em' }}>Engineering principles</h2>
-              <p style={{ color: 'var(--ink-muted)', marginTop: 6 }}>The constitution every AIES artifact should obey.</p>
+              <h2 className="text-xl font-extrabold tracking-tight text-[var(--ink)] sm:text-2xl">
+                Engineering principles
+              </h2>
+              <p className="text-xs text-[var(--ink-muted)] mt-1">
+                The constitution every AIES artifact should obey.
+              </p>
             </div>
-            <Link href="/docs/principles" style={{ color: 'var(--accent)', fontSize: '0.9rem', fontWeight: 600 }}>
+            <Link href="/docs/principles" className="text-xs font-bold text-[var(--accent)] hover:underline">
               Full principles →
             </Link>
           </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem' }}>
+          <div className="flex flex-wrap gap-2">
             {PRINCIPLES.map(name => (
-              <span key={name} style={{
-                padding: '0.4rem 0.8rem',
-                borderRadius: 999,
-                border: '1px solid var(--accent-border)',
-                background: 'var(--accent-soft)',
-                color: 'var(--primary-dark)',
-                fontSize: '0.78rem',
-                fontWeight: 600,
-              }}>
+              <span
+                key={name}
+                className="rounded-full border border-[var(--accent-border)] bg-[var(--accent-soft)] px-3 py-1 text-xs font-semibold text-[var(--primary-dark)]"
+              >
                 {name}
               </span>
             ))}
@@ -276,110 +311,52 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section style={{ background: 'var(--paper-subtle)', color: 'var(--ink)', padding: '2.5rem 2rem 3rem' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', gap: 16, flexWrap: 'wrap', marginBottom: '1rem' }}>
-            <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--ink)', letterSpacing: '-0.02em' }}>Adoption roadmap</h2>
-              <p style={{ color: 'var(--ink-muted)', marginTop: 6 }}>Corpus is shipped. What remains is external adoption and shared governance.</p>
-            </div>
-            <Link href="/docs/roadmap" style={{ color: 'var(--accent)', fontSize: '0.9rem', fontWeight: 600 }}>
-              Detailed roadmap →
-            </Link>
-          </div>
-          <ol style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '0.55rem' }}>
-            {ROADMAP.map(item => {
-              const isCurrent = item.state === 'current';
-              const isDone = item.state === 'done';
-              return (
-                <li key={item.ver} style={{
-                  ...paperCard,
-                  display: 'grid',
-                  gridTemplateColumns: '4.5rem 1fr auto',
-                  gap: '1rem',
-                  alignItems: 'center',
-                  padding: '0.85rem 1rem',
-                  border: isCurrent
-                    ? '1px solid var(--warning-border)'
-                    : isDone
-                      ? '1px solid var(--accent-border)'
-                      : '1px solid var(--paper-border)',
-                  background: isCurrent
-                    ? 'var(--warning-soft)'
-                    : isDone
-                      ? 'var(--accent-soft)'
-                      : 'var(--paper)',
-                }}>
-                  <span style={{ fontFamily: 'var(--font-jetbrains-mono), monospace', fontWeight: 700, color: 'var(--ink)' }}>{item.ver}</span>
-                  <span style={{ color: 'var(--ink-secondary)' }}>{item.title}</span>
-                  <span style={{
-                    fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase',
-                    color: isCurrent ? 'var(--warning-text)' : isDone ? 'var(--primary-dark)' : 'var(--ink-muted)',
-                  }}>
-                    {item.state}
-                  </span>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
-      </section>
-
-      <section style={{ background: 'var(--paper-subtle)', padding: '1rem 2rem 4rem' }}>
-        <div style={{
-          ...paperCard,
-          maxWidth: 900,
-          margin: '0 auto',
-          padding: '2rem',
-          textAlign: 'center',
-        }}>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--ink)', marginBottom: '0.55rem' }}>Community & contributing</h2>
-          <p style={{ color: 'var(--ink-muted)', marginBottom: '1.35rem', lineHeight: 1.65 }}>
+      {/* Contributing — inverse band */}
+      <section className="section-band border-t px-4 py-12 md:px-6">
+        <div className="tile-card mx-auto max-w-3xl rounded-2xl border border-[var(--paper-border)] bg-[var(--paper)] p-8 text-center shadow-lg">
+          <h2 className="text-lg font-bold text-[var(--ink)] mb-2">Community & Contributing</h2>
+          <p className="text-xs text-[var(--ink-muted)] mb-6 leading-relaxed">
             AIES improves through issues, PRs, pilot evidence, and disagreement on the record.
           </p>
-          <div style={{ display: 'flex', gap: '0.65rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="/docs/CONTRIBUTING" style={{
-              padding: '0.6rem 1.2rem', borderRadius: 8, background: 'var(--accent)', color: '#fff',
-              fontWeight: 700, fontSize: '0.86rem', textDecoration: 'none',
-            }}>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link
+              href="/docs/CONTRIBUTING"
+              className="cta-solid rounded-lg bg-[var(--accent)] px-4 py-2 text-xs font-bold text-[var(--on-accent)] transition hover:bg-[var(--accent-hover)]"
+            >
               Contributing guide
             </Link>
-            <a href={REPOSITORY_URL} target="_blank" rel="noopener noreferrer" style={{
-              padding: '0.6rem 1.2rem', borderRadius: 8, border: '1px solid var(--paper-border)', color: 'var(--ink)',
-              fontWeight: 600, fontSize: '0.86rem', textDecoration: 'none', background: 'var(--paper)',
-            }}>
+            <a
+              href={REPOSITORY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-lg border border-[var(--paper-border)] bg-[var(--paper)] px-4 py-2 text-xs font-semibold text-[var(--ink)] transition hover:border-[var(--accent)]"
+            >
               GitHub
             </a>
-            <Link href="/portal" style={{
-              padding: '0.6rem 1.2rem', borderRadius: 8, border: '1px solid var(--accent-border)', color: 'var(--accent)',
-              fontWeight: 600, fontSize: '0.86rem', textDecoration: 'none', background: 'var(--accent-soft)',
-            }}>
+            <Link
+              href="/portal"
+              className="rounded-lg border border-[var(--accent-border)] bg-[var(--accent-soft)] px-4 py-2 text-xs font-semibold text-[var(--accent)] transition hover:bg-[var(--accent)] hover:text-[var(--on-accent)]"
+            >
               Standards portal
             </Link>
           </div>
         </div>
       </section>
 
-      <footer style={{
-        borderTop: '1px solid var(--shell-border)',
-        padding: '1.5rem 2rem 2.25rem',
-        textAlign: 'center',
-        color: 'var(--shell-muted)',
-        fontSize: '0.8rem',
-        background: 'var(--shell)',
-      }}>
+      {/* Footer */}
+      <footer className="border-t border-[var(--shell-border)] bg-[var(--shell)] px-4 py-8 text-center text-xs text-[var(--shell-muted)] md:px-6">
         <p>
-          <strong style={{ color: '#d1d5db' }}>{PRODUCT_SHORT}</strong>
+          <strong className="text-[var(--shell-text)]">{PRODUCT_SHORT}</strong>
           {' '}— {PRODUCT_NAME} · {RELEASE_STATUS} · site v{SITE_VERSION}
         </p>
-        <p style={{ marginTop: '0.4rem', maxWidth: 640, marginLeft: 'auto', marginRight: 'auto', lineHeight: 1.55 }}>
+        <p className="mx-auto mt-2 max-w-lg text-[11px] leading-relaxed">
           Not affiliated with OpenAI, Anthropic, or any model vendor. “Open” means open-source and community-governed.
         </p>
-        <p style={{ marginTop: '0.75rem' }}>
-          <Link href="/docs/principles" style={{ color: 'var(--shell-muted)', marginRight: '1rem', textDecoration: 'none' }}>Principles</Link>
-          <Link href="/docs/roadmap" style={{ color: 'var(--shell-muted)', marginRight: '1rem', textDecoration: 'none' }}>Roadmap</Link>
-          <Link href="/docs/CONTRIBUTING" style={{ color: 'var(--shell-muted)', marginRight: '1rem', textDecoration: 'none' }}>Contribute</Link>
-          <Link href="/about" style={{ color: 'var(--shell-muted)', textDecoration: 'none' }}>About</Link>
+        <p className="mt-4 flex flex-wrap justify-center gap-4">
+          <Link href="/docs/principles" className="hover:text-[var(--shell-text)]">Principles</Link>
+          <Link href="/docs/roadmap" className="hover:text-[var(--shell-text)]">Roadmap</Link>
+          <Link href="/docs/CONTRIBUTING" className="hover:text-[var(--shell-text)]">Contribute</Link>
+          <Link href="/about" className="hover:text-[var(--shell-text)]">About</Link>
         </p>
       </footer>
     </main>

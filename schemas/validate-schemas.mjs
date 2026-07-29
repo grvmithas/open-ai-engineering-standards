@@ -160,5 +160,5 @@ if (errors.length > 0) {
 }
 
 console.log(
-  `PASS: ${filenames.length} Draft 2020-12 schemas passed OAIES structural validation`,
+  `PASS: ${filenames.length} Draft 2020-12 schemas passed AIES structural validation`,
 );

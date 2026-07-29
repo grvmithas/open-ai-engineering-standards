@@ -2,44 +2,46 @@
 
 > **Pattern:** Architecture  
 > **Component:** context.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Preconditions (must be true before activation)
+## Purpose
 
-- [ ] Architectural drivers written (problem, forces, constraints)
-- [ ] Quality-attribute scenarios listed (e.g. “p99 < 200ms on checkout”)
-- [ ] Current-state systems and constraints known
-- [ ] Risk level assigned (Low / Medium / High)
-- [ ] For High: independent reviewer identified
+Define the **minimum evidence package** required before the Architecture pattern may start — and when to refuse to start.
 
-## Trigger conditions (apply the pattern)
+## Required before activation
 
-Apply when **any** of the following hold:
+- [ ] Quality-attribute scenarios
+- [ ] Current topology / ADR set
+- [ ] Constraints and data class
+- [ ] Decision deadline and approver
 
-- New service, data store, or trust boundary
-- Conflicting quality attributes require an explicit trade
-- Cross-team or external contracts change
-- Decision is hard to reverse within six months
-- AI/tool-calling boundary introduced
+## Refuse to start when
 
-## Do not apply when
+- Request for “best architecture” with no scenarios
+- Implementation coding requested inside the ADR step
+- No human who can accept rejected alternatives
 
-- Local refactor, no new boundary
-- Pure bugfix or dependency bump with same topology
-- UI-only or docs-only
-- Choice among equivalent libraries with identical architecture
+## Trust and data class
 
-## Required inputs
+- Label segments as trusted, internal, or untrusted for **Architecture** packs.  
+- Keep untrusted retrieval out of the Architecture system channel.  
+- Architecture MCP enablement follows data class in [mcps.md](./mcps.md).
 
-| Input | Source | Minimum quality |
-|-------|--------|-----------------|
-| Drivers | Product + eng | Problem, forces, non-goals |
-| QA scenarios | SRE / product | Measurable |
-| Constraints | Compliance / cost / legacy | Hard limits |
-| Current ADRs | Repo | Avoid contradictions |
+## Pack shape for Architecture
 
-## Authority boundary
+1. Trigger / AC (human-owned)  
+2. Ranked evidence inside the Architecture budget  
+3. Constraints and non-goals for this activation  
+4. Open questions (empty before irreversible Architecture steps)
 
-The architect agent drafts ADRs and diagrams. **High-risk approval** requires an independent human reviewer. The agent does not implement feature code or self-approve High-risk decisions.
+## Related
+
+- [Context pattern](../context-pattern/README.md) when packing is itself the hard problem  
+- [Prompt](./prompt.md) variable bindings  
+- [Skills](./skills.md) activation triggers  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Architecture context gates (required/refuse) rewritten for this envelope.

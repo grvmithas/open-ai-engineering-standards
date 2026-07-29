@@ -2,7 +2,7 @@
 
 > **Pattern:** Release  
 > **Category:** Progressive Delivery & Change Safety  
-> **Maturity:** Stable v1.1 | **Updated:** 2026-07-16
+> **Maturity:** Stable v1.1 | **Updated:** 2026-07-29
 
 ---
 
@@ -171,3 +171,24 @@ See [examples/example.md](./examples/example.md) — payments API canary with fl
 - Medium/high risk: go/no-go authority independent of the authoring agent.
 - Provenance and SBOM policy are change evidence — not marketing badges.
 - No certification claims from a green canary alone.
+
+## Tradeoffs
+
+Canaries and abort criteria slow promote; big-bang ships until rollback windows disappear.
+
+## Anti-patterns
+
+Promote without eval gate; no abort owner; digests unpinned.
+
+## Artifact index
+
+| Artifact | Path |
+|----------|------|
+| Prompt | [prompt.md](./prompt.md) |
+| Agent | [agent.md](./agent.md) |
+| Skills | [skills.md](./skills.md) |
+| MCPs | [mcps.md](./mcps.md) |
+| Hooks | [hooks.md](./hooks.md) |
+| Checklist | [checklist.md](./checklist.md) |
+| Example | [examples/example.md](./examples/example.md) |
+

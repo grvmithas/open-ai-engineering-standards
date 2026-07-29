@@ -1,4 +1,4 @@
-# OAIES Lifecycle and Assessor Methodology
+# AIES Lifecycle and Assessor Methodology
 
 > **Version:** 1.0.1  
 > **Published:** 2026-07-16  
@@ -6,7 +6,7 @@
 
 ## Purpose
 
-Define OAIES versioning and deprecation rules and the reproducible method assessors use to reach, report, and maintain conformance conclusions.
+Define AIES versioning and deprecation rules and the reproducible method assessors use to reach, report, and maintain conformance conclusions.
 
 ## Why
 
@@ -16,7 +16,7 @@ Controls must evolve without silently changing historical claims. Assessments mu
 
 ### 1. Standard Versioning
 
-OAIES uses semantic versioning `MAJOR.MINOR.PATCH`.
+AIES uses semantic versioning `MAJOR.MINOR.PATCH`.
 
 | Change | Version increment | Conformance effect |
 |---|---|---|
@@ -75,7 +75,7 @@ flowchart TD
 ```
 
 1. Accept the mandate, identify intended users, confirm authority and independence, and define confidentiality.
-2. Freeze assessment criteria: OAIES version, system boundary, environments, period, profiles, autonomy, impact, and legal overlays.
+2. Freeze assessment criteria: AIES version, system boundary, environments, period, profiles, autonomy, impact, and legal overlays.
 3. Review architecture, data flows, threat model, impact assessment, changes, incidents, suppliers, and prior findings.
 4. Reconcile the SoA against the complete control catalog and challenge exclusions.
 5. Build a test plan mapping each applicable control to design and operating-effectiveness procedures.
@@ -108,19 +108,19 @@ Use the [assessment report template](./templates/assessment-report.template.md).
 
 | Control ID | Normative requirement | Applicability | Objective evidence |
 |---|---|---|---|
-| OAIES-GOV-020 | The standard maintainer **MUST** publish versioned release notes identifying control-level additions, changes, deprecations, retirements, migrations, effective dates, and the evidence-based rationale for each migration window. | Every OAIES release | Signed/tagged release, changelog, control diff, compatibility/risk analysis, adopter migration evidence, migration notice |
-| OAIES-GOV-021 | A deprecated control **MUST** retain its ID and normative force until its published retirement date. | Deprecated controls | Version archive, release notice, control registry |
-| OAIES-GOV-022 | A retired control ID **MUST NOT** be reassigned to another requirement. | Standard maintenance | Automated registry uniqueness check and historical catalog |
-| OAIES-GOV-023 | Affected claims **MUST** be reassessed when a requirement is withdrawn for urgent safety, security, or legal reasons. | Withdrawn requirement | Withdrawal notice, claim register query, reassessment/suspension records |
-| OAIES-ASR-020 | The assessor **MUST** document scope, criteria, period, team competence, independence, limitations, methods, populations, samples, tests, evidence, findings, and conclusion. | Every conformance assessment | Complete signed assessment report and workpapers |
-| OAIES-ASR-021 | The assessor **MUST** validate SoA completeness and challenge not-applicable rationales against system-boundary facts. | Every conformance assessment | Catalog reconciliation, challenge log, corrected SoA |
-| OAIES-ASR-022 | The assessor **MUST** test both control design and operating effectiveness unless the report explicitly provides a design-only conclusion whose approved expiry is bounded by the claim period and whose wording excludes operating effectiveness. | Every positive conclusion | Test workpapers, control-frequency and operating-cycle analysis, period evidence, approved design-only expiry and claim language where applicable |
-| OAIES-ASR-023 | Sample selection **MUST** be reproducible and risk-based, derive size and census decisions from approved assurance and deviation criteria, include failures and overrides, apply stronger criteria to I3, and preserve the source population or immutable query. | Assessment using samples | Approved sampling methodology, population/control-frequency analysis, assurance and tolerable-deviation decisions, I3 escalation rationale, seed/query, population hash/export, selected records |
-| OAIES-ASR-024 | I3 assessments **MUST** use an assessor independent of control ownership, implementation, operation, and delivery reporting lines. | P6 or I3 | Organization chart, role declarations, conflict check, engagement approval |
-| OAIES-ASR-025 | A positive conclusion **MUST NOT** be issued when a major nonconformity remains open or a scope limitation prevents sufficient appropriate evidence. | Every conformance assessment | Finding register, limitation analysis, report conclusion, quality review |
-| OAIES-ASR-026 | Assessment reports **MUST** receive factual review and independent quality review before issuance. | Every conformance assessment | Management responses, review notes, reviewer sign-off, issued report hash |
-| OAIES-ASR-027 | Active claims **MUST** follow an organization-approved surveillance interval derived from impact, change rate, control frequency, incident history, applicable obligations, and claim period; I3 intervals must be shorter than otherwise comparable lower-impact intervals, and material change, major incident, invalid evidence, or withdrawal of relied-upon supplier assurance triggers immediate review. | Active claim | Approved cadence policy and system-specific rationale, legal/contractual mapping, claim-period record, I3 escalation comparison, surveillance reports, change/incident and supplier triggers |
-| OAIES-ASR-028 | Corrective actions **MUST** identify root cause, owner, due date, remediation, validation method, and closure evidence. | Any nonconformity | Corrective-action record, validation results, assessor closure |
+| AIES-GOV-020 | The standard maintainer **MUST** publish versioned release notes identifying control-level additions, changes, deprecations, retirements, migrations, effective dates, and the evidence-based rationale for each migration window. | Every AIES release | Signed/tagged release, changelog, control diff, compatibility/risk analysis, adopter migration evidence, migration notice |
+| AIES-GOV-021 | A deprecated control **MUST** retain its ID and normative force until its published retirement date. | Deprecated controls | Version archive, release notice, control registry |
+| AIES-GOV-022 | A retired control ID **MUST NOT** be reassigned to another requirement. | Standard maintenance | Automated registry uniqueness check and historical catalog |
+| AIES-GOV-023 | Affected claims **MUST** be reassessed when a requirement is withdrawn for urgent safety, security, or legal reasons. | Withdrawn requirement | Withdrawal notice, claim register query, reassessment/suspension records |
+| AIES-ASR-020 | The assessor **MUST** document scope, criteria, period, team competence, independence, limitations, methods, populations, samples, tests, evidence, findings, and conclusion. | Every conformance assessment | Complete signed assessment report and workpapers |
+| AIES-ASR-021 | The assessor **MUST** validate SoA completeness and challenge not-applicable rationales against system-boundary facts. | Every conformance assessment | Catalog reconciliation, challenge log, corrected SoA |
+| AIES-ASR-022 | The assessor **MUST** test both control design and operating effectiveness unless the report explicitly provides a design-only conclusion whose approved expiry is bounded by the claim period and whose wording excludes operating effectiveness. | Every positive conclusion | Test workpapers, control-frequency and operating-cycle analysis, period evidence, approved design-only expiry and claim language where applicable |
+| AIES-ASR-023 | Sample selection **MUST** be reproducible and risk-based, derive size and census decisions from approved assurance and deviation criteria, include failures and overrides, apply stronger criteria to I3, and preserve the source population or immutable query. | Assessment using samples | Approved sampling methodology, population/control-frequency analysis, assurance and tolerable-deviation decisions, I3 escalation rationale, seed/query, population hash/export, selected records |
+| AIES-ASR-024 | I3 assessments **MUST** use an assessor independent of control ownership, implementation, operation, and delivery reporting lines. | P6 or I3 | Organization chart, role declarations, conflict check, engagement approval |
+| AIES-ASR-025 | A positive conclusion **MUST NOT** be issued when a major nonconformity remains open or a scope limitation prevents sufficient appropriate evidence. | Every conformance assessment | Finding register, limitation analysis, report conclusion, quality review |
+| AIES-ASR-026 | Assessment reports **MUST** receive factual review and independent quality review before issuance. | Every conformance assessment | Management responses, review notes, reviewer sign-off, issued report hash |
+| AIES-ASR-027 | Active claims **MUST** follow an organization-approved surveillance interval derived from impact, change rate, control frequency, incident history, applicable obligations, and claim period; I3 intervals must be shorter than otherwise comparable lower-impact intervals, and material change, major incident, invalid evidence, or withdrawal of relied-upon supplier assurance triggers immediate review. | Active claim | Approved cadence policy and system-specific rationale, legal/contractual mapping, claim-period record, I3 escalation comparison, surveillance reports, change/incident and supplier triggers |
+| AIES-ASR-028 | Corrective actions **MUST** identify root cause, owner, due date, remediation, validation method, and closure evidence. | Any nonconformity | Corrective-action record, validation results, assessor closure |
 
 ## Guidance
 
@@ -145,7 +145,7 @@ Use automated catalog reconciliation, evidence integrity checks, and sampling sc
 
 ## Enterprise Considerations
 
-Maintain an enterprise claim register linked to system inventory, release management, incidents, supplier assurance, and exception expiry. Procurement contracts should preserve assessor access and change notification. Regulated systems may require shorter surveillance intervals, regulator-prescribed records, notified bodies, or statutory conformity assessment in addition to OAIES.
+Maintain an enterprise claim register linked to system inventory, release management, incidents, supplier assurance, and exception expiry. Procurement contracts should preserve assessor access and change notification. Regulated systems may require shorter surveillance intervals, regulator-prescribed records, notified bodies, or statutory conformity assessment in addition to AIES.
 
 ## Checklist
 

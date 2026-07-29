@@ -93,7 +93,7 @@ graph TD
 
 ---
 
-## Communication Protocol (OAIES Standard)
+## Communication Protocol (AIES Standard)
 
 All agent-to-agent communication uses a standard message schema:
 
@@ -140,7 +140,7 @@ type MessageType =
 
 **The critical challenge in multi-agent systems:** How do agents share state without creating coupling?
 
-### OAIES State Management Pattern
+### AIES State Management Pattern
 
 ```mermaid
 graph TD

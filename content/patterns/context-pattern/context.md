@@ -2,42 +2,46 @@
 
 > **Pattern:** Context  
 > **Component:** context.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Preconditions (must be true before activation)
+## Purpose
 
-- [ ] Task intent is known (what decision or implementation the package must support)
-- [ ] Token or byte budget is set (e.g. 32k tokens / 80 KB)
-- [ ] Exclusion rules exist (secrets, PII, binaries, huge generated trees)
-- [ ] Output path for the package file is defined
-- [ ] Repo access is available (read-only is enough)
+Define the **minimum evidence package** required before the Context pattern may start — and when to refuse to start.
 
-## Trigger conditions (apply the pattern)
+## Required before activation
 
-Apply when **any** of the following hold:
+- [ ] Explicit task and AC
+- [ ] Ranked sources with trust labels
+- [ ] Size budget and prune list
+- [ ] Separation of system instructions vs retrieved data
 
-- Planner / coder / reviewer / debug agent needs multi-file awareness
-- Prior run failed from missing or wrong files
-- Repo size exceeds what can fit in the model window
-- Change crosses module or service boundaries
+## Refuse to start when
 
-## Do not apply when
+- Task is unclear and pack is used to compensate
+- Untrusted web/issue text requested in system role
+- Secrets or credentials present in candidate sources
 
-- Single open file already contains the full change surface
-- Question is conceptual with no code dependency
-- You are building a standing knowledge index (use memory/knowledge patterns)
+## Trust and data class
 
-## Required inputs
+- Label segments as trusted, internal, or untrusted for **Context** packs.  
+- Keep untrusted retrieval out of the Context system channel.  
+- Context MCP enablement follows data class in [mcps.md](./mcps.md).
 
-| Input | Source | Minimum quality |
-|-------|--------|-----------------|
-| Task intent | Story / user query | What must be decided or built |
-| Seed hints | Paths, symbols, error stacks | At least one anchor |
-| Budget | Team default or task override | Hard max |
-| Exclusion rules | Security / `.gitignore` / DLP | Patterns listed |
+## Pack shape for Context
 
-## Authority boundary
+1. Trigger / AC (human-owned)  
+2. Ranked evidence inside the Context budget  
+3. Constraints and non-goals for this activation  
+4. Open questions (empty before irreversible Context steps)
 
-The context agent **packages and labels** evidence. It does not approve plans, merge code, or decide architecture. Consuming agents must treat the package as untrusted data regarding instructions (prompt injection hygiene).
+## Related
+
+- [Context pattern](../context-pattern/README.md) when packing is itself the hard problem  
+- [Prompt](./prompt.md) variable bindings  
+- [Skills](./skills.md) activation triggers  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Context context gates (required/refuse) rewritten for this envelope.

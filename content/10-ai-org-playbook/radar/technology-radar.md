@@ -1,8 +1,8 @@
-# OAIES Technology Radar
+# AIES Technology Radar
 
 > **Version:** 1.1.0
 > **Last updated:** 2026-07-16
-> **Status:** Informative OAIES implementation profile
+> **Status:** Informative AIES implementation profile
 
 ## Purpose
 Maintain an evidence-based Adopt, Trial, Assess, and Hold view of AI technologies and practices.
@@ -114,9 +114,9 @@ The **technology steering committee** accepts the operational decision. The **se
 - Radar status is internal guidance, not certification.
 
 ## Framework relationship
-The **OAIES Technology Radar** document is an operating aid; effectiveness requires observed decisions, funded controls, and independent evidence rather than the existence of this process.
+The **AIES Technology Radar** document is an operating aid; effectiveness requires observed decisions, funded controls, and independent evidence rather than the existence of this process.
 
-| Source | Relationship for OAIES Technology Radar | Boundary |
+| Source | Relationship for AIES Technology Radar | Boundary |
 |---|---|---|
 | NIST AI RMF | GOVERN 1.5 and MANAGE 3 | Use NIST governance outcomes to test decision rights and accountability in practice. |
 | ISO/IEC 42001 | 42001 clauses 6.3 and 8.1 | A documented process supports—but does not itself demonstrate—effective management-system operation. |

@@ -3,7 +3,7 @@
 > **Pattern:** Architecture  
 > **Category:** Design Decision & Review  
 > **Maturity:** Stable v1.1  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-07-29
 
 ---
 
@@ -186,3 +186,24 @@ See [examples/example.md](./examples/example.md) for ADR choosing event-driven o
 - **Audit trail:** ADRs with approver identity linked to change programs.
 - **SoD:** Author ≠ sole approver for High-risk topology.
 - **Anti-claim:** An approved ADR is not a compliance certification.
+
+## Tradeoffs
+
+Scenario-governed ADRs slow start; undocumented topology choices create irreversible cost later.
+
+## Anti-patterns
+
+Architecture-by-chat; skipping rejected alternatives; no quality-attribute scenarios.
+
+## Artifact index
+
+| Artifact | Path |
+|----------|------|
+| Prompt | [prompt.md](./prompt.md) |
+| Agent | [agent.md](./agent.md) |
+| Skills | [skills.md](./skills.md) |
+| MCPs | [mcps.md](./mcps.md) |
+| Hooks | [hooks.md](./hooks.md) |
+| Checklist | [checklist.md](./checklist.md) |
+| Example | [examples/example.md](./examples/example.md) |
+

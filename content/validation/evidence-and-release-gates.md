@@ -1,4 +1,4 @@
-# OAIES Validation Evidence Package and Release Gates
+# AIES Validation Evidence Package and Release Gates
 
 > **Version:** 1.0.0  
 > **Published:** 2026-07-16  
@@ -6,7 +6,7 @@
 
 ## Purpose
 
-Define the immutable evidence package, review controls, publication boundary, and release decision required before OAIES may claim external validation.
+Define the immutable evidence package, review controls, publication boundary, and release decision required before AIES may claim external validation.
 
 ## Why
 
@@ -138,11 +138,11 @@ The release authority issues exactly one result:
 | `REJECT_REMEDIATE` | One or more gates fail but a new blinded run can resolve them | Fix cause and execute a new measurement; do not rewrite original run |
 | `REJECT_TERMINATE` | Authority, integrity, safety, or feasibility failure cannot be remedied | Close and disposition data; publish no validation claim |
 
-The signed decision states OAIES and protocol versions, pilot/cohort IDs, achieved scope, every limitation, gate results, dissent, expiry, and revalidation triggers.
+The signed decision states AIES and protocol versions, pilot/cohort IDs, achieved scope, every limitation, gate results, dissent, expiry, and revalidation triggers.
 
 ### 6. Claim Language
 
-Only after `ACCEPT` may maintainers state that a specified OAIES version was externally piloted. The claim must name:
+Only after `ACCEPT` may maintainers state that a specified AIES version was externally piloted. The claim must name:
 
 - number of completed and withdrawn organizations without implying representativeness;
 - system profiles, impact/autonomy ranges, sectors/geographies at a non-identifying level;
@@ -156,7 +156,7 @@ Never state “industry validated,” “certified,” “accredited,” “endo
 
 Expire the evidence claim after 24 months or earlier upon:
 
-- major OAIES release or material rating/applicability change;
+- major AIES release or material rating/applicability change;
 - discovered assessor conflict, evidence fabrication, calculator defect, or privacy breach;
 - withdrawal of participant publication authority affecting the claim basis;
 - cohort evidence no longer matching current system classes;
@@ -202,8 +202,8 @@ Use write-once or version-locked storage, organization-managed keys, role-based 
 - NIST, [SP 800-53A Rev. 5](https://doi.org/10.6028/NIST.SP.800-53Ar5).
 - NIST, [SP 800-92 — Guide to Computer Security Log Management](https://doi.org/10.6028/NIST.SP.800-92).
 - ISO, [ISO/IEC 17029:2019](https://www.iso.org/standard/29352.html).
-- [OAIES Evidence, Exceptions, and Conformance](../standard/03-evidence-exceptions-conformance.md).
-- [OAIES Blind Inter-Assessor Methodology](./inter-assessor-methodology.md).
+- [AIES Evidence, Exceptions, and Conformance](../standard/03-evidence-exceptions-conformance.md).
+- [AIES Blind Inter-Assessor Methodology](./inter-assessor-methodology.md).
 
 ## Changelog
 

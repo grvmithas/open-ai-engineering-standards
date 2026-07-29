@@ -1,4 +1,4 @@
-# OAIES Blind Inter-Assessor Methodology
+# AIES Blind Inter-Assessor Methodology
 
 > **Version:** 1.0.0  
 > **Published:** 2026-07-16  
@@ -6,7 +6,7 @@
 
 ## Purpose
 
-Measure whether qualified, independent assessors reach reproducible OAIES conclusions from the same authorized evidence without consensus contamination.
+Measure whether qualified, independent assessors reach reproducible AIES conclusions from the same authorized evidence without consensus contamination.
 
 ## Why
 
@@ -25,7 +25,7 @@ The team coordinator verifies evidence, not self-attestation alone.
 | Requirement | Lead assessor | Technical/domain assessor | Independent quality reviewer |
 |---|---|---|---|
 | Audit/assessment methods | 5 completed assurance assessments; 2 as lead | Training plus 2 completed assessments | 5 completed reviews; 2 quality reviews |
-| OAIES competence | Pass current open-book control test at 85%; pass calibration with no critical miss | Same | Same plus methodology review |
+| AIES competence | Pass current open-book control test at 85%; pass calibration with no critical miss | Same | Same plus methodology review |
 | AI engineering | 3 years relevant delivery, assurance, or research experience | 3 years in assigned specialty | Sufficient to challenge methods |
 | Security/privacy/risk | Demonstrated competence or team coverage | Assigned based on scope | Understands evidence and independence duties |
 | Domain competence | Team collectively covers system domain and legal overlays | Required where specialized impacts exist | May rely on documented specialist consultation |
@@ -43,7 +43,7 @@ Each assessor discloses, for the prior 24 months and expected engagement period:
 - design, implementation, operation, approval, consulting, or internal-audit responsibility for the system or controls;
 - close personal relationship with accountable personnel;
 - prior access to the other assessor's conclusions or pilot hypotheses;
-- financial dependence on the participant or OAIES maintainer.
+- financial dependence on the participant or AIES maintainer.
 
 | Threat | Required disposition |
 |---|---|
@@ -60,7 +60,7 @@ Assessors sign declarations before assignment and again before report lock. The 
 
 Before assignment, the methodology custodian hashes and freezes:
 
-- OAIES version and complete control catalog;
+- AIES version and complete control catalog;
 - system boundary, profiles, impact/autonomy, period, and legal overlays;
 - evidence manifest and authorized evidence snapshot;
 - rating codebook and severity rules;
@@ -129,7 +129,7 @@ Primary release targets:
 - zero critical disagreements after correcting only proven transcription/schema errors;
 - no critical stratum with exact agreement below 0.75.
 
-These are OAIES governance thresholds, not universal psychometric constants. A release may tighten but must not retrospectively loosen them.
+These are AIES governance thresholds, not universal psychometric constants. A release may tighten but must not retrospectively loosen them.
 
 ### 7. Disagreement Adjudication
 
@@ -156,7 +156,7 @@ flowchart LR
     G --> H[Future-cohort validation]
 ```
 
-Each specification issue includes source pilot ID, de-identified evidence references, affected control IDs, ambiguity statement, safety impact, proposed acceptance test, normative/guidance classification, backward-compatibility analysis, owner, and decision. Maintainers must not tune wording solely to make one assessor “correct.” A normative meaning change follows OAIES versioning and requires validation in a future cohort; the same disputed cases may be regression tests but not the sole confirmation set.
+Each specification issue includes source pilot ID, de-identified evidence references, affected control IDs, ambiguity statement, safety impact, proposed acceptance test, normative/guidance classification, backward-compatibility analysis, owner, and decision. Maintainers must not tune wording solely to make one assessor “correct.” A normative meaning change follows AIES versioning and requires validation in a future cohort; the same disputed cases may be regression tests but not the sole confirmation set.
 
 ## Tradeoffs
 
@@ -178,7 +178,7 @@ Each specification issue includes source pilot ID, de-identified evidence refere
 
 ## Enterprise Considerations
 
-Separate assessor workspaces, restrict participant access to draft findings, retain signed declarations and output hashes, and apply the evidence classification schedule. Collective competence must cover regulated domains; OAIES qualification does not supersede statutory licensing, notified-body, accreditation, or professional requirements.
+Separate assessor workspaces, restrict participant access to draft findings, retain signed declarations and output hashes, and apply the evidence classification schedule. Collective competence must cover regulated domains; AIES qualification does not supersede statutory licensing, notified-body, accreditation, or professional requirements.
 
 ## Checklist
 
@@ -198,7 +198,7 @@ Separate assessor workspaces, restrict participant access to draft findings, ret
 - Efron, B. and Tibshirani, R., *An Introduction to the Bootstrap*, Chapman & Hall/CRC, 1993.
 - ISO, [ISO 19011:2018](https://www.iso.org/standard/70017.html).
 - NIST, [SP 800-53A Rev. 5](https://doi.org/10.6028/NIST.SP.800-53Ar5).
-- [OAIES Lifecycle and Assessor Methodology](../standard/04-lifecycle-and-assessment.md).
+- [AIES Lifecycle and Assessor Methodology](../standard/04-lifecycle-and-assessment.md).
 
 ## Changelog
 

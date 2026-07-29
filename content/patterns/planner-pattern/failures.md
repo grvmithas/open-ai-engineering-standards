@@ -2,36 +2,41 @@
 
 > **Pattern:** Planner  
 > **Component:** failures.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Failure 1: Plan too high-level
+## Purpose
 
-**Symptom:** Coder invents Redis vs in-memory vs CDN for “add a caching layer.”  
-**Cause:** Plan stated outcomes without choosing mechanisms.  
-**Recovery:** Return to planning. Enumerate options, pick one, record rejected alternatives. Re-approve.
+Recover when the Planner pattern is misapplied — without abandoning the gate.
 
-## Failure 2: Plan too low-level
+## Failure → detection → recovery
 
-**Symptom:** Plan contains full method bodies; human approval is meaningless.  
-**Cause:** Planner overstepped into coder role.  
-**Recovery:** Strip to interfaces, data models, sequences, and tests. Keep code out of the plan.
+| Failure | Detection | Recovery |
+|---------|-----------|----------|
+| Plan too vague | Coder re-asks topology mid-PR | Return to planner; force file/owner/verify/rollback rows |
+| Plan too code-like | Plan contains full function bodies | Strip to interfaces and sequences; re-approve |
+| Rubber-stamp approval | Approver cannot restate the plan | Invalidate approval; require teach-back |
+| Scope creep | Diff exceeds planned paths | Freeze PR; replan delta; re-approve |
 
-## Failure 3: Rubber-stamp approval
+## Escalation from Planner failures
 
-**Symptom:** Implementation diverges; reviewer says they never understood the plan.  
-**Cause:** Approval without comprehension.  
-**Recovery:** Enforce the understanding test — approver restates the plan in their own words. Invalidate prior approval.
+- Security-class impact during Planner → [Security skill](../../03-skill-engineering/skills/security.skill.md) + human security owner  
+- Production SEV while misusing Planner → [Hotfix](../hotfix-pattern/README.md) containment first  
+- Learning after Planner containment → [Root Cause](../root-cause-pattern/README.md)
 
-## Failure 4: Silent mid-flight deviation
+## Do not
 
-**Symptom:** PR touches unplanned paths or breaks an unlisted contract.  
-**Cause:** Coder “just fixed it” without replanning.  
-**Recovery:** Freeze merge. Diff against plan. Replan deltas. Re-approve. Treat as process defect in retro.
+- Skip the Planner human gate “just this once” after a failure  
+- Delete Planner evidence to hide a bad run  
+- Replace Planner with unstructured chat under pressure  
 
-## Failure 5: No rollback
+## Related
 
-**Symptom:** Bad deploy has no documented revert; team improvises under pressure.  
-**Cause:** Plan omitted rollback or waved it as “redeploy previous.”  
-**Recovery:** Add stage-specific rollback (including data expansion/contraction). Block release until present.
+- [Checklist](./checklist.md)  
+- [Enterprise notes](./enterprise-notes.md)  
+- [Example](./examples/example.md)  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Planner failure recovery table and escalation paths expanded.

@@ -2,24 +2,30 @@
 
 > **Pattern:** Architecture  
 > **Component:** skills.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.3 | **Updated:** 2026-07-29
 
 ---
 
 | Skill | Path | Why required |
 |-------|------|--------------|
-| ADR / architecture design | skill-engineering architecture | Decision structure |
-| Architecture review | [`../../08-ai-sdlc/prompts/architecture-review.prompt.md`](../../08-ai-sdlc/prompts/architecture-review.prompt.md) | Independent challenge |
-| Security boundaries | security skill | Trust-edge analysis |
+| [Architecture](../../03-skill-engineering/skills/architecture.skill.md) | [`skills/architecture.skill.md`](../../03-skill-engineering/skills/architecture.skill.md) | Scenario-governed design |
+| [Security](../../03-skill-engineering/skills/security.skill.md) | [`skills/security.skill.md`](../../03-skill-engineering/skills/security.skill.md) | Trust boundaries and threat notes |
+| [Planning](../../03-skill-engineering/skills/planning.skill.md) | [`skills/planning.skill.md`](../../03-skill-engineering/skills/planning.skill.md) | When design must become an executable plan |
+
+## Related agents
+
+- [Architect agent](../../04-agent-engineering/agents/architect.agent.md)
 
 ## Skill activation triggers
 
-1. **ADR skill** — always  
-2. **Architecture review** — Medium/High risk or new trust boundary  
-3. **Security** — external, multi-tenant, PII, payments, or AI tools
+Run Architecture when topology or quality-attribute scenarios are undecided. Run Security when trust boundaries or threat notes are missing. Hand off to Planning only after the ADR rejects alternatives explicitly.
 
 ## Verification that skills worked
 
-- ADR has Context / Decision / Consequences  
-- Review outputs APPROVE / CONDITIONS / REJECT  
-- Trust findings have owners or block approval
+- ADR records at least one rejected alternative with rationale
+- Quality-attribute scenarios are named, not implied
+- Trust boundaries appear before implementation planning
+
+## Changelog
+
+- **1.3 (2026-07-29):** Architecture skill activation and verification rewritten for this envelope.

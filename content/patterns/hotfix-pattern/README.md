@@ -2,7 +2,7 @@
 
 > **Pattern:** Hotfix  
 > **Category:** Incident Containment & Emergency Change  
-> **Maturity:** Stable v1.1 | **Updated:** 2026-07-16
+> **Maturity:** Stable v1.1 | **Updated:** 2026-07-29
 
 ---
 
@@ -168,3 +168,24 @@ See [examples/example.md](./examples/example.md) — SEV1 checkout: flag disable
 - Privacy/legal join based on data exposure — IC escalates, agent does not freelance comms.
 - Emergency path still records digests and decisions for audit; speed ≠ no evidence.
 - Not a certification or regulatory “safe harbor.”
+
+## Tradeoffs
+
+Containment-first slows feature work during SEV; coding first expands blast radius.
+
+## Anti-patterns
+
+Hotfix without IC; speculative restarts destroying evidence; out-of-path file edits.
+
+## Artifact index
+
+| Artifact | Path |
+|----------|------|
+| Prompt | [prompt.md](./prompt.md) |
+| Agent | [agent.md](./agent.md) |
+| Skills | [skills.md](./skills.md) |
+| MCPs | [mcps.md](./mcps.md) |
+| Hooks | [hooks.md](./hooks.md) |
+| Checklist | [checklist.md](./checklist.md) |
+| Example | [examples/example.md](./examples/example.md) |
+

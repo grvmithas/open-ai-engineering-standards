@@ -39,7 +39,7 @@
   "criticalDisagreements": [
     {
       "itemId": "SYNTH-019",
-      "controlId": "OAIES-SYN-019",
+      "controlId": "AIES-SYN-019",
       "ratingA": "MAJOR",
       "ratingB": "CONFORMANT"
     }
@@ -123,7 +123,7 @@
   "disagreements": [
     {
       "itemId": "SYNTH-002",
-      "controlId": "OAIES-SYN-002",
+      "controlId": "AIES-SYN-002",
       "ratingA": "CONFORMANT",
       "ratingB": "MINOR",
       "stratumA": "governance",
@@ -131,7 +131,7 @@
     },
     {
       "itemId": "SYNTH-008",
-      "controlId": "OAIES-SYN-008",
+      "controlId": "AIES-SYN-008",
       "ratingA": "MINOR",
       "ratingB": "CONFORMANT",
       "stratumA": "evaluation",
@@ -139,7 +139,7 @@
     },
     {
       "itemId": "SYNTH-015",
-      "controlId": "OAIES-SYN-015",
+      "controlId": "AIES-SYN-015",
       "ratingA": "INSUFFICIENT_EVIDENCE",
       "ratingB": "MINOR",
       "stratumA": "security",
@@ -147,7 +147,7 @@
     },
     {
       "itemId": "SYNTH-019",
-      "controlId": "OAIES-SYN-019",
+      "controlId": "AIES-SYN-019",
       "ratingA": "MAJOR",
       "ratingB": "CONFORMANT",
       "stratumA": "security",

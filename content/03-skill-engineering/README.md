@@ -27,7 +27,7 @@ In Claude Code, skills live in `.claude/skills/` and are automatically discovere
 
 ---
 
-## Skill Structure (The OAIES Standard)
+## Skill Structure (The AIES Standard)
 
 Every skill file follows this exact structure:
 
@@ -60,7 +60,7 @@ Every skill file follows this exact structure:
 ```
 
 ### Compatibility with Open AI Skills Specs (openaiskills.io)
-The OAIES skill structure is designed to be fully compatible with emerging open standards for developer assistant skills:
+The AIES skill structure is designed to be fully compatible with emerging open standards for developer assistant skills:
 - **openaiskills.io specification:** Standardized, portable markdown format for AI agent skills across the developer ecosystem.
 - **Claude Code (.claude/skills):** Built directly to match Claude Code's auto-discovery skill scanner schema.
 - **Aider / Roo Code / Cline custom instructions:** Readily consumable by modern coding agents as background runtime knowledge.
@@ -120,7 +120,7 @@ The OAIES skill structure is designed to be fully compatible with emerging open 
 ## Installing Skills (Claude Code)
 
 ```bash
-# From OAIES
+# From AIES
 mkdir -p .claude/skills
 cp oaies/skills/*.skill.md .claude/skills/
 
@@ -170,7 +170,7 @@ Trigger Conditions:
 If you cannot verify the skill succeeded, you cannot trust its output. Every skill must have a concrete verification procedure.
 
 ### ❌ Skill That Encodes One Team's Preferences
-Skills become institutional knowledge. Write them to work for any team following OAIES — not for your specific team's idiosyncrasies.
+Skills become institutional knowledge. Write them to work for any team following AIES — not for your specific team's idiosyncrasies.
 
 ---
 

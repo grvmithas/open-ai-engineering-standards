@@ -69,7 +69,8 @@ Then produce the implementation plan.
 
 ## Architecture Diagram
 ```mermaid
-[Diagram showing the components, their relationships, and data flows]
+flowchart TD
+  A[Component A] -->|data flow| B(Component B)
 ```
 
 ## Proposed Changes
@@ -160,7 +161,7 @@ After generating this plan, the following must happen:
 3. **Open questions resolved** — No blocking questions remain
 4. **Only then** — Coding begins
 
-**If approval is skipped:** The feature is in violation of the OAIES standard. Technical debt accrued from unapproved implementation is unbudgeted and untracked.
+**If approval is skipped:** The feature is in violation of the AIES standard. Technical debt accrued from unapproved implementation is unbudgeted and untracked.
 
 ## Anti-Patterns
 

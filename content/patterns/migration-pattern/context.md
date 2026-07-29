@@ -2,43 +2,46 @@
 
 > **Pattern:** Migration  
 > **Component:** context.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Preconditions (must be true before activation)
+## Purpose
 
-- [ ] Source state and target state written (schema/API/store)
-- [ ] Consumer inventory started (services, jobs, reports, partners)
-- [ ] Data volume, retention, and SLO constraints known
-- [ ] Backup/restore path identified and rehearsable
-- [ ] Named human for cutover / point-of-no-return approval
+Define the **minimum evidence package** required before the Migration pattern may start — and when to refuse to start.
 
-## Trigger conditions (apply the pattern)
+## Required before activation
 
-Apply when **any** of the following hold:
+- [ ] Phased plan with rollback owners
+- [ ] Data class and access paths
+- [ ] Parity/integrity checks defined
+- [ ] Digest-pinned jobs and environments
 
-- Live data shape or storage system changes
-- Existing API consumers must keep working across the change
-- Dual-write, dual-read, or shadow traffic is needed
-- Rollback after rewrite would require data repair
+## Refuse to start when
 
-## Do not apply when
+- Irreversible drop scheduled without verify evidence
+- No dual-write or shadow-read window when required by data class
+- Write DB MCP enabled without SELECT-only start
 
-- Expand-only additive change with no cutover and no old-path removal
-- Code-only refactor with identical external contracts
-- Throwaway test databases
-- Pure flag flip for containment (schedule real migration after)
+## Trust and data class
 
-## Required inputs
+- Label segments as trusted, internal, or untrusted for **Migration** packs.  
+- Keep untrusted retrieval out of the Migration system channel.  
+- Migration MCP enablement follows data class in [mcps.md](./mcps.md).
 
-| Input | Source | Minimum quality |
-|-------|--------|-----------------|
-| Source/target | ADR or ticket | Explicit before/after |
-| Consumers | Search + owners | Named readers/writers |
-| Data profile | Metrics / DBA | Volume, hot keys, null rates |
-| SLOs | SRE | Error/latency budgets for cutover |
+## Pack shape for Migration
 
-## Authority boundary
+1. Trigger / AC (human-owned)  
+2. Ranked evidence inside the Migration budget  
+3. Constraints and non-goals for this activation  
+4. Open questions (empty before irreversible Migration steps)
 
-The migration agent designs phases and gates. **Destructive contraction** and **point-of-no-return cutover** require named human approval. The agent must not drop production columns unattended.
+## Related
+
+- [Context pattern](../context-pattern/README.md) when packing is itself the hard problem  
+- [Prompt](./prompt.md) variable bindings  
+- [Skills](./skills.md) activation triggers  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Migration context gates (required/refuse) rewritten for this envelope.

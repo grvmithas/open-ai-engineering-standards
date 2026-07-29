@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://open-ai-engineering-standard.org/schemas/v1/evidence-bundle.schema.json",
-  "title": "OAIES Evidence Bundle v1",
+  "title": "AIES Evidence Bundle v1",
   "description": "Integrity-protected index of design, implementation, operation, and outcome evidence.",
   "type": "object",
   "required": ["schemaVersion", "id", "systemRef", "systemVersion", "purpose", "scope", "assessmentPeriod", "producer", "items", "manifestDigest", "createdAt", "retentionUntil", "recordsScheduleRef", "dataClassification"],
@@ -86,7 +86,7 @@
   },
   "additionalProperties": false,
   "$defs": {
-    "controlId": {"type": "string", "pattern": "^OAIES-(GOV|RSK|DAT|MOD|AGT|SEC|OPS|ASR)-[0-9]{3}[a-z]?$"},
+    "controlId": {"type": "string", "pattern": "^AIES-(GOV|RSK|DAT|MOD|AGT|SEC|OPS|ASR)-[0-9]{3}[a-z]?$"},
     "digest": {"type": "string", "pattern": "^(?:sha256:[A-Fa-f0-9]{64}|sha384:[A-Fa-f0-9]{96}|sha512:[A-Fa-f0-9]{128})$"},
     "period": {"type": "object", "required": ["start", "end"], "properties": {"start": {"type": "string", "format": "date-time"}, "end": {"type": "string", "format": "date-time"}}, "additionalProperties": false}
   }

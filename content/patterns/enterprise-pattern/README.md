@@ -2,7 +2,7 @@
 
 > **Pattern:** Enterprise  
 > **Category:** Governance & Multi-Tenant AI Ops  
-> **Maturity:** Stable v1.1 | **Updated:** 2026-07-16
+> **Maturity:** Stable v1.1 | **Updated:** 2026-07-29
 
 ---
 
@@ -169,3 +169,24 @@ See [examples/example.md](./examples/example.md) — multi-region support copilo
 - Map to existing risk, privacy, and change boards — do not invent a parallel “AI-only” bureaucracy that nobody uses.
 - This pattern produces **internal operating evidence**, not ISO/NIST/EU Act certification claims.
 - Cross-border: residency and subprocessors are runtime routing constraints, not footnotes.
+
+## Tradeoffs
+
+Governed multi-tenant AI is slower to enable; ungated copilots look faster until audit/incident costs arrive.
+
+## Anti-patterns
+
+Org-wide tool rollout without SoA; write MCP by default; claiming ISO/NIST compliance from logos.
+
+## Artifact index
+
+| Artifact | Path |
+|----------|------|
+| Prompt | [prompt.md](./prompt.md) |
+| Agent | [agent.md](./agent.md) |
+| Skills | [skills.md](./skills.md) |
+| MCPs | [mcps.md](./mcps.md) |
+| Hooks | [hooks.md](./hooks.md) |
+| Checklist | [checklist.md](./checklist.md) |
+| Example | [examples/example.md](./examples/example.md) |
+

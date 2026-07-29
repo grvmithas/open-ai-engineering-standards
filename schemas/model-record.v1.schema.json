@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://open-ai-engineering-standard.org/schemas/v1/model-record.schema.json",
-  "title": "OAIES Model Record v1",
+  "title": "AIES Model Record v1",
   "description": "Governed record for a first-party or third-party AI model version.",
   "type": "object",
   "required": ["schemaVersion", "id", "provider", "name", "version", "modelType", "source", "license", "intendedUses", "limitations", "dataGovernance", "evaluationRefs", "maximumImpactLevel", "approvalStatus", "owner", "recordedAt"],

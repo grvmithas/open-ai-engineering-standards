@@ -3,7 +3,7 @@
 > **Pattern:** Legacy Modernization  
 > **Category:** System Evolution  
 > **Maturity:** Stable v1.1  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-07-29
 
 ---
 
@@ -186,3 +186,24 @@ See [examples/example.md](./examples/example.md) for strangling “quote pricing
 - **Audit trail:** Slice plans, parity results, shift approvals, retirement records.
 - **SoD:** Business capability owner approves parity meaning; eng owns seam.
 - **Anti-claim:** Completing a slice is not “digital transformation certified.”
+
+## Tradeoffs
+
+Strangler seams cost dual-running complexity; rewrites look faster until parity debt explodes.
+
+## Anti-patterns
+
+Big-bang rewrite without characterization tests; modernizing without owning the strangler boundary.
+
+## Artifact index
+
+| Artifact | Path |
+|----------|------|
+| Prompt | [prompt.md](./prompt.md) |
+| Agent | [agent.md](./agent.md) |
+| Skills | [skills.md](./skills.md) |
+| MCPs | [mcps.md](./mcps.md) |
+| Hooks | [hooks.md](./hooks.md) |
+| Checklist | [checklist.md](./checklist.md) |
+| Example | [examples/example.md](./examples/example.md) |
+

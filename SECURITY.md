@@ -5,7 +5,7 @@
 
 ## Purpose
 
-This policy defines supported versions and the private process for reporting vulnerabilities in OAIES code, workflows, and published guidance.
+This policy defines supported versions and the private process for reporting vulnerabilities in AIES code, workflows, and published guidance.
 
 ## Why
 
@@ -22,7 +22,7 @@ Public disclosure before a fix is available can expose downstream forks. A bound
 
 ### Report a vulnerability
 
-Use GitHub Private Vulnerability Reporting on the repository Security tab. If that feature is unavailable, email `grvmithas@gmail.com` with subject `OAIES SECURITY`. Do not open a public issue.
+Use GitHub Private Vulnerability Reporting on the repository Security tab. If that feature is unavailable, email `grvmithas@gmail.com` with subject `AIES SECURITY`. Do not open a public issue.
 
 Include the affected path and revision, prerequisites, reproduction steps, impact, and a proposed mitigation if known. Remove secrets and personal data from evidence.
 

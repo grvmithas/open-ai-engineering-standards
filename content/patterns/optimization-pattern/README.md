@@ -2,7 +2,7 @@
 
 > **Pattern:** Optimization  
 > **Category:** Performance & Cost  
-> **Maturity:** Stable v1.1 | **Updated:** 2026-07-16
+> **Maturity:** Stable v1.1 | **Updated:** 2026-07-29
 
 ---
 
@@ -174,3 +174,24 @@ Component specs:
 - Capacity and reserved spend constrain what “win” means — invoice and quota evidence belong in the record.
 - Tenant fairness: an optimization that starves noisy neighbors fails even if global mean improves.
 - Passing an internal perf review is not a vendor SLA or external certification claim.
+
+## Tradeoffs
+
+Measure-first optimization is slower than intuition tweaks; intuition wins until you ship a silent correctness break.
+
+## Anti-patterns
+
+Optimize without baseline; change many variables; raise p99 without contractual review.
+
+## Artifact index
+
+| Artifact | Path |
+|----------|------|
+| Prompt | [prompt.md](./prompt.md) |
+| Agent | [agent.md](./agent.md) |
+| Skills | [skills.md](./skills.md) |
+| MCPs | [mcps.md](./mcps.md) |
+| Hooks | [hooks.md](./hooks.md) |
+| Checklist | [checklist.md](./checklist.md) |
+| Example | [examples/example.md](./examples/example.md) |
+

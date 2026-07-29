@@ -2,29 +2,31 @@
 
 > **Pattern:** Root Cause  
 > **Component:** skills.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.3 | **Updated:** 2026-07-29
 
 ---
 
-| Skill | Why required |
-|-------|--------------|
-| Blameless facilitation | Norms that produce honesty |
-| 5 Whys / causal analysis | Reach systemic conditions |
-| Observability gap analysis | Detection and alerting fixes that are real |
-| Corrective action tracking | Owners, dates, verification |
-| Knowledge capture | Feed runbooks and golden evals when AI involved |
+| Skill | Path | Why required |
+|-------|------|--------------|
+| [Debug](../../03-skill-engineering/skills/debug.skill.md) | [`skills/debug.skill.md`](../../03-skill-engineering/skills/debug.skill.md) | Evidence-bound causal chain |
+| [Documentation](../../03-skill-engineering/skills/documentation.skill.md) | [`skills/documentation.skill.md`](../../03-skill-engineering/skills/documentation.skill.md) | RCA retention |
+| [Testing](../../03-skill-engineering/skills/testing.skill.md) | [`skills/testing.skill.md`](../../03-skill-engineering/skills/testing.skill.md) | Regression that would have caught it |
+| [Observability](../../03-skill-engineering/skills/observability.skill.md) | [`skills/observability.skill.md`](../../03-skill-engineering/skills/observability.skill.md) | Signal → cause linkage |
+
+## Related agents
+
+- [Knowledge agent](../../04-agent-engineering/agents/knowledge.agent.md)
 
 ## Skill activation triggers
 
-1. **Facilitation** — every RCA meeting  
-2. **5 Whys** — after timeline agreement  
-3. **Observability** — when detection gap is non-empty  
-4. **Action tracking** — before marking FINAL  
-5. **Knowledge capture** — when prompts/models/tools contributed
+Run after containment. Use Debug to bind cause to evidence. Use Observability to connect signals to that cause. Use Testing for the regression that would have caught it. Use Documentation so the RCA survives the next on-call rotation.
 
 ## Verification that skills worked
 
-- Norm read aloud recorded in notes  
-- One root-cause sentence survives scrub  
-- Alert actions name metric, threshold, routing  
-- Tracking ticket IDs linked from the RCA
+- Causal chain cites timeline evidence, not blame
+- Follow-up owners and due dates exist before RCA close
+- A regression test or detector would fail on the pre-fix defect
+
+## Changelog
+
+- **1.3 (2026-07-29):** Root Cause skill activation and verification rewritten for this envelope.

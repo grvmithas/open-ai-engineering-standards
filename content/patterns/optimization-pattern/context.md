@@ -2,48 +2,46 @@
 
 > **Pattern:** Optimization  
 > **Component:** context.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Preconditions (must be true before activation)
+## Purpose
 
-- [ ] Target metric named (e.g. checkout `p99_latency_ms`, `cost_per_1k_requests`)
-- [ ] Minimum useful effect size declared (e.g. ≥15% p99 reduction or ≥20% unit-cost cut)
-- [ ] Guardrails listed (error rate, p99 ceiling, CPU/mem saturation, neighbor fairness)
-- [ ] Workload fixture frozen (RPS mix, concurrency, payload distribution, region)
-- [ ] Correctness oracle defined and runnable in CI or bench harness
-- [ ] Feature flag / config key exists to disable the optimization in <5 minutes
-- [ ] Human owner available for canary go/abort
+Define the **minimum evidence package** required before the Optimization pattern may start — and when to refuse to start.
 
-## Trigger conditions (apply the pattern)
+## Required before activation
 
-Apply when **any** of the following hold:
+- [ ] Baseline metric, method, and window
+- [ ] Correctness oracle (tests/evals)
+- [ ] Hotspot evidence (profile/trace)
+- [ ] Guardrails (p99, error rate, cost)
 
-- SLO or error-budget burn attributed to latency/throughput/cost
-- Profiling shows a dominant resource (≥30% of critical path or spend)
-- Growth model shows capacity cliff within planning horizon
-- Provider/token unit cost exceeds budget with a hypothesized mechanism
+## Refuse to start when
 
-## Do not apply when
+- Optimize request with no baseline
+- Production mutate tools before measurement freeze
+- Model-facing path change without evaluation skill
 
-- No metric owner and no success threshold (“make checkout faster”)
-- Active customer-harming incident — contain via [hotfix-pattern](../hotfix-pattern/README.md)
-- Change is purely correctness (wrong results) — fix, then re-measure
-- Theoretical maximum gain of the hot path cannot meet the minimum useful effect
-- Environment cannot run a representative workload (no staging parity and no safe canary)
+## Trust and data class
 
-## Required inputs
+- Label segments as trusted, internal, or untrusted for **Optimization** packs.  
+- Keep untrusted retrieval out of the Optimization system channel.  
+- Optimization MCP enablement follows data class in [mcps.md](./mcps.md).
 
-| Input | Source | Minimum quality |
-|-------|--------|-----------------|
-| SLO / budget | Service catalog / FinOps | Numeric threshold + window |
-| Baseline report | Bench harness | Warm-up + n≥30 + percentiles |
-| Profiles / traces | Continuous profiler / APM | End-to-end critical path |
-| Workload definition | Load-test repo | Versioned, checked in |
-| Oracle | Test suite / golden set | Fail-closed on mismatch |
-| Flag name | Flag service | Kill-switch documented |
+## Pack shape for Optimization
 
-## Authority boundary
+1. Trigger / AC (human-owned)  
+2. Ranked evidence inside the Optimization budget  
+3. Constraints and non-goals for this activation  
+4. Open questions (empty before irreversible Optimization steps)
 
-The optimization agent **proposes one change and evaluates evidence**. It does not promote to 100% traffic. Named human owns canary abort and promotion. Coding agents implement only the hypothesized change behind the flag.
+## Related
+
+- [Context pattern](../context-pattern/README.md) when packing is itself the hard problem  
+- [Prompt](./prompt.md) variable bindings  
+- [Skills](./skills.md) activation triggers  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Optimization context gates (required/refuse) rewritten for this envelope.

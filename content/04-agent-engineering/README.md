@@ -13,7 +13,7 @@ Most "agents" in production today fail because they were built like prompts, not
 
 ---
 
-## The OAIES Agent Specification
+## The AIES Agent Specification
 
 Every agent in this library follows this specification:
 
@@ -59,7 +59,7 @@ The #1 failure mode for agents in production is the **infinite loop** — the ag
 - The agent has no way to recognize it's stuck
 - No loop detection exists
 
-**The OAIES standard requires ALL three:**
+**The AIES standard requires ALL three:**
 1. Explicit success criteria (what does done look like?)
 2. Explicit failure criteria (when do we stop and escalate?)
 3. Loop detection (same tool called N times in a row → stop)
@@ -182,7 +182,7 @@ security:
 ## Readiness Gate
 
 Before proceeding to Level 5, verify:
-- [ ] At least 3 agents installed with full OAIES specifications
+- [ ] At least 3 agents installed with full AIES specifications
 - [ ] All agents have explicit termination criteria (success AND failure)
 - [ ] Loop detection implemented for all agents
 - [ ] Hooks installed for pre-commit (secrets check + tests)

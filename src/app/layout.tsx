@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import Analytics from '@/components/Analytics';
+import CommandPalette from '@/components/CommandPalette';
+import { UserProfileProvider } from '@/components/providers/UserProfileProvider';
 import {
   PRODUCT_NAME,
   PRODUCT_SHORT,
@@ -107,11 +109,13 @@ export const metadata: Metadata = {
   },
 };
 
+import { ThemeProvider } from '@/components/providers/ThemeProvider';
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const jsonLd = [organizationJsonLd(), websiteJsonLd(), softwareJsonLd()];
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM index" />
         <script
@@ -120,9 +124,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className={`${inter.variable} ${jetBrainsMono.variable}`}>
-        <a href="#main-content" className="skip-link">Skip to main content</a>
-        {children}
-        <Analytics />
+        <ThemeProvider>
+          <UserProfileProvider>
+            <a href="#main-content" className="skip-link">Skip to main content</a>
+            <CommandPalette />
+            {children}
+            <Analytics />
+          </UserProfileProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

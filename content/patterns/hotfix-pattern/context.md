@@ -2,45 +2,46 @@
 
 > **Pattern:** Hotfix  
 > **Component:** context.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Preconditions (must be true before activation)
+## Purpose
 
-- [ ] Severity (SEV1–SEV4) declared aloud in the incident channel
-- [ ] Incident commander (IC) and scribe named
-- [ ] Working communications channel + update cadence
-- [ ] Last-known-good artifact digest **or** disable flag identified
-- [ ] Impact hypothesis stated (what is broken for whom)
-- [ ] Authorization for emergency deploy path granted by IC (and policy if required)
+Define the **minimum evidence package** required before the Hotfix pattern may start — and when to refuse to start.
 
-## Trigger conditions (apply the pattern)
+## Required before activation
 
-Apply when **any** of the following hold:
+- [ ] Named IC
+- [ ] Symptom + blast-radius signals
+- [ ] Allowed path list for the hotfix
+- [ ] Containment options (rollback/LKG/flag) evaluated
 
-- Active customer-visible errors, incorrect money/data, auth failures, or safety issues
-- Security exposure requiring immediate mitigation
-- Error-budget burn that will breach SLO before a normal release can ship
-- IC explicitly opens the hotfix lane
+## Refuse to start when
 
-## Do not apply when
+- Write tools without IC
+- Out-of-path edits “while we are here”
+- Unredacted customer payloads into model/MCP
 
-- Issue is annoying but within normal release tolerance — use [release-pattern](../release-pattern/README.md)
-- Work is cleanup, refactor, or dependency bump without active harm
-- You lack IC — declare roles first; do not freestyle prod
-- Containment already restored service and only analysis remains — stop hotfixing; schedule durable fix
+## Trust and data class
 
-## Required inputs
+- Label segments as trusted, internal, or untrusted for **Hotfix** packs.  
+- Keep untrusted retrieval out of the Hotfix system channel.  
+- Hotfix MCP enablement follows data class in [mcps.md](./mcps.md).
 
-| Input | Source | Minimum quality |
-|-------|--------|-----------------|
-| Alert / report | Monitoring / support | Timestamp + symptom |
-| Service map | Ops | Dependencies on the path |
-| Recent changes | CD / flag history | Digests + deploy times |
-| LKG digest / flag | Registry / flag service | Proven restore path |
-| Runbook | Ops | Containment steps |
+## Pack shape for Hotfix
 
-## Authority boundary
+1. Trigger / AC (human-owned)  
+2. Ranked evidence inside the Hotfix budget  
+3. Constraints and non-goals for this activation  
+4. Open questions (empty before irreversible Hotfix steps)
 
-**IC owns decisions.** The hotfix agent proposes containment and minimal diffs. Nobody else deploys without IC ack. External customer communications follow the named communications authority — not the coding agent.
+## Related
+
+- [Context pattern](../context-pattern/README.md) when packing is itself the hard problem  
+- [Prompt](./prompt.md) variable bindings  
+- [Skills](./skills.md) activation triggers  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Hotfix context gates (required/refuse) rewritten for this envelope.

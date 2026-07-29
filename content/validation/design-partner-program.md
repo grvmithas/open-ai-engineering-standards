@@ -1,4 +1,4 @@
-# OAIES Design-Partner and System-Selection Protocol
+# AIES Design-Partner and System-Selection Protocol
 
 > **Version:** 1.0.0  
 > **Published:** 2026-07-16  
@@ -14,7 +14,7 @@ Convenience recruitment and success-biased system selection produce non-generali
 
 ## When
 
-Use before any non-maintainer organization provides system information, evidence, personnel time, or publication permission for an OAIES pilot.
+Use before any non-maintainer organization provides system information, evidence, personnel time, or publication permission for an AIES pilot.
 
 ## How
 
@@ -79,7 +79,7 @@ All applicable rows require accountable approval before evidence access.
 | Data roles and lawful basis | Controller/processor role analysis and jurisdiction-specific basis | Data role or lawful basis unresolved |
 | Purpose limitation | Enumerated assessment uses and prohibited secondary uses | Open-ended model training, benchmarking, or marketing use |
 | Data inventory/minimization | Field-level inventory, sensitivity, provenance, subject classes | Unnecessary direct identifiers or unrestricted production export |
-| Confidentiality/IP | Ownership, permitted copies, trade-secret handling | OAIES publication rights conflict with participant rights |
+| Confidentiality/IP | Ownership, permitted copies, trade-secret handling | AIES publication rights conflict with participant rights |
 | Security | Approved transfer channel, encryption, MFA, least privilege, access logging | Shared accounts, unmanaged storage, or missing incident route |
 | Residency/transfers | Storage/processing locations and transfer mechanism | Unapproved cross-border transfer |
 | Retention/deletion | Per-artifact retention, legal hold, verified deletion | Indefinite retention or unverifiable deletion |
@@ -96,7 +96,7 @@ Record:
 
 - candidate ID, intake window, date, source, and decision owner;
 - organization type, sector, jurisdictions, and requested anonymity;
-- system boundary, OAIES profiles, autonomy, impact, lifecycle stage, and production period;
+- system boundary, AIES profiles, autonomy, impact, lifecycle stage, and production period;
 - model/provider, retrieval, tools, agents, data classes, deployment model, and suppliers;
 - incidents, material changes, known exceptions, and regulator constraints;
 - evidence sources, export constraints, participant personnel, assessor skill needs;
@@ -145,7 +145,7 @@ Procurement must assess assessor and tool subprocessors, sanctions/export restri
 - UK ICO, [Anonymisation guidance](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/data-sharing/anonymisation/).
 - European Union, [Regulation (EU) 2016/679 (GDPR)](https://eur-lex.europa.eu/eli/reg/2016/679/oj), especially Articles 5, 6, 28, 32, 44–49.
 - ISO, [ISO/IEC 27001:2022](https://www.iso.org/standard/27001).
-- [OAIES Evidence, Exceptions, and Conformance](../standard/03-evidence-exceptions-conformance.md).
+- [AIES Evidence, Exceptions, and Conformance](../standard/03-evidence-exceptions-conformance.md).
 
 ## Changelog
 

@@ -8,72 +8,221 @@
   Rule   = never put shell text tokens on paper
 */
 
-:root {
-  /* ── Shell (dark) ── */
-  --shell: #0b1220;
+:root,
+[data-theme="dark"],
+.dark {
+  /* ── Dark Shell (Expo.dev dark chrome aesthetic) ── */
+  --shell: #0b0f19;
   --shell-elevated: #111827;
-  --shell-hover: #1f2937;
-  --shell-border: #2a3648;
-  --shell-text: #f3f4f6;
-  --shell-muted: #9ca3af;
+  --shell-hover: #1f293d;
+  --shell-border: #1e293b;
+  --shell-text: #f8fafc;
+  --shell-muted: #94a3b8;
 
-  /* ── Paper (white reading) ── */
-  --paper: #ffffff;
-  --paper-subtle: #f3f4f6;
-  --paper-border: #e5e7eb;
-  --ink: #111827;
-  --ink-secondary: #374151;
-  --ink-muted: #6b7280;
+  /* ── Dark Paper ── */
+  --paper: #0e1526;
+  --paper-subtle: #111827;
+  --paper-border: #1e293b;
+  --ink: #f8fafc;
+  --ink-secondary: #cbd5e1;
+  --ink-muted: #94a3b8;
 
-  /* ── Accent (restrained blue — tech, not neon) ── */
-  --accent: #2563eb;
-  --accent-hover: #1d4ed8;
-  --accent-soft: #eff6ff;
-  --accent-border: #bfdbfe;
+  /* ── Accent (Electric Tech Indigo) ── */
+  --accent: #6366f1;
+  --accent-hover: #818cf8;
+  --accent-soft: rgba(99, 102, 241, 0.15);
+  --accent-border: rgba(99, 102, 241, 0.35);
   --on-accent: #ffffff;
 
   /* ── Status ── */
-  --success: #15803d;
-  --warning: #c2410c;
-  --danger: #b91c1c;
+  --success: #22c55e;
+  --warning: #f97316;
+  --danger: #ef4444;
+  --warning-soft: rgba(249, 115, 22, 0.15);
+  --warning-border: rgba(249, 115, 22, 0.3);
+  --warning-text: #fb923c;
+
+  /* ── Code ── */
+  --code-bg: #030712;
+  --code-text: #f1f5f9;
+
+  /* ── Layout & Shadows ── */
+  --sidebar-w: 272px;
+  --toc-w: 224px;
+  --header-h: 60px;
+  --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 8px 16px -2px rgba(0, 0, 0, 0.3);
+  --radius: 8px;
+
+  /* Compatibility aliases */
+  --bg: var(--shell);
+  --bg-surface: var(--shell-elevated);
+  --bg-card: var(--shell-elevated);
+  --bg-sidebar: var(--shell);
+  --sidebar-bg: var(--shell);
+  --sidebar-text: var(--shell-text);
+  --sidebar-muted: var(--shell-muted);
+  --sidebar-border: var(--shell-border);
+  --sidebar-hover: var(--shell-hover);
+  --bg-code: var(--code-bg);
+  --border: var(--shell-border);
+  --border-hover: #334155;
+  --primary: var(--accent);
+  --primary-light: #818cf8;
+  --primary-dark: #a5b4fc;
+  --primary-soft: var(--accent-soft);
+  --primary-soft-border: var(--accent-border);
+  --secondary: #38bdf8;
+  --secondary-soft: rgba(56, 189, 248, 0.15);
+  --text: var(--shell-text);
+  --text-subtle: #cbd5e1;
+  --text-muted: var(--shell-muted);
+  --on-primary: var(--on-accent);
+
+  /* ── Inverse band (lighter lift on dark theme) ── */
+  --inverse: #1a2234;
+  --inverse-elevated: #243049;
+  --inverse-text: #f8fafc;
+  --inverse-muted: #94a3b8;
+  --inverse-border: #334155;
+  --inverse-accent: #a5b4fc;
+  --hero-glow: rgba(99, 102, 241, 0.35);
+  --hero-grid: rgba(148, 163, 184, 0.07);
+
+  --sidebar-bg: var(--shell);
+  --sidebar-text: var(--shell-text);
+  --sidebar-muted: var(--shell-muted);
+  --sidebar-border: var(--shell-border);
+  --sidebar-hover: var(--shell-hover);
+}
+
+[data-theme="light"],
+.light {
+  /* ── Light Shell ── */
+  --shell: #f8fafc;
+  --shell-elevated: #ffffff;
+  --shell-hover: #e2e8f0;
+  --shell-border: #cbd5e1;
+  --shell-text: #0f172a;
+  --shell-muted: #475569;
+
+  /* ── Light Paper ── */
+  --paper: #ffffff;
+  --paper-subtle: #f8fafc;
+  --paper-border: #e2e8f0;
+  --ink: #0f172a;
+  --ink-secondary: #334155;
+  --ink-muted: #64748b;
+
+  /* ── Accent ── */
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --accent-soft: #eef2ff;
+  --accent-border: #c7d2fe;
+  --on-accent: #ffffff;
+
+  /* ── Status ── */
+  --success: #16a34a;
+  --warning: #ea580c;
+  --danger: #dc2626;
   --warning-soft: #fff7ed;
-  --warning-border: #fdba74;
-  --warning-text: #9a3412;
+  --warning-border: #ffedd5;
+  --warning-text: #c2410c;
 
   /* ── Code ── */
   --code-bg: #0f172a;
   --code-text: #e2e8f0;
 
-  /* ── Layout ── */
-  --sidebar-w: 272px;
-  --toc-w: 224px;
-  --header-h: 60px;
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
-  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.12);
-  --radius: 10px;
-
-  /*
-    Compatibility aliases used across components.
-    Shell by default; paper surfaces must set --text/--border locally or use paper tokens.
-  */
+  /* Compatibility aliases */
   --bg: var(--shell);
   --bg-surface: var(--shell-elevated);
   --bg-card: var(--shell-elevated);
-  --bg-sidebar: #080d16;
+  --bg-sidebar: var(--shell);
+  --sidebar-bg: var(--shell);
+  --sidebar-text: var(--shell-text);
+  --sidebar-muted: var(--shell-muted);
+  --sidebar-border: var(--shell-border);
+  --sidebar-hover: var(--shell-hover);
   --bg-code: var(--code-bg);
   --border: var(--shell-border);
-  --border-hover: #4b5563;
+  --border-hover: #94a3b8;
   --primary: var(--accent);
-  --primary-light: #3b82f6;
-  --primary-dark: #1e40af;
+  --primary-light: #6366f1;
+  --primary-dark: #3730a3;
   --primary-soft: var(--accent-soft);
   --primary-soft-border: var(--accent-border);
-  --secondary: #0284c7;
+  --secondary: #0ea5e9;
   --secondary-soft: #e0f2fe;
   --text: var(--shell-text);
-  --text-subtle: #d1d5db;
+  --text-subtle: #334155;
   --text-muted: var(--shell-muted);
   --on-primary: var(--on-accent);
+
+  /* ── Inverse band (darker hero on light theme) ── */
+  --inverse: #0b1220;
+  --inverse-elevated: #111827;
+  --inverse-text: #f8fafc;
+  --inverse-muted: #cbd5e1;
+  --inverse-border: #1e293b;
+  --inverse-accent: #a5b4fc;
+  --hero-glow: rgba(99, 102, 241, 0.45);
+  --hero-grid: rgba(255, 255, 255, 0.045);
+
+  /* Dark sidebar chrome on light pages */
+  --sidebar-bg: #0f172a;
+  --sidebar-text: #f8fafc;
+  --sidebar-muted: #94a3b8;
+  --sidebar-border: #1e293b;
+  --sidebar-hover: #1e293b;
+  --bg-sidebar: var(--sidebar-bg);
+}
+
+/* ── Hero & inverse contrast bands ── */
+.hero-band {
+  background: linear-gradient(
+    145deg,
+    var(--inverse) 0%,
+    var(--inverse-elevated) 48%,
+    var(--inverse) 100%
+  );
+  color: var(--inverse-text);
+}
+
+.hero-band-grid {
+  background-image:
+    linear-gradient(var(--hero-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hero-grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 20%, transparent 75%);
+}
+
+.hero-band-glow {
+  background: radial-gradient(circle, var(--hero-glow) 0%, transparent 70%);
+  filter: blur(40px);
+}
+
+.section-band {
+  background: var(--inverse);
+  color: var(--inverse-text);
+  border-color: var(--inverse-border);
+}
+
+.section-band-muted {
+  background: var(--inverse-elevated);
+  color: var(--inverse-text);
+}
+
+/* ── Interactive Tile Hover Styles ── */
+.tile-card {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--paper-border);
+  background: var(--paper);
+}
+.tile-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent) !important;
+  box-shadow: 0 12px 24px -6px rgba(99, 102, 241, 0.22);
 }
 
 * { box-sizing: border-box; }
@@ -104,6 +253,12 @@ body {
   border-color: var(--paper-border);
 }
 .paper a { color: var(--accent); }
+/* Solid accent CTAs must keep on-accent text — never inherit link blue */
+.paper a.cta-solid,
+.paper a.cta-solid:hover,
+.paper a.cta-solid:focus {
+  color: var(--on-accent) !important;
+}
 .paper .text-muted { color: var(--ink-muted); }
 
 /* ─── Doc content: ALWAYS ink on paper ─── */
@@ -201,11 +356,11 @@ body {
 .prose code:not(pre code) {
   font-family: var(--font-jetbrains-mono), monospace;
   font-size: 0.82em;
-  background: var(--paper-subtle);
-  color: #1e3a8a;
+  background: var(--accent-soft);
+  color: var(--accent);
   padding: 0.12em 0.4em;
   border-radius: 4px;
-  border: 1px solid var(--paper-border);
+  border: 1px solid var(--accent-border);
 }
 
 .prose pre {
@@ -269,7 +424,7 @@ body {
   vertical-align: top;
 }
 .prose tr:last-child td { border-bottom: none; }
-.prose tr:hover td { background: #f9fafb; }
+.prose tr:hover td { background: var(--paper-subtle); }
 .prose td code { font-size: 0.75rem; }
 
 .prose hr {

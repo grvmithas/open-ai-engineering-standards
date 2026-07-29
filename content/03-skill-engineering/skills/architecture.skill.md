@@ -1,8 +1,8 @@
 # Architecture Skill
 
 > **Skill ID:** `architecture`  
-> **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Version:** 2.1  
+> **Updated:** 2026-07-29
 
 ## Purpose
 Activate this skill when A request changes system boundaries, deployment topology, data ownership, or a cross-team interface.
@@ -46,15 +46,17 @@ Design tenant isolation for a document service: deliver an ADR choosing database
 Do not use for a local implementation choice that does not alter a boundary or quality attribute.
 
 ## Tradeoffs
-The required domain artifacts and verification cost more than a generic implementation pass, but they expose assumptions, safety gates, and operational limits before release.
+ADRs with C4 views and quality-attribute scenarios delay coding start; they prevent irreversible mistakes in data ownership, trust boundaries, and unowned APIs. Evaluating one recommendation against two credible alternatives costs design time; skipping alternatives produces path-dependent lock-in that later migrations cannot cheaply undo.
 
 ## Anti-Patterns
-- Substituting a generic checklist for the domain procedure above.
-- Claiming a gate passed without retaining the exact command, inspected artifact, or observed signal.
-- Expanding scope or executing an external effect without target-specific approval.
+- Drawing topology boxes without quantified latency, availability, consistency, RTO/RPO, or cost objectives.
+- Splitting into services (or keeping a monolith) without ownership and failure-domain analysis.
+- Leaving interface error contracts, idempotency, and data ownership implicit “for later.”
+- Shipping irreversible migrations without an approved recovery or rollback design.
+- Architecture-by-PR: accumulating boundary changes across merges with no ADR.
 
 ## Enterprise Considerations
-Apply repository ownership, separation of duties, data residency and retention, audit evidence, and approved-tool policies to every produced artifact. Redact secrets and regulated data from examples and logs.
+Cross-team interfaces need named owners and change control before topology ships. Data residency, tenancy isolation, and retention constraints belong in the ADR—not as post-hoc compliance patches. Capacity and recovery assumptions must be reviewable by ops/SRE before executive sign-off on deployment topology changes.
 
 ## Checklist
 - [ ] Trigger and anti-trigger evaluated
@@ -68,5 +70,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [AWS Architecture Decision Records](https://docs.aws.amazon.com/prescriptive-guidance/latest/architectural-decision-records/welcome.html)
 
 ## Changelog
+- **2.1 (2026-07-29):** De-boilerplated Tradeoffs, Anti-Patterns, and Enterprise Considerations with architecture-domain content (ADRs, quality attributes, irreversible migrations).
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

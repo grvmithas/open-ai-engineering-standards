@@ -2,25 +2,30 @@
 
 > **Pattern:** Context  
 > **Component:** skills.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.3 | **Updated:** 2026-07-29
 
 ---
 
 | Skill | Path | Why required |
 |-------|------|--------------|
-| Context curation | context skill in skill-engineering | Rank, trim, label packages |
-| Codebase search | harness search tools | Find call sites and schemas |
-| Security hygiene | security skill (exclusion subset) | Keep secrets/PII out |
+| [Context](../../03-skill-engineering/skills/context.skill.md) | [`skills/context.skill.md`](../../03-skill-engineering/skills/context.skill.md) | Trust labels, budgets, pruning |
+| [Security](../../03-skill-engineering/skills/security.skill.md) | [`skills/security.skill.md`](../../03-skill-engineering/skills/security.skill.md) | Injection boundaries for retrieved content |
+| [Documentation](../../03-skill-engineering/skills/documentation.skill.md) | [`skills/documentation.skill.md`](../../03-skill-engineering/skills/documentation.skill.md) | When packing docs as evidence |
+
+## Related agents
+
+- [Context engineer](../../04-agent-engineering/agents/context-engineer.agent.md)
 
 ## Skill activation triggers
 
-1. **Curation** — always  
-2. **Search** — when seeds are thin or last package had gaps  
-3. **Security hygiene** — always before handoff
+Run Context whenever retrieval or packing precedes generation. Run Security when untrusted text enters the pack. Run Documentation only when packing published specs or ADRs as evidence, not chat residue.
 
 ## Verification that skills worked
 
-- Manifest lists why for every path  
-- Exclusions section is non-empty for large repos  
-- Scrubber reports clean  
-- Consuming agent proceeds without immediate “missing file” thrash
+- Every pack segment has a trust label and size budget
+- Untrusted retrieval never sits in the system-instruction channel
+- Pruned items are listed so humans can restore signal deliberately
+
+## Changelog
+
+- **1.3 (2026-07-29):** Context skill activation and verification rewritten for this envelope.

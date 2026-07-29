@@ -2,35 +2,45 @@
 
 > **Pattern:** Enterprise  
 > **Component:** problem.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
 ## Statement
 
-AI capabilities reach production without a durable inventory record, risk tier, runtime-enforced policy bundle, or proven disable path. When auditors, regulators, or incident commanders ask basic questions, teams scramble through Slack history instead of systems of record.
+Org-wide copilots and write MCP land without SoA, tenant isolation, or eval gates — then audits and incidents arrive together.
 
 ## Measurable symptoms
 
 | Symptom | How you detect it |
 |---------|-------------------|
-| Inventory gap | Cannot list all prod models/prompts/tools for a BU in one business day |
-| Paper controls | “Governance” exists only as PDFs; gateway has no matching policy version |
-| Kill-switch fiction | On-call cannot disable a use case in <15 minutes |
-| Tool sprawl | Production traces show tools not on the approved allowlist |
-| Evidence rot | Model/vendor eval older than the change that altered data flow |
+| Tool sprawl | Write MCP on by default |
+| Tenant bleed | Retrieval crosses customers |
+| Logo compliance | ISO/NIST claimed from slideware |
+| No SoA row | Allowlists undocumented |
 
 ## Root cause
 
-Organizations treat AI governance as a documentation and vendor-assurance exercise instead of as **enforceable runtime controls** with owners, SLOs, and incident obligations.
+Enterprise AI is sold as enablement velocity. Governance artifacts feel optional until they are the only defense in an audit.
+
+## What breaks when this pattern is skipped
+
+- Security blocks org rollout late
+- Cross-tenant data incidents
+- Assurance teams reject “we use AIES” claims
 
 ## Non-goals of this pattern
 
-- Not a substitute for legal advice or external certification
-- Not a full privacy program (it consumes classification and DPIA outputs)
-- Not model-training governance for research labs with no product exposure
-- Not a way to bypass existing high-risk change boards
+- Not a conformity certificate
+- Not a substitute for counsel on legal classification
+- Not permission to skip HITL on irreversible effects
 
-## Related failure modes
+## Related
 
-See [failures.md](./failures.md).
+- [Failures](./failures.md) — recovery table  
+- [Workflow](./workflow.md) — ordered steps  
+- [Checklist](./checklist.md) — exit criteria  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Enterprise problem page expanded with skip-impact and operator symptoms.

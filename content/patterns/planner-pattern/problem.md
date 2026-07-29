@@ -2,33 +2,45 @@
 
 > **Pattern:** Planner  
 > **Component:** problem.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
 ## Statement
 
-Complex tasks given directly to coding agents without an explicit plan produce outputs that are token-level correct but architecturally wrong: missed dependencies, inconsistent interfaces, unplanned schema changes, and 2–3× rework.
+Multi-file or cross-boundary work handed straight to a coder agent yields token-local correctness and system-level failure: missed dependencies, invented contracts, and 2–3× rework.
 
 ## Measurable symptoms
 
 | Symptom | How you detect it |
 |---------|-------------------|
-| Rework rate | >30% of agent-generated multi-file changes need a second architectural pass |
-| Surprise files | PR touches files not listed in any plan |
-| Interface drift | Coder invents API shapes or table columns not reviewed by a human |
-| Rollback vacuum | Change ships with no documented revert path |
+| Second architectural pass | More than ~30% of AI multi-file PRs need a redesign mid-flight |
+| Surprise paths | PR touches files never listed in an approved plan |
+| Interface invention | New API shapes or schema columns appear without human review |
+| No revert story | Deployable change ships without a named rollback |
 
 ## Root cause
 
-Agents optimize next-token correctness inside a local context window. Holistic task correctness (ordering, contracts, blast radius) is not enforced unless it is externalized as a reviewed plan.
+Next-token models optimize local coherence inside a context window. Ordering, blast radius, and contract stability are not enforced unless externalized as a reviewed plan.
+
+## What breaks when this pattern is skipped
+
+- Coder asks architectural questions mid-implementation
+- Reviewer finds AuthZ or schema changes that were never planned
+- Hotfix expands because the original change had no return path
 
 ## Non-goals of this pattern
 
-- Not a substitute for a product requirements document
-- Not a place to dump implementation code
-- Not required for single-file typos, config toggles, or docs-only edits
+- Not a product requirements substitute
+- Not a dumping ground for implementation code
+- Not required for single-file typos, pure config toggles, or docs-only edits
 
-## Related failure modes
+## Related
 
-See [failures.md](./failures.md) for recovery when plans are too vague, too detailed, or rubber-stamped.
+- [Failures](./failures.md) — recovery table  
+- [Workflow](./workflow.md) — ordered steps  
+- [Checklist](./checklist.md) — exit criteria  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Planner problem page expanded with skip-impact and operator symptoms.

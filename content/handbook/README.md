@@ -2,7 +2,7 @@
 
 > **Audience:** Engineering orgs adopting AI-assisted delivery (UI, platform, and full-stack)  
 > **Goal:** Depth over inventory — how to work day-to-day, not a dump of every file in the repo  
-> **Version:** 1.0 | **Updated:** 2026-07-16
+> **Version:** 1.1 | **Updated:** 2026-07-29
 
 ---
 
@@ -12,10 +12,13 @@ This handbook is the **operating manual** for teams that ship with AI. Libraries
 
 ## How to use this handbook
 
-1. Read **Skills vs prompts vs agents** once as the shared vocabulary.
-2. Run your next feature through **Context → Planning → HITL → Coding → PR review → Evals**.
-3. Wire **hooks** and **MCP** only after the workflow is clear.
-4. Use cookbooks and patterns as **specialist references**, not as the sidebar.
+0. New to the site? Read **[How to browse](./how-to-browse.md)** once (kit → workflow → SDLC tools → patterns → assure).
+1. Org leaders: start with **[AI migration bible path](./ai-migration-bible-path.md)** (pilot → harness → gate → SoA).
+2. Individuals: read **Skills vs prompts vs agents** once as the shared vocabulary.
+3. Map your stage on the **[AI SDLC stage tooling map](../08-ai-sdlc/stage-tooling-map.md)**.
+4. Run your next feature through **Context → Planning → HITL → Coding → PR review → Evals**.
+5. Wire **hooks** and **MCP** only after the workflow is clear.
+6. Use cookbooks and patterns as **specialist references**, not as day-one browsing.
 
 ```mermaid
 flowchart LR
@@ -34,6 +37,9 @@ flowchart LR
 
 | Chapter | You will be able to |
 |---------|---------------------|
+| [How to browse](./how-to-browse.md) | Follow the site in a logical order without thrashing |
+| [AI migration bible path](./ai-migration-bible-path.md) | Sequence org pilot → team harness → production gate → SoA |
+| [External standards map](./external-standards-map.md) | Navigate OWASP LLM/Agentic, NIST AI RMF, ISO 42001, SLSA without certification theater |
 | [Skills vs prompts vs agents](./skills-vs-prompts-vs-agents.md) | Stop treating every XML blob as a “skill” |
 | [How to give context](./how-to-give-context.md) | Build packages agents can actually use |
 | [How to set up planning](./how-to-set-up-planning.md) | Enforce plan-before-code without ceremony theater |
@@ -75,4 +81,5 @@ If a page is only a list of links, it does not belong here. Push catalogs to [Sk
 
 ## Changelog
 
+- 2026-07-29: Linked AI migration bible path as the org-adoption spine.
 - 2026-07-16: Introduced practitioner handbook spine and curated navigation.

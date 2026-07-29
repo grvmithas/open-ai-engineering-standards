@@ -9,13 +9,13 @@
 
 Set the minimum bar so prompts are reviewable, testable, and safe to run under a harness.
 
-## Authoring convention (OAIES repo)
+## Authoring convention (AIES repo)
 
 Production prompts in this repository use XML sections:
 
 `<role>`, `<context>`, `<instructions>`, `<output_format>`, `<constraints>`
 
-This is an **authoring convention for OAIES artifacts**, not a claim that every industry system must emit XML at runtime. Adopters may compile to their platform’s prompt format if the semantic sections survive.
+This is an **authoring convention for AIES artifacts**, not a claim that every industry system must emit XML at runtime. Adopters may compile to their platform’s prompt format if the semantic sections survive.
 
 ## Minimum bar
 

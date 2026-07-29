@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://open-ai-engineering-standard.org/schemas/v1/prompt-release.schema.json",
-  "title": "OAIES Prompt Release v1",
+  "title": "AIES Prompt Release v1",
   "description": "Immutable release record for a production prompt artifact.",
   "type": "object",
   "required": ["schemaVersion", "id", "systemRef", "name", "version", "status", "artifact", "purpose", "inputContract", "outputContract", "dataClassification", "modelCompatibility", "securityReview", "evaluationRefs", "materialChangeAssessment", "approvedBy", "releasedAt"],

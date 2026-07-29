@@ -1,8 +1,8 @@
 # Devops Skill
 
 > **Skill ID:** `devops`  
-> **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Version:** 2.1  
+> **Updated:** 2026-07-29
 
 ## Purpose
 Activate this skill when A build, CI/CD, release pipeline, infrastructure automation, or artifact supply-chain flow changes.
@@ -47,15 +47,17 @@ Design a GitHub Actions release that uses OIDC, pinned actions, signed OCI image
 Do not use for manual production changes that bypass the delivery system.
 
 ## Tradeoffs
-The required domain artifacts and verification cost more than a generic implementation pass, but they expose assumptions, safety gates, and operational limits before release.
+Pinning actions/images, signing digests, and canary health gates add pipeline latency and operational overhead; they eliminate “green CI, wrong artifact in prod” failures. Progressive delivery slows time-to-100% traffic but bounds blast radius when SLOs regress—faster all-at-once deploys win only when rollback is proven and cheap.
 
 ## Anti-Patterns
-- Substituting a generic checklist for the domain procedure above.
-- Claiming a gate passed without retaining the exact command, inspected artifact, or observed signal.
-- Expanding scope or executing an external effect without target-specific approval.
+- Floating tags on the release path (`actions@main`, `image:latest`) instead of immutable digests or pinned SHAs.
+- Long-lived cloud keys or PATs in CI secrets when OIDC federation to the cloud role is available.
+- Rebuilding per environment instead of promoting the same signed artifact digest.
+- Shipping without automated rollback criteria tied to health checks or error-budget burn.
+- Manual production mutations that bypass the delivery system “just this once.”
 
 ## Enterprise Considerations
-Apply repository ownership, separation of duties, data residency and retention, audit evidence, and approved-tool policies to every produced artifact. Redact secrets and regulated data from examples and logs.
+Separate who merges code, who approves environment promotion, and who holds break-glass credentials. Secrets belong in a vault or short-lived OIDC tokens—never echoed into workflow logs, SBOM annotations, or artifact metadata. Retain SBOM, provenance attestations, and promotion audit events for supply-chain and change-management compliance (SLSA-aligned).
 
 ## Checklist
 - [ ] Trigger and anti-trigger evaluated
@@ -69,5 +71,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [OpenSSF Scorecard](https://scorecard.dev/)
 
 ## Changelog
+- **2.1 (2026-07-29):** De-boilerplated Tradeoffs, Anti-Patterns, and Enterprise Considerations with devops-domain content (canaries, digest promotion, OIDC, SLSA evidence).
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

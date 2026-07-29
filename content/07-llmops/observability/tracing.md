@@ -2,7 +2,7 @@
 
 > **Version:** 1.1.0
 > **Last updated:** 2026-07-16
-> **Status:** Informative OAIES implementation profile
+> **Status:** Informative AIES implementation profile
 
 ## Purpose
 Create vendor-neutral end-to-end traces across gateway, retrieval, model, tools, and approvals.
@@ -21,7 +21,7 @@ Use on every production request, with privacy-safe sampling.
 5. Export to approved backends and test trace continuity.
 
 ## Version-pinning policy
-The OpenTelemetry GenAI semantic conventions remain Development-status and moved from the core semantic-conventions repository to the dedicated `open-telemetry/semantic-conventions-genai` repository in 2026. Pin the exact commit or release used by instrumentation and collectors; do not silently adopt `main` or `latest`. As of 2026-07-16 the dedicated repository does not publish a final schema URL; do not invent one. Keep the OAIES telemetry-contract version explicit until an authoritative schema URL is available.
+The OpenTelemetry GenAI semantic conventions remain Development-status and moved from the core semantic-conventions repository to the dedicated `open-telemetry/semantic-conventions-genai` repository in 2026. Pin the exact commit or release used by instrumentation and collectors; do not silently adopt `main` or `latest`. As of 2026-07-16 the dedicated repository does not publish a final schema URL; do not invent one. Keep the AIES telemetry-contract version explicit until an authoritative schema URL is available.
 
 ```yaml
 telemetry_contract:
@@ -60,7 +60,7 @@ flowchart LR
 ## Required attribute contract
 Use the exact names and requirements from the pinned OpenTelemetry release. The table identifies the minimum intent; the conformance test resolves version-specific spelling and stability.
 
-| Span | Required attributes | OAIES extension | Prohibited by default |
+| Span | Required attributes | AIES extension | Prohibited by default |
 |---|---|---|---|
 | Model operation | `gen_ai.operation.name`, `gen_ai.provider.name`, requested model, response model/ID when returned, input/output token usage, `error.type` | `oaies.prompt.release`, `oaies.policy.release`, `oaies.route.id`, `oaies.risk.tier`, `oaies.data.class` | Raw input/output messages, API keys, full retrieved documents |
 | Retrieval | database/search system attributes appropriate to client library, result count, duration | `oaies.retrieval.index_release`, `oaies.retrieval.query_hash`, `oaies.retrieval.document_set_hash` | Query text containing personal data; document bodies |

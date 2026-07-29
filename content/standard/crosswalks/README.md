@@ -1,4 +1,4 @@
-# OAIES Standards Crosswalks
+# AIES Standards Crosswalks
 
 **Version:** 1.0.1  
 **Date:** 2026-07-16  
@@ -6,11 +6,11 @@
 
 ## Purpose
 
-These crosswalks show where OAIES machine-readable artifacts can support evidence collection for external AI, security, software supply-chain, protocol, and observability standards. They give engineering and assurance teams one traceable implementation index without reproducing copyrighted standards.
+These crosswalks show where AIES machine-readable artifacts can support evidence collection for external AI, security, software supply-chain, protocol, and observability standards. They give engineering and assurance teams one traceable implementation index without reproducing copyrighted standards.
 
 ## Why
 
-Control mappings are useful only when they distinguish evidence reuse from control equivalence. OAIES records technical facts and decisions; external frameworks may additionally require an organization-wide management system, legal interpretation, independent assessment, stakeholder consultation, or outcomes that a JSON artifact cannot prove.
+Control mappings are useful only when they distinguish evidence reuse from control equivalence. AIES records technical facts and decisions; external frameworks may additionally require an organization-wide management system, legal interpretation, independent assessment, stakeholder consultation, or outcomes that a JSON artifact cannot prove.
 
 ## Mapping method
 
@@ -18,13 +18,13 @@ Each mapping is based on the normative or authoritative source linked in the doc
 
 | Relationship | Meaning | Permitted conclusion |
 |---|---|---|
-| `evidence-supports` | The OAIES artifact may supply evidence relevant to part of the referenced requirement | An assessor may consider the evidence after scope, design, operation, and authenticity checks |
+| `evidence-supports` | The AIES artifact may supply evidence relevant to part of the referenced requirement | An assessor may consider the evidence after scope, design, operation, and authenticity checks |
 | `partial` | The artifact addresses only a limited evidence element | Additional controls, procedures, outcomes, and evidence are mandatory |
-| `no-mapping` | OAIES does not address the requirement | Implement an external control |
+| `no-mapping` | AIES does not address the requirement | Implement an external control |
 
-The unit of mapping is an OAIES artifact and its required fields, not a claim that an entire external requirement is satisfied.
+The unit of mapping is an AIES artifact and its required fields, not a claim that an entire external requirement is satisfied.
 
-## OAIES control families
+## AIES control families
 
 | Family | Scope | Primary contracts |
 |---|---|---|
@@ -51,10 +51,11 @@ The unit of mapping is an OAIES artifact and its required fields, not a claim th
 | [OWASP AI security](./owasp-ai-security.md) | OWASP Top 10 for LLM Applications, OWASP Top 10 for Agentic Applications |
 | [Secure software and supply chain](./secure-software-supply-chain.md) | NIST SSDF SP 800-218, NIST SP 800-53 Rev. 5, SLSA, OpenSSF |
 | [Protocols and observability](./protocols-and-observability.md) | MCP authorization, A2A, OpenTelemetry GenAI semantic conventions |
+| [EU AI Act engineering map](./eu-ai-act.md) | Indicative evidence map — **not** conformity / CE |
 
 ## How to use
 
-1. Freeze the exact external publication/version and OAIES schema version in the assessment scope.
+1. Freeze the exact external publication/version and AIES schema version in the assessment scope.
 2. Determine applicability using the external source, counsel, and the organization’s risk method.
 3. Select mappings marked `evidence-supports` or `partial`; never infer control satisfaction from similar words.
 4. Validate each referenced artifact, digest, time period, system boundary, and approval.
@@ -63,7 +64,7 @@ The unit of mapping is an OAIES artifact and its required fields, not a claim th
 
 ## Equivalence and certification limits
 
-These crosswalks are not legal advice, an accreditation instrument, a conformity assessment, or a certification claim. OAIES is not certified, endorsed, or approved by ISO, IEC, NIST, OWASP, OpenSSF, the MCP project, the A2A project, or OpenTelemetry. A mapping does not establish one-to-one equivalence; it indicates potential evidence alignment only. Certification to ISO/IEC 42001 requires an auditable AI management system and, when certification is claimed, assessment by an appropriately accredited certification body.
+These crosswalks are not legal advice, an accreditation instrument, a conformity assessment, or a certification claim. AIES is not certified, endorsed, or approved by ISO, IEC, NIST, OWASP, OpenSSF, the MCP project, the A2A project, or OpenTelemetry. A mapping does not establish one-to-one equivalence; it indicates potential evidence alignment only. Certification to ISO/IEC 42001 requires an auditable AI management system and, when certification is claimed, assessment by an appropriately accredited certification body.
 
 ## Tradeoffs
 
@@ -101,4 +102,4 @@ The control owner must approve mappings, Legal must determine regulatory implica
 
 ### 1.0.0 — 2026-07-16
 
-- Added the initial OAIES crosswalk method, limits, and index.
+- Added the initial AIES crosswalk method, limits, and index.

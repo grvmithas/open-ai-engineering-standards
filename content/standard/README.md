@@ -1,4 +1,4 @@
-# OAIES Normative Standard Kernel
+# AIES Normative Standard Kernel
 
 > **Version:** 1.0.1  
 > **Published:** 2026-07-16  
@@ -6,11 +6,11 @@
 
 ## Purpose
 
-This kernel defines the minimum auditable requirements for claiming conformance with the Open AI Engineering Standard (OAIES). It establishes one vocabulary, applicability model, control system, evidence model, exception process, and assessment method for production AI workloads.
+This kernel defines the minimum auditable requirements for claiming conformance with the AI Engineering Standard (AIES). It establishes one vocabulary, applicability model, control system, evidence model, exception process, and assessment method for production AI workloads.
 
 ## Why
 
-Engineering guidance is not an assurance standard until requirements are uniquely identifiable, scoped, testable, and supported by retained evidence. This kernel turns OAIES guidance into controls that an independent assessor can evaluate without inferring intent.
+Engineering guidance is not an assurance standard until requirements are uniquely identifiable, scoped, testable, and supported by retained evidence. This kernel turns AIES guidance into controls that an independent assessor can evaluate without inferring intent.
 
 ## How
 
@@ -42,9 +42,9 @@ flowchart LR
 | [04 — Lifecycle and Assessor Methodology](./04-lifecycle-and-assessment.md) | Normative | Versioning, deprecation, assessment, sampling, reporting |
 | [`templates/`](./templates/) | Normative forms | Required record structures |
 
-Text explicitly labeled **Guidance** is informative. Examples, rationale, and implementation notes do not create requirements. Only control statements carrying an OAIES control ID are normative.
+Text explicitly labeled **Guidance** is informative. Examples, rationale, and implementation notes do not create requirements. Only control statements carrying an AIES control ID are normative.
 
-OAIES conformance is a bounded assessment conclusion, not certification, accreditation, regulatory approval, or endorsement. Numeric periods, thresholds, and sample sizes are normative only when a control defines their rationale or requires an approved profile-, risk-, jurisdiction-, records-, assurance-, or claim-based decision with retained evidence.
+AIES conformance is a bounded assessment conclusion, not certification, accreditation, regulatory approval, or endorsement. Numeric periods, thresholds, and sample sizes are normative only when a control defines their rationale or requires an approved profile-, risk-, jurisdiction-, records-, assurance-, or claim-based decision with retained evidence.
 
 ## Tradeoffs
 
@@ -64,7 +64,7 @@ OAIES conformance is a bounded assessment conclusion, not certification, accredi
 
 ## Enterprise Considerations
 
-Organizations may map OAIES controls to legal, regulatory, contractual, and internal frameworks, but a mapping does not transfer conformance between frameworks. The system owner remains accountable for jurisdiction analysis, records schedules, data residency, segregation of duties, and regulator access. High-impact systems require independent assessment and executive risk ownership.
+Organizations may map AIES controls to legal, regulatory, contractual, and internal frameworks, but a mapping does not transfer conformance between frameworks. The system owner remains accountable for jurisdiction analysis, records schedules, data residency, segregation of duties, and regulator access. High-impact systems require independent assessment and executive risk ownership.
 
 ## Checklist
 
@@ -73,7 +73,7 @@ Organizations may map OAIES controls to legal, regulatory, contractual, and inte
 - [ ] A complete, versioned SoA exists.
 - [ ] Every applicable control has objective evidence or an approved exception.
 - [ ] Assessment scope and sampling are reproducible.
-- [ ] The claim names the OAIES version and expiry date.
+- [ ] The claim names the AIES version and expiry date.
 - [ ] Surveillance and reassessment triggers are scheduled.
 
 ## Authoritative References
@@ -89,5 +89,5 @@ Organizations may map OAIES controls to legal, regulatory, contractual, and inte
 
 | Version | Date | Change |
 |---|---|---|
-| 1.0.1 | 2026-07-16 | Required evidence-based numeric policy decisions and clarified that OAIES conformance is not certification. |
-| 1.0.0 | 2026-07-16 | Established the OAIES normative standard kernel. |
+| 1.0.1 | 2026-07-16 | Required evidence-based numeric policy decisions and clarified that AIES conformance is not certification. |
+| 1.0.0 | 2026-07-16 | Established the AIES normative standard kernel. |

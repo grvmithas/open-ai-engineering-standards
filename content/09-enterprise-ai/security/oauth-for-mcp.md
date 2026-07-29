@@ -2,7 +2,7 @@
 
 > **Version:** 1.1.0
 > **Last updated:** 2026-07-16
-> **Status:** Informative OAIES implementation profile
+> **Status:** Informative AIES implementation profile
 
 ## Purpose
 Secure MCP access with standards-based delegated authorization and resource-bound tokens.

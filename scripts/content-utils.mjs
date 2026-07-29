@@ -61,7 +61,7 @@ export function extractDescription(markdown) {
       return cleanInlineMarkdown(line).slice(0, 160);
     }
   }
-  return 'Open AI Engineering Standard — production-grade AI engineering documentation.';
+  return 'AI Engineering Standard — production-grade AI engineering documentation.';
 }
 
 export function cleanInlineMarkdown(value) {
@@ -87,7 +87,11 @@ export function buildManifest() {
   const documents = walkContent().map(absolutePath => {
     const sourcePath = toPosix(path.relative(ROOT, absolutePath));
     const slug = sourcePathToSlug(sourcePath.slice('content/'.length));
-    const markdown = stripFrontmatter(fs.readFileSync(absolutePath, 'utf8'));
+    let raw = fs.readFileSync(absolutePath, 'utf8');
+    if (raw.charCodeAt(0) === 0xFEFF) {
+      raw = raw.slice(1);
+    }
+    const markdown = stripFrontmatter(raw);
     return {
       slug,
       sourcePath,

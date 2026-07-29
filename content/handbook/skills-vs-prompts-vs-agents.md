@@ -56,7 +56,7 @@ A **versioned instruction artifact**. It tells a model what to produce for a spe
 - [`content/08-ai-sdlc/prompts/coding.prompt.md`](../08-ai-sdlc/prompts/coding.prompt.md)
 - [`content/01-prompt-engineering/templates/system-prompt.template.md`](../01-prompt-engineering/templates/system-prompt.template.md)
 
-**Authoring convention (OAIES):** XML sections `<role>`, `<context>`, `<instructions>`, `<output_format>`, `<constraints>`. That is repository authoring discipline — your runtime may compile to another format if the semantics survive.
+**Authoring convention (AIES):** XML sections `<role>`, `<context>`, `<instructions>`, `<output_format>`, `<constraints>`. That is repository authoring discipline — your runtime may compile to another format if the semantics survive.
 
 ### Skill
 

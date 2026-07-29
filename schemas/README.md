@@ -1,11 +1,11 @@
-# OAIES Machine-Readable Contracts
+# AIES Machine-Readable Contracts
 
 **Version:** 1.0.0  
 **Date:** 2026-07-16
 
 ## Purpose
 
-These JSON Schemas define the normative interchange contracts for OAIES governance, engineering, assurance, and operations records. Producers MUST validate artifacts against the exact schema version named by `schemaVersion` before exchange or archival.
+These JSON Schemas define the normative interchange contracts for AIES governance, engineering, assurance, and operations records. Producers MUST validate artifacts against the exact schema version named by `schemaVersion` before exchange or archival.
 
 ## Why
 
@@ -78,8 +78,8 @@ Protect artifacts according to their `dataClassification`; apply immutable reten
 
 ### 1.0.1 — 2026-07-16
 
-- Aligned contracts with the OAIES kernel, added paired fixtures, and added full Draft 2020-12 instance and semantic validation.
+- Aligned contracts with the AIES kernel, added paired fixtures, and added full Draft 2020-12 instance and semantic validation.
 
 ### 1.0.0 — 2026-07-16
 
-- Added the initial Draft 2020-12 OAIES contract set and dependency-free structural validator.
+- Added the initial Draft 2020-12 AIES contract set and dependency-free structural validator.

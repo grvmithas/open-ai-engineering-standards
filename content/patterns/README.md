@@ -1,13 +1,27 @@
 ﻿# AI Engineering Patterns
 
 > **Browse from the Patterns menu** — twelve operational envelopes for consequential AI-assisted work.  
-> **Version:** 1.2 | **Updated:** 2026-07-16
+> **Version:** 1.3 | **Updated:** 2026-07-29
 
 ---
 
 ## Purpose
 
 Patterns are **runnable specifications**, not essays and not a sidebar dump of thirteen stub files. Open a pattern README, follow its Mermaid workflow, use its prompt, and keep humans at the approval gates.
+
+## Which pattern first? (decision table)
+
+| Your situation | Open first | Then |
+|----------------|------------|------|
+| Multi-file / cross-service change | [Context](./context-pattern/README.md) | [Planner](./planner-pattern/README.md) → code → [Reviewer](./reviewer-pattern/README.md) |
+| About to merge | [Reviewer](./reviewer-pattern/README.md) | Security skill if AuthZ/tools touched |
+| Bug with repro | [Debug](./debug-pattern/README.md) | [Root Cause](./root-cause-pattern/README.md) after fix |
+| Production incident | [Hotfix](./hotfix-pattern/README.md) | RCA → Planner for permanent fix |
+| Promote to prod | [Release](./release-pattern/README.md) | Evals-as-gates handbook |
+| Org / multi-team AI rollout | [Enterprise](./enterprise-pattern/README.md) | [External standards map](../handbook/external-standards-map.md) |
+| Strangler / legacy | [Legacy Modernization](./legacy-modernization-pattern/README.md) | Migration pattern if data moves |
+
+Default spine for greenfield AI-assisted delivery: **Context → Planner → Reviewer → Release**.
 
 ## Catalog
 
@@ -45,7 +59,7 @@ flowchart LR
 4. Use `prompt.md` variables; do not rewrite the contract casually.  
 5. Run hooks + checklist before calling done.
 
-Component files (`problem.md`, `hooks.md`, …) support the README — they are not meant to flood navigation. Use in-page links from each pattern README.
+Component files (`problem.md`, `prompt.md`, `skills.md`, `mcps.md`, `hooks.md`, …) live under each pattern folder. The docs left nav expands **envelope pages for the pattern you are viewing**; the in-page “This pattern” strip mirrors the same set.
 
 ## Practitioner handbook
 

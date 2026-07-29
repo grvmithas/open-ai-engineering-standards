@@ -74,7 +74,7 @@ interface DelegationToken {
   iat: number;
   jti: string;                  // unique; reject replays
 
-  // OAIES extensions
+  // AIES extensions
   task_id: string;
   session_id: string;
   intent_id: string;            // binds to OriginalIntent

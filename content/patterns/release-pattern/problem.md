@@ -2,35 +2,45 @@
 
 > **Pattern:** Release  
 > **Component:** problem.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
 ## Statement
 
-Shipping a green CI build to 100% of production without digest pinning, progressive exposure, and pre-declared abort criteria produces outages that exceed rollback RTO and destroy trust in the delivery pipeline.
+Promotions skip eval gates, digests, and abort owners — big-bang ships until the rollback window is already gone.
 
 ## Measurable symptoms
 
 | Symptom | How you detect it |
 |---------|-------------------|
-| Digest drift | Runtime image digest ≠ release record |
-| Big-bang expose | Traffic jumps 0→100% with no canary hold |
-| Soft abort | Thresholds rewritten after alerts fire |
-| Rollback theater | “Rollback” is undocumented or never rehearsed |
-| Flag absence | No kill switch short of redeploy |
+| No abort owner | Canary fails; nobody decides |
+| Unpinned artifacts | “Latest” prompt/image drifts |
+| Eval bypass | Model-facing change ships on vibe |
+| Monitor lag | Errors noticed by users first |
 
 ## Root cause
 
-Teams conflate **build verification** with **exposure control**. Verification answers “is this artifact acceptable?” Exposure control answers “how much blast radius do we accept right now, and when do we stop?”
+Release pressure rewards green buttons. Progressive delivery and eval gates look slow until a bad promote is irreversible.
+
+## What breaks when this pattern is skipped
+
+- Hotfix follows every release
+- Cannot answer “what digest is live?”
+- Eval failures ignored as flaky
 
 ## Non-goals of this pattern
 
-- Not a substitute for product QA ownership of acceptance tests
-- Not an incident process (see hotfix + RCA patterns)
-- Not permission to waive security gates casually
-- Not required for docs-only changes with no runtime artifact
+- Not a substitute for DoD
+- Not automatic promote via MCP status text
+- Not optional for AI-touched user-visible paths
 
-## Related failure modes
+## Related
 
-See [failures.md](./failures.md).
+- [Failures](./failures.md) — recovery table  
+- [Workflow](./workflow.md) — ordered steps  
+- [Checklist](./checklist.md) — exit criteria  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Release problem page expanded with skip-impact and operator symptoms.

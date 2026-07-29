@@ -2,43 +2,46 @@
 
 > **Pattern:** Debug  
 > **Component:** context.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Preconditions (must be true before activation)
+## Purpose
 
-- [ ] Expected behavior stated in one sentence
-- [ ] Actual behavior stated (verbatim error when available)
-- [ ] Environment named (dev / staging / prod / test)
-- [ ] Logs, traces, metrics, or failing test available — or gap documented
-- [ ] Permission to run reproducing experiments in a safe environment
+Define the **minimum evidence package** required before the Debug pattern may start — and when to refuse to start.
 
-## Trigger conditions (apply the pattern)
+## Required before activation
 
-Apply when **any** of the following hold:
+- [ ] Repro notes or production-shaped signal
+- [ ] Relevant logs/traces/metrics (redacted)
+- [ ] Recent changes timeline
+- [ ] Owner who can verify in the failing environment
 
-- Spec or prior behavior is violated
-- Failing test, stack trace, or error-budget burn
-- Intermittent / race / environment-sensitive failure
-- Previous quick fix failed or was reverted
+## Refuse to start when
 
-## Do not apply when
+- No symptom definition (“it feels slow”)
+- Write access requested before hypotheses ranked
+- PII-bearing dumps without redaction plan
 
-- Request is a new feature, not a defect
-- Typo/syntax error with obvious single-line fix
-- Pure third-party outage (document workaround; open vendor ticket)
-- Containment still incomplete on SEV1 — stabilize first
+## Trust and data class
 
-## Required inputs
+- Label segments as trusted, internal, or untrusted for **Debug** packs.  
+- Keep untrusted retrieval out of the Debug system channel.  
+- Debug MCP enablement follows data class in [mcps.md](./mcps.md).
 
-| Input | Source | Minimum quality |
-|-------|--------|-----------------|
-| Symptom package | Ticket / user / alert | Expected, actual, when started |
-| Repro notes | Author or on-call | Steps or “cannot repro” |
-| Telemetry | Logs/traces/metrics | Correlated timestamps |
-| Recent changes | git log / deploy board | Suspect window |
+## Pack shape for Debug
 
-## Authority boundary
+1. Trigger / AC (human-owned)  
+2. Ranked evidence inside the Debug budget  
+3. Constraints and non-goals for this activation  
+4. Open questions (empty before irreversible Debug steps)
 
-The debug agent may propose and implement **root-cause fixes** in non-prod and via PR. Production mutation, data export, and emergency rollbacks require the human on-call / incident commander.
+## Related
+
+- [Context pattern](../context-pattern/README.md) when packing is itself the hard problem  
+- [Prompt](./prompt.md) variable bindings  
+- [Skills](./skills.md) activation triggers  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Debug context gates (required/refuse) rewritten for this envelope.

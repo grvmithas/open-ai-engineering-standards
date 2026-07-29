@@ -2,36 +2,41 @@
 
 > **Pattern:** Optimization  
 > **Component:** failures.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Failure 1: Microbenchmark theater
+## Purpose
 
-**Symptom:** Local loop is 5–10× faster; production p99 unchanged.  
-**Cause:** Optimized a cold path or used a non-representative fixture.  
-**Recovery:** Re-trace production critical path; KILL the flag; only reopen with matching workload ID.
+Recover when the Optimization pattern is misapplied — without abandoning the gate.
 
-## Failure 2: Mean improved, tail died
+## Failure → detection → recovery
 
-**Symptom:** Average latency down; p99 and error-budget burn up.  
-**Cause:** Guardrails omitted tails, GC pauses, lock contention, or queueing.  
-**Recovery:** Abort canary; restore baseline; redesign for tail (batching, timeouts, concurrency limits).
+| Failure | Detection | Recovery |
+|---------|-----------|----------|
+| Intuition patch | No before/after | Revert; capture baseline; retry |
+| Oracle skipped | Silent wrong answers | Restore tests/evals; block ship |
+| Moving dashboard | Baseline edited mid-run | Freeze queries; re-baseline |
+| p50 theater | p99 regresses | Hold to contractual guardrail |
 
-## Failure 3: Correctness collateral
+## Escalation from Optimization failures
 
-**Symptom:** Faster responses with stale cache, lost updates, or wrong aggregates.  
-**Cause:** Oracle absent or waived “temporarily.”  
-**Recovery:** Immediate flag disable; add oracle assertions before any re-canary.
+- Security-class impact during Optimization → [Security skill](../../03-skill-engineering/skills/security.skill.md) + human security owner  
+- Production SEV while misusing Optimization → [Hotfix](../hotfix-pattern/README.md) containment first  
+- Learning after Optimization containment → [Root Cause](../root-cause-pattern/README.md)
 
-## Failure 4: Confounded experiments
+## Do not
 
-**Symptom:** Results swing between deploys; nobody can reproduce the win.  
-**Cause:** Two optimizations or unrelated releases flipped in the same window.  
-**Recovery:** Serialize; invalidate the evaluation package; re-run single-flag A/B.
+- Skip the Optimization human gate “just this once” after a failure  
+- Delete Optimization evidence to hide a bad run  
+- Replace Optimization with unstructured chat under pressure  
 
-## Failure 5: No kill switch
+## Related
 
-**Symptom:** Regression requires a full redeploy to undo.  
-**Cause:** Optimization merged without a feature flag / config gate.  
-**Recovery:** Treat as release defect; emergency config revert or hotfix rollback; ban unflagged perf changes on the critical path.
+- [Checklist](./checklist.md)  
+- [Enterprise notes](./enterprise-notes.md)  
+- [Example](./examples/example.md)  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Optimization failure recovery table and escalation paths expanded.

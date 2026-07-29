@@ -40,7 +40,7 @@ Without LLMOps, every prompt change is a deployment risk. With LLMOps, prompt ch
 | File | What It Covers |
 |------|----------------|
 | [evaluation/framework-selection.md](./evaluation/framework-selection.md) | RAGAS vs DeepEval vs Promptfoo — when to use each |
-| [Live Eval Script (eval/test_sample.py)](../eval/test_sample.py) | Working python test case using DeepEval for semantic relevancy |
+| [Live Eval Script (eval/test_sample.py)](../../eval/test_sample.py) | Working python test case using DeepEval for semantic relevancy |
 | [evaluation/golden-set-management.md](./evaluation/golden-set-management.md) | Building and maintaining regression test suites |
 | [evaluation/llm-as-judge.md](./evaluation/llm-as-judge.md) | Biases, calibration, and safeguards |
 | [evaluation/continuous-eval.md](./evaluation/continuous-eval.md) | Embedding evaluation in production workflows |
@@ -72,7 +72,7 @@ Without LLMOps, every prompt change is a deployment risk. With LLMOps, prompt ch
 
 ---
 
-## The OAIES Evaluation Stack
+## The AIES Evaluation Stack
 
 **This is the standard. One stack. No "pick your favorite."**
 
@@ -122,7 +122,7 @@ langfuse prompt promote --name "user-intent-classifier" --version 2.0 --environm
 **Use the cheapest model that can do the job. Use expensive models only for tasks that require them.**
 
 ```python
-# Model routing configuration (OAIES standard)
+# Model routing configuration (AIES standard)
 MODEL_ROUTING = {
     "classification": "gpt-4o-mini",        # Fast, cheap, good for simple classification
     "extraction": "gpt-4o-mini",            # Structured extraction from text

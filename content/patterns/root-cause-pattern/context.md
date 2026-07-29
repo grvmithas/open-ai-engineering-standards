@@ -2,45 +2,46 @@
 
 > **Pattern:** Root Cause  
 > **Component:** context.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Preconditions (must be true before activation)
+## Purpose
 
-- [ ] Incident is mitigated or stable under monitoring (harm contained)
-- [ ] Incident ID, severity, duration, and impact summary exist
-- [ ] Raw timeline sources available (alerts, deploys, flags, chat, tickets)
-- [ ] Facilitator will enforce blameless norms aloud
-- [ ] Likely action owners attend (or delegate with authority)
-- [ ] Draft will use the RCA structure from the SDLC prompt (summary, timeline, 5 Whys, detection gap, remediation, prevention)
+Define the **minimum evidence package** required before the Root Cause pattern may start — and when to refuse to start.
 
-## Trigger conditions (apply the pattern)
+## Required before activation
 
-Apply when **any** of the following hold:
+- [ ] Containment complete (or explicitly parallel)
+- [ ] Timeline evidence (commits, alerts, traces)
+- [ ] Pre-fix signal definition
+- [ ] Authority to assign follow-ups
 
-- SEV1 or SEV2 mitigated
-- SEV3 with clear recurrence risk or customer commitment to a writeup
-- Hotfix/rollback fixed symptoms but systemic gap remains
-- Near-miss that would have been SEV1 with minor timing differences
+## Refuse to start when
 
-## Do not apply when
+- RCA requested as blame memo
+- Write tools that alter historical incident records
+- Close without regression test/detector plan
 
-- Incident still uncontained — finish [hotfix-pattern](../hotfix-pattern/README.md) first
-- Purpose is to punish an individual — wrong process
-- No evidence timeline can be constructed (still write what is known; mark gaps; do not invent)
-- Purely speculative tabletop with no real event (use game-day notes instead)
+## Trust and data class
 
-## Required inputs
+- Label segments as trusted, internal, or untrusted for **Root Cause** packs.  
+- Keep untrusted retrieval out of the Root Cause system channel.  
+- Root Cause MCP enablement follows data class in [mcps.md](./mcps.md).
 
-| Input | Source | Minimum quality |
-|-------|--------|-----------------|
-| Incident summary | Incident ticket | ID, SEV, impact, duration |
-| Timeline sources | APM, CD, flags, chat | Timestamps |
-| Contributing context | Deploys, traffic, config | Facts labeled |
-| Logs/metrics | Observability | Key excerpts linked |
-| Mitigation steps | IC timeline | What already ran |
+## Pack shape for Root Cause
 
-## Authority boundary
+1. Trigger / AC (human-owned)  
+2. Ranked evidence inside the Root Cause budget  
+3. Constraints and non-goals for this activation  
+4. Open questions (empty before irreversible Root Cause steps)
 
-The RCA agent **drafts**. Humans in the RCA meeting own the root-cause statement and action assignments. Legal/comms may restrict external versions. The agent must not invent owners or due dates.
+## Related
+
+- [Context pattern](../context-pattern/README.md) when packing is itself the hard problem  
+- [Prompt](./prompt.md) variable bindings  
+- [Skills](./skills.md) activation triggers  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Root Cause context gates (required/refuse) rewritten for this envelope.

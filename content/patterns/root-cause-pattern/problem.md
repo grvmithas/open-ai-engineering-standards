@@ -2,35 +2,45 @@
 
 > **Pattern:** Root Cause  
 > **Component:** problem.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
 ## Statement
 
-After incidents, teams document symptoms and triggers, scatter “root causes,” assign ownerless actions, or blame individuals. The systemic condition that made the failure consequential remains, so the incident class recurs.
+After containment, teams skip evidence-bound RCA: blame replaces timeline, “fixed” means volume dipped, and no regression detector is added.
 
 ## Measurable symptoms
 
 | Symptom | How you detect it |
 |---------|-------------------|
-| Recurrence | Same failure class within two quarters |
-| Action rot | >50% RCA actions open past due without escalation |
-| Vague actions | Items like “improve monitoring” with no alert definition |
-| Multi-root | Document claims >1 root cause |
-| Blame | Named individuals as the moral of the story |
+| Blame RCA | Names without causal chain |
+| Volume ≠ fixed | Fingerprint quiet; defect remains |
+| No follow-ups | RCA closed with zero owners |
+| Lost chronology | Monitors edited mid-RCA |
 
 ## Root cause
 
-Postmortems are treated as narrative closure instead of a **commitment device** that changes detection, prevention, and recovery systems — with one systemic root cause and owned, dated work.
+Learning work competes with the next feature. Without a forced evidence bar, RCA becomes narrative therapy.
+
+## What breaks when this pattern is skipped
+
+- Repeat incidents with identical causes
+- Auditors find no learning trail
+- Fixes that never get a detector
 
 ## Non-goals of this pattern
 
-- Not live incident containment ([hotfix-pattern](../hotfix-pattern/README.md))
-- Not HR/performance management
-- Not a substitute for security forensics when a breach requires that track
-- Not endless analysis without publishing actions
+- Not punishment
+- Not optional documentation fluff
+- Not automatic ticket closure via MCP summary
 
-## Related failure modes
+## Related
 
-See [failures.md](./failures.md). Aligns with anti-patterns in the SDLC root-cause-analysis prompt (vague monitoring, multi-root, missing owners).
+- [Failures](./failures.md) — recovery table  
+- [Workflow](./workflow.md) — ordered steps  
+- [Checklist](./checklist.md) — exit criteria  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Root Cause problem page expanded with skip-impact and operator symptoms.

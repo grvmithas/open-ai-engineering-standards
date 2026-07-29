@@ -48,7 +48,7 @@ function toText(report) {
       (control.reasons.length > 0 ? ` — ${control.reasons.join("; ")}` : ""),
   );
   return [
-    `OAIES assessment ${report.soaId} at ${report.asOf}`,
+    `AIES assessment ${report.soaId} at ${report.asOf}`,
     ...rows,
     `Claim status: ${report.claimStatus}`,
     `Summary: ${Object.entries(report.summary)

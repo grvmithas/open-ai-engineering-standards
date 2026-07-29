@@ -14,7 +14,7 @@
 - [ ] Bug fix
 - [ ] Other: _______________
 
-### OAIES Checklist
+### AIES Checklist
 
 #### For Prompts
 - [ ] Follows XML structure standard (see `content/01-prompt-engineering/patterns/xml-structured.md`)
@@ -55,4 +55,4 @@
 <!-- Link to any related issues: Closes #XXX -->
 
 ---
-*Submitted for review under the OAIES standard. Not meeting the checklist above will result in PR feedback requesting updates.*
+*Submitted for review under the AIES standard. Not meeting the checklist above will result in PR feedback requesting updates.*

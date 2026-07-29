@@ -2,49 +2,46 @@
 
 > **Pattern:** Release  
 > **Component:** context.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Preconditions (must be true before activation)
+## Purpose
 
-- [ ] Artifact identified by **digest** (not mutable tag alone)
-- [ ] Provenance / attestation available for the digest
-- [ ] Required gates green for **this** digest (tests, security, SBOM policy)
-- [ ] Change ticket / release notes identify risk tier and window
-- [ ] Feature flag or traffic splitter configured for progressive exposure
-- [ ] Abort criteria written with metric, threshold, window, and owner
-- [ ] Rollback command rehearsed in staging (or last drill date recorded)
-- [ ] Named go/no-go human for medium/high risk
+Define the **minimum evidence package** required before the Release pattern may start — and when to refuse to start.
 
-## Trigger conditions (apply the pattern)
+## Required before activation
 
-Apply when **any** of the following hold:
+- [ ] Pinned digests (image/prompt/config)
+- [ ] Abort criteria and owner
+- [ ] Eval gate results
+- [ ] Canary/monitor plan
 
-- Production or customer-facing environment will run new bits
-- Schema/data migration accompanies the release
-- Model/prompt/tool bundle changes in an AI path
-- SLO-sensitive service or payments/identity/data plane
-- Organizational policy requires progressive delivery
+## Refuse to start when
 
-## Do not apply when
+- Promote with failing eval on AI paths
+- No abort owner
+- Unpinned artifacts in the release record
 
-- No runtime artifact changes
-- Hotfix under incident commander using emergency path ([hotfix-pattern](../hotfix-pattern/README.md))
-- Artifact is unsigned/unattested and policy forbids it — **fix attestation**, do not “release anyway”
-- Canary infrastructure is down — fix delivery platform first or explicitly accept big-bang with executive risk acceptance (recorded)
+## Trust and data class
 
-## Required inputs
+- Label segments as trusted, internal, or untrusted for **Release** packs.  
+- Keep untrusted retrieval out of the Release system channel.  
+- Release MCP enablement follows data class in [mcps.md](./mcps.md).
 
-| Input | Source | Minimum quality |
-|-------|--------|-----------------|
-| Artifact digest | CI / registry | Immutable digest |
-| Gate results | CI / security | Linked to digest |
-| SBOM / deps policy | Supply chain job | Policy pass/fail |
-| Runbook | Ops | Rollback steps |
-| SLO baseline | APM | Pre-canary window |
-| Flag / split key | Flag service | Killable in <5m |
+## Pack shape for Release
 
-## Authority boundary
+1. Trigger / AC (human-owned)  
+2. Ranked evidence inside the Release budget  
+3. Constraints and non-goals for this activation  
+4. Open questions (empty before irreversible Release steps)
 
-The release agent **drafts the go/no-go package**. Humans decide Go/No-Go. Canary Controller may auto-abort on pre-declared criteria; it may not silently raise thresholds.
+## Related
+
+- [Context pattern](../context-pattern/README.md) when packing is itself the hard problem  
+- [Prompt](./prompt.md) variable bindings  
+- [Skills](./skills.md) activation triggers  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Release context gates (required/refuse) rewritten for this envelope.

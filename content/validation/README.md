@@ -1,4 +1,4 @@
-# OAIES External Validation Program
+# AIES External Validation Program
 
 > **Version:** 1.0.0  
 > **Published:** 2026-07-16  
@@ -6,17 +6,17 @@
 
 ## Purpose
 
-Define the controlled program OAIES maintainers use to obtain independent, reproducible evidence that the standard is understandable, applicable, and consistently assessable on real AI systems.
+Define the controlled program AIES maintainers use to obtain independent, reproducible evidence that the standard is understandable, applicable, and consistently assessable on real AI systems.
 
 ## Why
 
-Internal review can establish document quality but cannot establish external validity or inter-assessor reproducibility. OAIES must separate implemented methods and synthetic verification from evidence produced by real organizations and assessors.
+Internal review can establish document quality but cannot establish external validity or inter-assessor reproducibility. AIES must separate implemented methods and synthetic verification from evidence produced by real organizations and assessors.
 
 ## Current Evidence Boundary
 
 | Capability | Objective status | Permitted statement |
 |---|---|---|
-| Partner intake, system selection, legal prerequisites, and pilot procedure | Implemented in repository | “OAIES has a documented external-validation protocol.” |
+| Partner intake, system selection, legal prerequisites, and pilot procedure | Implemented in repository | “AIES has a documented external-validation protocol.” |
 | Blind assessment, sampling, adjudication, and agreement calculation | Implemented; calculator has synthetic fixtures | “The methodology is reproducible on supplied data.” |
 | Design-partner participation | Not established by these artifacts | No partner, deployment, or adoption claim |
 | Real-system pilot results | Not collected by these artifacts | No effectiveness or generalizability claim |
@@ -28,7 +28,7 @@ Synthetic fixtures verify mechanics only. They are not external evidence and **M
 ## How
 
 1. Operate the [design-partner program](./design-partner-program.md), including system-selection and legal/data gates.
-2. Execute the [pilot runbook](../../pilots/README.md) against a frozen OAIES version.
+2. Execute the [pilot runbook](../../pilots/README.md) against a frozen AIES version.
 3. Apply the [blind inter-assessor methodology](./inter-assessor-methodology.md) and record each assessor using the [qualification and independence template](./templates/assessor-qualification-independence.template.md).
 4. Assemble the evidence package and apply the [release-gate protocol](./evidence-and-release-gates.md).
 5. Publish only a de-identified case study using the [case-study template](./templates/anonymized-case-study.template.md) after participant and legal approval.
@@ -62,7 +62,7 @@ flowchart LR
 
 ## When
 
-Run at least one external pilot before promoting a major OAIES release as externally validated. Repeat after material changes to applicability, rating semantics, evidence requirements, or assessor procedures.
+Run at least one external pilot before promoting a major AIES release as externally validated. Repeat after material changes to applicability, rating semantics, evidence requirements, or assessor procedures.
 
 ## Tradeoffs
 
@@ -79,7 +79,7 @@ Run at least one external pilot before promoting a major OAIES release as extern
 - **Naming prospects as partners.** Participation exists only after executed authorization and completed intake.
 - **Optimizing the rubric after seeing disagreements.** This invalidates the blinded measurement.
 - **Publishing only successful cases.** The pilot register must retain withdrawals, limitations, and failed gates.
-- **Equating OAIES assessment with certification.** This program creates validation evidence; it does not create an accredited certification scheme.
+- **Equating AIES assessment with certification.** This program creates validation evidence; it does not create an accredited certification scheme.
 
 ## Enterprise Considerations
 
@@ -90,7 +90,7 @@ The program owner must maintain a processing inventory, records schedule, access
 - [ ] Public claims match the current evidence boundary.
 - [ ] Partner and system-selection decisions are recorded.
 - [ ] Legal, privacy, security, and publication gates are approved before access.
-- [ ] OAIES version, rubric, seed, and evidence manifest are frozen.
+- [ ] AIES version, rubric, seed, and evidence manifest are frozen.
 - [ ] Assessors qualify and pass independence checks.
 - [ ] Blind outputs are locked before comparison.
 - [ ] Agreement, uncertainty, coverage, and disagreements are reported.
@@ -99,7 +99,7 @@ The program owner must maintain a processing inventory, records schedule, access
 
 ## Authoritative References
 
-- [OAIES Lifecycle and Assessor Methodology](../standard/04-lifecycle-and-assessment.md)
+- [AIES Lifecycle and Assessor Methodology](../standard/04-lifecycle-and-assessment.md)
 - ISO, [ISO 19011:2018 — Guidelines for auditing management systems](https://www.iso.org/standard/70017.html).
 - ISO, [ISO/IEC 17029:2019 — Conformity assessment](https://www.iso.org/standard/29352.html).
 - NIST, [AI Risk Management Framework 1.0](https://doi.org/10.6028/NIST.AI.100-1), 2023.

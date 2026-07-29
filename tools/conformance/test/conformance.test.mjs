@@ -19,7 +19,7 @@ const normativeControls = await loadNormativeControls(standardDirectory);
 const options = { schemas, normativeControls, asOf: "2026-07-16T00:00:00.000Z" };
 const clone = (value) => structuredClone(value);
 const run = (fixture, overrides = {}) => assess(fixture, { ...options, ...overrides });
-const exceptionControl = (report) => report.controls.find((control) => control.controlId === "OAIES-DAT-010");
+const exceptionControl = (report) => report.controls.find((control) => control.controlId === "AIES-DAT-010");
 
 test("canonical schemas and normative content are the only contracts", () => {
   assert.ok(normativeControls.length > 40);
@@ -59,7 +59,7 @@ test("expired exception becomes applicable-nonconforming", () => {
 test("wrong system audience and control evidence invalidate compensation", () => {
   const fixture = buildFixture(normativeControls);
   fixture.exceptions[0].systemRef = "urn:oaies:system:SYS-OTHER";
-  fixture.evidence.items.find((item) => item.uri === "urn:oaies:evidence:OAIES-DAT-010").controlRefs = ["OAIES-DAT-011"];
+  fixture.evidence.items.find((item) => item.uri === "urn:oaies:evidence:AIES-DAT-010").controlRefs = ["AIES-DAT-011"];
   const report = run(fixture);
   assert.equal(report.claimStatus, "nonconformant");
   assert.match(exceptionControl(report).reasons.join(" "), /systemRef does not match/);
@@ -109,7 +109,7 @@ test("I3 exception requires executive, legal, and independent risk approvals", (
 
 test("stale evidence invalidates a conforming control", () => {
   const fixture = buildFixture(normativeControls, { withException: false });
-  const decision = fixture.soa.decisions.find((item) => item.controlId === "OAIES-DAT-010");
+  const decision = fixture.soa.decisions.find((item) => item.controlId === "AIES-DAT-010");
   decision.nextReviewAt = "2026-07-01T00:00:00.000Z";
   const report = run(fixture);
   assert.equal(report.claimStatus, "nonconformant");

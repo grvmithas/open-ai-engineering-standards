@@ -7,13 +7,24 @@
 
 ## The Standard
 
-This is the OAIES workflow. **Every feature follows this flow. No shortcuts. No exceptions.**
+This is the AIES workflow. **Every feature follows this flow. No shortcuts. No exceptions.**
+
+**Operators start here:** [Stage tooling map](./stage-tooling-map.md) — major stage → prompt → skill → pattern → how AI is leveraged.
 
 Teams that skip stages don't move faster. They move to production faster and to incidents faster.
 
 ---
 
-## The 26-Stage OAIES SDLC
+## Browse with the rest of the site
+
+1. [`/start`](/start) → kit → [`/workflows`](/workflows)  
+2. This SDLC tooling map for your current stage  
+3. Consequential work → [Patterns](../patterns/README.md)  
+4. Assurance only when needed → [How to browse](../handbook/how-to-browse.md)
+
+---
+
+## The 26-Stage AIES SDLC
 
 ```mermaid
 flowchart TD

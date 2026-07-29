@@ -180,7 +180,7 @@ MUST NOT:
 3. **Blocking questions resolved** — No open blocking questions remain
 4. **Only then** — Implementation planning proceeds to coding
 
-**If approval is skipped:** Architecture debt is unbudgeted. Stage 9 of the OAIES SDLC is violated.
+**If approval is skipped:** Architecture debt is unbudgeted. Stage 9 of the AIES SDLC is violated.
 
 ## Anti-Patterns
 

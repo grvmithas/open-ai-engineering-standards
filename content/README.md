@@ -1,11 +1,11 @@
-# Open AI Engineering Standard (OAIES)
+# AI Engineering Standard (AIES)
 
 > **The definitive open-source standard for building production-grade AI systems.**
 > Not a tutorial. Not a template. A *standard* — opinionated, battle-tested, and built by engineers who ship.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](CHANGELOG.md)
-[![Standard](https://img.shields.io/badge/standard-OAIES%20v1.0-purple.svg)](README.md)
+[![Standard](https://img.shields.io/badge/standard-AIES%20v1.0-indigo.svg)](README.md)
 
 ---
 
@@ -91,7 +91,7 @@ See the [AI SDLC](./08-ai-sdlc/) for the complete workflow specification with pr
 - **[Observability](./07-llmops/)** — Tracing, PromptOps, cost, dashboards
 - **[Templates](./09-enterprise-ai/templates/)** — ADR and related templates
 - **[Resources](./resources/)** — Curated books, talks, repositories, standards
-- **[Normative standard](./standard/)** — Machine-checkable controls, evidence, conformance (when claiming OAIES conformance)
+- **[Normative standard](./standard/)** — Machine-checkable controls, evidence, conformance (when claiming AIES conformance)
 
 ---
 
@@ -184,4 +184,4 @@ MIT — Use it, adapt it, build on it. If it helps you, give it a star and consi
 
 ---
 
-*OAIES v1.0 — "The standard doesn't tell you what you can do. It tells you what you must do."*
+*AIES v1.0 — "The standard doesn't tell you what you can do. It tells you what you must do."*

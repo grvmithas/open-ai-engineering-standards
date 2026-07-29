@@ -1,4 +1,4 @@
-# OAIES Assessor Qualification and Independence Record Template
+# AIES Assessor Qualification and Independence Record Template
 
 > **Template version:** 1.0.0  
 > **Published:** 2026-07-16  
@@ -6,7 +6,7 @@
 
 ## Purpose
 
-Create an evidence-backed decision that an assessor is competent and independent for a specific OAIES pilot.
+Create an evidence-backed decision that an assessor is competent and independent for a specific AIES pilot.
 
 ## Why
 
@@ -34,7 +34,7 @@ Complete before assignment and re-attest before output lock. Store sensitive per
 | Requirement | Evidence ID and verified fact | Current for scope? | Decision/rationale |
 |---|---|---|---|
 | Assessment experience | `{COMPLETED_ENGAGEMENTS_ROLES_DATES}` | `{YES_NO}` | `{RATIONALE}` |
-| OAIES knowledge test | `{VERSION_SCORE_DATE}` | `{YES_NO}` | `{RATIONALE}` |
+| AIES knowledge test | `{VERSION_SCORE_DATE}` | `{YES_NO}` | `{RATIONALE}` |
 | Calibration | `{CASE_SET_RESULT_CRITICAL_MISSES_RETEST}` | `{YES_NO}` | `{RATIONALE}` |
 | AI engineering | `{YEARS_RECENT_WORK_SCOPE}` | `{YES_NO}` | `{RATIONALE}` |
 | Security/privacy/risk | `{EVIDENCE_OR_TEAM_COVERAGE}` | `{YES_NO}` | `{RATIONALE}` |
@@ -99,7 +99,7 @@ Apply employment/privacy law, works-council requirements, data minimization, acc
 
 ## Authoritative References
 
-- [OAIES Blind Inter-Assessor Methodology](../inter-assessor-methodology.md).
+- [AIES Blind Inter-Assessor Methodology](../inter-assessor-methodology.md).
 - ISO, [ISO 19011:2018](https://www.iso.org/standard/70017.html).
 - ISO, [ISO/IEC 17029:2019](https://www.iso.org/standard/29352.html).
 

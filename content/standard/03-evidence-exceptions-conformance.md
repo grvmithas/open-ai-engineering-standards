@@ -1,4 +1,4 @@
-# OAIES Evidence, Exceptions, and Conformance
+# AIES Evidence, Exceptions, and Conformance
 
 > **Version:** 1.0.1  
 > **Published:** 2026-07-16  
@@ -6,7 +6,7 @@
 
 ## Purpose
 
-Define admissible evidence, the Statement of Applicability, exception and risk-acceptance governance, and the exact semantics of an OAIES conformance claim.
+Define admissible evidence, the Statement of Applicability, exception and risk-acceptance governance, and the exact semantics of an AIES conformance claim.
 
 ## Why
 
@@ -41,7 +41,7 @@ Screenshots without source metadata, editable self-authored attestations, and ch
 
 ### 2. Statement of Applicability
 
-The SoA is the authoritative index for the assessed system. Use the [normative SoA template](./templates/statement-of-applicability.template.md). One row is required for every control in the claimed OAIES version.
+The SoA is the authoritative index for the assessed system. Use the [normative SoA template](./templates/statement-of-applicability.template.md). One row is required for every control in the claimed AIES version.
 
 Allowed dispositions:
 
@@ -66,7 +66,7 @@ Exception authority and duration are based on residual impact. The organization 
 
 ### 4. Conformance Semantics
 
-A conformance claim applies only to the named system boundary, environments, OAIES version, assessment period, and claim expiry. OAIES defines conformance criteria but does not operate an accreditation or certification scheme, authorize certification marks, or imply regulatory approval, vendor endorsement, organization-wide assurance, or coverage of future releases.
+A conformance claim applies only to the named system boundary, environments, AIES version, assessment period, and claim expiry. AIES defines conformance criteria but does not operate an accreditation or certification scheme, authorize certification marks, or imply regulatory approval, vendor endorsement, organization-wide assurance, or coverage of future releases.
 
 | Claim status | Conditions |
 |---|---|
@@ -88,20 +88,20 @@ Nonconformities:
 
 | Control ID | Normative requirement | Applicability | Objective evidence |
 |---|---|---|---|
-| OAIES-ASR-002 | Each evidence item **MUST** identify source, custodian, collection time, covered period, system scope, control mapping, integrity mechanism, and retention date. | Universal | Evidence index and sampled evidence metadata |
-| OAIES-ASR-003 | Operating-effectiveness evidence **MUST** represent the full assessment period and include failures and exceptions in the sampled population. | Controls expected to operate over time | Population extract, sampling frame, failure records, sample rationale |
-| OAIES-ASR-004 | Evidence **MUST NOT** rely solely on a control owner’s uncorroborated assertion. | Universal | Independent system records, configuration export, reperformed test, or corroborating source |
-| OAIES-ASR-005 | The organization **MUST** protect evidence against unauthorized alteration and verify retrievability throughout retention. | Universal | Immutable/WORM or signed storage settings, access log, integrity and restore tests |
-| OAIES-GOV-010 | The SoA **MUST** identify system/version, boundary, profiles, autonomy, impact, OAIES version, every control disposition, rationale, owner, evidence, exception, approval, and review date. | Universal | Completed approved SoA and schema/completeness validation |
-| OAIES-GOV-011 | Each not-applicable decision **MUST** cite a factual boundary or applicability condition and receive system-owner approval. | Universal | SoA rationale, boundary reference, dated approval |
-| OAIES-RSK-020 | Each exception **MUST** identify the unmet requirement, cause, exposure, affected assets/people, likelihood, impact, compensating controls, residual risk, remediation owner, due date, expiry, applicable maximum-duration policy, duration rationale, and approvers. | Any exception | Completed exception record, linked risk-register entry, approved duration policy, claim-period and jurisdictional/contractual mapping |
-| OAIES-RSK-021 | An exception **MUST NOT** remain valid beyond its expiry or after a material change without reassessment and new approval. | Any exception | Expiry automation, reassessment, approval history, blocked-release or alert record |
-| OAIES-RSK-022 | Compensating controls **MUST** be tested for the stated risk before exception approval. | Exception using compensation | Test plan/results, risk comparison, approver review |
-| OAIES-RSK-023 | Expired or rejected exceptions **MUST** cause the affected control to become nonconforming until remediated. | Any expired/rejected exception | SoA status transition, GRC workflow, claim update or suspension |
-| OAIES-RSK-024 | The organization **MUST** approve exception-duration maxima by residual-impact tier, make higher-impact maxima progressively shorter, and review the maxima when risk tolerance, applicable obligations, or claim periods change. | Organization permitting exceptions | Approved exception-duration policy, tier rationale, legal/contractual mapping, risk-committee approval and review history |
-| OAIES-ASR-006 | A conformance claim **MUST** state system boundary, environments, OAIES version, assessor, assessment period, status, active exceptions, issue date, expiry date, and material-change limitation. | Any public or internal claim | Signed claim or assessment report containing all fields |
-| OAIES-ASR-007 | An OAIES claim **MUST NOT** be described as certification, accreditation, regulatory approval, endorsement, or organization-wide assurance; any separately issued external certification must be clearly distinguished from the OAIES claim and attributed to its actual scheme and issuing body. | Any claim | Approved claim language, communications review, and separate external certificate/scheme record where referenced |
-| OAIES-ASR-008 | The organization **MUST** suspend or correct a claim when a major nonconformity, expired exception, material scope change, or unreliable evidence invalidates its basis. | Active claim | Claim register, trigger alert, withdrawal/correction notice, reassessment record |
+| AIES-ASR-002 | Each evidence item **MUST** identify source, custodian, collection time, covered period, system scope, control mapping, integrity mechanism, and retention date. | Universal | Evidence index and sampled evidence metadata |
+| AIES-ASR-003 | Operating-effectiveness evidence **MUST** represent the full assessment period and include failures and exceptions in the sampled population. | Controls expected to operate over time | Population extract, sampling frame, failure records, sample rationale |
+| AIES-ASR-004 | Evidence **MUST NOT** rely solely on a control owner’s uncorroborated assertion. | Universal | Independent system records, configuration export, reperformed test, or corroborating source |
+| AIES-ASR-005 | The organization **MUST** protect evidence against unauthorized alteration and verify retrievability throughout retention. | Universal | Immutable/WORM or signed storage settings, access log, integrity and restore tests |
+| AIES-GOV-010 | The SoA **MUST** identify system/version, boundary, profiles, autonomy, impact, AIES version, every control disposition, rationale, owner, evidence, exception, approval, and review date. | Universal | Completed approved SoA and schema/completeness validation |
+| AIES-GOV-011 | Each not-applicable decision **MUST** cite a factual boundary or applicability condition and receive system-owner approval. | Universal | SoA rationale, boundary reference, dated approval |
+| AIES-RSK-020 | Each exception **MUST** identify the unmet requirement, cause, exposure, affected assets/people, likelihood, impact, compensating controls, residual risk, remediation owner, due date, expiry, applicable maximum-duration policy, duration rationale, and approvers. | Any exception | Completed exception record, linked risk-register entry, approved duration policy, claim-period and jurisdictional/contractual mapping |
+| AIES-RSK-021 | An exception **MUST NOT** remain valid beyond its expiry or after a material change without reassessment and new approval. | Any exception | Expiry automation, reassessment, approval history, blocked-release or alert record |
+| AIES-RSK-022 | Compensating controls **MUST** be tested for the stated risk before exception approval. | Exception using compensation | Test plan/results, risk comparison, approver review |
+| AIES-RSK-023 | Expired or rejected exceptions **MUST** cause the affected control to become nonconforming until remediated. | Any expired/rejected exception | SoA status transition, GRC workflow, claim update or suspension |
+| AIES-RSK-024 | The organization **MUST** approve exception-duration maxima by residual-impact tier, make higher-impact maxima progressively shorter, and review the maxima when risk tolerance, applicable obligations, or claim periods change. | Organization permitting exceptions | Approved exception-duration policy, tier rationale, legal/contractual mapping, risk-committee approval and review history |
+| AIES-ASR-006 | A conformance claim **MUST** state system boundary, environments, AIES version, assessor, assessment period, status, active exceptions, issue date, expiry date, and material-change limitation. | Any public or internal claim | Signed claim or assessment report containing all fields |
+| AIES-ASR-007 | An AIES claim **MUST NOT** be described as certification, accreditation, regulatory approval, endorsement, or organization-wide assurance; any separately issued external certification must be clearly distinguished from the AIES claim and attributed to its actual scheme and issuing body. | Any claim | Approved claim language, communications review, and separate external certificate/scheme record where referenced |
+| AIES-ASR-008 | The organization **MUST** suspend or correct a claim when a major nonconformity, expired exception, material scope change, or unreliable evidence invalidates its basis. | Active claim | Claim register, trigger alert, withdrawal/correction notice, reassessment record |
 
 ## Guidance
 
@@ -122,7 +122,7 @@ Automate evidence collection from authoritative systems and store references rat
 - **Evidence by screenshot:** using an undated UI image with no source, query, or population.
 - **Perpetual renewal:** extending exceptions without new risk analysis.
 - **Scope ambiguity:** claiming an entire platform conforms after assessing one deployment.
-- **Certification implication:** describing OAIES conformance as certification, accreditation, regulatory approval, or third-party endorsement.
+- **Certification implication:** describing AIES conformance as certification, accreditation, regulatory approval, or third-party endorsement.
 
 ## Enterprise Considerations
 
@@ -151,5 +151,5 @@ Integrate the SoA with enterprise GRC and link—not copy—authoritative IAM, C
 
 | Version | Date | Change |
 |---|---|---|
-| 1.0.1 | 2026-07-16 | Replaced universal exception-day limits with approved risk- and claim-based maxima and prohibited certification-like OAIES claims. |
+| 1.0.1 | 2026-07-16 | Replaced universal exception-day limits with approved risk- and claim-based maxima and prohibited certification-like AIES claims. |
 | 1.0.0 | 2026-07-16 | Defined evidence quality, SoA, exceptions, risk acceptance, nonconformities, and claims. |

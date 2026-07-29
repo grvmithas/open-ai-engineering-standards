@@ -2,44 +2,47 @@
 
 > **Pattern:** Planner  
 > **Component:** context.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Preconditions (must be true before activation)
+## Purpose
 
-- [ ] Story or task has testable acceptance criteria (not a one-line wish)
-- [ ] Relevant codebase context is assembled (files, services, schemas, ADRs)
-- [ ] Technical constraints are written down (perf, security, compatibility, compliance)
-- [ ] A human reviewer is available to approve or reject the plan
-- [ ] Success/failure of the plan is defined independently of “looks good”
+Define the **minimum evidence package** required before the Planner pattern may start — and when to refuse to start.
 
-## Trigger conditions (apply the pattern)
+## Required before activation
 
-Apply when **any** of the following hold:
+- [ ] Locked acceptance criteria (testable)
+- [ ] Context pack with trust labels and size budget
+- [ ] Existing topology / ADR pointers for touched services
+- [ ] Hard constraints: perf, security, compliance, data class
+- [ ] Named human who can approve or reject the plan
 
-- Change spans more than three files or more than one service
-- Change crosses an API, schema, auth, or tenancy boundary
-- Multiple valid designs exist with different tradeoffs
-- Wrong implementation would force expensive rework or data migration
-- Ordering constraints exist (migration before dual-write before cutover)
+## Refuse to start when
 
-## Do not apply when
+- AC still negotiable or contradictory
+- Empty or untrusted context pack
+- No owner for irreversible steps (schema, cutover, public API)
 
-- Single-file typo or copy change
-- Pure documentation with no runtime effect
-- Configuration flip with no logic and a known rollback
-- Hotfix under active incident containment (use [hotfix-pattern](../hotfix-pattern/README.md); plan the durable fix after)
+## Trust and data class
 
-## Required inputs
+- Label segments as trusted, internal, or untrusted for **Planner** packs.  
+- Keep untrusted retrieval out of the Planner system channel.  
+- Planner MCP enablement follows data class in [mcps.md](./mcps.md).
 
-| Input | Source | Minimum quality |
-|-------|--------|-----------------|
-| Story | `story-kickoff` output or ticket | Acceptance criteria + out-of-scope |
-| Codebase context | Context assembler / human paste | Paths + excerpts that matter |
-| Architecture | Existing diagrams / ADRs | Current services and data stores |
-| Constraints | Team standards / compliance | Explicit hard limits |
+## Pack shape for Planner
 
-## Authority boundary
+1. Trigger / AC (human-owned)  
+2. Ranked evidence inside the Planner budget  
+3. Constraints and non-goals for this activation  
+4. Open questions (empty before irreversible Planner steps)
 
-The planner agent **does not write production code**. Its only durable artifact is an approved implementation plan. Coding starts only after named human approval (see workflow step “Human Review”).
+## Related
+
+- [Context pattern](../context-pattern/README.md) when packing is itself the hard problem  
+- [Prompt](./prompt.md) variable bindings  
+- [Skills](./skills.md) activation triggers  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Planner context gates (required/refuse) rewritten for this envelope.

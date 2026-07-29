@@ -1,4 +1,4 @@
-# OAIES Validation-to-Specification Issue Template
+# AIES Validation-to-Specification Issue Template
 
 > **Template version:** 1.0.0  
 > **Published:** 2026-07-16  
@@ -6,7 +6,7 @@
 
 ## Purpose
 
-Convert an independently observed pilot disagreement or limitation into a traceable, testable OAIES specification decision.
+Convert an independently observed pilot disagreement or limitation into a traceable, testable AIES specification decision.
 
 ## Why
 
@@ -24,7 +24,7 @@ Create one issue per distinct root cause after the primary agreement report lock
 | Status | `{TRIAGE_ACCEPTED_REJECTED_DEFERRED_IMPLEMENTED_VALIDATED_CLOSED}` |
 | Source pilot/cohort | `{OPAQUE_IDS}` |
 | Source disagreement/finding IDs | `{IDS}` |
-| OAIES/control versions | `{VERSIONS_AND_CONTROL_IDS}` |
+| AIES/control versions | `{VERSIONS_AND_CONTROL_IDS}` |
 | Classification | `{SPEC_AMBIGUITY_EVIDENCE_AMBIGUITY_RUBRIC_GAP_SCOPE_ERROR_DATA_ERROR_ASSESSOR_ERROR_REASONABLE_JUDGMENT}` |
 | Severity | `{CRITICAL_HIGH_MEDIUM_LOW}` |
 | Owner/due date | `{OWNER_YYYY-MM-DD}` |
@@ -110,8 +110,8 @@ Public issue trackers must not contain restricted workpapers, vulnerability deta
 
 ## Authoritative References
 
-- [OAIES Blind Inter-Assessor Methodology](../inter-assessor-methodology.md).
-- [OAIES Lifecycle and Assessor Methodology](../../standard/04-lifecycle-and-assessment.md).
+- [AIES Blind Inter-Assessor Methodology](../inter-assessor-methodology.md).
+- [AIES Lifecycle and Assessor Methodology](../../standard/04-lifecycle-and-assessment.md).
 - [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html).
 
 ## Changelog

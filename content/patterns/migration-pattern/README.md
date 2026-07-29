@@ -3,7 +3,7 @@
 > **Pattern:** Migration  
 > **Category:** Data & Compatibility Change  
 > **Maturity:** Stable v1.1  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-07-29
 
 ---
 
@@ -186,3 +186,24 @@ See [examples/example.md](./examples/example.md) for `users.email` → `users_co
 - **Audit trail:** Phase gates, recon results, approvers stored with change ticket.
 - **SoD:** Migration author ≠ sole cutover approver for High-risk data.
 - **Anti-claim:** A green recon query is not a full regulatory data-migration certification.
+
+## Tradeoffs
+
+Safe migrations with return paths are slower than big-bang cuts; big-bang wins until rollback is impossible.
+
+## Anti-patterns
+
+No dual-write/verify window; secrets in migration scripts; irreversible drop without approval.
+
+## Artifact index
+
+| Artifact | Path |
+|----------|------|
+| Prompt | [prompt.md](./prompt.md) |
+| Agent | [agent.md](./agent.md) |
+| Skills | [skills.md](./skills.md) |
+| MCPs | [mcps.md](./mcps.md) |
+| Hooks | [hooks.md](./hooks.md) |
+| Checklist | [checklist.md](./checklist.md) |
+| Example | [examples/example.md](./examples/example.md) |
+

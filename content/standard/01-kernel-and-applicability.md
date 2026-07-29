@@ -1,4 +1,4 @@
-# OAIES Kernel and Applicability
+# AIES Kernel and Applicability
 
 > **Version:** 1.0.0  
 > **Published:** 2026-07-16  
@@ -6,7 +6,7 @@
 
 ## Purpose
 
-Define the boundary, language, identifiers, classifications, and applicability rules used by every OAIES conformance claim.
+Define the boundary, language, identifiers, classifications, and applicability rules used by every AIES conformance claim.
 
 ## Why
 
@@ -46,17 +46,17 @@ These terms align with the system-oriented risk vocabulary of [NIST AI RMF 1.0](
 
 The uppercase requirement vocabulary is interpreted exactly as described by [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174).
 
-| Keyword | OAIES interpretation |
+| Keyword | AIES interpretation |
 |---|---|
 | MUST / MUST NOT | Absolute requirement or prohibition. Non-implementation is a nonconformity unless an allowed exception is active. |
 | SHOULD / SHOULD NOT | Strong recommendation. Departure requires recorded rationale in the SoA but is not itself a nonconformity. |
 | MAY | Permitted option that creates no conformance obligation unless selected by another control. |
 
-Only statements with a control ID create OAIES requirements. Normative tables pair each uppercase requirement with objective evidence.
+Only statements with a control ID create AIES requirements. Normative tables pair each uppercase requirement with objective evidence.
 
 ### 4. Control Identifiers
 
-Control IDs are immutable and use the pattern `OAIES-DOMAIN-NNN`, where `DOMAIN` is a registered three-letter code and `NNN` is a zero-padded sequence.
+Control IDs are immutable and use the pattern `AIES-DOMAIN-NNN`, where `DOMAIN` is a registered three-letter code and `NNN` is a zero-padded sequence.
 
 | Domain | Code | Subject |
 |---|---|---|
@@ -69,7 +69,7 @@ Control IDs are immutable and use the pattern `OAIES-DOMAIN-NNN`, where `DOMAIN`
 | Operations | OPS | release, observability, incident response |
 | Assurance | ASR | evidence, assessment, conformance |
 
-An identifier is never reused. Retired IDs remain reserved. Subrequirements append a lowercase letter only when independently testable, such as `OAIES-AGT-004a`.
+An identifier is never reused. Retired IDs remain reserved. Subrequirements append a lowercase letter only when independently testable, such as `AIES-AGT-004a`.
 
 ### 5. Workload Profiles
 
@@ -103,7 +103,7 @@ Classify the maximum deployed capability, not intended average behavior.
 | I2 | Material financial, security, privacy, operational, or reputational harm | production code change, customer transaction, sensitive-data disclosure |
 | I3 | Severe or systemic harm to safety, rights, livelihood, essential services, or many affected persons | employment, credit, healthcare, critical infrastructure, biometric categorization |
 
-If evidence supports multiple levels, select the highest. Legal designation overrides a lower internal classification. The [EU AI Act](https://eur-lex.europa.eu/eli/reg/2024/1689/oj) is authoritative for EU prohibited and high-risk classifications; OAIES does not replace legal analysis.
+If evidence supports multiple levels, select the highest. Legal designation overrides a lower internal classification. The [EU AI Act](https://eur-lex.europa.eu/eli/reg/2024/1689/oj) is authoritative for EU prohibited and high-risk classifications; AIES does not replace legal analysis.
 
 ### 7. Applicability Algorithm
 
@@ -119,13 +119,13 @@ If evidence supports multiple levels, select the highest. Legal designation over
 
 | Control ID | Normative requirement | Applicability | Objective evidence |
 |---|---|---|---|
-| OAIES-GOV-001 | The organization **MUST** maintain an approved system boundary covering every component and dependency capable of affecting outputs or actions. | Universal | Versioned boundary record, architecture/data-flow diagram, dependency inventory, owner approval |
-| OAIES-GOV-002 | The organization **MUST** name one system owner and a control owner for every applicable control. | Universal | Signed ownership register and SoA owner fields |
-| OAIES-GOV-003 | The system owner **MUST** classify all applicable workload profiles, autonomy level, and impact level before production use and after material change. | Universal | Dated classification record with rationale, approver, and change history |
-| OAIES-GOV-004 | The SoA **MUST** include every control in the claimed OAIES version and record its applicability disposition and rationale. | Universal | Complete version-controlled SoA; automated or manual completeness reconciliation |
-| OAIES-GOV-005 | A not-applicable disposition **MUST NOT** be used solely because implementation is costly, difficult, outsourced, or incomplete. | Universal | SoA rationales tied to boundary facts; assessor challenge log |
-| OAIES-GOV-006 | Third-party components **MUST** remain inside the system boundary wherever their behavior can affect conformance. | Universal | Supplier inventory, contracts/assurance reports, boundary diagram, shared-responsibility matrix |
-| OAIES-RSK-001 | A4 deployment **MUST NOT** enter production without documented executive authorization, independent risk assessment, bounded authority, and tested containment. | A4 | Signed authorization, independent assessment report, authority policy, containment test results |
+| AIES-GOV-001 | The organization **MUST** maintain an approved system boundary covering every component and dependency capable of affecting outputs or actions. | Universal | Versioned boundary record, architecture/data-flow diagram, dependency inventory, owner approval |
+| AIES-GOV-002 | The organization **MUST** name one system owner and a control owner for every applicable control. | Universal | Signed ownership register and SoA owner fields |
+| AIES-GOV-003 | The system owner **MUST** classify all applicable workload profiles, autonomy level, and impact level before production use and after material change. | Universal | Dated classification record with rationale, approver, and change history |
+| AIES-GOV-004 | The SoA **MUST** include every control in the claimed AIES version and record its applicability disposition and rationale. | Universal | Complete version-controlled SoA; automated or manual completeness reconciliation |
+| AIES-GOV-005 | A not-applicable disposition **MUST NOT** be used solely because implementation is costly, difficult, outsourced, or incomplete. | Universal | SoA rationales tied to boundary facts; assessor challenge log |
+| AIES-GOV-006 | Third-party components **MUST** remain inside the system boundary wherever their behavior can affect conformance. | Universal | Supplier inventory, contracts/assurance reports, boundary diagram, shared-responsibility matrix |
+| AIES-RSK-001 | A4 deployment **MUST NOT** enter production without documented executive authorization, independent risk assessment, bounded authority, and tested containment. | A4 | Signed authorization, independent assessment report, authority policy, containment test results |
 
 ## Tradeoffs
 
@@ -145,7 +145,7 @@ If evidence supports multiple levels, select the highest. Legal designation over
 
 ## Enterprise Considerations
 
-Use a central system inventory as the source of truth for owners, classifications, SoAs, exceptions, and claims. Integrate material-change triggers with architecture review, procurement, model registry, data governance, identity governance, and release management. Record jurisdiction-specific classifications separately; do not collapse legal status into OAIES impact alone.
+Use a central system inventory as the source of truth for owners, classifications, SoAs, exceptions, and claims. Integrate material-change triggers with architecture review, procurement, model registry, data governance, identity governance, and release management. Record jurisdiction-specific classifications separately; do not collapse legal status into AIES impact alone.
 
 ## Checklist
 

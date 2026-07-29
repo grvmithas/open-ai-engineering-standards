@@ -2,35 +2,45 @@
 
 > **Pattern:** Reviewer  
 > **Component:** problem.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
 ## Statement
 
-Pull requests and agent-generated diffs merge with consequential defects because review focuses on style, trusts green CI, or skips requirement tracing and trust-boundary walks. The result is production incidents that were visible in the diff.
+AI-touched changes merge on “tests green” or vibe checks, shipping AuthZ holes, invented path:line findings, or rubber-stamp approvals that no human can defend.
 
 ## Measurable symptoms
 
 | Symptom | How you detect it |
 |---------|-------------------|
-| Escaped defects | Post-merge bugs that a severity-calibrated review would have blocked |
-| Nit flooding | >15 Minor comments and zero Critical/High on a behavioral PR |
-| Untested AC | Acceptance criteria with no corresponding test in the PR |
-| Self-approve | Same agent/human authored and gave final Approve on High-risk change |
-| Unverified “fixed” | Finding marked resolved without re-check on the new revision |
+| Green CI, bad AuthZ | Critical access-control defects found after merge |
+| Unverifiable findings | Comments cite files/lines that do not exist |
+| AI as merge boss | Bot approve without a named human owner |
+| Severity theater | Everything is Medium; nothing blocks |
 
 ## Root cause
 
-Reviewers optimize for speed or comment volume. Defect detection requires reconstructing intended behavior, walking trust boundaries, and calibrating severity from reachability × impact — work that is skipped under time pressure or when CI is treated as proof.
+Review without a severity model and evidence bar collapses to either noise or false confidence. Models invent plausible citations unless forced to open the diff.
+
+## What breaks when this pattern is skipped
+
+- Security incidents trace to unreviewed AI diffs
+- Review threads argue tone instead of path:line evidence
+- Release trains slow because every finding is renegotiated
 
 ## Non-goals of this pattern
 
-- Not a substitute for automated SAST/DAST (complements them)
-- Not a place to rewrite the feature for the author
-- Not required for docs-only or pure formatting commits
-- Not an architecture redesign session (escalate to architecture-pattern)
+- Not a replacement for human merge authority
+- Not a full pentest
+- Not required for pure markdown typos with no behavior change
 
-## Related failure modes
+## Related
 
-See [failures.md](./failures.md) for recovery when reviews are nit-heavy, CI-blind, self-approved, or severity-miscalibrated.
+- [Failures](./failures.md) — recovery table  
+- [Workflow](./workflow.md) — ordered steps  
+- [Checklist](./checklist.md) — exit criteria  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Reviewer problem page expanded with skip-impact and operator symptoms.

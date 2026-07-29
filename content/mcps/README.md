@@ -26,7 +26,7 @@ This section provides production-ready MCP integration specs that avoid these mi
 
 ---
 
-## MCP Design Principles (OAIES Standard)
+## MCP Design Principles (AIES Standard)
 
 ### 1. Design for the Agent, Not the API
 The tool name and description must make sense to an LLM reasoning about what to do next — not to a developer reading API docs.

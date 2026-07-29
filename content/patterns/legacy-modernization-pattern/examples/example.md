@@ -28,7 +28,7 @@ Type: Edge proxy on `/api/quotes/price` → new `pricing-service`, fallback to l
 
 ```mermaid
 flowchart LR
-  Client --> Proxy[/api/quotes/price]
+  Client --> Proxy["/api/quotes/price"]
   Proxy -->|flag new| New[pricing-service]
   Proxy -->|flag legacy| Bridge[mainframe bridge]
   New --> DB[(discounts v2)]

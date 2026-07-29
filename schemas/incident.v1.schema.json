@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://open-ai-engineering-standard.org/schemas/v1/incident.schema.json",
-  "title": "OAIES AI Incident v1",
+  "title": "AIES AI Incident v1",
   "description": "Lifecycle record for an AI security, safety, privacy, quality, or governance incident.",
   "type": "object",
   "required": ["schemaVersion", "id", "systemRef", "systemVersion", "title", "category", "severity", "impactLevel", "status", "detectedAt", "reportedAt", "commander", "summary", "affectedAssets", "affectedParties", "containmentActions", "evidenceRefs", "notificationAssessment", "materialChangeAssessmentRequired"],

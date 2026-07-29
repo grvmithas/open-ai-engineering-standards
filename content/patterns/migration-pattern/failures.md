@@ -2,36 +2,41 @@
 
 > **Pattern:** Migration  
 > **Component:** failures.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Failure 1: Contract first
+## Purpose
 
-**Symptom:** Column dropped with cutover; rollback needs backup restore.  
-**Cause:** Treated migration as single deploy.  
-**Recovery:** Restore; redesign expand → dual → cutover → contract.
+Recover when the Migration pattern is misapplied — without abandoning the gate.
 
-## Failure 2: Unknown consumers
+## Failure → detection → recovery
 
-**Symptom:** Nightly job or partner feed breaks post-cutover.  
-**Cause:** Incomplete inventory.  
-**Recovery:** Halt contract; restore dual if needed; finish inventory; re-soak.
+| Failure | Detection | Recovery |
+|---------|-----------|----------|
+| Big-bang | Cutover fails; restore unclear | Insert verify window; assign rollback owner |
+| Secret in git | Credential scanned | Rotate; move to secret store; rewrite history policy |
+| Skipped parity | Silent data loss | Halt; run integrity checks; do not proceed |
+| Unpinned job | Wrong migrator version | Pin digests; re-run from known good |
 
-## Failure 3: No reconciliation
+## Escalation from Migration failures
 
-**Symptom:** API healthy; finance reports disagree.  
-**Cause:** No count/semantic gates.  
-**Recovery:** Run recon; repair data; delay contract until green.
+- Security-class impact during Migration → [Security skill](../../03-skill-engineering/skills/security.skill.md) + human security owner  
+- Production SEV while misusing Migration → [Hotfix](../hotfix-pattern/README.md) containment first  
+- Learning after Migration containment → [Root Cause](../root-cause-pattern/README.md)
 
-## Failure 4: Dual-write forever
+## Do not
 
-**Symptom:** Two writers still required months later.  
-**Cause:** No contract exit criteria.  
-**Recovery:** Define mismatch/error thresholds and a calendar date; execute contract.
+- Skip the Migration human gate “just this once” after a failure  
+- Delete Migration evidence to hide a bad run  
+- Replace Migration with unstructured chat under pressure  
 
-## Failure 5: Fake rollback
+## Related
 
-**Symptom:** Plan says “redeploy previous” after destructive rewrite.  
-**Cause:** Rollback ignored data plane.  
-**Recovery:** Rewrite rollback for data; rehearse; mark true PONR.
+- [Checklist](./checklist.md)  
+- [Enterprise notes](./enterprise-notes.md)  
+- [Example](./examples/example.md)  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Migration failure recovery table and escalation paths expanded.

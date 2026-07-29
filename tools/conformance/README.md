@@ -1,11 +1,11 @@
-# OAIES Conformance CLI
+# AIES Conformance CLI
 
 **Version:** 2.0.0  
 **Last updated:** 2026-07-16
 
 ## Purpose
 
-The conformance CLI evaluates canonical OAIES system, catalog, SoA, evidence, and exception records against the normative controls in `content/standard`. It emits the exact OAIES claim status without converting an exception into an unqualified pass.
+The conformance CLI evaluates canonical AIES system, catalog, SoA, evidence, and exception records against the normative controls in `content/standard`. It emits the exact AIES claim status without converting an exception into an unqualified pass.
 
 ## Why
 
@@ -137,7 +137,7 @@ Per-control output uses normative SoA dispositions:
 
 ### 2.0.0 — 2026-07-16
 
-- Replaced divergent local contracts with canonical OAIES schemas and normative control reconciliation.
+- Replaced divergent local contracts with canonical AIES schemas and normative control reconciliation.
 - Added full exception semantics, canonical evidence-class checks, qualified claim status, and distinct exit code 3.
 - Added negative coverage for forgery, expiry, audience mismatch, failed compensation, approvals, I3, stale evidence, and incomplete reconciliation.
 

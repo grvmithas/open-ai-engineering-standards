@@ -1,7 +1,7 @@
-# CLAUDE.md — Open AI Engineering Standard
+# CLAUDE.md — AI Engineering Standard
 
 ## Project Identity
-This is the **Open AI Engineering Standard (OAIES)** repository.
+This is the **AI Engineering Standard (AIES)** repository.
 - Every file is a production-grade engineering document
 - Every recommendation must include: Why, When, Tradeoffs, Anti-patterns
 - Every section must be actionable — no filler, no hedging, no "here are three ways"

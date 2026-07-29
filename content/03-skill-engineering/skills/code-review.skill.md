@@ -1,7 +1,7 @@
 # Code Review Skill
 
 > **Skill ID:** `code-review`  
-> **Version:** 1.1 | **Updated:** 2026-07-16  
+> **Version:** 1.2 | **Updated:** 2026-07-29  
 > **Install:** `.claude/skills/code-review.skill.md`  
 > **Handbook:** [`handbook/pr-review-with-ai.md`](../../handbook/pr-review-with-ai.md)  
 > **Pattern:** [`patterns/reviewer-pattern/README.md`](../../patterns/reviewer-pattern/README.md)
@@ -138,6 +138,24 @@ flowchart TD
 | Author “fixed” without showing evidence | Re-open High; require command output |
 | Model invented a finding | Delete finding; never bluff file:line |
 | Security Critical | Escalate to security owner; Block |
+
+---
+
+## Tradeoffs
+Five-pass severity-calibrated review is slower than a vibe check, but produces file:line findings a human can own and forbids Approve with open Critical/High. Oversized diffs force split or Block rather than shallow review—merge throughput drops; undetected AuthZ and plan-conformance defects drop more.
+
+## Anti-Patterns
+- Approving because “tests pass” without verifying CI evidence against acceptance criteria.
+- Nitpicking style while missing AuthZ gaps, injection, or secrets on new routes and agent tools.
+- Inventing `path:line` findings that cannot be cited from the loaded diff.
+- Implying merge authority from the review skill—reviewers advise; owners merge.
+- Rubber-stamping Approve-with-nits while Critical or High findings remain open.
+
+## Enterprise Considerations
+Auth, payments, PII, and agent-tool surfaces require a named security or domain reviewer before merge. Retain verdict, severity list, and claim-verification evidence on the PR for audit. Separation of duties: the author cannot be the sole approver on Critical-path changes.
+
+## Changelog
+- **1.2 (2026-07-29):** Added Tradeoffs, Anti-Patterns, and Enterprise Considerations with code-review-domain content (severity calibration, claim verification, SoD).
 
 ---
 

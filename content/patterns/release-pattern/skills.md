@@ -2,30 +2,31 @@
 
 > **Pattern:** Release  
 > **Component:** skills.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.3 | **Updated:** 2026-07-29
 
 ---
 
-| Skill | Why required |
-|-------|--------------|
-| Progressive delivery / canarying | Bounded exposure with holds |
-| Feature flags | Fast kill switch without full redeploy |
-| Expand/contract migrations | Rollback-safe schema changes |
-| Observability abort signals | Error budget, latency, business probes |
-| Supply-chain verification | Digests, provenance, SBOM policy |
+| Skill | Path | Why required |
+|-------|------|--------------|
+| [DevOps](../../03-skill-engineering/skills/devops.skill.md) | [`skills/devops.skill.md`](../../03-skill-engineering/skills/devops.skill.md) | Progressive delivery and abort |
+| [Evaluation](../../03-skill-engineering/skills/evaluation.skill.md) | [`skills/evaluation.skill.md`](../../03-skill-engineering/skills/evaluation.skill.md) | Release-blocking eval gates |
+| [Observability](../../03-skill-engineering/skills/observability.skill.md) | [`skills/observability.skill.md`](../../03-skill-engineering/skills/observability.skill.md) | Canary signals |
+| [Security](../../03-skill-engineering/skills/security.skill.md) | [`skills/security.skill.md`](../../03-skill-engineering/skills/security.skill.md) | Pre-prod threat pass when AI-touched |
+
+## Related agents
+
+- [Release agent](../../04-agent-engineering/agents/release.agent.md)
 
 ## Skill activation triggers
 
-1. **Canarying** — every customer-facing runtime change  
-2. **Flags** — when behavior can be gated without redeploy  
-3. **Expand/contract** — any schema/data shape change  
-4. **Abort signals** — before GO; wire dashboards to criteria  
-5. **Supply chain** — every artifact promotion
+Run Evaluation as a release-blocking gate for AI-touched paths. Run DevOps for progressive delivery and abort criteria. Run Observability for canary signals. Run Security for a pre-prod threat pass when prompts, tools, or AuthZ changed.
 
 ## Verification that skills worked
 
-- Canary: stages and holds appear in the decision package  
-- Flags: named flag with disable owner  
-- Migrations: expand listed before app; contract deferred  
-- Abort: numeric thresholds present before stage 1  
-- Supply chain: digests in the change ticket match runtime
+- Abort owner and criteria are named before promote
+- Image/prompt digests are pinned in the release record
+- Eval gate failure blocks candidate promotion
+
+## Changelog
+
+- **1.3 (2026-07-29):** Release skill activation and verification rewritten for this envelope.

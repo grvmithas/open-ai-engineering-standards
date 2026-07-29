@@ -250,3 +250,24 @@ See [examples/example.md](./examples/example.md) for a worked feature-addition p
 - **Regulated changes:** In financial services or healthcare, the approval must include the reviewer's identity verified through SSO, not just their name.
 - **Scale:** At 100+ engineers, planning quality is the primary predictor of delivery velocity. Invest in planning templates and training, not just execution tooling.
 - **AI governance:** Under emerging AI governance frameworks, the implementation plan serves as evidence of human oversight before AI-assisted implementation.
+
+## Tradeoffs
+
+A decision-complete plan slows start of coding but prevents thrash on multi-file work. Over-planning a one-file fix wastes calendar time.
+
+## Anti-patterns
+
+Task dumps without files/verification; planning without locked AC; smuggling ADRs into the plan; coding mid-plan.
+
+## Artifact index
+
+| Artifact | Path |
+|----------|------|
+| Prompt | [prompt.md](./prompt.md) |
+| Agent | [agent.md](./agent.md) |
+| Skills | [skills.md](./skills.md) |
+| MCPs | [mcps.md](./mcps.md) |
+| Hooks | [hooks.md](./hooks.md) |
+| Checklist | [checklist.md](./checklist.md) |
+| Example | [examples/example.md](./examples/example.md) |
+

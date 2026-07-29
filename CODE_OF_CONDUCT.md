@@ -5,7 +5,7 @@
 
 ## Purpose
 
-This policy defines the behavior required to participate in OAIES. It protects technical disagreement while prohibiting conduct that makes collaboration unsafe or exclusionary.
+This policy defines the behavior required to participate in AIES. It protects technical disagreement while prohibiting conduct that makes collaboration unsafe or exclusionary.
 
 ## Why
 

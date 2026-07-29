@@ -2,36 +2,41 @@
 
 > **Pattern:** Architecture  
 > **Component:** failures.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Failure 1: Slide-only architecture
+## Purpose
 
-**Symptom:** Implementers invent APIs; diagrams contradict code.  
-**Cause:** No ADR decision record.  
-**Recovery:** Write ADR; freeze interfaces; replan.
+Recover when the Architecture pattern is misapplied — without abandoning the gate.
 
-## Failure 2: Single alternative / tool shopping
+## Failure → detection → recovery
 
-**Symptom:** “Use Kafka” with no comparison to sync or queue alternatives.  
-**Cause:** Solution-first thinking.  
-**Recovery:** Score ≥2 options against QA scenarios; record rejects.
+| Failure | Detection | Recovery |
+|---------|-----------|----------|
+| No ADR | Tribal topology | Write ADR before more coding |
+| No rejects | Decision looks arbitrary | Add rejected alternatives with rationale |
+| Skipped threats | Trust holes | Run security skill on boundaries |
+| ADR as diary | No scenarios | Rewrite with QA scenarios |
 
-## Failure 3: Self-approved High risk
+## Escalation from Architecture failures
 
-**Symptom:** Author approved multi-region PII design alone.  
-**Cause:** Missing SoD.  
-**Recovery:** Invalidate acceptance; independent review.
+- Security-class impact during Architecture → [Security skill](../../03-skill-engineering/skills/security.skill.md) + human security owner  
+- Production SEV while misusing Architecture → [Hotfix](../hotfix-pattern/README.md) containment first  
+- Learning after Architecture containment → [Root Cause](../root-cause-pattern/README.md)
 
-## Failure 4: No failure walk
+## Do not
 
-**Symptom:** First dependency outage cascades globally.  
-**Cause:** Happy-path-only design.  
-**Recovery:** Run Failure Walker; add mitigations; amend ADR.
+- Skip the Architecture human gate “just this once” after a failure  
+- Delete Architecture evidence to hide a bad run  
+- Replace Architecture with unstructured chat under pressure  
 
-## Failure 5: Silent implementation drift
+## Related
 
-**Symptom:** Services share a DB though ADR forbade it.  
-**Cause:** Coding without ADR conformance check.  
-**Recovery:** Stop feature work; amend or revert to ADR; re-approve.
+- [Checklist](./checklist.md)  
+- [Enterprise notes](./enterprise-notes.md)  
+- [Example](./examples/example.md)  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Architecture failure recovery table and escalation paths expanded.

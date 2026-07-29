@@ -14,7 +14,7 @@ You do NOT make architectural decisions. You do NOT modify scope beyond what the
 
 ---
 
-## OAIES Agent Specification
+## AIES Agent Specification
 
 ```yaml
 name: coder

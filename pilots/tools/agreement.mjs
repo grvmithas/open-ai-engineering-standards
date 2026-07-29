@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * OAIES dependency-free inter-assessor agreement calculator.
+ * AIES dependency-free inter-assessor agreement calculator.
  * Synthetic fixtures verify mechanics only; output is not external-validation evidence.
  */
 

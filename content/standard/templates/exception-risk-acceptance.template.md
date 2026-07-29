@@ -1,12 +1,12 @@
-# OAIES Exception and Risk-Acceptance Template
+# AIES Exception and Risk-Acceptance Template
 
 > **Template version:** 1.0.1  
 > **Published:** 2026-07-16  
-> **Applies to:** OAIES 1.x
+> **Applies to:** AIES 1.x
 
 ## Purpose
 
-Record a time-bound, accountable decision to tolerate incomplete implementation of one applicable OAIES control.
+Record a time-bound, accountable decision to tolerate incomplete implementation of one applicable AIES control.
 
 ## Why
 
@@ -135,7 +135,7 @@ Implement workflow-enforced approval tiers, maximum duration, expiry alerts, SoA
 
 ## Authoritative References
 
-- [OAIES Evidence, Exceptions, and Conformance](../03-evidence-exceptions-conformance.md)
+- [AIES Evidence, Exceptions, and Conformance](../03-evidence-exceptions-conformance.md)
 - [NIST AI RMF 1.0](https://doi.org/10.6028/NIST.AI.100-1)
 - [ISO/IEC 42001:2023](https://www.iso.org/standard/81230.html)
 

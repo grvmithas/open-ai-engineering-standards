@@ -4,6 +4,7 @@ import { getAllDocSlugs, getDoc } from '@/lib/docs';
 import { getPrevNext } from '@/lib/navigation';
 import MarkdownRenderer from '@/components/MarkdownRenderer';
 import TableOfContents from '@/components/TableOfContents';
+
 import Link from 'next/link';
 import { PRODUCT_SHORT, REPOSITORY_URL, SITE_VERSION, STEWARD } from '@/lib/site';
 import { articleJsonLd, breadcrumbJsonLd, SEO_KEYWORDS } from '@/lib/seo';
@@ -117,6 +118,8 @@ export default async function DocPage({ params }: PageProps) {
             </span>
           ))}
         </div>
+
+
 
         <MarkdownRenderer blocks={doc.blocks} />
 

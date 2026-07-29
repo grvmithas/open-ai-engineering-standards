@@ -202,7 +202,7 @@ const ExpensiveChild = React.memo(({ data }: Props) => {
 
 ## Architecture Patterns
 
-### Component Hierarchy Pattern (OAIES Standard for React)
+### Component Hierarchy Pattern (AIES Standard for React)
 
 ```
 feature/

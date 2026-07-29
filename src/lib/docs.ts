@@ -101,7 +101,7 @@ function extractDescription(markdown: string): string {
       return line.trim().replace(/\*\*/g, '').replace(/`/g, '').slice(0, 160);
     }
   }
-  return 'Open AI Engineering Standard — Production-grade AI engineering documentation.';
+  return 'AI Engineering Standard — Production-grade AI engineering documentation.';
 }
 
 function addHeadingIds(html: string, idCounts: Map<string, number>): string {

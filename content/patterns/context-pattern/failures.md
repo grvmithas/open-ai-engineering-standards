@@ -2,36 +2,41 @@
 
 > **Pattern:** Context  
 > **Component:** failures.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Failure 1: Whole-repo dump
+## Purpose
 
-**Symptom:** Package is huge; agent ignores the three relevant files.  
-**Cause:** No ranking or hard budget.  
-**Recovery:** Re-run seed→expand→trim with `MAX_BYTES`; delete the dump.
+Recover when the Context pattern is misapplied — without abandoning the gate.
 
-## Failure 2: Missing call sites
+## Failure → detection → recovery
 
-**Symptom:** Planner designs a duplicate helper that already exists.  
-**Cause:** Included implementation but not importers/routes.  
-**Recovery:** Expand call sites; add route registration and existing helper to package.
+| Failure | Detection | Recovery |
+|---------|-----------|----------|
+| Unranked dump | Model cites noise | Rebuild pack with ranking + budget |
+| Trust mix | Retrieval in system channel | Move to data channel; add trust labels |
+| Stale ADR | Implementation follows retired topology | Pin ADR versions; drop superseded docs |
+| Budget denial | Truncation deletes the only relevant file | Re-prioritize; split packs by phase |
 
-## Failure 3: Secrets in context
+## Escalation from Context failures
 
-**Symptom:** Hook or DLP flags keys; or worse, package already shared.  
-**Cause:** No scrubber / exclusion rules.  
-**Recovery:** Destroy package; rotate credentials if exposed; fix rules; re-assemble.
+- Security-class impact during Context → [Security skill](../../03-skill-engineering/skills/security.skill.md) + human security owner  
+- Production SEV while misusing Context → [Hotfix](../hotfix-pattern/README.md) containment first  
+- Learning after Context containment → [Root Cause](../root-cause-pattern/README.md)
 
-## Failure 4: Stale excerpts
+## Do not
 
-**Symptom:** Agent codes against deleted APIs.  
-**Cause:** Cached package from an old branch.  
-**Recovery:** Regenerate from current HEAD; pin package to commit SHA.
+- Skip the Context human gate “just this once” after a failure  
+- Delete Context evidence to hide a bad run  
+- Replace Context with unstructured chat under pressure  
 
-## Failure 5: Budget theater
+## Related
 
-**Symptom:** Tiny package missing critical schema; agent invents columns.  
-**Cause:** Over-trimmed to look “efficient.”  
-**Recovery:** Raise budget for schema+contracts; never omit the contract surface for data changes.
+- [Checklist](./checklist.md)  
+- [Enterprise notes](./enterprise-notes.md)  
+- [Example](./examples/example.md)  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Context failure recovery table and escalation paths expanded.

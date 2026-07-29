@@ -8,7 +8,7 @@ const NORMATIVE_FILES = Object.freeze([
   "04-lifecycle-and-assessment.md",
 ]);
 
-const CONTROL_ROW = /^\|\s*(OAIES-(?:GOV|RSK|DAT|MOD|AGT|SEC|OPS|ASR)-\d{3}[a-z]?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|$/;
+const CONTROL_ROW = /^\|\s*(AIES-(?:GOV|RSK|DAT|MOD|AGT|SEC|OPS|ASR)-\d{3}[a-z]?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|$/;
 
 export async function loadNormativeControls(standardDirectory) {
   const controls = [];

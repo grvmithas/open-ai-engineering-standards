@@ -5,7 +5,7 @@
 
 ## Purpose
 
-This policy defines compatibility guarantees for OAIES documents, URLs, generated artifacts, website behavior, and releases.
+This policy defines compatibility guarantees for AIES documents, URLs, generated artifacts, website behavior, and releases.
 
 ## Why
 
@@ -13,7 +13,7 @@ Teams embed standard links and automation in governance systems. Unannounced sem
 
 ## How
 
-OAIES uses semantic versioning for the repository release.
+AIES uses semantic versioning for the repository release.
 
 | Change | Version impact | Required action |
 |---|---|---|

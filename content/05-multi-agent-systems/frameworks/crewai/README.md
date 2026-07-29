@@ -4,7 +4,7 @@
 
 ## Purpose
 
-Apply OAIES controls when CrewAI crews or flows are selected as the orchestration layer.
+Apply AIES controls when CrewAI crews or flows are selected as the orchestration layer.
 
 ## Why
 

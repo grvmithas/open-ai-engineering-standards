@@ -1,6 +1,6 @@
-# XML-Structured Prompting — The OAIES Standard
+# XML-Structured Prompting — The AIES Standard
 
-> **This is the only prompt format the OAIES standard uses.**
+> **This is the only prompt format the AIES standard uses.**
 
 ---
 

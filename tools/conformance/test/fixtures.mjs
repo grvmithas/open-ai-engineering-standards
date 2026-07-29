@@ -64,14 +64,14 @@ function structuredApplicability(control) {
 }
 
 export function buildFixture(normativeControls, { withException = true } = {}) {
-  const exceptionControlId = "OAIES-DAT-010";
+  const exceptionControlId = "AIES-DAT-010";
   const catalog = {
     schemaVersion: "1.0.0",
     id: "oaies:normative-control-catalog",
-    name: "OAIES normative control catalog",
+    name: "AIES normative control catalog",
     version: "1.0.1",
     status: "approved",
-    owner: "OAIES maintainers",
+    owner: "AIES maintainers",
     controls: normativeControls.map((control) => ({
       id: control.id,
       title: control.id,
@@ -102,7 +102,7 @@ export function buildFixture(normativeControls, { withException = true } = {}) {
     name: "Assurance fixture system",
     version: "1.2.3",
     lifecycleStatus: "production",
-    purpose: "Exercise the OAIES conformance engine with canonical records.",
+    purpose: "Exercise the AIES conformance engine with canonical records.",
     systemOwner: party("system-owner", "System Owner"),
     businessOwner: party("business-owner", "Business Owner"),
     boundaryRef: "urn:oaies:boundary:SYS-ASSURANCE",
@@ -118,7 +118,7 @@ export function buildFixture(normativeControls, { withException = true } = {}) {
       type: "application",
       ref: componentRef,
       version: "1.2.3",
-      supplier: "OAIES fixture",
+      supplier: "AIES fixture",
       insideBoundary: true,
     }],
     intendedUses: ["Evaluate canonical conformance records"],
@@ -197,7 +197,7 @@ export function buildFixture(normativeControls, { withException = true } = {}) {
     purpose: "control-verification",
     scope: "Evidence for the complete fixture control catalog.",
     assessmentPeriod: structuredClone(soa.assessmentPeriod),
-    producer: { id: "fixture", name: "OAIES fixture", type: "pipeline", version: "1.0.0" },
+    producer: { id: "fixture", name: "AIES fixture", type: "pipeline", version: "1.0.0" },
     items,
     manifestDigest: digest("f"),
     createdAt: "2026-07-15T00:00:00.000Z",

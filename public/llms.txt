@@ -1,26 +1,39 @@
 # AIES — AI Engineering Standard
 
-> Open, vendor-neutral community standard and handbook for production AI delivery.
+> The LLM is one component. The harness is the product.
+> Scaffold a production AI harness in 5 minutes — open, vendor-neutral working standard.
 
 Site: https://open-ai-engineering-standards.vercel.app
 Repository: https://github.com/grvmithas/open-ai-engineering-standards
 Steward: Gaurav Mithas (https://open-ai-engineering-standards.vercel.app/about)
 
-## Primary entry points
+## Get started (3 steps)
 
-- / — Product homepage (mission, capabilities, adoption roadmap)
-- /docs/README — Documentation index
-- /docs/handbook/README — Practitioner handbook
+1. /start — Onboarding (goal → role → maturity → IDE → model → data class → stack)
+2. /quickstart — Your kit (install `.aies/` via npx)
+3. /workflows — First lifecycle workflow
+
+## Systematic navigation (after install)
+
+- Learn: /docs/handbook/README · /docs/patterns/README · /docs/08-ai-sdlc/README
+- Operate: /workflows · /quickstart · /docs/handbook/hooks-in-practice
+- Assure: /portal · /docs/handbook/ai-migration-bible-path · /docs/handbook/evals-as-quality-gates
+
+## Other entry points
+
+- / — Product homepage
 - /docs/principles — Engineering principles
 - /docs/roadmap — Adoption roadmap
-- /docs/08-ai-sdlc/README — AIDLC / AI SDLC
-- /docs/patterns/README — Operational AI engineering patterns
-- /portal — Normative controls & standards portal
 - /about — Steward profile and contact
+
+## CLI
+
+- `npx @grvmithas/create-aies-kit` — install IDE-native harness (`.cursor` / `.github` / `.claude` …) — no `.aies/` folder
+
 
 ## Topics covered
 
-AIDLC, AI SDLC, prompt engineering, context engineering, skills vs agents, MCP, memory/RAG, evaluation gates, LLMOps, HITL, hooks, enterprise governance, org playbooks.
+Harness principle, AIDLC, runnable patterns, prompt/context engineering, skills vs agents, MCP, memory/RAG, evaluation gates, LLMOps, HITL, hooks, enterprise SoA, AI migration path.
 
 ## Optional
 

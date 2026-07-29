@@ -155,7 +155,7 @@ For each non-trivial problem encountered:
 
 ---
 
-*Captured by OAIES Knowledge Capture Agent — stored in `/knowledge-base/` for future retrieval*
+*Captured by AIES Knowledge Capture Agent — stored in `/knowledge-base/` for future retrieval*
 </output_format>
 
 <constraints>

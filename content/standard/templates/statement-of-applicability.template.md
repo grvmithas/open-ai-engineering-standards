@@ -1,8 +1,8 @@
-# OAIES Statement of Applicability Template
+# AIES Statement of Applicability Template
 
 > **Template version:** 1.0.1  
 > **Published:** 2026-07-16  
-> **Applies to:** OAIES 1.x
+> **Applies to:** AIES 1.x
 
 ## Purpose
 
@@ -23,7 +23,7 @@ Replace every `{VARIABLE_FIELD}`. Do not delete catalog rows. Use `Not applicabl
 | SoA ID | `{SOA_ID}` |
 | SoA version | `{SOA_VERSION}` |
 | Status | `{DRAFT_APPROVED_SUPERSEDED}` |
-| OAIES version | `{OAIES_VERSION}` |
+| AIES version | `{AIES_VERSION}` |
 | Created | `{YYYY-MM-DD}` |
 | Approved | `{YYYY-MM-DD}` |
 | Next review | `{YYYY-MM-DD}` |
@@ -62,11 +62,11 @@ Replace every `{VARIABLE_FIELD}`. Do not delete catalog rows. Use `Not applicabl
 
 ### Control Applicability Register
 
-Copy one row for every control in the claimed OAIES version.
+Copy one row for every control in the claimed AIES version.
 
 | Control ID | Control version | Disposition | Applicability rationale | Implementation summary | Control owner | Evidence IDs/URIs | Exception ID/expiry | Last tested | Next review |
 |---|---|---|---|---|---|---|---|---|---|
-| `{OAIES_DOMAIN_NNN}` | `{CONTROL_VERSION}` | `{APPLICABLE_CONFORMING_APPLICABLE_EXCEPTION_APPLICABLE_NONCONFORMING_NOT_APPLICABLE}` | `{FACTUAL_RATIONALE}` | `{IMPLEMENTATION}` | `{NAME_ROLE_ID}` | `{EVIDENCE_REFERENCES}` | `{EXCEPTION_OR_NONE}` | `{YYYY-MM-DD}` | `{YYYY-MM-DD}` |
+| `{AIES_DOMAIN_NNN}` | `{CONTROL_VERSION}` | `{APPLICABLE_CONFORMING_APPLICABLE_EXCEPTION_APPLICABLE_NONCONFORMING_NOT_APPLICABLE}` | `{FACTUAL_RATIONALE}` | `{IMPLEMENTATION}` | `{NAME_ROLE_ID}` | `{EVIDENCE_REFERENCES}` | `{EXCEPTION_OR_NONE}` | `{YYYY-MM-DD}` | `{YYYY-MM-DD}` |
 
 ### Reconciliation
 
@@ -104,7 +104,7 @@ Copy one row for every control in the claimed OAIES version.
 
 ## Enterprise Considerations
 
-Store the approved SoA in a version-controlled GRC or records system. Enforce unique IDs, role-based approval, immutable history, exception-expiry alerts, and automated reconciliation against the official OAIES catalog.
+Store the approved SoA in a version-controlled GRC or records system. Enforce unique IDs, role-based approval, immutable history, exception-expiry alerts, and automated reconciliation against the official AIES catalog.
 
 ## Checklist
 
@@ -119,8 +119,8 @@ Store the approved SoA in a version-controlled GRC or records system. Enforce un
 
 ## Authoritative References
 
-- [OAIES Kernel and Applicability](../01-kernel-and-applicability.md)
-- [OAIES Evidence, Exceptions, and Conformance](../03-evidence-exceptions-conformance.md)
+- [AIES Kernel and Applicability](../01-kernel-and-applicability.md)
+- [AIES Evidence, Exceptions, and Conformance](../03-evidence-exceptions-conformance.md)
 - [ISO/IEC 42001:2023](https://www.iso.org/standard/81230.html)
 
 ## Changelog

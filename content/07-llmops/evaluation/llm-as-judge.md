@@ -2,7 +2,7 @@
 
 > **Version:** 1.1.0
 > **Last updated:** 2026-07-16
-> **Status:** Informative OAIES implementation profile
+> **Status:** Informative AIES implementation profile
 
 ## Purpose
 Use model graders only when calibrated, bounded, and backed by human adjudication.
@@ -93,7 +93,7 @@ gate:
     cost_per_1000_judgments_usd: "<= approved_budget"
 ```
 
-These numbers are examples, not OAIES universal thresholds. Replace them with pre-approved, domain-derived values and retain the rationale.
+These numbers are examples, not AIES universal thresholds. Replace them with pre-approved, domain-derived values and retain the rationale.
 
 ## Production sampling
 Sample by risk and novelty, not only uniform traffic. Oversample low-confidence outputs, new model/provider versions, overrides, complaints, long contexts, tool use, and underrepresented slices. Apply inverse-probability weights when estimating population rates from an enriched sample. Keep an unweighted severe-case queue for incident handling.

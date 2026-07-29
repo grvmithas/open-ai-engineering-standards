@@ -3,7 +3,7 @@
 > **Pattern:** Context  
 > **Category:** Context Engineering  
 > **Maturity:** Stable v1.1  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-07-29
 
 ---
 
@@ -183,3 +183,24 @@ See [examples/example.md](./examples/example.md) for a context package built for
 - **Audit trail:** Keep context package hash + task ID with the change.
 - **SoD:** Assembler may build packages; security owns exclusion rule changes.
 - **Anti-claim:** A curated package is not a data-classification certification.
+
+## Tradeoffs
+
+Curated packs cost retrieval engineering; dumping the repo is cheaper until stale/untrusted text poisons answers.
+
+## Anti-patterns
+
+Unranked search hits; mixing system instructions with untrusted retrieval; expanding context to hide unclear tasks.
+
+## Artifact index
+
+| Artifact | Path |
+|----------|------|
+| Prompt | [prompt.md](./prompt.md) |
+| Agent | [agent.md](./agent.md) |
+| Skills | [skills.md](./skills.md) |
+| MCPs | [mcps.md](./mcps.md) |
+| Hooks | [hooks.md](./hooks.md) |
+| Checklist | [checklist.md](./checklist.md) |
+| Example | [examples/example.md](./examples/example.md) |
+

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://open-ai-engineering-standard.org/schemas/v1/agent-definition.schema.json",
-  "title": "OAIES Agent Definition v1",
+  "title": "AIES Agent Definition v1",
   "description": "Deployable contract for an autonomous or semi-autonomous AI agent.",
   "type": "object",
   "required": ["schemaVersion", "id", "name", "version", "role", "owner", "workloadProfiles", "autonomyLevel", "impactLevel", "modelRefs", "promptRef", "toolRefs", "memory", "authority", "communicationProtocol", "failurePolicy", "terminationCriteria", "successMetrics", "status"],

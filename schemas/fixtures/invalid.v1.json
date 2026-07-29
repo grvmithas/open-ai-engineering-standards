@@ -2,15 +2,15 @@
   "agent-definition.v1.schema.json": {"schemaVersion": "0.0.0", "autonomyLevel": "A5"},
   "ai-system-manifest.v1.schema.json": {"schemaVersion": "1.0.0", "id": "SYS-BAD", "workloadProfiles": ["P7"], "autonomyLevel": "A5", "impactLevel": "high"},
   "context-manifest.v1.schema.json": {"schemaVersion": "0.0.0"},
-  "control-catalog.v1.schema.json": {"schemaVersion": "1.0.0", "controls": [{"id": "OAIES-UNKNOWN-1"}]},
+  "control-catalog.v1.schema.json": {"schemaVersion": "1.0.0", "controls": [{"id": "AIES-UNKNOWN-1"}]},
   "evaluation-result.v1.schema.json": {"schemaVersion": "0.0.0"},
   "evidence-bundle.v1.schema.json": {"schemaVersion": "1.0.0", "items": [{"evidenceClass": "operational"}]},
-  "exception.v1.schema.json": {"schemaVersion": "1.0.0", "status": "active", "controlId": "OAIES-SEC-1", "materialChangeInvalidates": false, "compensatingControls": [{"testResult": "fail"}]},
+  "exception.v1.schema.json": {"schemaVersion": "1.0.0", "status": "active", "controlId": "AIES-SEC-1", "materialChangeInvalidates": false, "compensatingControls": [{"testResult": "fail"}]},
   "incident.v1.schema.json": {"schemaVersion": "0.0.0", "materialChangeAssessmentRequired": false},
   "mcp-server-record.v1.schema.json": {"schemaVersion": "0.0.0", "tokenForwardingProhibited": false},
   "model-record.v1.schema.json": {"schemaVersion": "0.0.0", "maximumImpactLevel": "critical"},
   "prompt-release.v1.schema.json": {"schemaVersion": "0.0.0"},
   "risk-register.v1.schema.json": {"schemaVersion": "0.0.0", "impactLevel": "high"},
-  "statement-of-applicability.v1.schema.json": {"schemaVersion": "1.0.0", "decisions": [{"controlId": "OAIES-GOV-001", "disposition": "compensating-control"}]},
+  "statement-of-applicability.v1.schema.json": {"schemaVersion": "1.0.0", "decisions": [{"controlId": "AIES-GOV-001", "disposition": "compensating-control"}]},
   "tool-contract.v1.schema.json": {"schemaVersion": "0.0.0", "requiredAutonomyLevel": "execute-bounded"}
 }

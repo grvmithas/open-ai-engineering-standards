@@ -62,7 +62,7 @@ flowchart TB
 | Rollback | Prior remote digest still addressable |
 | Share policy | Singletons for react/react-dom; ranges documented |
 
-Repo working notes belong in your app; OAIES reference patterns: [`architecture/patterns.md`](./architecture/patterns.md).
+Repo working notes belong in your app; AIES reference patterns: [`architecture/patterns.md`](./architecture/patterns.md).
 
 ## How to work with AI on an MFE change
 

@@ -19,7 +19,7 @@ AI engineering patterns don't change across technologies. The problems do:
 - Kubernetes debugging requires different context than Postgres optimization
 - Azure deployments have different patterns than AWS
 
-The cookbook adapts the OAIES standard to each technology context so you don't have to.
+The cookbook adapts the AIES standard to each technology context so you don't have to.
 
 ---
 
@@ -27,84 +27,78 @@ The cookbook adapts the OAIES standard to each technology context so you don't h
 
 | Technology | Status | Contents |
 |-----------|--------|---------|
-| [react/](./react/README.md) | ✅ Stable | Components, hooks, state management, testing |
-| nextjs/ | 📋 Planned | Routing, SSR, RSC, streaming, caching |
-| node/ | 📋 Planned | APIs, middleware, async patterns |
-| python/ | 📋 Planned | FastAPI, Django, async, type hints |
-| java/ | 📋 Planned | Spring Boot, microservices, JPA |
-| dotnet/ | 📋 Planned | ASP.NET Core, EF Core, CQRS |
-| azure/ | 📋 Planned | Azure AI, Cognitive Services, APIM |
-| aws/ | 📋 Planned | Bedrock, Lambda, Step Functions |
-| docker/ | 📋 Planned | Dockerfile optimization, compose, multi-stage |
-| kubernetes/ | 📋 Planned | Deployments, scaling, debugging |
-| postgres/ | 📋 Planned | Query optimization, migrations, pgvector |
-| redis/ | 📋 Planned | Caching patterns, sessions, rate limiting |
-| mongo/ | 📋 Planned | Schema design, aggregations, indexing |
-| graphql/ | 📋 Planned | Schema design, resolvers, federation |
-| microfrontends/ | 📋 Planned | Module federation, routing, state sharing |
-| react-native/ | 📋 Planned | Navigation, native modules, performance |
-| performance/ | 📋 Planned | Web vitals, bundle optimization, profiling |
-| accessibility/ | 📋 Planned | WCAG 2.2, ARIA, screen reader testing |
-| seo/ | 📋 Planned | Technical SEO, structured data, Core Web Vitals |
+| [react/](./react/README.md) | ✅ Kit-ready | README, prompts, skill, checklists, architecture, debug |
+| [nextjs/](./nextjs/README.md) | ✅ Kit-ready | README, prompts, skill, checklists, architecture, debug |
+| [node/](./node/README.md) | ✅ Kit-ready | README, prompts, skill, checklists, architecture, debug (also NestJS) |
+| [python/](./python/README.md) | ✅ Kit-ready | README, prompts, skill, checklists, architecture, debug (also FastAPI) |
+| [java/](./java/README.md) | ✅ Kit-ready | README, prompts, skill, checklists, architecture, debug |
+| [dotnet/](./dotnet/README.md) | ✅ Kit-ready | README, prompts, skill, checklists, architecture, debug |
+| [react-native/](./react-native/README.md) | ✅ Kit-ready | README, prompts, skill, checklists, architecture, debug |
+| [azure/](./azure/README.md) | 📋 Library | Domain cookbook (not a primary kit stack) |
+| [aws/](./aws/README.md) | 📋 Library | Domain cookbook (not a primary kit stack) |
+| [docker/](./docker/README.md) | 📋 Library | Domain cookbook |
+| [kubernetes/](./kubernetes/README.md) | 📋 Library | Domain cookbook |
+| [postgres/](./postgres/README.md) | 📋 Library | Domain cookbook |
+| [redis/](./redis/README.md) | 📋 Library | Domain cookbook |
+| [mongo/](./mongo/README.md) | 📋 Library | Domain cookbook |
+| [graphql/](./graphql/README.md) | 📋 Library | Domain cookbook |
+| [microfrontends/](./microfrontends/README.md) | 📋 Library | Domain cookbook |
+| [performance/](./performance/README.md) | 📋 Library | Domain cookbook |
+| [accessibility/](./accessibility/README.md) | 📋 Library | Domain cookbook |
+| [seo/](./seo/README.md) | ✅ Library | Domain cookbook (technical SEO audits & metadata) |
+
+### Honesty on parity
+
+- **Kit-ready** stacks ship the minimum envelope and are what `create-aies-kit --stack` embeds.
+- **Library** domain cookbooks share the same file layout (README · prompts · skill · checklists · debug · architecture) but are **not** primary kit stacks — depth and examples vary; treat them as adapters, not interchangeable with React/Next kit quality.
+- Do **not** market “full cookbook parity for every domain” until each library entry has stack-specific prompts that cite native evidence (not generic software advice).
 
 ---
 
-## Each Cookbook Contains
+## Install into a product repo (preferred)
+
+Do **not** copy files by hand and do **not** expect a `.aies/` folder. Run the kit CLI so content lands in IDE-native paths:
+
+```bash
+npx @grvmithas/create-aies-kit \
+  --stack nextjs --ide cursor --role fullstack \
+  --maturity intermediate --goal existing-codebase \
+  --model claude --data-class internal --yes
+```
+
+| IDE | Prompts / skills / agents | Cookbook + guides + MCP specs |
+|-----|---------------------------|-------------------------------|
+| Cursor | `.cursor/prompts/`, `.cursor/skills/*/SKILL.md`, `.cursor/agents/` | `cookbook/{stack}/`, `guides/`, `mcps/` at **repo root** |
+| GitHub Copilot | `.github/prompts/`, `.github/skills/`, `.github/agents/` | Same root dirs — **never** under `.github/cookbook` |
+| Claude Code | `.claude/prompts/`, `.claude/skills/*/SKILL.md`, `.claude/agents/` | Same root dirs |
+
+Root files: `AIES.md` (map) + `implementation_plan.md` (plan of record).  
+Maturity only changes the reading path in `AIES.md` — the install is always complete.
+
+---
+
+## Each Cookbook Contains (shipped minimum)
 
 ```
 {technology}/
-├── README.md               ← Overview, when to use, architecture context
-├── prompts/
-│   ├── generate.prompt.md  ← Generate new {technology} code
-│   ├── review.prompt.md    ← Review {technology} code
-│   ├── debug.prompt.md     ← Debug {technology} issues
-│   ├── optimize.prompt.md  ← Optimize {technology} performance
-│   └── migrate.prompt.md   ← Migrate {technology} patterns
-├── agents/
-│   ├── {technology}.agent.md         ← Specialist agent
-│   └── {technology}-debug.agent.md  ← Debug agent
-├── skills/
-│   └── {technology}.skill.md        ← Technology skill (extends base skill)
-├── hooks/
-│   ├── pre-{technology}.hook.sh     ← Pre-task validation
-│   └── post-{technology}.hook.sh    ← Post-task verification
-├── mcps/
-│   └── {related-tool}.mcp.md       ← Relevant MCP integrations
-├── debug-workflows/
-│   ├── common-errors.md             ← Top 10 errors and solutions
-│   └── performance-issues.md        ← Performance debugging playbook
-├── architecture/
-│   └── patterns.md                  ← Technology-specific architecture patterns
-└── checklists/
-    ├── code-review.md               ← {Technology}-specific review checklist
-    └── deployment.md                ← {Technology}-specific deployment checklist
+├── README.md
+├── prompts/          generate · review · debug
+├── skills/           {technology}.skill.md
+├── architecture/     patterns.md
+├── checklists/       code-review · deployment
+└── debug-workflows/  common-errors.md
 ```
 
----
+Optional later: agents, hooks, mcps, optimize/migrate prompts.
 
 ## Quick Start
 
-### React Example
+Prefer the kit (IDE-native). Manual copy is only for one-off experiments:
+
 ```bash
-# Install React cookbook skills
-cp cookbook/react/skills/react.skill.md .claude/skills/
-
-# Use the React generation prompt
-# Paste the contents of cookbook/react/prompts/generate.prompt.md
-# Fill in {{COMPONENT_DESCRIPTION}} and run
+npx @grvmithas/create-aies-kit --stack react --ide cursor --role frontend \
+  --maturity beginner --goal learn --model claude --data-class public --yes
 ```
-
-### Kubernetes Example
-```bash
-# Install Kubernetes debugging skill
-cp cookbook/kubernetes/skills/kubernetes.skill.md .claude/skills/
-
-# When you have a pod failing, use:
-# cookbook/kubernetes/debug-workflows/common-errors.md
-# Find the error pattern and follow the debugging steps
-```
-
----
 
 ## Contributing a New Cookbook
 

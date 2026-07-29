@@ -3,7 +3,7 @@
 > **Pattern:** Reviewer  
 > **Category:** Quality & Defect Detection  
 > **Maturity:** Stable v1.1  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-07-29
 
 ---
 
@@ -192,3 +192,24 @@ See [examples/example.md](./examples/example.md) for a full review report on an 
 - **SoD:** Author ≠ final approver for High-risk changes.
 - **Scale:** Severity calibration training beats “more reviewers.”
 - **Anti-claim:** A completed review is not a security certification or compliance attestation.
+
+## Tradeoffs
+
+Five-pass review is slower than vibe checks; merge throughput drops, undetected AuthZ defects drop more.
+
+## Anti-patterns
+
+Approve because tests pass; invent path:line; AI as merge authority; rubber-stamp with open Critical/High.
+
+## Artifact index
+
+| Artifact | Path |
+|----------|------|
+| Prompt | [prompt.md](./prompt.md) |
+| Agent | [agent.md](./agent.md) |
+| Skills | [skills.md](./skills.md) |
+| MCPs | [mcps.md](./mcps.md) |
+| Hooks | [hooks.md](./hooks.md) |
+| Checklist | [checklist.md](./checklist.md) |
+| Example | [examples/example.md](./examples/example.md) |
+

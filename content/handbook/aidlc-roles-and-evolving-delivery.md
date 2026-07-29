@@ -23,7 +23,7 @@ AI-DLC without named owners produces theater:
 
 [`roles-and-accountability.md`](../10-ai-org-playbook/governance/roles-and-accountability.md): assign one accountable human for every AI system, release, control, incident, and provider relationship. Maker-checker for high impact. Competence by evidence, not course badges.
 
-## Mental model — roles on the OAIES loop
+## Mental model — roles on the AIES loop
 
 ```mermaid
 flowchart TB

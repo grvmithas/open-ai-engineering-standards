@@ -2,36 +2,41 @@
 
 > **Pattern:** Reviewer  
 > **Component:** failures.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Failure 1: Style volume hides a bug
+## Purpose
 
-**Symptom:** Dozens of naming/import nits; production null-deref on an untested path.  
-**Cause:** Review optimized for comment count.  
-**Recovery:** Cap nits (e.g. 10). Force Correctness + Security before any style comments. Re-review.
+Recover when the Reviewer pattern is misapplied — without abandoning the gate.
 
-## Failure 2: Green CI equals approved
+## Failure → detection → recovery
 
-**Symptom:** Merge after “all checks green”; AC for authZ never tested.  
-**Cause:** CI covers happy path only; reviewer skipped AC→test map.  
-**Recovery:** Require AC→test matrix. Request changes until critical AC have tests.
+| Failure | Detection | Recovery |
+|---------|-----------|----------|
+| Invented citations | path:line does not open | Re-run with filesystem/GitHub read; drop unverified items |
+| Approve on CI only | No severity pass | Block merge; run five-pass review |
+| Severity inflation | All findings Critical | Recalibrate against checklist; keep Block list short |
+| Scope blindness | Missed AuthZ file outside “main” hunk | Require planned-path coverage check |
 
-## Failure 3: Author self-review as final
+## Escalation from Reviewer failures
 
-**Symptom:** Same agent/human authored the PR and issued Approve.  
-**Cause:** No separation of duties.  
-**Recovery:** Invalidate approval. Assign independent reviewer + human gate for High-risk.
+- Security-class impact during Reviewer → [Security skill](../../03-skill-engineering/skills/security.skill.md) + human security owner  
+- Production SEV while misusing Reviewer → [Hotfix](../hotfix-pattern/README.md) containment first  
+- Learning after Reviewer containment → [Root Cause](../root-cause-pattern/README.md)
 
-## Failure 4: Unverified “fixed”
+## Do not
 
-**Symptom:** Findings marked resolved; same bug still in the new revision.  
-**Cause:** Reviewer trusted the author’s claim without re-checking.  
-**Recovery:** Re-open IDs until verified against the new diff or failing-then-passing test.
+- Skip the Reviewer human gate “just this once” after a failure  
+- Delete Reviewer evidence to hide a bad run  
+- Replace Reviewer with unstructured chat under pressure  
 
-## Failure 5: Severity miscalibration
+## Related
 
-**Symptom:** Everything Critical (alarm fatigue) or internet-exploitable issue marked Nit.  
-**Cause:** No shared severity definitions.  
-**Recovery:** Apply Critical = reachable + high impact; Block only on Critical; train on examples.
+- [Checklist](./checklist.md)  
+- [Enterprise notes](./enterprise-notes.md)  
+- [Example](./examples/example.md)  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Reviewer failure recovery table and escalation paths expanded.

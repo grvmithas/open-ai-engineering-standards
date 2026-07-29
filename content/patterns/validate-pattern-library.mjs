@@ -10,7 +10,7 @@ const expected = [
 ];
 const components = [
   "README.md", "problem.md", "context.md", "workflow.md", "prompt.md", "agent.md",
-  "subagents.md", "skills.md", "hooks.md", "checklist.md", "examples/example.md",
+  "subagents.md", "skills.md", "mcps.md", "hooks.md", "checklist.md", "examples/example.md",
   "failures.md", "enterprise-notes.md",
 ];
 const failures = [];

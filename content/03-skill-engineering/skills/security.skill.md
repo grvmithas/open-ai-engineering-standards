@@ -1,7 +1,8 @@
 # Security Review Skill
 
 > **Skill ID:** `security`
-> **Version:** 1.0
+> **Version:** 1.1
+> **Updated:** 2026-07-29
 > **Install:** `.claude/skills/security.skill.md`
 
 ---
@@ -172,3 +173,21 @@ Security review succeeded when:
 - Reviewing infrastructure or network security (use a dedicated network security tool)
 - Conducting a full penetration test (this skill is a code review, not a pentest)
 - The code is clearly not security-sensitive (pure UI components with no data access)
+
+---
+
+## Tradeoffs
+Full OWASP plus AI attack-surface review slows merge velocity on sensitive PRs; skipping it on auth, tools, or data-access changes is cheaper until prompt injection, IDOR, or SSRF becomes an incident. Dependency scanners catch known CVEs quickly but miss authorization logic, tool least-privilege, and MCP allowlist gaps—this skill still owns those.
+
+## Anti-Patterns
+- Checking that AuthN exists while skipping AuthZ on every new route, resource ID, or agent tool.
+- Letting model output invoke tools without allowlists, argument validation, and least privilege relative to the caller.
+- Concatenating untrusted user or retrieved content into system prompts without structural separation (e.g., XML boundaries).
+- Logging tokens, secrets, or PII into “debug” audit trails or client bundles.
+- Shipping with Critical/High open because remediation is scheduled “next sprint.”
+
+## Enterprise Considerations
+Critical/High findings escalate to a security owner with remediation SLAs before merge. MCP/tool allowlists and outbound URL policies are change-controlled—not ad-hoc per PR. Preserve the attack-surface map and finding IDs as audit evidence; never paste production secrets into review reports.
+
+## Changelog
+- **1.1 (2026-07-29):** Added Tradeoffs, Anti-Patterns, and Enterprise Considerations with security-domain content (prompt injection, MCP/tool allowlists, AuthZ, finding SLAs).

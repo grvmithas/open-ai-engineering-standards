@@ -59,7 +59,7 @@ const normativeSources = [
 const controls = normativeSources.flatMap(sourcePath => {
   const markdown = read(sourcePath);
   return markdownRows(markdown)
-    .filter(row => /^OAIES-(GOV|RSK|DAT|MOD|AGT|SEC|OPS|ASR)-\d{3}[a-z]?$/.test(row[0]))
+    .filter(row => /^AIES-(GOV|RSK|DAT|MOD|AGT|SEC|OPS|ASR)-\d{3}[a-z]?$/.test(row[0]))
     .map(([id, requirement, applicability, evidence]) => {
       const codes = classificationCodes(applicability);
       return {

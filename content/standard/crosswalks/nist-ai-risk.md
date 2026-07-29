@@ -6,7 +6,7 @@
 
 ## Purpose
 
-Map OAIES artifacts to NIST AI Risk Management Framework 1.0 functions and the NIST AI 600-1 Generative AI Profile.
+Map AIES artifacts to NIST AI Risk Management Framework 1.0 functions and the NIST AI 600-1 Generative AI Profile.
 
 ## Why
 
@@ -14,7 +14,7 @@ The AI RMF organizes risk work as GOVERN, MAP, MEASURE, and MANAGE. NIST AI 600-
 
 ## AI RMF crosswalk
 
-| NIST AI RMF function/category | OAIES evidence | Relationship | Evidence gap to close |
+| NIST AI RMF function/category | AIES evidence | Relationship | Evidence gap to close |
 |---|---|---|---|
 | GOVERN 1–2: policies, accountability, roles | Control Catalog; AI System Manifest owner and executive; Statement of Applicability | `partial` | Workforce culture, training, and organization-wide policy effectiveness |
 | GOVERN 3: workforce diversity, culture, incentives | No direct machine contract | `no-mapping` | HR, competence, participation, and incentive records |
@@ -37,9 +37,9 @@ The AI RMF organizes risk work as GOVERN, MAP, MEASURE, and MANAGE. NIST AI 600-
 
 ## NIST AI 600-1 Generative AI Profile crosswalk
 
-NIST AI 600-1 identifies generative-AI risks and recommended actions. The profile’s risk names should be preserved in the Risk Register rather than replaced with OAIES labels.
+NIST AI 600-1 identifies generative-AI risks and recommended actions. The profile’s risk names should be preserved in the Risk Register rather than replaced with AIES labels.
 
-| GAI risk area | Required OAIES implementation evidence | Relationship |
+| GAI risk area | Required AIES implementation evidence | Relationship |
 |---|---|---|
 | CBRN information or capabilities | Prohibited uses, authority boundaries, domain red-team evaluations, incident playbook | `partial` |
 | Confabulation | Groundedness/factuality evaluations, user disclosure, human verification gates | `evidence-supports` |
@@ -65,7 +65,7 @@ NIST AI 600-1 identifies generative-AI risks and recommended actions. The profil
 
 ## Equivalence limits
 
-The NIST AI RMF and NIST AI 600-1 are voluntary risk-management resources unless another authority makes them mandatory. NIST does not certify implementations against them. OAIES mappings indicate evidence alignment, not NIST compliance, conformity, endorsement, or complete implementation.
+The NIST AI RMF and NIST AI 600-1 are voluntary risk-management resources unless another authority makes them mandatory. NIST does not certify implementations against them. AIES mappings indicate evidence alignment, not NIST compliance, conformity, endorsement, or complete implementation.
 
 ## Tradeoffs
 

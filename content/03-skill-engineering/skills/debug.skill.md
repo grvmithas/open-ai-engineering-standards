@@ -1,7 +1,8 @@
 # Debug Skill
 
 > **Skill ID:** `debug`
-> **Version:** 1.0
+> **Version:** 1.1
+> **Updated:** 2026-07-29
 > **Install:** `.claude/skills/debug.skill.md`
 
 ---
@@ -167,3 +168,21 @@ Added: Unit test for concurrent cache read/write scenario.
 - The "bug" is actually a feature request or specification change
 - The error is clearly a typo or syntax error (just fix it)
 - The issue is in a third-party library and not your code (report upstream, add workaround)
+
+---
+
+## Tradeoffs
+Hypothesis-driven debugging costs wall-clock before the first patch, but prevents shotgun fixes that mask intermittent or environment-specific failures. In production incidents, full hypothesis sets may be time-boxed—document deferred hypotheses and reopen them once blast radius is contained; skipping characterization entirely trades speed for recurrence.
+
+## Anti-Patterns
+- Patching the first plausible cause without characterizing expected vs actual, reproducibility, and environment.
+- “Fixing” by catching-and-swallowing exceptions or blind retries without confirming root cause.
+- Declaring fixed after a local repro without verifying in the failing environment with metrics or the original failing test.
+- Shipping the fix without a regression test that would have caught the bug.
+- Stopping after one site when the same root-cause pattern usually exists in adjacent code.
+
+## Enterprise Considerations
+Production debugging must respect data classification—redact PII, tokens, and secrets from logs pasted into tickets or chat. Change freezes and incident-commander ownership override solo hotfix urgency. Retain an RCA with timeline, blast radius, root cause, and follow-up owners for post-incident review.
+
+## Changelog
+- **1.1 (2026-07-29):** Added Tradeoffs, Anti-Patterns, and Enterprise Considerations with debug-domain content (hypothesis discipline, RCA retention, prod data redaction).

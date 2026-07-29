@@ -22,7 +22,7 @@ MCP solves the M×N integration problem (models × tools → models + servers). 
 | No audit of tool I/O | Irreproducible incidents |
 | MCP before workflow clarity | Agents thrash tools instead of reading the plan |
 
-OAIES principles ([`content/mcps/README.md`](../mcps/README.md)): design for the agent, least privilege, avoid context bloat, validate untrusted inputs, audit every call.
+AIES principles ([`content/mcps/README.md`](../mcps/README.md)): design for the agent, least privilege, avoid context bloat, validate untrusted inputs, audit every call.
 
 ## Decision model — when to add MCP
 

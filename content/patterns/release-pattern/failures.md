@@ -2,36 +2,41 @@
 
 > **Pattern:** Release  
 > **Component:** failures.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Failure 1: Mutable tag deploy
+## Purpose
 
-**Symptom:** Rollback redeploys different bits than intended; forensics cannot pin the build.  
-**Cause:** `:latest` / moving tags used as release identity.  
-**Recovery:** Halt; pin digests; rebuild attestation; block floating tags in CD.
+Recover when the Release pattern is misapplied — without abandoning the gate.
 
-## Failure 2: Abort criteria renegotiated mid-canary
+## Failure → detection → recovery
 
-**Symptom:** Error rate breaches original threshold; team “temporarily” raises it.  
-**Cause:** Criteria were treated as suggestions.  
-**Recovery:** Abort on original criteria immediately; restore prior; file process defect; require new Go for any threshold change.
+| Failure | Detection | Recovery |
+|---------|-----------|----------|
+| Big-bang | All traffic bad | Restore progressive canary; name abort owner |
+| Digest mystery | Cannot reproduce | Pin and record digests before next promote |
+| Eval skipped | Quality regression | Block candidates on gate failure |
+| Status MCP as truth | False “success” | Require human promote decision |
 
-## Failure 3: One-shot 100% expose
+## Escalation from Release failures
 
-**Symptom:** Outage affects all users before detection.  
-**Cause:** Skipped progressive stages “because staging looked fine.”  
-**Recovery:** Mandate canary for SLO-sensitive services; auto-fail hooks if exposure jumps 0→100 without waiver.
+- Security-class impact during Release → [Security skill](../../03-skill-engineering/skills/security.skill.md) + human security owner  
+- Production SEV while misusing Release → [Hotfix](../hotfix-pattern/README.md) containment first  
+- Learning after Release containment → [Root Cause](../root-cause-pattern/README.md)
 
-## Failure 4: Irreversible migration bundled with app
+## Do not
 
-**Symptom:** Rollback cannot restore service without data surgery.  
-**Cause:** Contract/destructive schema shipped with app cutover.  
-**Recovery:** Abort app via flag; keep expand; schedule forward fix; ban destructive DDL in the same change as first exposure.
+- Skip the Release human gate “just this once” after a failure  
+- Delete Release evidence to hide a bad run  
+- Replace Release with unstructured chat under pressure  
 
-## Failure 5: Unrehearsed rollback
+## Related
 
-**Symptom:** Abort decision made; operators fumble commands past RTO.  
-**Cause:** Rollback never drilled.  
-**Recovery:** Restore manually; schedule drill; fail pre-release hook until drill date is recent per policy.
+- [Checklist](./checklist.md)  
+- [Enterprise notes](./enterprise-notes.md)  
+- [Example](./examples/example.md)  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Release failure recovery table and escalation paths expanded.

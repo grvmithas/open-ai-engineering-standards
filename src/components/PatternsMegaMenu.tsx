@@ -38,8 +38,12 @@ export default function PatternsMegaMenu({ compact = false }: PatternsMegaMenuPr
         onClick={() => setOpen(current => !current)}
         className={
           compact
-            ? 'rounded-lg border border-[var(--shell-border)] px-3 py-1.5 text-[11px] font-semibold text-[var(--shell-muted)] transition hover:border-slate-500 hover:text-white'
-            : 'rounded-md px-3 py-1.5 text-sm font-medium text-[var(--shell-muted)] transition hover:text-white'
+            ? `rounded-md px-2.5 py-1.5 text-xs font-semibold transition-all duration-150 ${
+                open
+                  ? 'bg-[var(--accent-soft)] text-[var(--accent)] border border-[var(--accent-border)] font-bold'
+                  : 'text-[var(--shell-muted)] hover:text-[var(--shell-text)] hover:bg-[var(--shell-hover)]'
+              }`
+            : 'rounded-md px-3 py-1.5 text-sm font-medium text-[var(--shell-muted)] hover:text-[var(--shell-text)] hover:bg-[var(--shell-hover)] transition'
         }
       >
         Patterns ▾

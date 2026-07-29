@@ -2,35 +2,45 @@
 
 > **Pattern:** Debug  
 > **Component:** problem.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
 ## Statement
 
-Defects persist or recur because responders jump from symptom to speculative fix without reproduction, competing hypotheses, or single-variable experiments. “Fixed” often means “error string gone,” not “causal factor removed.”
+Failures get shotgun patches: first plausible cause wins, intermittent bugs “clear” after restarts, and no regression proof exists for the pre-fix behavior.
 
 ## Measurable symptoms
 
 | Symptom | How you detect it |
 |---------|-------------------|
-| Reopen rate | Same bug ticket reopens within 14 days |
-| Fix without test | PR claims fix; no new failing-then-passing test |
-| Shotgun diffs | Debug PR touches many unrelated modules |
-| Env mystery | “Works on my machine”; prod still fails |
-| Hypothesis vacuum | No written alternatives before first patch |
+| Patch-first thrash | Multiple speculative fixes before a hypothesis list |
+| Works on my machine | Fix never verified in the failing environment |
+| Evidence destroyed | Restarts wipe logs needed for RCA |
+| No regression net | Same defect returns within a sprint |
 
 ## Root cause
 
-Agents and humans optimize for clearing the immediate error signal. Causal isolation requires locking the environment, stating expected vs actual, and falsifying hypotheses — work that is skipped under time pressure.
+Debugging under pressure rewards action over isolation. Without ranked hypotheses and a failing-env gate, teams optimize for looking busy.
+
+## What breaks when this pattern is skipped
+
+- SEVs recur with the same fingerprint
+- Hotfixes expand blast radius
+- Observability exists but is never consulted before coding
 
 ## Non-goals of this pattern
 
-- Not feature design or refactoring sprees
-- Not a full incident command process (use incident/hotfix patterns for containment)
-- Not vendor outage resolution beyond workaround documentation
-- Not required for trivial syntax errors
+- Not a feature delivery track
+- Not an excuse to skip tests “until later”
+- Not automatic production mutation via MCP
 
-## Related failure modes
+## Related
 
-See [failures.md](./failures.md).
+- [Failures](./failures.md) — recovery table  
+- [Workflow](./workflow.md) — ordered steps  
+- [Checklist](./checklist.md) — exit criteria  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Debug problem page expanded with skip-impact and operator symptoms.

@@ -118,7 +118,7 @@ sequenceDiagram
   Policy->>Store: Authorized read
   Store-->>Harness: Excerpt + provenance
   Harness->>Eng: Blocking question OR draft
-  Note over Harness,Policy: Loop capped; insufficient_evidence allowed
+  Note over Harness,Policy: Loop capped - insufficient_evidence allowed
 ```
 
 Wire budgets with [`budget-guard.hook.sh`](../04-agent-engineering/hooks/budget-guard.hook.sh) (`OAIES_BUDGET_PROFILE`, `OAIES_BUDGET_REMAINING`). Retrieval without a remaining budget is a gate failure, not a suggestion.

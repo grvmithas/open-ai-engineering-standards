@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import manifest from '@/generated/content-manifest.json';
 import { SITE_URL } from '@/lib/seo';
+import { LIFECYCLE_WORKFLOWS } from '@/lib/workflows/lifecycle';
 
 function priorityForSlug(slug: string): number {
   if (slug === 'README' || slug === 'principles' || slug === 'roadmap') return 0.95;
@@ -29,6 +30,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'daily',
       priority: 1,
     },
+    {
+      url: `${SITE_URL}/start`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.98,
+    },
+    {
+      url: `${SITE_URL}/quickstart`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.95,
+    },
+    {
+      url: `${SITE_URL}/workflows`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.97,
+    },
+    ...LIFECYCLE_WORKFLOWS.map(stage => ({
+      url: `${SITE_URL}/workflows/${stage.slug}`,
+      lastModified: now,
+      changeFrequency: 'weekly' as const,
+      priority: 0.88,
+    })),
     {
       url: `${SITE_URL}/about`,
       lastModified: now,

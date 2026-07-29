@@ -2,44 +2,46 @@
 
 > **Pattern:** Reviewer  
 > **Component:** context.md  
-> **Version:** 1.1 | **Updated:** 2026-07-16
+> **Version:** 1.2 | **Updated:** 2026-07-29
 
 ---
 
-## Preconditions (must be true before activation)
+## Purpose
 
-- [ ] Diff against a known base revision is available
-- [ ] Acceptance criteria or ticket AC exist and are readable
-- [ ] Author’s stated intent / test plan is present (PR description counts)
-- [ ] Risk profile known: public-facing, PII, payments, AI tools, internal-only
-- [ ] A named human can issue the final Approve / Block for High-risk changes
+Define the **minimum evidence package** required before the Reviewer pattern may start — and when to refuse to start.
 
-## Trigger conditions (apply the pattern)
+## Required before activation
 
-Apply when **any** of the following hold:
+- [ ] PR diff + planned path list (or explicit delta)
+- [ ] Data class and AuthZ surfaces touched
+- [ ] Test/eval results relevant to the change
+- [ ] Prior review comments still open
 
-- Runtime behavior, API contract, schema, or auth/tenancy rules change
-- Security-sensitive surface touched (inputs, secrets, crypto, tool-calling)
-- Agent authored the majority of the diff
-- Change is on the release path (not a throwaway branch)
+## Refuse to start when
 
-## Do not apply when
+- No diff available
+- Findings requested without repository access
+- Merge already performed and review is post-hoc theater
 
-- Documentation-only, no runtime effect
-- Import sort / formatter-only with empty behavioral delta
-- Spike branch explicitly marked never-merge
-- Active incident containment — stabilize first; review the durable fix after
+## Trust and data class
 
-## Required inputs
+- Label segments as trusted, internal, or untrusted for **Reviewer** packs.  
+- Keep untrusted retrieval out of the Reviewer system channel.  
+- Reviewer MCP enablement follows data class in [mcps.md](./mcps.md).
 
-| Input | Source | Minimum quality |
-|-------|--------|-----------------|
-| Diff | PR / `git diff base...HEAD` | Complete path list + hunks |
-| Acceptance criteria | Ticket / plan | Testable statements |
-| Test evidence | CI or local | Commands + results for changed behavior |
-| Risk profile | Author or security template | Sensitivity + deployment target |
-| Prior findings | Earlier review rounds | IDs to verify closed |
+## Pack shape for Reviewer
 
-## Authority boundary
+1. Trigger / AC (human-owned)  
+2. Ranked evidence inside the Reviewer budget  
+3. Constraints and non-goals for this activation  
+4. Open questions (empty before irreversible Reviewer steps)
 
-The reviewer agent **does not merge, deploy, or rewrite product code**. Its durable artifact is a review report with verdict and findings. Final Approve on High-risk changes requires a human distinct from the author.
+## Related
+
+- [Context pattern](../context-pattern/README.md) when packing is itself the hard problem  
+- [Prompt](./prompt.md) variable bindings  
+- [Skills](./skills.md) activation triggers  
+
+## Changelog
+
+- **1.2 (2026-07-29):** Reviewer context gates (required/refuse) rewritten for this envelope.

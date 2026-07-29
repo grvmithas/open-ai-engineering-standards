@@ -3,7 +3,7 @@
 > **Pattern:** Debug  
 > **Category:** Defect Diagnosis  
 > **Maturity:** Stable v1.1  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-07-29
 
 ---
 
@@ -189,3 +189,24 @@ See [examples/example.md](./examples/example.md) for intermittent 500 from Redis
 - **Audit trail:** Keep debug report + regression test with the incident/PR.
 - **SoD:** For prod data access, debugger ≠ unrestricted prod admin without approval.
 - **Anti-claim:** A debug report is not a completed blameless postmortem unless RCA sections are filled.
+
+## Tradeoffs
+
+Hypothesis sets cost wall-clock before the first patch; shotgun fixes mask intermittent failures.
+
+## Anti-patterns
+
+Patch first cause; catch-and-swallow; declare fixed without failing-env verification; no regression test.
+
+## Artifact index
+
+| Artifact | Path |
+|----------|------|
+| Prompt | [prompt.md](./prompt.md) |
+| Agent | [agent.md](./agent.md) |
+| Skills | [skills.md](./skills.md) |
+| MCPs | [mcps.md](./mcps.md) |
+| Hooks | [hooks.md](./hooks.md) |
+| Checklist | [checklist.md](./checklist.md) |
+| Example | [examples/example.md](./examples/example.md) |
+

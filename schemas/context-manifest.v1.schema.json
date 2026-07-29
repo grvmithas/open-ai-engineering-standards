@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://open-ai-engineering-standard.org/schemas/v1/context-manifest.schema.json",
-  "title": "OAIES Context Manifest v1",
+  "title": "AIES Context Manifest v1",
   "description": "Provenance, access, freshness, and injection-control manifest for agent context.",
   "type": "object",
   "required": ["schemaVersion", "id", "systemRef", "systemVersion", "version", "workloadProfiles", "sources", "assemblyPolicy", "dataClassification", "retentionPolicy", "owner", "createdAt"],

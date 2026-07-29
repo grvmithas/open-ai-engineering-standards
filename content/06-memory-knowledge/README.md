@@ -71,14 +71,14 @@ graph TD
 ### RAG Systems
 - [rag/naive-rag.md](./rag/naive-rag.md) — Basic retrieval-augmented generation
 - [rag/advanced-rag.md](./rag/advanced-rag.md) — Query rewriting, reranking, fusion
-- [rag/hybrid-rag.md](./rag/hybrid-rag.md) — Vector + keyword + graph (the OAIES standard)
+- [rag/hybrid-rag.md](./rag/hybrid-rag.md) — Vector + keyword + graph (the AIES standard)
 - [rag/agentic-rag.md](./rag/agentic-rag.md) — Agent-driven retrieval strategies
 
 ---
 
-## The OAIES RAG Standard: Hybrid RAG
+## The AIES RAG Standard: Hybrid RAG
 
-**The OAIES standard for RAG is hybrid retrieval. Not vector-only.**
+**The AIES standard for RAG is hybrid retrieval. Not vector-only.**
 
 ```mermaid
 graph LR
@@ -115,7 +115,7 @@ Vector-only RAG achieves ~65-75% recall in practice. For knowledge-intensive app
 | **Weaviate** | Multi-modal, graph + vector hybrid | Need graph traversal with vectors |
 | **Chroma** | Development, prototyping | Local development only |
 
-**OAIES default:** Start with `pgvector` (zero additional infrastructure). Migrate to Qdrant or Pinecone when you exceed 5M vectors or need horizontal scaling.
+**AIES default:** Start with `pgvector` (zero additional infrastructure). Migrate to Qdrant or Pinecone when you exceed 5M vectors or need horizontal scaling.
 
 ---
 
@@ -125,7 +125,7 @@ As conversations grow, context fills. Without compression, agents eventually hit
 
 ```python
 class ConversationCompressor:
-    """OAIES standard: compress conversation history at regular intervals."""
+    """AIES standard: compress conversation history at regular intervals."""
     
     COMPRESS_AT_TOKENS = 60_000  # Compress when approaching 60k tokens
     KEEP_LAST_N = 5              # Always keep last 5 messages verbatim

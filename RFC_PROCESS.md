@@ -5,7 +5,7 @@
 
 ## Purpose
 
-This process governs high-impact OAIES proposals before implementation.
+This process governs high-impact AIES proposals before implementation.
 
 ## Why
 
