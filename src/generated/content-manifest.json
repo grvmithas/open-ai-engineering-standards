@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "documentCount": 602,
+  "documentCount": 606,
   "documents": [
     {
       "slug": "00-foundations/01-how-llms-think",
@@ -1209,6 +1209,12 @@
       "description": "Levels 0-9 cover the technical standards. Level 10 covers the organizational infrastructure that makes those standards work at scale:"
     },
     {
+      "slug": "case-studies/enterprise-pilots",
+      "sourcePath": "content/case-studies/enterprise-pilots.md",
+      "title": "Enterprise Pilot Case Studies & Production Metrics",
+      "description": "A tier-1 financial services provider operated 12 distributed engineering squads building agentic workflows for customer advisory and compliance checks. Without "
+    },
+    {
       "slug": "CHANGELOG",
       "sourcePath": "content/CHANGELOG.md",
       "title": "Changelog",
@@ -1219,6 +1225,12 @@
       "sourcePath": "content/checklists/README.md",
       "title": "AIES Quality Checklists",
       "description": "Checklists are not suggestions. They are gates. A stage is not complete until its checklist passes."
+    },
+    {
+      "slug": "community/LAUNCH_KITS",
+      "sourcePath": "content/community/LAUNCH_KITS.md",
+      "title": "AIES Community Launch Kits & Distribution Blueprints",
+      "description": "Title: Show HN: AI Engineering Standard (AIES) – Open, vendor-neutral harness for AIDLC"
     },
     {
       "slug": "CONTRIBUTING",
@@ -2209,6 +2221,18 @@
       "sourcePath": "content/cookbook/seo/README.md",
       "title": "SEO Cookbook",
       "description": "Use this cookbook when using AI to:"
+    },
+    {
+      "slug": "governance/RFC_PROCESS",
+      "sourcePath": "content/governance/RFC_PROCESS.md",
+      "title": "AIES Open Governance Model & RFC Process",
+      "description": "The Steering Board oversees governance integrity, release cadence, and cross-framework alignment (NIST AI RMF, ISO 42001, OWASP Top 10 LLM)."
+    },
+    {
+      "slug": "governance/RFC_TEMPLATE",
+      "sourcePath": "content/governance/RFC_TEMPLATE.md",
+      "title": "RFC-XXXX: [Feature / Standard Title]",
+      "description": "Brief 2–3 sentence explanation of the proposed change or specification."
     },
     {
       "slug": "handbook/ai-migration-bible-path",

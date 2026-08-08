@@ -23,31 +23,15 @@ import type {
 } from '@/lib/workflows/types';
 import { useUserProfile } from '@/components/providers/UserProfileProvider';
 
-const STEPS = ['goal', 'role', 'maturity', 'ide', 'model', 'dataClass', 'stack', 'done'] as const;
+const STEPS = ['goal', 'ide', 'stack', 'done'] as const;
 type Step = (typeof STEPS)[number];
 
 function labelForGoal(id: UserGoal) {
   return GOALS.find(g => g.id === id)?.label ?? id;
 }
 
-function labelForRole(id: UserRole) {
-  return ROLES.find(r => r.id === id)?.label ?? id;
-}
-
-function labelForMaturity(id: AiMaturity) {
-  return MATURITIES.find(m => m.id === id)?.label ?? id;
-}
-
 function labelForIde(id: UserIde) {
   return IDES.find(i => i.id === id)?.label ?? id;
-}
-
-function labelForModel(id: ModelProvider) {
-  return MODELS.find(m => m.id === id)?.label ?? id;
-}
-
-function labelForDataClass(id: DataClass) {
-  return DATA_CLASSES.find(d => d.id === id)?.label ?? id;
 }
 
 function labelForStack(id: TechStack) {
@@ -61,12 +45,17 @@ export default function OnboardingTerminal() {
   const [step, setStep] = useState<Step>('goal');
   const [history, setHistory] = useState<string[]>([
     'AIES Engineering OS v1.0',
-    'Type a number or click an option. Your profile is saved locally.',
+    'Streamlined Onboarding — 3 quick steps to scaffold your AI harness.',
     '',
     '> /start',
     '',
   ]);
-  const draftRef = useRef<Partial<UserProfile>>({});
+  const draftRef = useRef<Partial<UserProfile>>({
+    role: 'fullstack',
+    maturity: 'intermediate',
+    model: 'claude',
+    dataClass: 'internal',
+  });
   const [input, setInput] = useState('');
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -109,56 +98,20 @@ export default function OnboardingTerminal() {
           '',
         ]);
         break;
-      case 'role':
+      case 'ide':
         append([
           `✓ Goal: ${labelForGoal(draft.goal!)}`,
           '',
-          'Step 2 — Choose your role:',
-          ...ROLES.map((r, i) => `  ${i + 1}. ${r.label}`),
-          '',
-        ]);
-        break;
-      case 'maturity':
-        append([
-          `✓ Role: ${labelForRole(draft.role!)}`,
-          '',
-          'Step 3 — AI experience:',
-          ...MATURITIES.map((m, i) => `  ${i + 1}. ${m.label} — ${m.hint}`),
-          '',
-        ]);
-        break;
-      case 'ide':
-        append([
-          `✓ Experience: ${labelForMaturity(draft.maturity!)}`,
-          '',
-          'Step 4 — Select your IDE:',
+          'Step 2 — Select your IDE:',
           ...IDES.map((i, idx) => `  ${idx + 1}. ${i.label}`),
-          '',
-        ]);
-        break;
-      case 'model':
-        append([
-          `✓ IDE: ${labelForIde(draft.ide!)}`,
-          '',
-          'Step 5 — Model / provider:',
-          ...MODELS.map((m, i) => `  ${i + 1}. ${m.label} — ${m.hint}`),
-          '',
-        ]);
-        break;
-      case 'dataClass':
-        append([
-          `✓ Model: ${labelForModel(draft.model!)}`,
-          '',
-          'Step 6 — Data classification:',
-          ...DATA_CLASSES.map((d, i) => `  ${i + 1}. ${d.label} — ${d.hint}`),
           '',
         ]);
         break;
       case 'stack':
         append([
-          `✓ Data class: ${labelForDataClass(draft.dataClass!)}`,
+          `✓ IDE: ${labelForIde(draft.ide!)}`,
           '',
-          'Step 7 — Technology stack:',
+          'Step 3 — Select your Technology stack:',
           ...STACKS.map((s, i) => `  ${i + 1}. ${s.label}`),
           '',
         ]);
@@ -167,7 +120,7 @@ export default function OnboardingTerminal() {
         append([
           `✓ Stack: ${labelForStack(draft.stack!)}`,
           '',
-          'Generating Your kit...',
+          'Scaffolding your IDE harness kit...',
           '→ Redirecting to /quickstart',
           '',
         ]);
@@ -196,22 +149,24 @@ export default function OnboardingTerminal() {
         const item = GOALS[num];
         if (!item) return;
         draftRef.current = { ...draftRef.current, goal: item.id };
-        setStep('role');
-        promptStep('role', draftRef.current);
-        break;
-      }
-      case 'role': {
-        const item = ROLES[num];
-        if (!item) return;
-        draftRef.current = { ...draftRef.current, role: item.id };
-        setStep('maturity');
-        promptStep('maturity', draftRef.current);
-        break;
-      }
-      case 'maturity': {
-        const item = MATURITIES[num];
-        if (!item) return;
-        draftRef.current = { ...draftRef.current, maturity: item.id };
+
+        // Handle Direct Content Redirect Goals
+        if (item.id === 'browse-standards') {
+          append([`✓ Goal: ${item.label}`, '→ Directing to Standards Portal...', '']);
+          window.setTimeout(() => router.push('/portal'), 500);
+          return;
+        }
+        if (item.id === 'explore-examples') {
+          append([`✓ Goal: ${item.label}`, '→ Directing to Cookbooks & Recipes...', '']);
+          window.setTimeout(() => router.push('/docs/cookbook/README'), 500);
+          return;
+        }
+        if (item.id === 'learn') {
+          append([`✓ Goal: ${item.label}`, '→ Directing to Practitioner Handbook...', '']);
+          window.setTimeout(() => router.push('/docs/handbook/README'), 500);
+          return;
+        }
+
         setStep('ide');
         promptStep('ide', draftRef.current);
         break;
@@ -220,22 +175,6 @@ export default function OnboardingTerminal() {
         const item = IDES[num];
         if (!item) return;
         draftRef.current = { ...draftRef.current, ide: item.id };
-        setStep('model');
-        promptStep('model', draftRef.current);
-        break;
-      }
-      case 'model': {
-        const item = MODELS[num];
-        if (!item) return;
-        draftRef.current = { ...draftRef.current, model: item.id };
-        setStep('dataClass');
-        promptStep('dataClass', draftRef.current);
-        break;
-      }
-      case 'dataClass': {
-        const item = DATA_CLASSES[num];
-        if (!item) return;
-        draftRef.current = { ...draftRef.current, dataClass: item.id };
         setStep('stack');
         promptStep('stack', draftRef.current);
         break;
@@ -244,26 +183,21 @@ export default function OnboardingTerminal() {
         const item = STACKS[num];
         if (!item) return;
         draftRef.current = { ...draftRef.current, stack: item.id };
-        const next = draftRef.current as UserProfile;
-        if (
-          !next.goal ||
-          !next.role ||
-          !next.maturity ||
-          !next.ide ||
-          !next.model ||
-          !next.dataClass ||
-          !next.stack
-        ) {
-          append('Incomplete profile — restart with /start');
-          return;
-        }
+        const next = {
+          role: 'fullstack' as UserRole,
+          maturity: 'intermediate' as AiMaturity,
+          model: 'claude' as ModelProvider,
+          dataClass: 'internal' as DataClass,
+          ...draftRef.current,
+        } as UserProfile;
+
         finish(next);
         break;
       }
       default:
         break;
     }
-  }, [step, promptStep, finish, append]);
+  }, [step, promptStep, finish, append, router]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -296,11 +230,7 @@ export default function OnboardingTerminal() {
   const options = useMemo(() => {
     switch (step) {
       case 'goal': return GOALS;
-      case 'role': return ROLES;
-      case 'maturity': return MATURITIES;
       case 'ide': return IDES;
-      case 'model': return MODELS;
-      case 'dataClass': return DATA_CLASSES;
       case 'stack': return STACKS;
       default: return [];
     }

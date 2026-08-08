@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import PageHero from '@/components/PageHero';
 import PortalExplorer from '@/components/PortalExplorer';
+import AiesBadge from '@/components/AiesBadge';
 import portalManifest from '@/generated/portal-manifest.json';
 import { PRODUCT_NAME, PRODUCT_SHORT } from '@/lib/site';
 import { SEO_KEYWORDS } from '@/lib/seo';
@@ -74,8 +75,11 @@ export default function PortalPage() {
       </PageHero>
 
       <div className="px-4 py-10 md:px-6">
-        <div className="paper mx-auto max-w-7xl rounded-2xl border border-[var(--paper-border)] bg-[var(--paper)] p-6 shadow-md md:p-8">
-          <PortalExplorer />
+        <div className="mx-auto max-w-7xl space-y-8">
+          <AiesBadge />
+          <div className="paper rounded-2xl border border-[var(--paper-border)] bg-[var(--paper)] p-6 shadow-md md:p-8">
+            <PortalExplorer />
+          </div>
         </div>
       </div>
     </>

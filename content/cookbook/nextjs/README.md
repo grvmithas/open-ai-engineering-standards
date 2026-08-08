@@ -51,12 +51,20 @@ This cookbook requires deeper Next.js evidence and specialist review than a gene
 
 Next.js governance must pin hosting behavior, cache ownership, public environment-variable review, third-party script policy, and framework upgrade tests against installed documentation.
 
+## Standards & Security Controls Alignment
+
+- **NIST AI RMF 1.0**: Maps to `MANAGE 1.2` (bounded Route Handler context) and `MEASURE 2.1` (deterministic `npm run build` static/dynamic bundle analysis).
+- **OWASP Top 10 for LLMs**: Enforces `LLM01` (Indirect Prompt Injection defense in Server Components) and `LLM07` (Insecure Plugin / Route Handler execution bounds).
+- **Model Context Protocol (MCP)**: All AI tools invoked via Route Handlers or Server Actions must comply with MCP schema authorization policies.
+
 ## Official sources
 
 - [Next.js App Router](https://nextjs.org/docs/app)
 - [Server and Client Components](https://nextjs.org/docs/app/getting-started/server-and-client-components)
 - [Caching](https://nextjs.org/docs/app/guides/caching)
-- [Production checklist](https://nextjs.org/docs/app/guides/production-checklist)
+- [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework)
+- [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
+- [Model Context Protocol Specification](https://modelcontextprotocol.io/)
 
 ## Checklist
 

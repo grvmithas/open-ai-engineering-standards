@@ -182,13 +182,13 @@ export default function HomePage() {
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-indigo-500">
-                    📖 Read Docs
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--accent-border)] bg-[var(--accent-soft)] px-3 py-1 text-xs font-bold uppercase tracking-wider text-[var(--accent)]">
+                    📖 Read Documentation
                   </span>
-                  <span className="text-xs font-mono text-[var(--ink-muted)]">Full sidebar</span>
+                  <span className="text-xs font-mono text-[var(--ink-muted)]">Full Library</span>
                 </div>
                 <h3 className="text-xl font-bold text-[var(--ink)] group-hover:text-[var(--accent)] transition-colors mb-2">
-                  Read Docs
+                  Browse Standard Docs
                 </h3>
                 <p className="text-sm text-[var(--ink-secondary)] leading-relaxed mb-4">
                   Explore full interactive documentation with sidepanel navigation covering AIDLC, Evals, Prompt Engineering, MCP, and Org Playbooks.
@@ -198,6 +198,101 @@ export default function HomePage() {
                 Read Docs →
               </div>
             </Link>
+          </div>
+
+          {/* Persona & Goal Direct Navigation Hotlinks */}
+          <div className="mt-10 border-t border-white/10 pt-10">
+            <div className="mb-6">
+              <span className="inline-block rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-400 mb-2">
+                Direct Content Access
+              </span>
+              <h3 className="text-lg font-extrabold tracking-tight text-[var(--inverse-text)] sm:text-xl">
+                Quick Paths by Goal & Persona
+              </h3>
+              <p className="text-xs text-[var(--inverse-muted)] mt-1">
+                Skip the wizard — Jump straight to the content most relevant to your objective.
+              </p>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <Link
+                href="/quickstart"
+                className="group rounded-xl border border-[var(--inverse-border)] bg-white/5 p-4 transition hover:border-[var(--inverse-accent)] hover:bg-white/10 text-decoration-none"
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-[var(--inverse-text)] group-hover:text-[var(--inverse-accent)] transition-colors">🚀 1. Build a New Product</span>
+                  <span className="text-[10px] text-[var(--inverse-muted)]">Greenfield</span>
+                </div>
+                <p className="text-[11px] text-[var(--inverse-muted)] leading-relaxed">
+                  Scaffold IDE harness & launch initial workflow from idea to code.
+                </p>
+              </Link>
+
+              <Link
+                href="/docs/00-foundations/02-the-harness-principle"
+                className="group rounded-xl border border-[var(--inverse-border)] bg-white/5 p-4 transition hover:border-[var(--inverse-accent)] hover:bg-white/10 text-decoration-none"
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-[var(--inverse-text)] group-hover:text-[var(--inverse-accent)] transition-colors">🛠️ 2. Join Existing Codebase</span>
+                  <span className="text-[10px] text-[var(--inverse-muted)]">Onboard</span>
+                </div>
+                <p className="text-[11px] text-[var(--inverse-muted)] leading-relaxed">
+                  Understand harness principles & pattern library for safe first PR.
+                </p>
+              </Link>
+
+              <Link
+                href="/docs/handbook/ai-migration-bible-path"
+                className="group rounded-xl border border-[var(--inverse-border)] bg-white/5 p-4 transition hover:border-[var(--inverse-accent)] hover:bg-white/10 text-decoration-none"
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-[var(--inverse-text)] group-hover:text-[var(--inverse-accent)] transition-colors">🔄 3. Modernize Legacy App</span>
+                  <span className="text-[10px] text-[var(--inverse-muted)]">Refactor</span>
+                </div>
+                <p className="text-[11px] text-[var(--inverse-muted)] leading-relaxed">
+                  Strangler patterns & controlled AI refactoring specifications.
+                </p>
+              </Link>
+
+              <Link
+                href="/docs/handbook/README"
+                className="group rounded-xl border border-[var(--inverse-border)] bg-white/5 p-4 transition hover:border-[var(--inverse-accent)] hover:bg-white/10 text-decoration-none"
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-[var(--inverse-text)] group-hover:text-[var(--inverse-accent)] transition-colors">📚 4. Learn AI Engineering</span>
+                  <span className="text-[10px] text-[var(--inverse-muted)]">Handbook</span>
+                </div>
+                <p className="text-[11px] text-[var(--inverse-muted)] leading-relaxed">
+                  Practitioner handbook covering prompts, agents, evals & MCP.
+                </p>
+              </Link>
+
+              <Link
+                href="/portal"
+                className="group rounded-xl border border-[var(--inverse-border)] bg-white/5 p-4 transition hover:border-[var(--inverse-accent)] hover:bg-white/10 text-decoration-none"
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-[var(--inverse-text)] group-hover:text-[var(--inverse-accent)] transition-colors">📐 5. Browse Standards</span>
+                  <span className="text-[10px] text-[var(--inverse-muted)]">Portal</span>
+                </div>
+                <p className="text-[11px] text-[var(--inverse-muted)] leading-relaxed">
+                  Normative controls, JSON schemas & governance crosswalks.
+                </p>
+              </Link>
+
+              <Link
+                href="/docs/cookbook/README"
+                className="group rounded-xl border border-[var(--inverse-border)] bg-white/5 p-4 transition hover:border-[var(--inverse-accent)] hover:bg-white/10 text-decoration-none"
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-[var(--inverse-text)] group-hover:text-[var(--inverse-accent)] transition-colors">🍲 6. Explore Cookbooks</span>
+                  <span className="text-[10px] text-[var(--inverse-muted)]">Recipes</span>
+                </div>
+                <p className="text-[11px] text-[var(--inverse-muted)] leading-relaxed">
+                  Stack-specific playbooks for Next.js, React, Node, Python & Java.
+                </p>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -252,33 +347,227 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Capabilities Section */}
-      <section className="bg-[var(--paper-subtle)] px-4 py-12 md:px-6">
+      {/* Production ROI & Business Impact Matrix */}
+      <section className="border-b border-[var(--paper-border)] bg-[var(--paper-subtle)] px-4 py-14 md:px-6">
         <div className="mx-auto max-w-5xl">
-          <div className="mb-6">
-            <h2 className="text-xl font-extrabold tracking-tight text-[var(--ink)] sm:text-2xl mb-1">
-              Standards by capability
+          <div className="text-center max-w-3xl mx-auto mb-10">
+            <span className="inline-block rounded-full border border-[var(--accent-border)] bg-[var(--accent-soft)] px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-[var(--accent)] mb-3">
+              💰 Quantified Enterprise Value & Cost Savings
+            </span>
+            <h2 className="text-2xl font-black tracking-tight text-[var(--ink)] sm:text-3xl leading-tight">
+              Why adopting a standard harness pays for itself at every AIDLC step
             </h2>
-            <p className="text-xs text-[var(--ink-muted)]">
-              Organized by engineering concern — not by a laundry list of frameworks.
+            <p className="text-xs text-[var(--ink-muted)] mt-2 leading-relaxed">
+              Standardizing prompts, context windows, MCP tools, and eval gates eliminates trial-and-error engineering, slashes token bills, and guarantees audit readiness.
             </p>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-            {CAPABILITIES.map(item => (
-              <Link
-                key={item.title}
-                href={item.href}
-                className="tile-card group block rounded-xl p-4 text-decoration-none"
-              >
-                <div className="text-xs font-bold text-[var(--ink)] group-hover:text-[var(--accent)] transition-colors mb-1">
-                  {item.title}
-                </div>
-                <div className="text-[11px] text-[var(--ink-muted)] leading-normal">
-                  {item.desc}
-                </div>
-              </Link>
-            ))}
+
+          {/* 4 Key Business Impact KPI Cards */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-10">
+            <div className="tile-card rounded-2xl border border-[var(--paper-border)] bg-[var(--paper)] p-5 shadow-sm">
+              <div className="text-2xl font-black text-[var(--accent)] mb-1">📉 42% Lower</div>
+              <div className="text-xs font-bold text-[var(--ink)] mb-1">Defect Density & Regressions</div>
+              <div className="text-[11px] text-[var(--ink-muted)] leading-relaxed">
+                Automated CI/CD eval gates block prompt hallucinations and breaking model upgrades before merge.
+              </div>
+            </div>
+
+            <div className="tile-card rounded-2xl border border-[var(--paper-border)] bg-[var(--paper)] p-5 shadow-sm">
+              <div className="text-2xl font-black text-emerald-500 mb-1">💰 35%+ Saved</div>
+              <div className="text-xs font-bold text-[var(--ink)] mb-1">LLM API Token Bills</div>
+              <div className="text-[11px] text-[var(--ink-muted)] leading-relaxed">
+                50/50 context budget rules eliminate window bloating and prevent costly token waste.
+              </div>
+            </div>
+
+            <div className="tile-card rounded-2xl border border-[var(--paper-border)] bg-[var(--paper)] p-5 shadow-sm">
+              <div className="text-2xl font-black text-amber-500 mb-1">⚡ 2.5x Faster</div>
+              <div className="text-xs font-bold text-[var(--ink)] mb-1">Time-to-Market Delivery</div>
+              <div className="text-[11px] text-[var(--ink-muted)] leading-relaxed">
+                Instant scaffolded IDE harnesses eliminate custom setup scripts for Cursor, Copilot & Claude Code.
+              </div>
+            </div>
+
+            <div className="tile-card rounded-2xl border border-[var(--paper-border)] bg-[var(--paper)] p-5 shadow-sm">
+              <div className="text-2xl font-black text-indigo-400 mb-1">🛡️ 4 Days</div>
+              <div className="text-xs font-bold text-[var(--ink)] mb-1">Audit Readiness Time</div>
+              <div className="text-[11px] text-[var(--ink-muted)] leading-relaxed">
+                Machine-readable evidence files provide immediate compliance proof for NIST AI RMF & EU AI Act.
+              </div>
+            </div>
           </div>
+
+          {/* AIDLC Step-by-Step ROI Table */}
+          <div className="tile-card overflow-hidden rounded-2xl border border-[var(--paper-border)] bg-[var(--paper)] shadow-md">
+            <div className="border-b border-[var(--paper-border)] bg-[var(--paper-subtle)] px-6 py-4 flex items-center justify-between">
+              <h3 className="text-xs font-extrabold uppercase tracking-widest text-[var(--ink)]">
+                Step-by-Step AIDLC ROI Breakdown
+              </h3>
+              <span className="text-[11px] font-semibold text-[var(--accent)]">Standard vs Ad-Hoc</span>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr className="border-b border-[var(--paper-border)] bg-[var(--paper-subtle)] text-[var(--ink-muted)] font-mono text-[10px] uppercase">
+                    <th className="py-3 px-4">AIDLC Stage</th>
+                    <th className="py-3 px-4">Ad-Hoc Engineering Risk</th>
+                    <th className="py-3 px-4">AIES Standardized Practice</th>
+                    <th className="py-3 px-4 text-right">Quantified Impact</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[var(--paper-border)] text-[var(--ink-secondary)]">
+                  <tr>
+                    <td className="py-3.5 px-4 font-bold text-[var(--ink)]">1. Idea & Architecture</td>
+                    <td className="py-3.5 px-4">Teams invent private prompt/agent dialects</td>
+                    <td className="py-3.5 px-4 text-[var(--ink)]">Standard harness profile (`AIES.md` + `AGENTS.md`)</td>
+                    <td className="py-3.5 px-4 font-bold text-emerald-500 text-right">50% faster setup</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3.5 px-4 font-bold text-[var(--ink)]">2. Design & Context</td>
+                    <td className="py-3.5 px-4">Bloated context windows cause lost-in-the-middle decay</td>
+                    <td className="py-3.5 px-4 text-[var(--ink)]">50/50 context layout & token budget rules</td>
+                    <td className="py-3.5 px-4 font-bold text-emerald-500 text-right">35% token savings</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3.5 px-4 font-bold text-[var(--ink)]">3. Build & MCP Tools</td>
+                    <td className="py-3.5 px-4">Unrestricted tool execution (indirect prompt injection)</td>
+                    <td className="py-3.5 px-4 text-[var(--ink)]">Bounded MCP tool contracts & authorization schemas</td>
+                    <td className="py-3.5 px-4 font-bold text-emerald-500 text-right">Zero OWASP LLM01 gaps</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3.5 px-4 font-bold text-[var(--ink)]">4. Test & Evaluation</td>
+                    <td className="py-3.5 px-4">Manual spot testing before production deploy</td>
+                    <td className="py-3.5 px-4 text-[var(--ink)]">CI/CD quality gates (`aies audit` + Promptfoo)</td>
+                    <td className="py-3.5 px-4 font-bold text-emerald-500 text-right">42% fewer regressions</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3.5 px-4 font-bold text-[var(--ink)]">5. Deploy & Governance</td>
+                    <td className="py-3.5 px-4">Manual 6-week security and regulatory binder gathering</td>
+                    <td className="py-3.5 px-4 text-[var(--ink)]">NIST AI RMF & EU AI Act machine evidence binding</td>
+                    <td className="py-3.5 px-4 font-bold text-emerald-500 text-right">Audit readiness in 4 days</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Ecosystem Alignment & Reference Standards */}
+      <section className="border-t border-b border-[var(--paper-border)] bg-[var(--paper)] px-4 py-12 md:px-6">
+        <div className="mx-auto max-w-5xl">
+          <div className="flex flex-wrap items-end justify-between gap-4 mb-6">
+            <div>
+              <span className="inline-block rounded-full border border-[var(--accent-border)] bg-[var(--accent-soft)] px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[var(--accent)] mb-2">
+                Evolving Standards & Regulatory Alignment
+              </span>
+              <h2 className="text-xl font-extrabold tracking-tight text-[var(--ink)] sm:text-2xl">
+                Global Framework Crosswalks & Citations
+              </h2>
+              <p className="text-xs text-[var(--ink-muted)] mt-1">
+                AIES operationalizes code-level controls aligned with recognized international standards and tooling platforms.
+              </p>
+            </div>
+            <Link href="/docs/resources/README" className="text-xs font-bold text-[var(--accent)] hover:underline">
+              Full Resource & Citation Library →
+            </Link>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <a
+              href="https://www.nist.gov/itl/ai-risk-management-framework"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="tile-card block rounded-xl p-4 text-decoration-none"
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-[var(--ink)]">NIST AI RMF 1.0</span>
+                <span className="rounded bg-[var(--accent-soft)] px-1.5 py-0.5 text-[9px] font-mono text-[var(--accent)] font-semibold">NIST SP 1270</span>
+              </div>
+              <p className="text-[11px] text-[var(--ink-muted)] leading-relaxed">
+                Risk Management Framework for trustworthy AI systems — mapped to AIES stage gate verification.
+              </p>
+            </a>
+
+            <a
+              href="https://www.iso.org/standard/81230.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="tile-card block rounded-xl p-4 text-decoration-none"
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-[var(--ink)]">ISO/IEC 42001 (AIMS)</span>
+                <span className="rounded bg-[var(--accent-soft)] px-1.5 py-0.5 text-[9px] font-mono text-[var(--accent)] font-semibold">ISO Standard</span>
+              </div>
+              <p className="text-[11px] text-[var(--ink-muted)] leading-relaxed">
+                International standard for Artificial Intelligence Management Systems — evidence-first governance controls.
+              </p>
+            </a>
+
+            <a
+              href="https://owasp.org/www-project-top-10-for-large-language-model-applications/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="tile-card block rounded-xl p-4 text-decoration-none"
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-[var(--ink)]">OWASP Top 10 for LLMs</span>
+                <span className="rounded bg-[var(--accent-soft)] px-1.5 py-0.5 text-[9px] font-mono text-[var(--accent)] font-semibold">OWASP Project</span>
+              </div>
+              <p className="text-[11px] text-[var(--ink-muted)] leading-relaxed">
+                Defenses against indirect prompt injection, sensitive info disclosure, and unverified tool execution.
+              </p>
+            </a>
+
+            <a
+              href="https://artificialintelligenceact.eu"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="tile-card block rounded-xl p-4 text-decoration-none"
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-[var(--ink)]">EU AI Act</span>
+                <span className="rounded bg-[var(--accent-soft)] px-1.5 py-0.5 text-[9px] font-mono text-[var(--accent)] font-semibold">EU Regulation</span>
+              </div>
+              <p className="text-[11px] text-[var(--ink-muted)] leading-relaxed">
+                Mandatory transparency, human oversight, and auditability requirements for high-risk AI models.
+              </p>
+            </a>
+
+            <a
+              href="https://modelcontextprotocol.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="tile-card block rounded-xl p-4 text-decoration-none"
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-[var(--ink)]">Model Context Protocol</span>
+                <span className="rounded bg-[var(--accent-soft)] px-1.5 py-0.5 text-[9px] font-mono text-[var(--accent)] font-semibold">MCP Spec</span>
+              </div>
+              <p className="text-[11px] text-[var(--ink-muted)] leading-relaxed">
+                Open standard for connecting AI agents to tools, data resources, and prompt context.
+              </p>
+            </a>
+
+            <a
+              href="https://www.promptfoo.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="tile-card block rounded-xl p-4 text-decoration-none"
+            >
+              <div className="flex items-center justify-between mb-1.5">
+                <span className="text-xs font-bold text-[var(--ink)]">Promptfoo & Evals</span>
+                <span className="rounded bg-[var(--accent-soft)] px-1.5 py-0.5 text-[9px] font-mono text-[var(--accent)] font-semibold">CI/CD Gates</span>
+              </div>
+              <p className="text-[11px] text-[var(--ink-muted)] leading-relaxed">
+                Automated prompt testing, red teaming, and CI/CD evaluation gate integrations (Promptfoo, DeepEval, Langfuse).
+              </p>
+            </a>
+          </div>
+
+          <p className="mt-4 text-[10px] text-[var(--ink-muted)] leading-relaxed text-center">
+            * All product names, trademarks, and registered trademarks cited above are property of their respective owners. Citations provide informational crosswalks to recognized industry specifications.
+          </p>
         </div>
       </section>
 

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Script from 'next/script';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import PageHero from '@/components/PageHero';
@@ -116,6 +117,34 @@ export default function AboutPage() {
                 {STEWARD.org} · Project steward, {PRODUCT_SHORT}
               </p>
               <p className="mt-4 text-sm leading-relaxed text-[var(--ink-secondary)]">{STEWARD.summary}</p>
+            </div>
+          </div>
+
+          <h3 className="mt-8 text-xs font-bold uppercase tracking-widest text-[var(--ink-muted)]">LinkedIn Profile Badge</h3>
+          <div className="mt-3 overflow-hidden rounded-xl border border-[var(--paper-border)] bg-[var(--paper-subtle)] p-4 flex justify-start">
+            <Script
+              src="https://platform.linkedin.com/badges/js/profile.js"
+              async
+              defer
+              strategy="lazyOnload"
+            />
+            <div
+              className="badge-base LI-profile-badge"
+              data-locale="en_US"
+              data-size="medium"
+              data-theme="light"
+              data-type="VERTICAL"
+              data-vanity="gaurav-mithas-06037289"
+              data-version="v1"
+            >
+              <a
+                className="badge-base__link LI-simple-link text-sm font-semibold text-[var(--accent)] hover:underline"
+                href="https://in.linkedin.com/in/gaurav-mithas-06037289?trk=profile-badge"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Gaurav Mithas
+              </a>
             </div>
           </div>
 

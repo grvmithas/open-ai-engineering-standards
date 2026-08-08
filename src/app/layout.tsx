@@ -60,10 +60,10 @@ export const metadata: Metadata = {
     telephone: false,
   },
   alternates: {
-    canonical: '/',
+    canonical: SITE_URL,
     languages: {
-      'en-US': '/',
-      en: '/',
+      'en-US': SITE_URL,
+      en: SITE_URL,
     },
   },
   openGraph: {
@@ -73,12 +73,22 @@ export const metadata: Metadata = {
     siteName: `${PRODUCT_SHORT} — ${PRODUCT_NAME}`,
     title: `${PRODUCT_SHORT} — ${PRODUCT_NAME}`,
     description: DEFAULT_DESCRIPTION,
+    images: [
+      {
+        url: `${SITE_URL}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: `${PRODUCT_SHORT} — ${PRODUCT_NAME}`,
+        type: 'image/png',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: `${PRODUCT_SHORT} — ${PRODUCT_NAME}`,
     description: PRODUCT_TAGLINE,
     creator: '@grvmithas',
+    images: [`${SITE_URL}/opengraph-image`],
   },
   robots: {
     index: true,
@@ -118,6 +128,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM index" />
+        <link rel="sitemap" type="application/xml" href="/sitemap.xml" title="Sitemap" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

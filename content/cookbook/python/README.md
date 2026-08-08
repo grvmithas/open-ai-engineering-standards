@@ -51,12 +51,19 @@ This cookbook requires deeper Python evidence and specialist review than a gener
 
 Python governance requires approved indexes, hash-locked dependencies, native-wheel provenance, supported interpreter lines, and controls for notebook or dynamic-code execution.
 
+## Standards & Security Controls Alignment
+
+- **NIST AI RMF 1.0**: Maps to `MANAGE 1.2` (Pydantic / type-safe input boundaries) and `MEASURE 2.1` (`mypy` static typing and `pytest` quality gates).
+- **OWASP Top 10 for LLMs**: Prevents `LLM02` (Insecure Output Handling) and `LLM08` (Excessive Agency via PydanticAI / LangChain structured outputs).
+- **Model Context Protocol (MCP)**: FastMCP and Python MCP SDK tools must define Pydantic schemas and enforce explicit timeout limits.
+
 ## Official sources
 
 - [Python documentation](https://docs.python.org/3/)
 - [asyncio](https://docs.python.org/3/library/asyncio.html)
-- [Packaging User Guide](https://packaging.python.org/en/latest/)
-- [Typing specification](https://typing.python.org/en/latest/spec/)
+- [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework)
+- [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
+- [Model Context Protocol Specification](https://modelcontextprotocol.io/)
 
 ## Checklist
 

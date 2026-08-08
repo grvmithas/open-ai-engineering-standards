@@ -86,11 +86,26 @@
 
 | Standard | Organization | Relevance |
 |---------|-------------|----------|
-| [EU AI Act](https://artificialintelligenceact.eu) | European Union | Mandatory compliance for EU deployments |
-| [NIST AI Risk Management Framework](https://www.nist.gov/system/files/documents/2023/01/26/AI%20RMF%201.0.pdf) | NIST | US AI risk framework |
-| [Model Context Protocol Spec](https://modelcontextprotocol.io) | Anthropic | MCP implementation standard |
-| [OpenTelemetry Specification](https://opentelemetry.io/docs/) | CNCF | Observability standard |
-| [Semantic Versioning](https://semver.org) | Community | Version management for prompts and agents |
+| [NIST AI Risk Management Framework (AI RMF 1.0)](https://www.nist.gov/itl/ai-risk-management-framework) | NIST | US AI risk, trustworthiness & governance framework |
+| [ISO/IEC 42001 Artificial Intelligence Management System](https://www.iso.org/standard/81230.html) | ISO/IEC | Global standard for AI management systems (AIMS) |
+| [OWASP Top 10 for LLM Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/) | OWASP | Security vulnerabilities, prompt injection & supply chain risks |
+| [EU AI Act](https://artificialintelligenceact.eu) | European Union | Mandatory transparency & high-risk AI system compliance |
+| [Model Context Protocol (MCP) Spec](https://modelcontextprotocol.io) | Anthropic / Open Community | Standard for tool, resource & prompt context integration |
+| [CNCF AI Working Group](https://www.cncf.io/) | CNCF | Cloud-native AI infrastructure & observability |
+| [OpenTelemetry Specification](https://opentelemetry.io/docs/) | CNCF | Open observability & tracing standard for AI pipelines |
+| [Semantic Versioning](https://semver.org) | Community | Version management for prompts, agents & harnesses |
+
+---
+
+## Evaluation & Observability Tooling Ecosystem
+
+| Platform | Organization | Citations & Focus Area |
+|----------|-------------|-----------------------|
+| [Promptfoo](https://www.promptfoo.dev/) | Promptfoo | Automated prompt regression testing, red teaming & security evals |
+| [DeepEval](https://www.confident-ai.com/) | Confident AI | Unit testing LLMs, RAG metrics & CI/CD quality gates |
+| [Langfuse](https://langfuse.com/) | Langfuse | Open-source LLM observability, tracing & prompt management |
+| [RAGAS](https://github.com/explodinggradients/ragas) | Exploding Gradients | Automated metrics for Retrieval-Augmented Generation (RAG) |
+| [LlamaIndex](https://www.llamaindex.ai/) | LlamaIndex | Data framework for LLM applications & context augmentation |
 
 ---
 

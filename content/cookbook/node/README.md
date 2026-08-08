@@ -51,12 +51,19 @@ This cookbook requires deeper Node.js evidence and specialist review than a gene
 
 Node service governance pins runtime and package-manager lines, reviews install scripts and native addons, retains SBOMs, and tests shutdown against the orchestrator grace period.
 
+## Standards & Security Controls Alignment
+
+- **NIST AI RMF 1.0**: Maps to `MANAGE 1.2` (bounded process concurrency & AbortSignal control) and `MEASURE 2.1` (`node --prof` performance verification).
+- **OWASP Top 10 for LLMs**: Defends against `LLM01` (Prompt Injection in async task queues) and `LLM04` (Model Denial of Service via event loop blocking).
+- **Model Context Protocol (MCP)**: Server-side MCP tools must validate input payloads against Zod / JSON Schema and enforce AbortController timeouts.
+
 ## Official sources
 
 - [Node.js API](https://nodejs.org/docs/latest/api/)
 - [Don't block the event loop](https://nodejs.org/en/learn/asynchronous-work/dont-block-the-event-loop)
-- [Node.js diagnostics](https://nodejs.org/en/learn/diagnostics/user-journey)
-- [OWASP Node.js security](https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html)
+- [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework)
+- [OWASP Node.js Security](https://cheatsheetseries.owasp.org/cheatsheets/Nodejs_Security_Cheat_Sheet.html)
+- [Model Context Protocol Specification](https://modelcontextprotocol.io/)
 
 ## Checklist
 

@@ -7,7 +7,7 @@ import TableOfContents from '@/components/TableOfContents';
 
 import Link from 'next/link';
 import { PRODUCT_SHORT, REPOSITORY_URL, SITE_VERSION, STEWARD } from '@/lib/site';
-import { articleJsonLd, breadcrumbJsonLd, SEO_KEYWORDS } from '@/lib/seo';
+import { articleJsonLd, breadcrumbJsonLd, SEO_KEYWORDS, SITE_URL } from '@/lib/seo';
 
 interface PageProps {
   params: Promise<{ slug: string[] }> | { slug: string[] };
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!doc) return {};
 
-  const path = `/docs/${slug}`;
+  const fullUrl = `${SITE_URL}/docs/${slug}`;
   const title = doc.title;
   const description =
     doc.description ||
@@ -39,23 +39,34 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title,
     description,
     keywords: [doc.title, PRODUCT_SHORT, ...SEO_KEYWORDS.slice(0, 10)],
-    authors: [{ name: STEWARD.name, url: '/about' }],
-    alternates: { canonical: path },
+    authors: [{ name: STEWARD.name, url: `${SITE_URL}/about` }],
+    alternates: { canonical: fullUrl },
     openGraph: {
       title: `${title} | ${PRODUCT_SHORT}`,
       description,
-      url: path,
+      url: fullUrl,
       type: 'article',
       siteName: PRODUCT_SHORT,
+      images: [
+        {
+          url: `${SITE_URL}/opengraph-image`,
+          width: 1200,
+          height: 630,
+          alt: `${title} | ${PRODUCT_SHORT}`,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${title} | ${PRODUCT_SHORT}`,
       description,
+      images: [`${SITE_URL}/opengraph-image`],
     },
     robots: {
       index: true,
       follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
     },
   };
 }

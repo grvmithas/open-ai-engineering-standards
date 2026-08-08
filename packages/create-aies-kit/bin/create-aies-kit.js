@@ -16,6 +16,7 @@ import {
 } from '../lib/kit-core/options.js';
 import { enhanceStarterKit, generateStarterKit, layoutFor } from '../lib/kit-core/generate.js';
 import { choose, confirm } from '../lib/prompts.js';
+import { runAudit } from '../lib/audit.js';
 
 function printHelp() {
   console.log(`
@@ -153,8 +154,12 @@ async function recoverProfile(cwd, args) {
 
 async function main() {
   const rawArgv = process.argv.slice(2);
-  const isEnhance = rawArgv[0] === 'enhance';
-  const args = parseArgs(isEnhance ? rawArgv.slice(1) : rawArgv);
+  const cmd = rawArgv[0];
+  const isAudit = cmd === 'audit';
+  const isFix = cmd === 'fix';
+  const isEnhance = cmd === 'enhance';
+
+  const args = parseArgs(isAudit || isFix || isEnhance ? rawArgv.slice(1) : rawArgv);
 
   if (args.help) {
     printHelp();
@@ -162,6 +167,37 @@ async function main() {
   }
 
   const cwd = resolve(process.cwd());
+
+  if (isAudit || isFix) {
+    let profile = await recoverProfile(cwd, args);
+    console.log(`\n🔍 AIES Harness Conformance ${isFix ? '& Auto-Fix Engine' : 'Audit'} — ${cwd}`);
+    const auditRes = await runAudit(cwd, { fix: isFix, profile });
+
+    console.log(`\nResults:`);
+    for (const r of auditRes.results) {
+      console.log(`  ${r.ok ? '✅' : '❌'} [${r.weight}pts] ${r.name}: ${r.msg}`);
+    }
+
+    if (auditRes.fixesApplied.length > 0) {
+      console.log(`\nAuto-Fix Remediations Applied:`);
+      for (const f of auditRes.fixesApplied) {
+        console.log(`  🛠️ ${f}`);
+      }
+    }
+
+    console.log(`\n----------------------------------------`);
+    console.log(`Score: ${auditRes.score}/100 (Grade: ${auditRes.grade})`);
+    console.log(`----------------------------------------`);
+
+    if (!isFix && auditRes.score < 100) {
+      console.log(`\n💡 Tip: Run "npx @grvmithas/create-aies-kit fix" to automatically generate missing harness files and reach 100%.`);
+    }
+
+    if (args.format === 'json') {
+      console.log(JSON.stringify(auditRes, null, 2));
+    }
+    return;
+  }
   let profile = await recoverProfile(cwd, args);
 
   assertChoice('stack', profile.stack, idsOf(STACKS));
