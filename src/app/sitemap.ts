@@ -14,16 +14,9 @@ function priorityForSlug(slug: string): number {
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  const slugs = manifest.documents.map(document => document.slug).toSorted();
+  const slugs = Array.from(manifest.documents.map(document => document.slug)).sort();
 
-  const docPages: MetadataRoute.Sitemap = slugs.map(slug => ({
-    url: `${SITE_URL}/docs/${slug}`,
-    lastModified: now,
-    changeFrequency: 'weekly',
-    priority: priorityForSlug(slug),
-  }));
-
-  return [
+  const staticEntries: MetadataRoute.Sitemap = [
     {
       url: SITE_URL,
       lastModified: now,
@@ -66,12 +59,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 0.9,
     },
-    {
-      url: `${SITE_URL}/docs/README`,
-      lastModified: now,
-      changeFrequency: 'weekly',
-      priority: 0.95,
-    },
-    ...docPages,
   ];
+
+  const docEntries: MetadataRoute.Sitemap = slugs.map(slug => ({
+    url: `${SITE_URL}/docs/${slug}`,
+    lastModified: now,
+    changeFrequency: 'weekly',
+    priority: priorityForSlug(slug),
+  }));
+
+  const allEntries = [...staticEntries, ...docEntries];
+  
+  // Deduplicate by URL
+  const seenUrls = new Set<string>();
+  return allEntries.filter(entry => {
+    if (seenUrls.has(entry.url)) return false;
+    seenUrls.add(entry.url);
+    return true;
+  });
 }

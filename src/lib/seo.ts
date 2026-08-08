@@ -9,7 +9,7 @@ import {
 
 /** Production origin — always set NEXT_PUBLIC_SITE_URL in deploy. */
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://open-ai-engineering-standards.vercel.app'
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.ai-standards.dev'
 ).replace(/\/$/, '');
 
 export const SEO_KEYWORDS = [
@@ -51,9 +51,18 @@ export function organizationJsonLd() {
     alternateName: ['AIES', 'AI Engineering Standard'],
     url: SITE_URL,
     logo: absoluteUrl('/opengraph-image'),
+    image: absoluteUrl('/opengraph-image'),
     description: DEFAULT_DESCRIPTION,
     sameAs: [REPOSITORY_URL, STEWARD.github, STEWARD.linkedIn],
     email: STEWARD.email,
+    publishingPrinciples: absoluteUrl('/docs/principles'),
+    knowsAbout: [
+      'AI Software Development Lifecycle (AIDLC)',
+      'Prompt Engineering Standards',
+      'Model Context Protocol (MCP)',
+      'LLMOps & Evaluation Gates',
+      'AI Agent Architectures',
+    ],
     founder: {
       '@type': 'Person',
       name: STEWARD.name,
@@ -133,6 +142,7 @@ export function articleJsonLd(input: {
     description: input.description,
     url: absoluteUrl(input.path),
     mainEntityOfPage: absoluteUrl(input.path),
+    image: absoluteUrl('/opengraph-image'),
     inLanguage: 'en-US',
     isPartOf: { '@type': 'WebSite', name: PRODUCT_SHORT, url: SITE_URL },
     author: {
@@ -144,6 +154,7 @@ export function articleJsonLd(input: {
       '@type': 'Organization',
       name: PRODUCT_SHORT,
       url: SITE_URL,
+      logo: absoluteUrl('/opengraph-image'),
     },
     ...(input.dateModified ? { dateModified: input.dateModified } : {}),
   };

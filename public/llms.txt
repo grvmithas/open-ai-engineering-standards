@@ -3,9 +3,9 @@
 > The LLM is one component. The harness is the product.
 > Scaffold a production AI harness in 5 minutes — open, vendor-neutral working standard.
 
-Site: https://open-ai-engineering-standards.vercel.app
+Site: https://www.ai-standards.dev
 Repository: https://github.com/grvmithas/open-ai-engineering-standards
-Steward: Gaurav Mithas (https://open-ai-engineering-standards.vercel.app/about)
+Steward: Gaurav Mithas (https://www.ai-standards.dev/about)
 
 ## Get started (3 steps)
 
