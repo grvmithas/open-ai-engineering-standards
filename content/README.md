@@ -100,18 +100,18 @@ See the [AI SDLC](./08-ai-sdlc/) for the complete workflow specification with pr
 ### Use with Claude Code
 ```bash
 # Clone into your project
-git clone https://github.com/gauravprwl14/open-ai-engineering-standard .oaies
+git clone https://github.com/grvmithas/open-ai-engineering-standards.git .aies
 
 # Copy the behavioral contract (repo root)
-cp .oaies/CLAUDE.md ./CLAUDE.md
+cp .aies/CLAUDE.md ./CLAUDE.md
 
 # Install skills from their canonical location
 mkdir -p .claude/skills
-cp .oaies/content/03-skill-engineering/skills/*.skill.md .claude/skills/
+cp .aies/content/03-skill-engineering/skills/*.skill.md .claude/skills/
 
 # Install agents from their canonical location
 mkdir -p .claude/agents
-cp .oaies/content/04-agent-engineering/agents/*.agent.md .claude/agents/
+cp .aies/content/04-agent-engineering/agents/*.agent.md .claude/agents/
 
 # Start a feature using the standard workflow
 # Reference: content/08-ai-sdlc/prompts/story-kickoff.prompt.md

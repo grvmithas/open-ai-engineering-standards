@@ -116,6 +116,13 @@ export default function AppHeader({ onMenuClick }: AppHeaderProps) {
         <div className="absolute right-4 top-[65px] z-50 w-[240px] rounded-xl border border-[var(--shell-border)] bg-[var(--shell-elevated)] p-3 shadow-xl md:hidden">
           <div className="flex flex-col gap-1.5">
             <Link
+              href="/tools/aidlc-evaluator"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block rounded-lg px-3 py-2 text-xs font-bold text-[var(--accent)] bg-[var(--accent-soft)] hover:bg-[var(--accent-soft)]"
+            >
+              🛠️ Evaluator Tool
+            </Link>
+            <Link
               href="/docs/principles"
               onClick={() => setMobileMenuOpen(false)}
               className="block rounded-lg px-3 py-2 text-xs font-semibold text-[var(--shell-text)] hover:bg-[var(--shell-hover)]"

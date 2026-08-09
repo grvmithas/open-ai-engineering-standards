@@ -3,6 +3,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import AppHeader from '@/components/AppHeader';
 import PatternsMegaMenu from '@/components/PatternsMegaMenu';
+import HeroTerminal from '@/components/home/HeroTerminal';
+import TokenCalculator from '@/components/tools/TokenCalculator';
+import MaturityQuiz from '@/components/tools/MaturityQuiz';
+import ShareButtons from '@/components/tools/ShareButtons';
 import {
   PRODUCT_NAME,
   PRODUCT_SHORT,
@@ -106,6 +110,8 @@ export default function HomePage() {
           <p className="mx-auto max-w-xl text-xs text-[var(--inverse-muted)]/90 sm:text-sm leading-relaxed mb-8">
             {RELEASE_STATUS_NOTE}
           </p>
+
+          <HeroTerminal />
 
           <div className="flex flex-wrap justify-center gap-3">
             <Link
@@ -294,6 +300,14 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Interactive Developer Tools Section */}
+      <section className="border-b border-[var(--paper-border)] bg-[var(--paper-subtle)] px-4 py-12 md:px-6">
+        <div className="mx-auto max-w-5xl space-y-12">
+          <TokenCalculator />
+          <MaturityQuiz />
         </div>
       </section>
 
