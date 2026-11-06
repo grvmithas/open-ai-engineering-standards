@@ -85,13 +85,15 @@ jobs:
           TARBALL="$GITHUB_WORKSPACE/packages/create-aies-kit/$(ls grvmithas-create-aies-kit-*.tgz)"
           mkdir -p "$RUNNER_TEMP/smoke" && cd "$RUNNER_TEMP/smoke" && git init -q
           echo '{"name":"smoke","scripts":{"lint":"eslint .","typecheck":"tsc --noEmit","test":"vitest run"}}' > package.json
-          npx --yes "$TARBALL" --stack nextjs --ide claude-code --role fullstack --maturity advanced --goal new-product --model claude --data-class internal --yes
+          # A bare tarball path is executed as a shell command by npm 11; name the bin explicitly.
+          kit() { npm exec --yes --package "$TARBALL" -- create-aies-kit "$@"; }
+          kit --stack nextjs --ide claude-code --role fullstack --maturity advanced --goal new-product --model claude --data-class internal --yes
           grep -q 'npm run lint' AGENTS.md
           node hooks/aies-guard.mjs --self-test
-          npx --yes "$TARBALL" audit --min-score 100
+          kit audit --min-score 100
           # Upgrade must keep user edits
           echo "TEAM RULE" >> AGENTS.md
-          npx --yes "$TARBALL" enhance
+          kit enhance
           grep -q 'TEAM RULE' AGENTS.md
 
       - name: Publish
