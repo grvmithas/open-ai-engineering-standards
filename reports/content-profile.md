@@ -7,10 +7,10 @@
 | Metric | Value |
 |---|---|
 | asOf | 2026-11-06 |
-| documents | 620 |
-| contractBound | 343 |
-| averageScore | 98 |
-| totalTokens | 799297 |
+| documents | 624 |
+| contractBound | 347 |
+| averageScore | 99 |
+| totalTokens | 816034 |
 | untaggedBlocks | 0 |
 | filesWithUntagged | 0 |
 | filesWithNestedFences | 0 |
@@ -24,17 +24,17 @@
 | Area | Docs | Bound | Avg score | Avg words | Tokens | Untagged | Outdated files | Dup ratio ≥0.3 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 00-foundations | 9 | 7 | 100 | 621 | 10619 | 0 | 0 | 0 |
-| 01-prompt-engineering | 14 | 11 | 98 | 414 | 13263 | 0 | 0 | 0 |
+| 01-prompt-engineering | 14 | 11 | 99 | 414 | 13263 | 0 | 0 | 0 |
 | 02-context-engineering | 12 | 6 | 97 | 371 | 8461 | 0 | 0 | 0 |
-| 03-skill-engineering | 27 | 26 | 98 | 573 | 30857 | 0 | 0 | 17 |
-| 04-agent-engineering | 42 | 40 | 85 | 568 | 64799 | 0 | 0 | 38 |
-| 05-multi-agent-systems | 10 | 6 | 100 | 699 | 17094 | 0 | 2 | 0 |
+| 03-skill-engineering | 27 | 26 | 100 | 585 | 31409 | 0 | 0 | 17 |
+| 04-agent-engineering | 42 | 40 | 100 | 568 | 64799 | 0 | 0 | 38 |
+| 05-multi-agent-systems | 11 | 7 | 100 | 810 | 20737 | 0 | 2 | 0 |
 | 06-memory-knowledge | 19 | 18 | 93 | 388 | 15155 | 0 | 0 | 0 |
-| 07-llmops | 19 | 17 | 100 | 802 | 30556 | 0 | 1 | 0 |
+| 07-llmops | 22 | 20 | 100 | 959 | 41176 | 0 | 1 | 0 |
 | 08-ai-sdlc | 26 | 25 | 99 | 737 | 33597 | 0 | 0 | 0 |
 | 09-enterprise-ai | 21 | 14 | 100 | 759 | 32120 | 0 | 0 | 0 |
 | 10-ai-org-playbook | 5 | 4 | 100 | 1225 | 11539 | 0 | 0 | 0 |
-| CHANGELOG.md | 1 | 0 | 0 | 330 | 522 | 0 | 0 | 0 |
+| CHANGELOG.md | 1 | 0 | 0 | 694 | 1259 | 0 | 0 | 0 |
 | CONTRIBUTING.md | 1 | 0 | 0 | 424 | 937 | 0 | 0 | 0 |
 | README.md | 1 | 0 | 0 | 843 | 2060 | 0 | 0 | 0 |
 | case-studies | 1 | 0 | 0 | 512 | 906 | 0 | 0 | 0 |
@@ -48,15 +48,15 @@
 | principles.md | 1 | 0 | 0 | 455 | 776 | 0 | 0 | 0 |
 | resources | 1 | 0 | 0 | 1146 | 2213 | 0 | 0 | 0 |
 | roadmap.md | 1 | 0 | 0 | 560 | 1259 | 0 | 0 | 0 |
-| standard | 15 | 10 | 100 | 1195 | 33513 | 0 | 0 | 0 |
+| standard | 15 | 10 | 100 | 1239 | 34698 | 0 | 0 | 0 |
 | validation | 7 | 3 | 100 | 1039 | 14537 | 0 | 0 | 0 |
 
 ## Score by document type
 
 | Type | Docs | Avg score | Most common type issue |
 | --- | --- | --- | --- |
-| agent | 21 | 85 | — |
-| chapter | 162 | 99 | — |
+| agent | 21 | 99 | — |
+| chapter | 166 | 99 | — |
 | checklist | 40 | 96 | — |
 | fragment | 156 | 11 | — |
 | index | 57 | 74 | — |
@@ -64,22 +64,22 @@
 | mcp | 24 | 100 | — |
 | meta | 8 | 18 | — |
 | prompt | 54 | 100 | — |
-| skill | 44 | 99 | — |
-| subagent | 19 | 85 | — |
+| skill | 44 | 100 | — |
+| subagent | 19 | 100 | — |
 | template | 16 | 88 | — |
 
 ## Required-section coverage (contract-bound docs)
 
 | Section | Present | Coverage |
 | --- | --- | --- |
-| purpose | 324 | 94% |
-| why | 322 | 94% |
-| how | 287 | 84% |
-| tradeoffs | 324 | 94% |
-| antiPatterns | 334 | 97% |
-| enterprise | 324 | 94% |
-| checklist | 324 | 94% |
-| changelog | 325 | 95% |
+| purpose | 328 | 95% |
+| why | 329 | 95% |
+| how | 330 | 95% |
+| tradeoffs | 328 | 95% |
+| antiPatterns | 339 | 98% |
+| enterprise | 328 | 95% |
+| checklist | 328 | 95% |
+| changelog | 329 | 95% |
 
 ## Outdated terms
 
@@ -97,57 +97,59 @@
 
 | Score | Doc | Missing sections | Other issues |
 | --- | --- | --- | --- |
-| 85 | `content/01-prompt-engineering/anti-patterns/prompt-anti-patterns.md` | antiPatterns | — |
-| 85 | `content/03-skill-engineering/skills/code-review.skill.md` | why | — |
-| 85 | `content/03-skill-engineering/skills/debug.skill.md` | why | — |
-| 85 | `content/03-skill-engineering/skills/security.skill.md` | why | — |
-| 85 | `content/04-agent-engineering/agents/architect.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/backend.agent.md` | how | — |
 | 85 | `content/04-agent-engineering/agents/coder.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/context-engineer.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/database.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/devops.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/documentation.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/frontend.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/incident-response.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/knowledge.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/migration.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/observability.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/parallel-implementer.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/planner.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/prompt-engineer.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/rag.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/release.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/research.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/reviewer.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/security.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/agents/testing.agent.md` | how | — |
-| 85 | `content/04-agent-engineering/subagents/accessibility.subagent.md` | how | — |
-| 85 | `content/04-agent-engineering/subagents/aws.subagent.md` | how | — |
-| 85 | `content/04-agent-engineering/subagents/azure.subagent.md` | how | — |
-| 85 | `content/04-agent-engineering/subagents/docker.subagent.md` | how | — |
-| 85 | `content/04-agent-engineering/subagents/dotnet.subagent.md` | how | — |
-| 85 | `content/04-agent-engineering/subagents/github-actions.subagent.md` | how | — |
-| 85 | `content/04-agent-engineering/subagents/kafka.subagent.md` | how | — |
-| 85 | `content/04-agent-engineering/subagents/kubernetes.subagent.md` | how | — |
-| 85 | `content/04-agent-engineering/subagents/nextjs-routing.subagent.md` | how | — |
-| 85 | `content/04-agent-engineering/subagents/openai-api.subagent.md` | how | — |
-| 85 | `content/04-agent-engineering/subagents/playwright.subagent.md` | how | — |
-| 85 | `content/04-agent-engineering/subagents/postgres.subagent.md` | how | — |
-| 85 | `content/04-agent-engineering/subagents/python.subagent.md` | how | — |
-| 85 | `content/04-agent-engineering/subagents/react.subagent.md` | how | — |
-| 85 | `content/04-agent-engineering/subagents/redis.subagent.md` | how | — |
+| 90 | `content/01-prompt-engineering/patterns/constraint-driven.md` | — | 243 words |
+| 90 | `content/02-context-engineering/principles/progressive-disclosure.md` | — | 219 words |
+| 90 | `content/02-context-engineering/principles/structured-state-offloading.md` | — | 249 words |
+| 90 | `content/06-memory-knowledge/knowledge-graphs/construction.md` | — | 237 words |
+| 90 | `content/06-memory-knowledge/knowledge-graphs/maintenance.md` | — | 230 words |
+| 90 | `content/06-memory-knowledge/knowledge-graphs/querying.md` | — | 236 words |
+| 90 | `content/06-memory-knowledge/memory-types/episodic.md` | — | 219 words |
+| 90 | `content/06-memory-knowledge/memory-types/external.md` | — | 227 words |
+| 90 | `content/06-memory-knowledge/memory-types/in-context.md` | — | 243 words |
+| 90 | `content/06-memory-knowledge/memory-types/procedural.md` | — | 214 words |
+| 90 | `content/06-memory-knowledge/memory-types/semantic.md` | — | 218 words |
+| 90 | `content/06-memory-knowledge/rag/advanced-rag.md` | — | 240 words |
+| 90 | `content/06-memory-knowledge/rag/hybrid-rag.md` | — | 241 words |
+| 90 | `content/06-memory-knowledge/rag/naive-rag.md` | — | 217 words |
+| 90 | `content/06-memory-knowledge/vector-databases/indexing-patterns.md` | — | 246 words |
+| 90 | `content/08-ai-sdlc/prompts/create-agent.prompt.md` | purpose, why, how, tradeoffs, antiPatterns, enterprise, checklist, changelog | 156 words |
+| 90 | `content/08-ai-sdlc/prompts/create-prompt.prompt.md` | purpose, why, how, tradeoffs, antiPatterns, enterprise, checklist, changelog | 168 words |
+| 90 | `content/08-ai-sdlc/prompts/create-skill.prompt.md` | purpose, why, how, tradeoffs, antiPatterns, enterprise, checklist, changelog | 160 words |
+| 96 | `content/07-llmops/model-lifecycle.md` | — | outdated: gpt-4o era model id |
+| 100 | `content/00-foundations/01-how-llms-think.md` | — | — |
+| 100 | `content/00-foundations/02-the-harness-principle.md` | — | — |
+| 100 | `content/00-foundations/03-50-50-rule.md` | — | — |
+| 100 | `content/00-foundations/04-failure-modes.md` | — | — |
+| 100 | `content/00-foundations/05-provider-landscape.md` | — | — |
+| 100 | `content/00-foundations/06-cost-mental-models.md` | — | — |
+| 100 | `content/00-foundations/07-latency-tradeoffs.md` | — | — |
+| 100 | `content/01-prompt-engineering/anti-patterns/prompt-anti-patterns.md` | — | — |
+| 100 | `content/01-prompt-engineering/patterns/chain-of-thought.md` | — | — |
+| 100 | `content/01-prompt-engineering/patterns/few-shot.md` | — | — |
+| 100 | `content/01-prompt-engineering/patterns/instruction-hierarchy.md` | — | — |
+| 100 | `content/01-prompt-engineering/patterns/planning-first.md` | — | — |
+| 100 | `content/01-prompt-engineering/patterns/react-pattern.md` | — | — |
+| 100 | `content/01-prompt-engineering/patterns/reflection.md` | — | — |
+| 100 | `content/01-prompt-engineering/patterns/role-prompting.md` | — | — |
+| 100 | `content/01-prompt-engineering/patterns/tree-of-thoughts.md` | — | — |
+| 100 | `content/01-prompt-engineering/patterns/xml-structured.md` | — | — |
+| 100 | `content/02-context-engineering/anti-patterns/context-anti-patterns.md` | — | — |
+| 100 | `content/02-context-engineering/principles/context-fidelity.md` | — | — |
+| 100 | `content/02-context-engineering/principles/fidelity-threshold.md` | — | — |
 
 ## Largest documents (token cost when loaded into an agent)
 
 | Tokens | Doc |
 | --- | --- |
 | 5123 | `content/09-enterprise-ai/governance/eu-ai-act.md` |
-| 4136 | `content/07-llmops/evaluation/framework-selection.md` |
+| 4742 | `content/07-llmops/observability/tracing.md` |
+| 4168 | `content/07-llmops/evaluation/framework-selection.md` |
 | 4083 | `content/standard/02-normative-controls.md` |
 | 3641 | `content/cookbook/accessibility/debug-workflows/common-errors.md` |
 | 3599 | `content/01-prompt-engineering/anti-patterns/prompt-anti-patterns.md` |
 | 3543 | `content/handbook/mcp-when-and-how.md` |
+| 3540 | `content/05-multi-agent-systems/standards/durable-execution.md` |
 | 3504 | `content/cookbook/kubernetes/debug-workflows/common-errors.md` |
 | 3501 | `content/standard/04-lifecycle-and-assessment.md` |
 | 3496 | `content/handbook/how-to-give-context.md` |
@@ -155,8 +157,6 @@
 | 3454 | `content/cookbook/microfrontends/debug-workflows/common-errors.md` |
 | 3446 | `content/cookbook/postgres/debug-workflows/common-errors.md` |
 | 3430 | `content/cookbook/azure/debug-workflows/common-errors.md` |
-| 3422 | `content/cookbook/performance/debug-workflows/common-errors.md` |
-| 3415 | `content/handbook/how-to-set-up-planning.md` |
 
 ## Most duplicated paragraphs (boilerplate candidates)
 

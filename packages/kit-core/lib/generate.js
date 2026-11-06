@@ -66,6 +66,10 @@ const GUIDES = [
 ];
 
 const GUARD_CMD = 'node hooks/aies-guard.mjs';
+const DONE_CMD = 'node hooks/aies-done.mjs';
+const EGRESS_CMD = 'node hooks/aies-egress-check.mjs';
+/** Seconds a definition-of-done run may take before the runtime kills the hook. */
+const DONE_TIMEOUT = 900;
 
 const CLAUDE_MATCHERS = ['Bash', 'Edit|Write|MultiEdit|NotebookEdit', 'Read'];
 
@@ -291,8 +295,13 @@ export function renderCommand(L, name, src) {
   }
 }
 
-/** Native hook wiring for the guard script. Returns null when the target has no project hooks. */
-export function renderHookConfig(L) {
+/**
+ * Native hook wiring: the guard (pre-tool), the definition-of-done gate (completion event, where
+ * the runtime documents a blocking contract), and — for confidential data — the egress self-test
+ * at session start. Returns null when the target has no project hooks.
+ */
+export function renderHookConfig(L, { egressCheck = false } = {}) {
+  const sessionStart = (cmd, timeout) => (egressCheck ? { SessionStart: [{ hooks: [{ type: 'command', command: cmd, timeout }] }] } : {});
   switch (L.hookFormat) {
     case 'claude':
       return {
@@ -312,6 +321,8 @@ export function renderHookConfig(L) {
               },
             ],
           })),
+          Stop: [{ hooks: [{ type: 'command', command: 'node "$CLAUDE_PROJECT_DIR/hooks/aies-done.mjs" --target claude', timeout: DONE_TIMEOUT }] }],
+          ...sessionStart('node "$CLAUDE_PROJECT_DIR/hooks/aies-egress-check.mjs" --target claude', 15),
         },
       };
     case 'cursor':
@@ -321,6 +332,7 @@ export function renderHookConfig(L) {
           beforeShellExecution: [{ command: `${GUARD_CMD} --target cursor`, timeout: 15, failClosed: true }],
           beforeReadFile: [{ command: `${GUARD_CMD} --target cursor --event read`, timeout: 15, failClosed: true }],
           preToolUse: [{ command: `${GUARD_CMD} --target cursor`, timeout: 15, failClosed: true }],
+          stop: [{ command: `${DONE_CMD} --target cursor`, timeout: DONE_TIMEOUT }],
         },
       };
     case 'codex':
@@ -330,6 +342,8 @@ export function renderHookConfig(L) {
             { matcher: 'Bash', hooks: [{ type: 'command', command: `${GUARD_CMD} --target codex --event shell`, timeout: 15 }] },
             { matcher: 'Edit|Write', hooks: [{ type: 'command', command: `${GUARD_CMD} --target codex --event write`, timeout: 15 }] },
           ],
+          Stop: [{ hooks: [{ type: 'command', command: `${DONE_CMD} --target codex`, timeout: DONE_TIMEOUT }] }],
+          ...sessionStart(`${EGRESS_CMD} --target codex`, 15),
         },
       };
     case 'gemini':
@@ -340,11 +354,15 @@ export function renderHookConfig(L) {
             { matcher: 'write_file|replace', hooks: [{ type: 'command', command: `${GUARD_CMD} --target gemini --event write`, timeout: 15000 }] },
             { matcher: 'read_file|read_many_files', hooks: [{ type: 'command', command: `${GUARD_CMD} --target gemini --event read`, timeout: 15000 }] },
           ],
+          AfterAgent: [{ hooks: [{ type: 'command', command: `${DONE_CMD} --target gemini`, timeout: DONE_TIMEOUT * 1000 }] }],
+          ...sessionStart(`${EGRESS_CMD} --target gemini`, 15000),
         },
       };
     case 'devin':
       return {
         PreToolUse: [{ hooks: [{ type: 'command', command: `${GUARD_CMD} --target devin`, timeout: 15 }] }],
+        Stop: [{ hooks: [{ type: 'command', command: `${DONE_CMD} --target devin`, timeout: DONE_TIMEOUT }] }],
+        ...sessionStart(`${EGRESS_CMD} --target devin`, 15),
       };
     case 'opencode':
       return OPENCODE_GUARD_PLUGIN;
@@ -403,6 +421,40 @@ export function renderMcpConfig(L, recommendedIds) {
     default:
       return null;
   }
+}
+
+/** Definition-of-done commands: the detected lint, typecheck, and test commands (build is left to CI). */
+function doneConfig(verify) {
+  const commands = ['lint', 'typecheck', 'test'].map(k => verify?.commands?.[k]).filter(Boolean);
+  return JSON.stringify(
+    {
+      $comment: commands.length
+        ? 'Commands the agent must pass before it may finish. Human-maintained: the guard denies agent edits. See hooks/README.md.'
+        : 'No verify commands detected. Add the commands the agent must pass before finishing; until then the gate allows completion.',
+      commands,
+      timeoutSeconds: DONE_TIMEOUT,
+      maxConsecutiveBlocks: 3,
+    },
+    null,
+    2,
+  );
+}
+
+function egressConfig() {
+  return JSON.stringify(
+    {
+      $comment: 'AC-06 egress self-test. Every probe must fail inside the agent sandbox. List hosts the sandbox must allow in expectReachable.',
+      dnsProbes: ['example.com'],
+      probes: [
+        { host: 'example.com', port: 443 },
+        { host: '1.1.1.1', port: 443 },
+      ],
+      expectReachable: [],
+      timeoutMs: 2500,
+    },
+    null,
+    2,
+  );
 }
 
 function setupSteps(stack) {
@@ -1041,8 +1093,12 @@ export function generateStarterKit(profile, opts = {}) {
 
   // Hooks
   files['hooks/aies-guard.mjs'] = corpus('kit/aies-guard.mjs');
+  files['hooks/aies-done.mjs'] = corpus('kit/aies-done.mjs');
+  files['hooks/aies-done.json'] = doneConfig(opts.verify);
+  files['hooks/aies-egress-check.mjs'] = corpus('kit/aies-egress-check.mjs');
+  files['hooks/aies-egress.json'] = egressConfig();
   files['hooks/README.md'] = corpus('kit/hooks-README.md');
-  const hookConfig = renderHookConfig(L);
+  const hookConfig = renderHookConfig(L, { egressCheck: dataClass === 'confidential' });
   if (hookConfig) files[L.hooksFile] = typeof hookConfig === 'string' ? hookConfig : JSON.stringify(hookConfig, null, 2);
 
   // Plans, contracts, reviews, worktrees
@@ -1114,25 +1170,31 @@ export function generateStarterKit(profile, opts = {}) {
   };
 }
 
+export const AGENT_PLUGINS_SCHEMA = 'https://agent-plugins.org/schemas/1.0.0/plugin.schema.json';
+export const AGENT_PLUGINS_MCP_SCHEMA = 'https://agent-plugins.org/schemas/1.0.0/mcp.schema.json';
+const PLUGIN_DESCRIPTION = 'AI Engineering Standard harness: skills, AIDLC commands as skills, subagents, the AIES guard, and the definition-of-done gate.';
+
 /**
- * Claude Code plugin bundle for org-wide distribution (marketplace-installable).
- * Same agents, skills, commands, and guard as the repo kit, rooted at ${CLAUDE_PLUGIN_ROOT}.
+ * Agent Plugins 1.0 bundle for org-wide distribution.
+ * Portable core (root plugin.json + skills/ + mcp.json) is read natively by Cursor and Kiro.
+ * Overlays: .claude-plugin/ (agents + guard + done-gate hooks) and .codex-plugin/ (manifest only;
+ * Codex repo installs carry the hooks). Claude hooks live at a non-default path so Codex, whose
+ * plugin default is hooks/hooks.json, never loads Claude-format hooks.
  */
 export function generatePluginBundle(profile, { name = 'aies' } = {}) {
   const L = layoutFor('claude-code');
   const files = {};
-  const pluginRoot = { ...L, agentsDir: 'agents', commandsDir: 'commands' };
-  files['.claude-plugin/plugin.json'] = JSON.stringify(
-    {
-      name,
-      version: KIT_VERSION,
-      description: 'AI Engineering Standard harness: planner/coder/reviewer/security subagents, AIDLC commands, skills, and the AIES guard hook.',
-      homepage: SITE_URL,
-      license: 'MIT',
-    },
-    null,
-    2,
-  );
+  const meta = { version: KIT_VERSION, description: PLUGIN_DESCRIPTION, homepage: SITE_URL, license: 'MIT' };
+
+  files['plugin.json'] = JSON.stringify({ $schema: AGENT_PLUGINS_SCHEMA, name, ...meta, keywords: ['aies', 'agent-harness', 'guardrails'] }, null, 2);
+  files['mcp.json'] = JSON.stringify({ $schema: AGENT_PLUGINS_MCP_SCHEMA, mcpServers: {} }, null, 2);
+  for (const n of CORE_SKILLS) files[`skills/${n}/SKILL.md`] = skillMarkdown(n, corpus(`skills/${n}.skill.md`));
+  for (const n of CORE_PROMPTS) {
+    const r = renderCommand({ ...L, commandFormat: 'skill', commandsDir: 'skills' }, n, corpus(`aidlc/${n}.prompt.md`));
+    files[r.path] = r.content;
+  }
+
+  files['.claude-plugin/plugin.json'] = JSON.stringify({ name, ...meta, hooks: './hooks/claude-hooks.json' }, null, 2);
   files['.claude-plugin/marketplace.json'] = JSON.stringify(
     {
       name: `${name}-marketplace`,
@@ -1143,47 +1205,60 @@ export function generatePluginBundle(profile, { name = 'aies' } = {}) {
     2,
   );
   for (const n of CORE_AGENTS) {
-    const r = renderAgent(pluginRoot, n, corpus(`agents/${n}.agent.md`));
+    const r = renderAgent({ ...L, agentsDir: 'agents' }, n, corpus(`agents/${n}.agent.md`));
     if (r) files[r.path] = r.content;
   }
-  for (const n of CORE_PROMPTS) {
-    const r = renderCommand(pluginRoot, n, corpus(`aidlc/${n}.prompt.md`));
-    files[r.path] = r.content;
-  }
-  for (const n of CORE_SKILLS) files[`skills/${n}/SKILL.md`] = skillMarkdown(n, corpus(`skills/${n}.skill.md`));
   files['hooks/aies-guard.mjs'] = corpus('kit/aies-guard.mjs');
-  files['hooks/hooks.json'] = JSON.stringify(
+  files['hooks/aies-done.mjs'] = corpus('kit/aies-done.mjs');
+  files['hooks/claude-hooks.json'] = JSON.stringify(
     {
       hooks: {
         PreToolUse: [
           {
             matcher: CLAUDE_MATCHERS.join('|'),
-            hooks: [
-              {
-                type: 'command',
-                command: 'node "${CLAUDE_PLUGIN_ROOT}/hooks/aies-guard.mjs" --target claude',
-                timeout: 15,
-                onFailure: 'block',
-              },
-            ],
+            hooks: [{ type: 'command', command: 'node "${CLAUDE_PLUGIN_ROOT}/hooks/aies-guard.mjs" --target claude', timeout: 15, onFailure: 'block' }],
           },
         ],
+        Stop: [{ hooks: [{ type: 'command', command: 'node "${CLAUDE_PLUGIN_ROOT}/hooks/aies-done.mjs" --target claude', timeout: DONE_TIMEOUT }] }],
       },
     },
     null,
     2,
   );
-  files['README.md'] = `# ${name} — Claude Code plugin
 
-Install from a git-hosted marketplace:
+  files['.codex-plugin/plugin.json'] = JSON.stringify({ name, ...meta }, null, 2);
+
+  files['README.md'] = `# ${name} — Agent Plugins 1.0 bundle
+
+One package, four runtimes. Version ${KIT_VERSION}. Regenerate with \`npx @grvmithas/create-aies-kit@latest plugin\`.
+
+| Runtime | Reads | Gets |
+|---|---|---|
+| Cursor, Kiro | \`plugin.json\` (Agent Plugins 1.0) | ${CORE_SKILLS.length} skills, ${CORE_PROMPTS.length} AIDLC commands as skills, \`mcp.json\` |
+| Claude Code | \`.claude-plugin/plugin.json\` | the same skills, ${CORE_AGENTS.length} subagents, guard (PreToolUse) and definition-of-done gate (Stop) |
+| Codex | \`.codex-plugin/plugin.json\` | the same skills; hooks come from the per-repo kit install (\`.codex/hooks.json\`) |
+
+## Install
 
 \`\`\`text
+# Claude Code
 /plugin marketplace add <org>/<repo>
 /plugin install ${name}@${name}-marketplace
 \`\`\`
 
-Contains ${CORE_AGENTS.length} subagents, ${CORE_PROMPTS.length} commands, ${CORE_SKILLS.length} skills, and the AIES guard (PreToolUse/Bash).
-Version ${KIT_VERSION}. Regenerate with \`npx @grvmithas/create-aies-kit@latest plugin\`.
+Cursor and Kiro: add the git repository through the team marketplace or the plugin settings; both validate \`plugin.json\` against the Agent Plugins schema.
+
+## Definition-of-done gate
+
+The Stop hook reads \`hooks/aies-done.json\` from the **project**, not the plugin. Projects without it are not gated. Create it with the repo kit (\`npx @grvmithas/create-aies-kit@latest\`) or by hand:
+
+\`\`\`json
+{ "commands": ["npm run lint", "npm test"], "timeoutSeconds": ${DONE_TIMEOUT}, "maxConsecutiveBlocks": 3 }
+\`\`\`
+
+## Supply chain
+
+Pin the plugin by commit SHA in your marketplace, review every update as a code change, and keep \`mcp.json\` empty unless security has approved a server. The manifest schema is closed: unknown top-level fields are ignored by conforming clients.
 `;
   return { kitVersion: KIT_VERSION, profile, files };
 }

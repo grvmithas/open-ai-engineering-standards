@@ -7,6 +7,9 @@ import { normalizeIde } from './kit-core/options.js';
 import { detectVerifyCommands } from './kit-core/repo-scan.js';
 import { CONFLICT_SUFFIX } from './kit-core/apply.js';
 
+/** Hook formats whose completion event can refuse "done" (see hooks/aies-done.mjs). */
+const DONE_HOOK_FORMATS = new Set(['claude', 'cursor', 'codex', 'gemini', 'devin']);
+
 const SKIP_DIRS = new Set(['node_modules', '.git', '.next', 'dist', 'build', 'out', 'coverage', '.venv', 'venv', 'target', 'bin', 'obj']);
 
 /** Paths (relative) of files under cwd whose name ends with `suffix`, bounded depth. */
@@ -202,6 +205,42 @@ export async function runAudit(cwd, { fix = false, profile = null } = {}) {
         };
       },
       fixAction: p => writeMissing(cwd, p, f => f.startsWith('hooks/') || f === L.hooksFile),
+    },
+    {
+      id: 'done-gate',
+      name: 'Definition-of-done gate (agent cannot finish on failing checks)',
+      weight: 10,
+      check: async () => {
+        if (!(await exists(join(cwd, 'hooks/aies-done.mjs')))) return { ok: false, msg: 'Missing hooks/aies-done.mjs — run enhance' };
+        let commands = [];
+        try {
+          commands = JSON.parse(await read(join(cwd, 'hooks/aies-done.json'))).commands ?? [];
+        } catch {
+          return { ok: false, msg: 'hooks/aies-done.json missing or not valid JSON' };
+        }
+        if (!commands.length) return { ok: false, msg: 'hooks/aies-done.json lists no commands — the gate allows every completion' };
+        if (!DONE_HOOK_FORMATS.has(L.hookFormat)) return { ok: true, msg: `${commands.length} command(s); ${effectiveProfile.ide} has no blocking completion hook — the CI verify job is the gate` };
+        const wired = (await read(join(cwd, L.hooksFile))).includes('aies-done.mjs');
+        return { ok: wired, msg: wired ? `${commands.length} command(s) gate completion via ${L.hooksFile}` : `${L.hooksFile} does not invoke hooks/aies-done.mjs` };
+      },
+      fixAction: async p => {
+        const path = join(cwd, 'hooks/aies-done.json');
+        const raw = await read(path);
+        let cfg = null;
+        try {
+          cfg = raw ? JSON.parse(raw) : null;
+        } catch {
+          return 'hooks/aies-done.json is invalid JSON — fix it by hand';
+        }
+        if (cfg && !cfg.commands?.length) {
+          const { commands } = detectVerifyCommands(cwd, fs);
+          const detected = ['lint', 'typecheck', 'test'].map(k => commands[k]).filter(Boolean);
+          if (!detected.length) return `Nothing detected — add commands to hooks/aies-done.json by hand`;
+          await writeFile(path, `${JSON.stringify({ ...cfg, commands: detected }, null, 2)}\n`, 'utf8');
+          return `Filled ${detected.length} detected command(s)`;
+        }
+        return writeMissing(cwd, p, f => f === 'hooks/aies-done.mjs' || f === 'hooks/aies-done.json');
+      },
     },
     {
       id: 'plans',

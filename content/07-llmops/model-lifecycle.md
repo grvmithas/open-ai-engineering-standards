@@ -1,6 +1,6 @@
 # Model Lifecycle and API Capability Matrix
 
-> **Version:** 1.0.0
+> **Version:** 1.0.1
 > **Last updated:** 2026-11-06
 > **Status:** Normative AIES operating standard. Model rows are a dated snapshot — re-verify against provider deprecation pages before acting.
 
@@ -42,7 +42,7 @@ Application code asks for a **tier and effort** (`small/low`, `mid/medium`, `fro
 | Mid | Claude Sonnet 5.5 | GPT-6.1 Sol / GPT-6.1 Terra | Gemini 3.8 Flash | Coding, RAG synthesis, most agent turns |
 | Small | Claude Haiku 5.5 | GPT-6 Luna | Gemini 3.8 Flash (low thinking) | Classification, extraction, routing, guard models |
 
-Open-weight options for self-hosting or data-residency constraints include Mistral Large 4, DeepSeek V4.1, and Qwen3.8. They go through the same eval gate as hosted models.
+Open-weight options for self-hosting or data-residency constraints include Mistral Large 4, DeepSeek V4.1, and Qwen3.8. They go through the same eval gate as hosted models; serving, licensing, and security are covered in [Open-weight model serving](./open-weight-serving.md).
 
 ### 3. Deprecation calendar (verify before relying on it)
 
@@ -68,7 +68,7 @@ Open-weight options for self-hosting or data-residency constraints include Mistr
 | Structured output | `output_config.format` + `strict: true` tools (`output_format` deprecated) | Responses `text.format` (not `response_format`) | `responseSchema` |
 | Recommended API surface | Messages | Responses (Chat Completions supported, no shutdown date) | Interactions (`generateContent` is legacy) |
 | Response shape | May start with `thinking` blocks — read by type, not index; return thinking blocks unmodified in tool loops | Reasoning items must be passed back in tool loops | Thought signatures must be returned |
-| Prompt caching | Automatic or ≤4 breakpoints; reads 0.05–0.1×; min 512 tokens | Implicit or explicit breakpoints; TTL `30m`/`12h`; min 1,024 tokens; changing tools or effort breaks the prefix | Implicit only on Argon; min 4,096 tokens |
+| Prompt caching ([standard](./cost-optimization/prompt-caching.md)) | Automatic or ≤4 breakpoints; reads 0.05–0.1×; min 512 tokens | Implicit or explicit breakpoints; TTL `30m`/`12h`; min 1,024 tokens; changing tools or effort breaks the prefix | Implicit only on Argon; min 4,096 tokens |
 
 ### 5. Upgrade procedure
 
@@ -93,7 +93,7 @@ Open-weight options for self-hosting or data-residency constraints include Mistr
 - **Floating aliases in production.** `-latest` changes behavior without a release, an eval, or a changelog entry.
 - **Carrying `temperature=0` forward "for determinism".** Current reasoning models reject it; determinism comes from schemas, evals, and caching, not sampling.
 - **Assistant prefill to force JSON.** Rejected by Opus 5.5; use structured outputs.
-- **Upgrading on benchmark headlines.** Public benchmarks (SWE-bench Verified is saturated) pick a shortlist; release decisions use your private evals.
+- **Upgrading on benchmark headlines.** Public benchmarks (SWE-bench Verified is saturated) pick a shortlist; release decisions use your private evals. See the [benchmark citation policy](./evaluation/benchmark-citation-policy.md).
 - **Waiting for the shutdown email.** Notice periods can be as short as 60 days (Anthropic) or two weeks (Google preview models).
 
 ## Enterprise considerations
@@ -122,4 +122,5 @@ Sources accessed 2026-11-06.
 
 ## Changelog
 
+- **1.0.1 — 2026-11-06:** Linked the benchmark citation, prompt caching, and open-weight serving standards.
 - **1.0.0 — 2026-11-06:** Initial standard — tier table, deprecation calendar, API capability matrix, upgrade procedure.

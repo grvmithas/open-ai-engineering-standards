@@ -4,13 +4,14 @@
  *   node scripts/check-kit.mjs            verify
  *   node scripts/check-kit.mjs --update   rewrite the layout snapshot after an intentional change
  */
-import { spawnSync } from 'node:child_process';
+import { execFile, spawnSync } from 'node:child_process';
 import fs from 'node:fs';
+import net from 'node:net';
 import os from 'node:os';
 import path from 'node:path';
 import matter from 'gray-matter';
 import yaml from 'js-yaml';
-import { generatePluginBundle, generateStarterKit, VERIFY_PLACEHOLDER } from '../packages/kit-core/lib/generate.js';
+import { AGENT_PLUGINS_MCP_SCHEMA, AGENT_PLUGINS_SCHEMA, generatePluginBundle, generateStarterKit, VERIFY_PLACEHOLDER } from '../packages/kit-core/lib/generate.js';
 import { SUPPORTED_TARGETS } from '../packages/kit-core/lib/install-api.js';
 import { applyBundle, readManifest, CONFLICT_SUFFIX } from '../packages/kit-core/lib/apply.js';
 import { detectVerifyCommands } from '../packages/kit-core/lib/repo-scan.js';
@@ -144,6 +145,13 @@ function checkHooksAndConfig(ctx, ide, files) {
     const text = files[hookFile] ?? '';
     const cfg = hookFile.endsWith('.json') ? json(ctx, hookFile, text) : null;
     if (!text.includes('hooks/aies-guard.mjs')) fail(ctx, `${hookFile} does not invoke the guard`);
+    const doneEvent = { 'claude-code': ['hooks', 'Stop'], cursor: ['hooks', 'stop'], codex: ['hooks', 'Stop'], 'gemini-cli': ['hooks', 'AfterAgent'], windsurf: ['Stop'] }[ide];
+    if (doneEvent) {
+      const entries = doneEvent.reduce((o, k) => o?.[k], cfg) ?? [];
+      if (!JSON.stringify(entries).includes('hooks/aies-done.mjs')) fail(ctx, `${hookFile} must wire hooks/aies-done.mjs to ${doneEvent.at(-1)}`);
+      if (JSON.stringify(entries).includes('onFailure')) fail(ctx, 'definition-of-done gate must fail open (no onFailure: block)');
+    }
+    if (text.includes('aies-egress-check.mjs')) fail(ctx, 'egress self-test must only be wired for the confidential data class');
     if (ide === 'claude-code') {
       const matchers = (cfg?.hooks?.PreToolUse ?? []).map(h => h.matcher);
       if (!['Bash', 'Read'].every(m => matchers.includes(m)) || !matchers.some(m => /Edit/.test(m))) fail(ctx, 'claude PreToolUse must cover Bash, Edit/Write, Read');
@@ -188,7 +196,7 @@ function checkHooksAndConfig(ctx, ide, files) {
 }
 
 function checkCanon(ctx, files) {
-  for (const required of ['AGENTS.md', 'AIES.md', 'MODEL_POLICY.md', 'implementation_plan.md', 'hooks/aies-guard.mjs', 'hooks/README.md', 'scripts/aies-worktree.mjs', 'plans/_TASK_CONTRACT.md', 'plans/_TEMPLATE.md', 'reviews/_TEMPLATE.md', 'mcps/recommended.json', 'guides/parallel-agents-and-worktrees.md']) {
+  for (const required of ['AGENTS.md', 'AIES.md', 'MODEL_POLICY.md', 'implementation_plan.md', 'hooks/aies-guard.mjs', 'hooks/aies-done.mjs', 'hooks/aies-done.json', 'hooks/aies-egress-check.mjs', 'hooks/aies-egress.json', 'hooks/README.md', 'scripts/aies-worktree.mjs', 'plans/_TASK_CONTRACT.md', 'plans/_TEMPLATE.md', 'reviews/_TEMPLATE.md', 'mcps/recommended.json', 'guides/parallel-agents-and-worktrees.md']) {
     if (!files[required]) fail(ctx, `missing ${required}`);
   }
   for (const file of Object.keys(files)) {
@@ -362,6 +370,86 @@ function checkGuardSelfTest(guardSource) {
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
+/** Definition-of-done gate: refuses on failure in each runtime's shape, skips unchanged trees, caps loops. */
+function checkDoneGate(source) {
+  const dir = tmpRepo({ 'hooks/aies-done.mjs': source, 'README.md': 'x\n' });
+  const gitc = (...args) => spawnSync('git', ['-c', 'user.email=kit@aies', '-c', 'user.name=kit', ...args], { cwd: dir, encoding: 'utf8' });
+  gitc('init', '-q');
+  gitc('add', '.');
+  gitc('commit', '-qm', 'base');
+  const setCommands = commands => fs.writeFileSync(path.join(dir, 'hooks/aies-done.json'), JSON.stringify({ commands, maxConsecutiveBlocks: 2 }));
+  const run = target => spawnSync(process.execPath, [path.join(dir, 'hooks/aies-done.mjs'), '--target', target], { cwd: dir, input: '{}', encoding: 'utf8' });
+  const failing = 'node -e "console.log(\'boom-marker\'); process.exit(1)"';
+
+  setCommands([failing]);
+  gitc('add', '.');
+  gitc('commit', '-qm', 'config');
+  if (run('claude').status !== 0) fail('done-gate', 'clean tree with no new commits must not be gated');
+
+  fs.writeFileSync(path.join(dir, 'src.js'), 'change\n');
+  let r = run('claude');
+  if (r.status !== 2 || !r.stderr.includes('boom-marker')) fail('done-gate', `claude: failing check must exit 2 with output tail (got ${r.status})`);
+  r = run('cursor');
+  if (r.status !== 0 || !JSON.parse(r.stdout || '{}').followup_message?.includes('definition of done')) fail('done-gate', 'cursor: failing check must return followup_message');
+  r = run('gemini');
+  if (r.status !== 0) fail('done-gate', 'must allow completion after maxConsecutiveBlocks refusals');
+  if (run('codex').status !== 2) fail('done-gate', 'block counter must reset after the cap releases');
+
+  setCommands(['node -e "process.exit(0)"']);
+  if (run('devin').status !== 0) fail('done-gate', 'passing checks must allow completion');
+  const state = JSON.parse(fs.readFileSync(path.join(dir, 'hooks/logs/aies-done-state.json'), 'utf8'));
+  if (!state.lastGreen) fail('done-gate', 'green fingerprint not cached');
+
+  setCommands([]);
+  fs.writeFileSync(path.join(dir, 'src.js'), 'change 2\n');
+  if (run('claude').status !== 0) fail('done-gate', 'empty command list must allow completion');
+  fs.writeFileSync(path.join(dir, 'hooks/aies-done.json'), '{ broken');
+  if (run('claude').status !== 0) fail('done-gate', 'gate must fail open on invalid config');
+  fs.rmSync(dir, { recursive: true, force: true });
+}
+
+/** Egress self-test: a reachable probe is a leak (--require-closed exits 1); an unreachable one passes. */
+async function checkEgress(source) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'aies-egress-'));
+  const script = path.join(dir, 'aies-egress-check.mjs');
+  fs.writeFileSync(script, source);
+  const server = net.createServer(s => s.destroy());
+  await new Promise(done => server.listen(0, '127.0.0.1', done));
+  const { port } = server.address();
+  const cfg = path.join(dir, 'egress.json');
+  const runAsync = () => new Promise(done => {
+    execFile(process.execPath, [script, '--config', cfg, '--require-closed', '--json'], { encoding: 'utf8' }, (error, stdout) => done({ code: error?.code ?? 0, stdout }));
+  });
+  fs.writeFileSync(cfg, JSON.stringify({ dnsProbes: [], probes: [{ host: '127.0.0.1', port }], timeoutMs: 1500 }));
+  let r = await runAsync();
+  if (r.code !== 1 || JSON.parse(r.stdout).closed !== false) fail('egress', `reachable probe must fail --require-closed (got ${r.code})`);
+  await new Promise(done => server.close(done));
+  r = await runAsync();
+  if (r.code !== 0 || JSON.parse(r.stdout).closed !== true) fail('egress', `unreachable probe must pass (got ${r.code})`);
+  fs.rmSync(dir, { recursive: true, force: true });
+}
+
+/** Agent Plugins 1.0: closed manifest, canonical schemas, portable core + Claude/Codex overlays that do not collide. */
+function checkPlugin(files) {
+  const allowed = new Set(['$schema', 'name', 'version', 'description', 'author', 'homepage', 'repository', 'license', 'keywords', 'extensions']);
+  const manifest = json('plugin', 'plugin.json', files['plugin.json'] ?? '');
+  if (manifest?.$schema !== AGENT_PLUGINS_SCHEMA) fail('plugin', 'plugin.json $schema must be the Agent Plugins 1.0.0 identifier');
+  if (!/^[a-z0-9]([a-z0-9.-]{0,62}[a-z0-9])?$/.test(manifest?.name ?? '') || /--|\.\./.test(manifest?.name ?? '')) fail('plugin', 'plugin.json name violates §5.5');
+  for (const key of Object.keys(manifest ?? {})) if (!allowed.has(key)) fail('plugin', `plugin.json has non-spec field ${key}`);
+  const mcp = json('plugin', 'mcp.json', files['mcp.json'] ?? '');
+  if (mcp?.$schema !== AGENT_PLUGINS_MCP_SCHEMA || Object.keys(mcp ?? {}).sort().join() !== '$schema,mcpServers' || Object.keys(mcp?.mcpServers ?? {}).length) fail('plugin', 'mcp.json must be {$schema, mcpServers: {}}');
+  const claude = json('plugin', '.claude-plugin/plugin.json', files['.claude-plugin/plugin.json'] ?? '');
+  const hooksPath = claude?.hooks?.replace(/^\.\//, '');
+  if (!hooksPath || !files[hooksPath]) fail('plugin', 'Claude overlay must point at a bundled hooks file');
+  const hooks = json('plugin', hooksPath ?? 'hooks', files[hooksPath] ?? '{}');
+  if (!hooks?.hooks?.PreToolUse || !JSON.stringify(hooks?.hooks?.Stop ?? []).includes('aies-done.mjs')) fail('plugin', 'Claude hooks need the guard (PreToolUse) and done gate (Stop)');
+  if (files['hooks/hooks.json']) fail('plugin', 'hooks/hooks.json is the Codex plugin default; Claude-format hooks there break Codex');
+  if (files['hooks/aies-done.json']) fail('plugin', 'plugin must not ship aies-done.json; the gate reads the project config');
+  json('plugin', '.codex-plugin/plugin.json', files['.codex-plugin/plugin.json'] ?? '');
+  if (Object.keys(files).some(f => f.startsWith('commands/'))) fail('plugin', 'commands ship as skills, not commands/');
+  for (const n of ['story-kickoff', 'planning']) if (!files[`skills/${n}/SKILL.md`]) fail('plugin', `missing skills/${n}`);
+}
+
 function checkScriptSyntax(name, source) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'aies-syntax-'));
   const file = path.join(dir, name);
@@ -398,15 +486,28 @@ for (const legacy of ['vscode', 'devin', 'gemini', 'claude']) {
 }
 
 const plugin = generatePluginBundle(profile);
-json('plugin', '.claude-plugin/plugin.json', plugin.files['.claude-plugin/plugin.json']);
-json('plugin', 'hooks/hooks.json', plugin.files['hooks/hooks.json']);
+checkPlugin(plugin.files);
 checkSkills('plugin', Object.fromEntries(Object.entries(plugin.files).map(([k, v]) => [k.startsWith('skills/') ? `.agents/${k}` : k, v])));
 
+for (const ide of ['claude-code', 'codex', 'gemini-cli', 'windsurf']) {
+  const { files } = generateStarterKit({ ...profile, dataClass: 'confidential', ide, stack: 'nextjs' });
+  const hooksFile = { 'claude-code': '.claude/settings.json', codex: '.codex/hooks.json', 'gemini-cli': '.gemini/settings.json', windsurf: '.devin/hooks.v1.json' }[ide];
+  const cfg = JSON.parse(files[hooksFile]);
+  const start = (cfg.hooks ?? cfg).SessionStart;
+  if (!JSON.stringify(start ?? []).includes('aies-egress-check.mjs')) fail(`egress/${ide}`, 'confidential profile must run the egress self-test at SessionStart');
+}
+
+const doneSource = generateStarterKit({ ...profile, ide: 'cursor', stack: 'nextjs' }).files['hooks/aies-done.mjs'];
+const egressSource = generateStarterKit({ ...profile, ide: 'cursor', stack: 'nextjs' }).files['hooks/aies-egress-check.mjs'];
 checkGuard(guardSource);
 checkGuardSelfTest(guardSource);
+checkDoneGate(doneSource);
+await checkEgress(egressSource);
 checkRepoScan();
 checkApply();
 checkScriptSyntax('aies-guard.mjs', guardSource);
+checkScriptSyntax('aies-done.mjs', doneSource);
+checkScriptSyntax('aies-egress-check.mjs', egressSource);
 checkScriptSyntax('aies-worktree.mjs', worktreeSource);
 
 if (UPDATE) {
@@ -432,5 +533,5 @@ if (failures.length) {
   console.error(`Kit conformance failed (${failures.length}):\n${failures.slice(0, 60).join('\n')}`);
   process.exitCode = 1;
 } else {
-  console.log(`Kit conformance passed: ${SUPPORTED_TARGETS.length} runtimes × ${STACKS.length} stacks, guard behavior, plugin bundle, layout snapshot.`);
+  console.log(`Kit conformance passed: ${SUPPORTED_TARGETS.length} runtimes × ${STACKS.length} stacks, guard, done gate, egress self-test, Agent Plugins bundle, layout snapshot.`);
 }

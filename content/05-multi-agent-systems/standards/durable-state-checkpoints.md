@@ -1,10 +1,12 @@
 # Durable State and Checkpoints
 
-> **Version:** 2.0.0 | **Last updated:** 2026-07-16
+> **Version:** 2.1.0 | **Last updated:** 2026-11-06
 
 ## Purpose
 
 Keep recoverable, conflict-safe workflow state outside model context so agents can crash, retry, and resume without corrupting gates or double-applying side effects.
+
+> Running the agent itself on a durable execution engine (Temporal, DBOS, Restate) is covered in [Durable execution](./durable-execution.md). This standard defines the state model those engines carry.
 
 ## Why
 
@@ -249,5 +251,6 @@ Checkpoint only validated semantic boundaries — not every reasoning step.
 
 ## Changelog
 
+- **2.1.0 — 2026-11-06:** Linked the durable execution standard.
 - **2.0.0 — 2026-07-16:** Full rewrite — authoritative vs context, checkpoint schema, recovery Mermaid, CAS/leases, anti-patterns.
 - **1.0.0 — 2026-07-16:** Initial citation-style stub.

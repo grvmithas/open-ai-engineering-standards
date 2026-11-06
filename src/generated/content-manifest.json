@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "documentCount": 620,
+  "documentCount": 624,
   "documents": [
     {
       "slug": "00-foundations/01-how-llms-think",
@@ -663,6 +663,12 @@
       "description": "Bound multi-agent spend and hops, attribute cost to the right owners, and guarantee every workflow reaches an explicit terminal outcome with descendants stopped"
     },
     {
+      "slug": "05-multi-agent-systems/standards/durable-execution",
+      "sourcePath": "content/05-multi-agent-systems/standards/durable-execution.md",
+      "title": "Durable Execution for Long-Running Agents",
+      "description": "Run agents that outlive a single request. Those agents wait for humans, survive deploys and crashes, and call tools with side effects. They must resume exactly "
+    },
+    {
       "slug": "05-multi-agent-systems/standards/durable-state-checkpoints",
       "sourcePath": "content/05-multi-agent-systems/standards/durable-state-checkpoints.md",
       "title": "Durable State and Checkpoints",
@@ -813,10 +819,22 @@
       "description": "Route each request to the least costly qualified model without reducing required quality or control."
     },
     {
+      "slug": "07-llmops/cost-optimization/prompt-caching",
+      "sourcePath": "content/07-llmops/cost-optimization/prompt-caching.md",
+      "title": "Prompt Caching Engineering",
+      "description": "Design prompts, agent loops, and deployments so the provider's prefix cache hits. Measure the hit rate as a service-level objective. Treat any change that silen"
+    },
+    {
       "slug": "07-llmops/cost-optimization/token-budgets",
       "sourcePath": "content/07-llmops/cost-optimization/token-budgets.md",
       "title": "Token Budget Standard",
       "description": "Enforce per-task input, output, retry, and monthly token budgets."
+    },
+    {
+      "slug": "07-llmops/evaluation/benchmark-citation-policy",
+      "sourcePath": "content/07-llmops/evaluation/benchmark-citation-policy.md",
+      "title": "Benchmark Citation Policy",
+      "description": "Decide what public benchmark scores may be used for, which benchmarks may be cited at all, and how to cite them. The goal is that model selection, vendor claims"
     },
     {
       "slug": "07-llmops/evaluation/continuous-eval",
@@ -877,6 +895,12 @@
       "sourcePath": "content/07-llmops/observability/tracing.md",
       "title": "OpenTelemetry LLM Tracing",
       "description": "Create vendor-neutral end-to-end traces across gateway, retrieval, model, tools, and approvals."
+    },
+    {
+      "slug": "07-llmops/open-weight-serving",
+      "sourcePath": "content/07-llmops/open-weight-serving.md",
+      "title": "Open-Weight Model Serving",
+      "description": "Serve open-weight models (LLMs, guard models, embedders, rerankers) in production with the same release discipline as hosted APIs:"
     },
     {
       "slug": "07-llmops/promptops/ab-testing",
@@ -3624,7 +3648,7 @@
       "slug": "standard/crosswalks/iso-ai-management-risk-impact",
       "sourcePath": "content/standard/crosswalks/iso-ai-management-risk-impact.md",
       "title": "ISO AI Management, Risk, and Impact Crosswalk",
-      "description": "Version: 1.0.1"
+      "description": "Version: 1.1.0"
     },
     {
       "slug": "standard/crosswalks/nist-ai-risk",

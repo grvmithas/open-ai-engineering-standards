@@ -1,6 +1,6 @@
 export const SITE_URL = 'https://www.ai-standards.dev';
 
-export const KIT_VERSION = '2.2.0';
+export const KIT_VERSION = '2.3.0';
 
 export const GOALS = [
   { id: 'new-product', label: 'Build a new product' },

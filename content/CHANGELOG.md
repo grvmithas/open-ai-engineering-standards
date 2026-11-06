@@ -9,6 +9,28 @@ Each entry includes: Added, Changed, Deprecated, Removed, Fixed, Security.
 
 ---
 
+## [1.2.0] — 2026-11-06
+
+### Added
+- `07-llmops/cost-optimization/prompt-caching.md`: covers prefix ordering, per-provider breakpoints and TTLs, TTL break-even, hit-ratio SLOs, and a prefix-digest contract test.
+- `05-multi-agent-systems/standards/durable-execution.md`: Temporal (default), DBOS, and Restate, with idempotent tools, durable human approval, history limits, and versioning with replay tests.
+- `07-llmops/evaluation/benchmark-citation-policy.md`: sorts benchmarks into discriminating, saturating, and retired tiers. SWE-bench Verified, HumanEval, and MBPP are retired as evidence. The content profiler flags retired citations.
+- `07-llmops/open-weight-serving.md`: licence gate, weight pinning, vLLM 0.33 versus SGLang 0.5.23, sizing, quantization, speculative decoding (Medusa removed), prefill/decode disaggregation, and security.
+
+### Changed
+- `07-llmops/observability/tracing.md`:
+  - pins the OpenTelemetry GenAI conventions by commit and core semantic conventions 1.45.0;
+  - adds the agent span taxonomy;
+  - renames the attribute prefix from `oaies.` to `aies.`, with a migration note.
+- ISO crosswalk: adds ISO/IEC 27090:2026 evidence rows, and tracks 42006:2025, 27091, 24970, and 42105.
+- Starter kit 2.3.0: Agent Plugins 1.0 bundle, definition-of-done gate, and egress self-test.
+
+### Deadlines
+- **2026-11-30:** OpenAI Evals shuts down. Migrate to promptfoo ([framework selection](./07-llmops/evaluation/framework-selection.md)).
+- **2026-12-02:** EU AI Act Article 50 transparency obligations apply to legacy systems ([EU AI Act](./09-enterprise-ai/governance/eu-ai-act.md)).
+
+---
+
 ## [1.1.0] — 2026-11-06
 
 ### Added

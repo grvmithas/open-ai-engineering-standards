@@ -1,7 +1,7 @@
 # OpenTelemetry LLM Tracing
 
-> **Version:** 1.1.0
-> **Last updated:** 2026-07-16
+> **Version:** 1.2.0
+> **Last updated:** 2026-11-06
 > **Status:** Informative AIES implementation profile
 
 ## Purpose
@@ -21,22 +21,77 @@ Use on every production request, with privacy-safe sampling.
 5. Export to approved backends and test trace continuity.
 
 ## Version-pinning policy
-The OpenTelemetry GenAI semantic conventions remain Development-status and moved from the core semantic-conventions repository to the dedicated `open-telemetry/semantic-conventions-genai` repository in 2026. Pin the exact commit or release used by instrumentation and collectors; do not silently adopt `main` or `latest`. As of 2026-07-16 the dedicated repository does not publish a final schema URL; do not invent one. Keep the AIES telemetry-contract version explicit until an authoritative schema URL is available.
+The OpenTelemetry GenAI semantic conventions are still **Development** status: every stability marker says so. In 2026 they moved from the core semantic-conventions repository to the dedicated `open-telemetry/semantic-conventions-genai` repository. As of 2026-11-06 that repository publishes **no releases and no schema URL**, so the only reproducible pin is a commit SHA. Non-GenAI conventions (HTTP, RPC, database, messaging) come from the core repository, which does publish releases and schema URLs.
+
+Pin both. Never track `main` or `latest`.
 
 ```yaml
 telemetry_contract:
-  contract_version: oaies-genai-trace/2
-  otel_semconv_version: "PINNED_RELEASE"
-  schema_url: "PINNED_SCHEMA_URL_IF_PUBLISHED"
+  contract_version: aies-genai-trace/3
+  otel_genai_semconv_ref: e6658f14c9d9ea0760825f029cb82e7673f48fab   # semantic-conventions-genai main, 2026-11-06
+  otel_genai_schema_url: none                                       # not published; do not invent one
+  otel_core_semconv_version: "1.45.0"                               # HTTP, RPC, DB, messaging
+  otel_core_schema_url: https://opentelemetry.io/schemas/1.45.0
+  validation_tool: weaver v0.28.0                                   # the version the conventions repo itself uses
   instrumentation_scope: "com.example.ai-gateway"
   instrumentation_version: "3.4.1"
   content_capture: disabled
   trace_context: "W3C traceparent + tracestate"
   baggage_allowlist: ["tenant.region", "risk.tier"]
-  custom_attribute_prefix: "oaies."
+  custom_attribute_prefix: "aies."
 ```
 
-An upgrade requires a fixture trace produced by old and new instrumentation, collector transformation tests, backend query compatibility, dashboard/alert review, redaction tests, and a migration window where both schema versions can be queried. Record custom fields under an organization namespace; never create fields beginning `gen_ai.*`.
+The values above are the AIES reference pin as of 2026-11-06; teams record their own pin in their telemetry contract. When the GenAI repository publishes its first release, move the pin to that tag and add its schema URL.
+
+An upgrade requires:
+
+- a fixture trace produced by both the old and new instrumentation;
+- collector transformation tests;
+- a backend query compatibility check;
+- a dashboard and alert review;
+- redaction tests;
+- a migration window in which both schema versions can be queried.
+
+Record custom fields under an organization namespace, and never create fields beginning `gen_ai.*`.
+
+**Prefix migration:** contract versions 1–2 used the `oaies.` prefix. Contract version 3 uses `aies.`. During migration, have the collector's transform processor copy each `oaies.*` attribute to its `aies.*` name for one retention period, then drop the old names.
+
+## Agent span taxonomy (pinned ref)
+Agent systems produce more than model calls. Use the operation names from the pinned conventions, so any backend can reconstruct the agent's structure:
+
+| `gen_ai.operation.name` | Span kind | Emit when |
+|---|---|---|
+| `invoke_agent` | `CLIENT` for a remote agent (A2A, managed agent API); `INTERNAL` for an in-process agent | One agent run, from task in to result out. It is the parent of everything below. |
+| `create_agent` | `CLIENT` | Provisioning a remote agent (managed agent runtimes) |
+| `invoke_workflow` | `INTERNAL` | A multi-step orchestration (a durable workflow or graph run) that invokes agents |
+| `plan` | `INTERNAL` | An explicit planning step whose output drives later steps |
+| `chat` / `generate_content` / `text_completion` | `CLIENT` | Each model request, including retries as separate child spans |
+| `execute_tool` | `INTERNAL` | Each tool execution; parent of the downstream HTTP, RPC, or MCP client span |
+| `retrieval` | `CLIENT` | Each retrieval or search call |
+| `embeddings` | `CLIENT` | Each embedding request |
+
+```mermaid
+flowchart TD
+  W["invoke_workflow (INTERNAL)"] --> A["invoke_agent planner (INTERNAL)"]
+  A --> P["plan (INTERNAL)"]
+  P --> M1["chat (CLIENT)"]
+  W --> B["invoke_agent coder (INTERNAL)"]
+  B --> M2["chat (CLIENT)"]
+  M2 --> T["execute_tool (INTERNAL)<br/>gen_ai.tool.call.id"]
+  T --> X["MCP / HTTP client span<br/>traceparent in MCP _meta"]
+  B --> R["retrieval (CLIENT)"]
+  W --> C["invoke_agent remote reviewer (CLIENT, A2A)"]
+```
+
+Attribute rules for agent spans:
+
+- Set `gen_ai.tool.call.id` on `execute_tool` whenever the provider returns a tool-call ID. It joins the model's proposed call to the executed call.
+- Set `gen_ai.agent.id`, `gen_ai.agent.name`, and `gen_ai.agent.version` on `invoke_agent`. Set `gen_ai.conversation.id` on every span of a session. These are **span attributes, never metric labels**.
+- Record token usage with the split counters: `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`, `gen_ai.usage.cache_read.input_tokens`, `gen_ai.usage.cache_write.input_tokens`, and `gen_ai.usage.reasoning.output_tokens`. A blended input count hides a broken prompt cache ([prompt caching](../cost-optimization/prompt-caching.md)), and thinking tokens are billed as output.
+- **MCP:** spec `2026-07-28` carries trace context in request `_meta`. Propagate `traceparent` through it, so the MCP server's spans join the agent's trace. The pinned repository's `mcp.md` defines the MCP span conventions.
+- **A2A:** propagate W3C trace context on agent-to-agent calls and use a `CLIENT` `invoke_agent` span on the caller side.
+- **Coding-agent hooks:** attach the runtime's correlation IDs (Claude Code `session_id`, Devin `prompt_id`, Copilot `agentId`/`parentAgentId`) as `aies.agent.session_id`. In cloud agents, ship hook events over HTTP, because their filesystem is discarded when the job ends.
+- **Durable workflows:** use the workflow ID as `aies.workflow.id` and link resumed executions to the original trace with span links. A resume hours later is a new trace, not a child of a closed span ([durable execution](../../05-multi-agent-systems/standards/durable-execution.md)).
 
 ## Span topology
 ```mermaid
@@ -52,7 +107,7 @@ flowchart LR
 ```
 
 - Keep the inbound server span as trace root; do not create a second root at the model call.
-- Represent retries as separate child model spans with `oaies.retry.attempt`; retain one logical request ID.
+- Represent retries as separate child model spans with `aies.retry.attempt`; retain one logical request ID.
 - Link asynchronous evaluation, human approval, and incident-analysis traces using OpenTelemetry links. Do not falsify parent/child timing across queues.
 - Use producer/consumer messaging spans around durable queues and propagate W3C trace context in signed metadata.
 - A tool call has both the model’s proposed tool-call record and the actual downstream client/server spans. Record proposed, policy-approved, attempted, and completed states separately.
@@ -62,11 +117,11 @@ Use the exact names and requirements from the pinned OpenTelemetry release. The 
 
 | Span | Required attributes | AIES extension | Prohibited by default |
 |---|---|---|---|
-| Model operation | `gen_ai.operation.name`, `gen_ai.provider.name`, requested model, response model/ID when returned, input/output token usage, `error.type` | `oaies.prompt.release`, `oaies.policy.release`, `oaies.route.id`, `oaies.risk.tier`, `oaies.data.class` | Raw input/output messages, API keys, full retrieved documents |
-| Retrieval | database/search system attributes appropriate to client library, result count, duration | `oaies.retrieval.index_release`, `oaies.retrieval.query_hash`, `oaies.retrieval.document_set_hash` | Query text containing personal data; document bodies |
-| Tool | pinned `gen_ai.tool.*` attributes where specified plus normal RPC/HTTP/database conventions | `oaies.tool.policy_decision`, `oaies.tool.side_effect`, `oaies.tool.approval_id` | Tool arguments/results unless field-level policy explicitly permits |
-| Guardrail/evaluation | operation name, status, duration | `oaies.control.id`, `oaies.control.release`, `oaies.decision`, `oaies.reason.code` | Free-form hidden reasoning |
-| Human approval | workflow and messaging identifiers | `oaies.approval.id`, `oaies.approval.outcome`, `oaies.approver.role` | Approver personal details beyond approved pseudonymous identity |
+| Model operation | `gen_ai.operation.name`, `gen_ai.provider.name`, requested model, response model/ID when returned, input/output token usage, `error.type` | `aies.prompt.release`, `aies.policy.release`, `aies.route.id`, `aies.risk.tier`, `aies.data.class` | Raw input/output messages, API keys, full retrieved documents |
+| Retrieval | database/search system attributes appropriate to client library, result count, duration | `aies.retrieval.index_release`, `aies.retrieval.query_hash`, `aies.retrieval.document_set_hash` | Query text containing personal data; document bodies |
+| Tool | pinned `gen_ai.tool.*` attributes where specified plus normal RPC/HTTP/database conventions | `aies.tool.policy_decision`, `aies.tool.side_effect`, `aies.tool.approval_id` | Tool arguments/results unless field-level policy explicitly permits |
+| Guardrail/evaluation | operation name, status, duration | `aies.control.id`, `aies.control.release`, `aies.decision`, `aies.reason.code` | Free-form hidden reasoning |
+| Human approval | workflow and messaging identifiers | `aies.approval.id`, `aies.approval.outcome`, `aies.approver.role` | Approver personal details beyond approved pseudonymous identity |
 
 Every low-cardinality attribute has an owner and allowed-value registry. Never use user ID, session ID, prompt digest, trace ID, document ID, or error message as a metric label.
 
@@ -148,6 +203,9 @@ The **observability platform owner** accepts the operational decision. The **pri
 ## Anti-patterns
 - Logging raw prompts by default.
 - Treating experimental semantic conventions as stable.
+- Pinning to "latest" or to the semantic-conventions-genai `main` branch. Attribute renames land without a release, and dashboards break silently.
+- Emitting every agent step as a generic `chat` span. Without `invoke_agent`, `plan`, and `execute_tool`, a trace shows what the model was asked but not which agent asked it or which tool ran.
+- Dropping trace context at the MCP boundary. The tool server's spans become orphans, and tool latency can't be attributed to agent turns.
 
 ## Enterprise considerations
 - Apply regional collectors and least privilege.
@@ -163,7 +221,10 @@ The **observability platform owner** accepts the operational decision. The **pri
 | Domain threat/control source | Sensitive Information Disclosure in telemetry | Test only the threats applicable to the documented system and release |
 
 ## Checklist
-- [ ] OpenTelemetry semantic-convention and collector versions are pinned.
+- [ ] OpenTelemetry semantic-convention and collector versions are pinned: the GenAI conventions by commit SHA, the core conventions by release.
+- [ ] Agent runs emit `invoke_agent` spans with the correct span kind; tools emit `execute_tool` with `gen_ai.tool.call.id`.
+- [ ] Token usage is recorded with separate cache read, cache write, and reasoning counters.
+- [ ] Trace context propagates through MCP `_meta` and A2A calls.
 - [ ] Span topology covers retrieval, model retries, tools, guardrails, approvals, and async links.
 - [ ] Stable and Development attributes are distinguished in the telemetry contract.
 - [ ] Content capture is off by default and uses a separate governed path when enabled.
@@ -173,7 +234,9 @@ The **observability platform owner** accepts the operational decision. The **pri
 - [ ] Leakage, integrity, availability, and regional-failure runbooks are exercised.
 
 ## References
-- OpenTelemetry, [dedicated GenAI semantic conventions repository](https://github.com/open-telemetry/semantic-conventions-genai) (accessed 2026-07-16); Development status and schema publication must be checked at the pinned commit.
+- OpenTelemetry, [dedicated GenAI semantic conventions repository](https://github.com/open-telemetry/semantic-conventions-genai) (accessed 2026-11-06); reference pin [`e6658f14`](https://github.com/open-telemetry/semantic-conventions-genai/tree/e6658f14c9d9ea0760825f029cb82e7673f48fab). No releases or schema URL were published as of that date.
+- OpenTelemetry, [GenAI agent spans at the pinned commit](https://github.com/open-telemetry/semantic-conventions-genai/blob/e6658f14c9d9ea0760825f029cb82e7673f48fab/docs/gen-ai/gen-ai-agent-spans.md) and [GenAI attribute registry](https://github.com/open-telemetry/semantic-conventions-genai/blob/e6658f14c9d9ea0760825f029cb82e7673f48fab/docs/registry/attributes/gen-ai.md) (accessed 2026-11-06).
+- OpenTelemetry, [semantic conventions v1.45.0](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.45.0) (accessed 2026-11-06).
 - OpenTelemetry, [semantic conventions v1.42.0 migration note](https://github.com/open-telemetry/semantic-conventions/releases/tag/v1.42.0) (accessed 2026-07-16).
 - OpenTelemetry, [former Generative AI semantic-conventions location](https://opentelemetry.io/docs/specs/semconv/gen-ai/) (accessed 2026-07-16); retained only as a migration pointer.
 - W3C, [Trace Context Level 2](https://www.w3.org/TR/trace-context-2/) (accessed 2026-07-16).
@@ -183,5 +246,6 @@ The **observability platform owner** accepts the operational decision. The **pri
 ## Changelog
 | Version | Date | Change |
 |---|---|---|
+| 1.2.0 | 2026-11-06 | Pinned the GenAI conventions by commit (`e6658f14`) and the core conventions at v1.45.0. Added the agent span taxonomy, split token-usage counters, and MCP/A2A/hook/workflow correlation. Contract version 3 renames the custom prefix from `oaies.` to `aies.`. |
 | 1.1.0 | 2026-07-16 | Added pinned semantic-convention contract, trace topology, attribute/content policy, collector configuration, tail sampling, conformance tests, and telemetry incident runbook. |
 | 1.0.0 | 2026-07-16 | Initial complete profile. |

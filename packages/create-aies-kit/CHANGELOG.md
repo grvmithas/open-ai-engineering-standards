@@ -2,6 +2,25 @@
 
 Format: one `## [version] — date` heading per release (the release workflow refuses to publish without it).
 
+## [2.3.0] — 2026-11-06
+
+### Added
+- **Definition-of-done gate** (`hooks/aies-done.mjs` + `hooks/aies-done.json`). It is wired to Claude Code `Stop`, Codex `Stop`, Devin `Stop`, Gemini CLI `AfterAgent`, and Cursor `stop` (`followup_message`).
+  - When the working tree changed, it runs the detected lint, typecheck, and test commands, and refuses completion with the last 40 lines of failing output.
+  - It skips unchanged trees, caches the fingerprint of the last green run, releases after 3 consecutive blocks, and fails open on internal errors.
+  - Copilot, Kiro, and opencode have no blocking completion event; the CI gate covers them.
+- **Egress self-test** (`hooks/aies-egress-check.mjs` + `hooks/aies-egress.json`) for control AC-06.
+  - DNS and TCP probes to non-allowlisted hosts and a raw IP.
+  - Wired at session start for `--data-class confidential`. `--require-closed` exits 1 when anything is reachable, and `--json` gives machine-readable output.
+- `audit` check `done-gate`. `fix` fills an empty command list from the detected verify commands.
+- Guard protects `aies-done.*` and `aies-egress*` files from agent edits and deletion (14 self-test cases).
+
+### Changed
+- **`plugin` emits an Agent Plugins 1.0 bundle.** It contains a root `plugin.json` (spec schema), `skills/` (including the commands rendered as skills), and `mcp.json`, which Cursor and Kiro load natively.
+  - `.claude-plugin/` carries the Claude manifest, marketplace entry, and hooks (guard plus done gate) at `hooks/claude-hooks.json`.
+  - `.codex-plugin/plugin.json` is the Codex manifest.
+  - The bundle no longer emits `commands/`.
+
 ## [2.2.0] — 2026-11-06
 
 ### Fixed

@@ -1396,14 +1396,15 @@
     },
     {
       "title": "ISO AI Management, Risk, and Impact Crosswalk",
-      "description": "Map AIES evidence artifacts to the management-system, AI risk-management, and AI system impact-assessment concerns in ISO/IEC 42001, ISO/IEC 23894, and ISO/IEC 42005.",
-      "version": "1.0.1",
+      "description": "Map AIES evidence artifacts to the AI concerns in five ISO/IEC standards: - 42001: the organizational AI management system; - 23894: AI risk-management guidance; - 42005: AI system impact assessment; - 27090: AI security threats; - 42006: the rules certification bodies follow when they audit an AI management system.",
+      "version": "1.1.0",
       "status": "Informative",
-      "published": "2026-07-16",
+      "published": "2026-11-06",
       "frameworks": [
         "ISO/IEC 42001",
         "ISO/IEC 23894",
-        "ISO/IEC 42005"
+        "ISO/IEC 42005",
+        "ISO/IEC 27090; ISO/IEC 42006 auditor note"
       ],
       "sourcePath": "content/standard/crosswalks/iso-ai-management-risk-impact.md",
       "sourceSlug": "standard/crosswalks/iso-ai-management-risk-impact"

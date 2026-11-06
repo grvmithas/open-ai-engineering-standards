@@ -34,7 +34,7 @@ Usage:
   npx @grvmithas/create-aies-kit@latest enhance        rescan repo and upgrade the harness (keeps your edits; alias: upgrade)
   npx @grvmithas/create-aies-kit@latest audit          score harness conformance (--format json, --min-score 100 for CI)
   npx @grvmithas/create-aies-kit@latest fix            write missing harness files
-  npx @grvmithas/create-aies-kit@latest plugin --out ./aies-plugin   Claude Code plugin bundle
+  npx @grvmithas/create-aies-kit@latest plugin --out ./aies-plugin   Agent Plugins 1.0 bundle (Cursor, Kiro, Claude Code, Codex)
 
 Install writes:
   AGENTS.md (canonical, with this repo's detected lint/typecheck/test commands) + tool rules file
@@ -208,11 +208,12 @@ async function main() {
       dataClass: args['data-class'] || 'internal',
     });
     const { written, skipped } = await writeBundle(out, bundle.files, { force: Boolean(args.force), dryRun: Boolean(args.dryRun) });
-    console.log(`\nClaude Code plugin → ${out}`);
+    console.log(`\nAgent Plugins 1.0 bundle → ${out}`);
     console.log(`${args.dryRun ? 'Would write' : 'Wrote'} ${written.length} file(s); skipped ${skipped.length}.`);
     console.log('\nNext:');
-    console.log(`  /plugin marketplace add ${out}`);
-    console.log('  /plugin install aies@aies');
+    console.log('  Cursor / Kiro: push the folder to a git repo and add it as a team plugin (reads plugin.json)');
+    console.log(`  Claude Code:   /plugin marketplace add ${out}  then  /plugin install aies@aies-marketplace`);
+    console.log('  Codex:         reads .codex-plugin/plugin.json; hooks come from the repo install');
     return;
   }
 

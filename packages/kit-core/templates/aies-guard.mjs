@@ -48,12 +48,12 @@ const SHELL_RULES = [
   { id: 'external-effect', re: /\b(npm|pnpm|yarn)\s+publish\b|\bterraform\s+(apply|destroy)\b|\bkubectl\s+(apply|delete|replace|scale)\b|\bhelm\s+(install|upgrade|uninstall)\b|\bdocker\s+push\b/, reason: 'External/production effect: a human runs this after approval' },
   { id: 'secret-read', re: /\b(cat|type|more|less|head|tail|Get-Content|gc)\b[^\n|;&]*(\.env(?!\.example|\.sample|\.template)(\.[\w-]+)?\b|id_rsa|id_ed25519|\.pem\b|credentials\.json|\.aws[\\/]credentials)/i, reason: 'Printing secrets into the agent transcript leaks them to logs and model context' },
   { id: 'sudo', re: /(^|[\s;&|])sudo\s/, reason: 'Privilege escalation is human-only' },
-  { id: 'guard-tamper', re: /(\b(rm|del|Remove-Item|mv|move|Move-Item)\b|>\s*|\bsed\s+-i\b|\btee\b)[^\n]*(hooks[\\/]aies-guard|\.claude[\\/]settings|\.cursor[\\/]hooks\.json|\.github[\\/]hooks[\\/]|\.codex[\\/]hooks\.json|\.devin[\\/]hooks\.v1\.json|\.kiro[\\/]hooks[\\/])/i, reason: 'Agents may not disable or rewrite their own guardrails' },
+  { id: 'guard-tamper', re: /(\b(rm|del|Remove-Item|mv|move|Move-Item)\b|>\s*|\bsed\s+-i\b|\btee\b)[^\n]*(hooks[\\/]aies-(guard|done|egress)|\.claude[\\/]settings|\.cursor[\\/]hooks\.json|\.github[\\/]hooks[\\/]|\.codex[\\/]hooks\.json|\.devin[\\/]hooks\.v1\.json|\.kiro[\\/]hooks[\\/])/i, reason: 'Agents may not disable or rewrite their own guardrails' },
 ];
 
 /** Self-configuration integrity: files that grant the agent capabilities or enforce policy on it. */
 const PROTECTED_WRITE = [
-  { id: 'guard-files', re: /(^|\/)hooks\/aies-guard(\.mjs|\.rules\.json)$/, reason: 'The guard and its rules are human-maintained' },
+  { id: 'guard-files', re: /(^|\/)hooks\/(aies-guard(\.mjs|\.rules\.json)|aies-done\.(mjs|json)|aies-egress(-check\.mjs|\.json))$/, reason: 'The guard, the definition-of-done gate, the egress self-test, and their configs are human-maintained' },
   { id: 'hook-config', re: /(^|\/)(\.claude\/settings(\.local)?\.json|\.cursor\/hooks\.json|\.github\/hooks\/[^/]+\.json|\.codex\/hooks\.json|\.devin\/hooks\.v1\.json|\.kiro\/hooks\/[^/]+\.json|\.opencode\/plugins\/[^/]+|\.gemini\/settings\.json)$/, reason: 'Agents may not edit hook or permission configuration (self-configuration attack)' },
   { id: 'mcp-config', re: /(^|\/)(\.mcp\.json|\.cursor\/mcp\.json|\.kiro\/settings\/mcp\.json|\.codex\/config\.toml|\.devin\/mcp_config(\.local)?\.json|opencode\.json|\.continue\/mcpServers\/[^/]+|\.vscode\/(mcp|settings)\.json)$/, reason: 'Adding or changing MCP servers or editor auto-approve settings requires human review' },
   { id: 'ci-config', re: /(^|\/)\.github\/workflows\/[^/]+\.ya?ml$|(^|\/)\.gitlab-ci\.yml$/, reason: 'CI pipelines run with repository secrets; changes need human review' },
@@ -219,6 +219,8 @@ const SELF_TEST = [
   ['deny', { command: 'cat .env' }],
   ['deny', { tool_name: 'Edit', tool_input: { file_path: 'hooks/aies-guard.mjs' } }],
   ['deny', { tool_name: 'Write', tool_input: { file_path: '.github/workflows/ci.yml' } }],
+  ['deny', { tool_name: 'Edit', tool_input: { file_path: 'hooks/aies-done.json' } }],
+  ['deny', { command: 'rm hooks/aies-done.mjs' }],
   ['deny', { tool_name: 'Read', tool_input: { file_path: '.env.production' } }],
   ['allow', { command: 'git status' }],
   ['allow', { command: 'git push -u origin agent/task-1' }],

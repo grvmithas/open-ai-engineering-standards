@@ -1,6 +1,6 @@
 {
   "name": "@grvmithas/create-aies-kit",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Scaffold a complete AIES (AI Engineering Standard) harness into runtime-native paths — AGENTS.md, .agents/skills, native subagents, enforcing hooks, remote MCP, parallel worktrees — for Cursor, Claude Code, Copilot, Codex, Gemini CLI, Kiro, Devin Desktop, opencode, and Continue.",
   "license": "MIT",
   "type": "module",

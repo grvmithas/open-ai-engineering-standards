@@ -45,6 +45,7 @@ const OUTDATED = [
   [/\blangchain\.(llms|chat_models)\b|LLMChain\b|initialize_agent\b|AgentExecutor\b/g, 'legacy LangChain API'],
   [/\bAutoGen\b(?![^\n]{0,80}(Agent Framework|successor|existing))/g, 'AutoGen (superseded by Microsoft Agent Framework)'],
   [/\b(GPT|LLM)s? (can(no|')t|cannot) (browse|see images|use tools)\b/gi, 'outdated capability claim'],
+  [/\bSWE-bench Verified\b(?![^\n]{0,80}(saturat|contaminat))|\bHumanEval\b|\bMBPP\b/g, 'retired benchmark cited as evidence (see benchmark-citation-policy)'],
 ];
 
 const PLACEHOLDER = /\b(TODO|TBD|FIXME|XXX|lorem ipsum|coming soon)\b|\[(insert|placeholder|your [a-z ]+ here)\]|<insert [^>]+>/gi;
@@ -136,7 +137,7 @@ for (const abs of walkContent()) {
   const outdated = [];
   const currentProse = prose
     .split(/\r?\n/)
-    .filter(l => !/(archiv|legacy|deprecat|avoid|successor|supersed|migrat|delete|instead of|existing systems|in 202[2-5]|202[2-5][–-]202[2-6]|no longer|retired|diverge)/i.test(l))
+    .filter(l => !/(archiv|legacy|deprecat|avoid|successor|supersed|migrat|delete|instead of|existing systems|in 202[2-5]|202[2-5][–-]202[2-6]|no longer|retire[ds]?\b|diverge)/i.test(l))
     .join('\n');
   for (const [re, label] of OUTDATED) {
     const hits = currentProse.match(re);

@@ -41,6 +41,7 @@ Without LLMOps, every prompt change is a deployment risk. With LLMOps, prompt ch
 | File | What It Covers |
 |------|----------------|
 | [evaluation/framework-selection.md](./evaluation/framework-selection.md) | RAGAS vs DeepEval vs Promptfoo — when to use each |
+| [evaluation/benchmark-citation-policy.md](./evaluation/benchmark-citation-policy.md) | Which public benchmarks may be cited; SWE-bench Verified, HumanEval, MBPP retired |
 | [Live Eval Script (eval/test_sample.py)](../../eval/test_sample.py) | Working python test case using DeepEval for semantic relevancy |
 | [evaluation/golden-set-management.md](./evaluation/golden-set-management.md) | Building and maintaining regression test suites |
 | [evaluation/llm-as-judge.md](./evaluation/llm-as-judge.md) | Biases, calibration, and safeguards |
@@ -62,6 +63,8 @@ Without LLMOps, every prompt change is a deployment risk. With LLMOps, prompt ch
 | [cost-optimization/model-routing.md](./cost-optimization/model-routing.md) | Route tasks to appropriate model tier |
 | [model-lifecycle.md](./model-lifecycle.md) | Current model tiers, deprecation calendar, per-provider API capability changes |
 | [cost-optimization/caching-strategies.md](./cost-optimization/caching-strategies.md) | Semantic caching, exact-match caching |
+| [cost-optimization/prompt-caching.md](./cost-optimization/prompt-caching.md) | Provider prompt caching: prefix ordering, breakpoints, TTL economics, hit-ratio SLOs |
+| [open-weight-serving.md](./open-weight-serving.md) | Self-hosting open-weight models: licences, vLLM/SGLang, speculative decoding, security |
 | [cost-optimization/token-budgets.md](./cost-optimization/token-budgets.md) | Enforced per-request token limits |
 
 ### Observability

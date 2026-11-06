@@ -58,6 +58,8 @@ const CORE_FILES = {
   'kit/review-TEMPLATE.md': 'packages/kit-core/templates/review-TEMPLATE.md',
   'kit/hooks-README.md': 'packages/kit-core/templates/hooks-README.md',
   'kit/aies-guard.mjs': 'packages/kit-core/templates/aies-guard.mjs',
+  'kit/aies-done.mjs': 'packages/kit-core/templates/aies-done.mjs',
+  'kit/aies-egress-check.mjs': 'packages/kit-core/templates/aies-egress-check.mjs',
   'kit/aies-worktree.mjs': 'packages/kit-core/templates/aies-worktree.mjs',
   'kit/task-contract-TEMPLATE.md': 'packages/kit-core/templates/task-contract-TEMPLATE.md',
 };

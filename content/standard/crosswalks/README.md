@@ -46,7 +46,7 @@ The unit of mapping is an AIES artifact and its required fields, not a claim tha
 
 | Document | External sources covered |
 |---|---|
-| [ISO AI management, risk, and impact](./iso-ai-management-risk-impact.md) | ISO/IEC 42001, ISO/IEC 23894, ISO/IEC 42005 |
+| [ISO AI management, risk, and impact](./iso-ai-management-risk-impact.md) | ISO/IEC 42001, ISO/IEC 23894, ISO/IEC 42005, ISO/IEC 27090; ISO/IEC 42006 auditor note |
 | [NIST AI risk](./nist-ai-risk.md) | NIST AI RMF 1.0, NIST AI 600-1 |
 | [OWASP AI security](./owasp-ai-security.md) | OWASP Top 10 for LLM Applications, OWASP Top 10 for Agentic Applications |
 | [Secure software and supply chain](./secure-software-supply-chain.md) | NIST SSDF SP 800-218, NIST SP 800-53 Rev. 5, SLSA, OpenSSF |

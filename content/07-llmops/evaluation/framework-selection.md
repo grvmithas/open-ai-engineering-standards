@@ -2,7 +2,7 @@
 
 > **Decision:** RAGAS vs. DeepEval vs. Promptfoo
 > **The AIES standard uses all three — for different purposes — plus Inspect AI for sandboxed agent evals.**  
-> **Version:** 1.1.0 | **Updated:** 2026-11-06
+> **Version:** 1.1.1 | **Updated:** 2026-11-06
 
 ---
 
@@ -31,7 +31,7 @@ Each tool was built for a different problem:
 | **DeepEval 4.2 inverted four metrics** — `BiasMetric`, `HallucinationMetric`, `MisuseMetric`, `ToxicityMetric` are now **higher = better** | Thresholds written for ≤ 4.1 now pass bad outputs. Audit every threshold on these metrics after upgrading. |
 | DeepEval added agent metrics: Task Completion, Tool Correctness, Argument Correctness, Step Efficiency, Plan Adherence, `AgentLoopDetectionMetric`, `ToolPermissionMetric`, `CitationFaithfulnessMetric` | Agent evals can score the trajectory, not just the final answer. |
 | Langfuse acquired by ClickHouse (remains MIT); Arize acquired by Dynatrace (Phoenix stays ELv2) | Production-monitoring choice is unchanged; re-check contract terms. |
-| SWE-bench Verified saturated and contaminated | Public benchmarks shortlist models; release decisions use private, workload-specific evals. |
+| SWE-bench Verified saturated and contaminated | Public benchmarks shortlist models; release decisions use private, workload-specific evals ([benchmark citation policy](./benchmark-citation-policy.md)). |
 
 ---
 
@@ -381,5 +381,6 @@ All three tools use LLMs to evaluate LLM outputs (LLM-as-judge). Be aware:
 
 ## Changelog
 
+- **1.1.1 — 2026-11-06:** Linked the benchmark citation policy.
 - **1.1.0 — 2026-11-06:** 2026 landscape (OpenAI Evals shutdown, DeepEval 4.2 inversion, agent metrics, Inspect AI); trajectory evaluation; judge calibration as a classifier; OWASP 2026 IDs; current models in the promptfoo example; Tradeoffs, Anti-patterns, Enterprise considerations.
 - **1.0.0 — 2026-07-29:** Initial guide.

@@ -270,6 +270,7 @@ Operational specs that expand this level beyond the overview:
 | [Identity and delegation](./standards/identity-and-delegation.md) | Workload identity, delegation tokens, confused-deputy defenses |
 | [Message provenance](./standards/message-provenance.md) | `AgentMessage` schema, delivery, idempotency, audit |
 | [Durable state and checkpoints](./standards/durable-state-checkpoints.md) | Authoritative state vs chat context; recovery |
+| [Durable execution](./standards/durable-execution.md) | Temporal / DBOS / Restate; idempotent tools; durable human approvals; replay tests |
 | [Threat controls](./standards/threat-controls.md) | Cross-agent injection, tool abuse, exfiltration |
 | [Cost and termination](./standards/cost-and-termination.md) | Budgets, max hops, kill switches, cost attribution |
 

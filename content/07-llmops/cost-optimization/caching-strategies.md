@@ -1,11 +1,13 @@
 # LLM Caching Strategies
 
-> **Version:** 1.1.0
-> **Last updated:** 2026-07-16
+> **Version:** 1.2.0
+> **Last updated:** 2026-11-06
 > **Status:** Informative AIES implementation profile
 
 ## Purpose
 Use exact, semantic, and provider caching without serving stale, cross-tenant, or unauthorized outputs.
+
+> Provider prefix caching (prompt layout, breakpoints, lifetimes, hit-rate SLOs) has its own standard: [Prompt caching engineering](./prompt-caching.md). This profile covers response caches.
 
 ## Why
 Caching changes data flow and correctness, not just performance.
@@ -66,5 +68,6 @@ The **LLM Caching Strategies** profile treats resource consumption as a task-spe
 ## Changelog
 | Version | Date | Change |
 |---|---|---|
+| 1.2.0 | 2026-11-06 | Pointed provider prefix caching to the new prompt-caching standard. |
 | 1.1.0 | 2026-07-16 | Replaced generic assurance text with the cache policy and isolation test, failure trigger, accountable decision, and scoped framework relationships for llm caching strategies. |
 | 1.0.0 | 2026-07-16 | Initial complete profile. |
