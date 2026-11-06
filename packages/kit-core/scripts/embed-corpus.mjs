@@ -77,16 +77,20 @@ const HOOK_SCRIPTS = [
   'budget-guard.hook.sh',
 ];
 
+const readText = abs => fs.readFileSync(abs, 'utf8').replace(/\r\n/g, '\n');
+
 function walkMarkdown(absDir, keyPrefix, out) {
   if (!fs.existsSync(absDir)) return;
-  for (const entry of fs.readdirSync(absDir, { withFileTypes: true })) {
+  // readdir order is filesystem-specific (NTFS sorts, ext4 does not); sort so CI reproduces the committed file.
+  const entries = fs.readdirSync(absDir, { withFileTypes: true }).sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0));
+  for (const entry of entries) {
     const abs = path.join(absDir, entry.name);
     if (entry.isDirectory()) {
       walkMarkdown(abs, `${keyPrefix}/${entry.name}`, out);
       continue;
     }
     if (!entry.name.endsWith('.md')) continue;
-    out[`${keyPrefix}/${entry.name}`] = fs.readFileSync(abs, 'utf8');
+    out[`${keyPrefix}/${entry.name}`] = readText(abs);
   }
 }
 
@@ -99,7 +103,7 @@ for (const [key, rel] of Object.entries(CORE_FILES)) {
     missing.push(rel);
     continue;
   }
-  out[key] = fs.readFileSync(abs, 'utf8');
+  out[key] = readText(abs);
 }
 
 for (const stack of COOKBOOK_STACKS) {
@@ -118,7 +122,7 @@ for (const spec of MCP_SPECS) {
     missing.push(rel);
     continue;
   }
-  out[`mcps/${spec.file}`] = fs.readFileSync(abs, 'utf8');
+  out[`mcps/${spec.file}`] = readText(abs);
 }
 
 for (const name of HOOK_SCRIPTS) {
@@ -128,7 +132,7 @@ for (const name of HOOK_SCRIPTS) {
     missing.push(rel);
     continue;
   }
-  out[`hooks/${name}`] = fs.readFileSync(abs, 'utf8');
+  out[`hooks/${name}`] = readText(abs);
 }
 
 if (missing.length) {
