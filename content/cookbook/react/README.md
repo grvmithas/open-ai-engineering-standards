@@ -1,7 +1,8 @@
 # React Cookbook
 
 > **Stack:** React 18+ with TypeScript
-> **Focus:** Component generation, hooks, state management, testing
+> **Focus:** Component generation, hooks, state management, testing  
+> **Updated:** 2026-07-29
 
 ---
 
@@ -99,7 +100,7 @@ MUST NOT:
 
 ### Debug Component Prompt
 
-```xml
+````xml
 <role>
 You are a React debugging expert. You diagnose component issues systematically
 using React DevTools mental models, React's rules of hooks, and rendering behavior.
@@ -144,7 +145,7 @@ Inside <thinking></thinking> tags:
 ## Prevention
 [What pattern prevents this class of error]
 </output_format>
-```
+````
 
 ---
 
@@ -204,7 +205,7 @@ const ExpensiveChild = React.memo(({ data }: Props) => {
 
 ### Component Hierarchy Pattern (AIES Standard for React)
 
-```
+```text
 feature/
 ├── index.ts                  ← Public API — only export what's needed
 ├── FeaturePage.tsx           ← Page component (routing, layout)

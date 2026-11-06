@@ -1,7 +1,7 @@
 # How to browse AIES
 
 > **Handbook:** Reading order for the working standard  
-> **Version:** 1.0 | **Updated:** 2026-07-29
+> **Version:** 1.1 | **Updated:** 2026-11-06
 
 ---
 
@@ -47,12 +47,26 @@ flowchart LR
 | Cookbook | Stack adapters after kit install | Replacing the kit |
 | Ops & assurance | Evals, hooks, portal, crosswalks | Skipping kit install |
 
+## Tradeoffs
+
+| Choice | Benefit | Cost |
+|---|---|---|
+| Kit-first, theory-later order | Value in the first hour; learning anchored to real work | Foundations reasoning arrives after habits form — revisit it after the first workflow |
+| One workflow before reading patterns | Patterns make sense against a concrete task | Teams may miss a better-fitting pattern on the first run |
+| Assurance pages only with a risk question | No compliance theater | Governance teams must wait for engineering evidence to exist |
+
 ## Anti-patterns
 
 - Opening Portal or ISO crosswalks before installing a kit  
 - Reading all 12 patterns before running one workflow  
 - Treating Foundations as onboarding  
 - Claiming “we follow AIES” with no kit files in the product repo  
+
+## Enterprise considerations
+
+- Make kit install plus one completed workflow the onboarding exit criterion for every team, tracked per repository with `create-aies-kit audit --min-score`.
+- Route governance, risk, and audit staff straight to the [External standards map](./external-standards-map.md); route engineers through this path.
+- Run the browse order as a 90-minute internal workshop: install, enhance, one story through plan → code → review.
 
 ## Checklist
 
@@ -69,4 +83,5 @@ flowchart LR
 
 ## Changelog
 
+- **1.1 (2026-11-06):** Added Tradeoffs and Enterprise considerations.
 - **1.0 (2026-07-29):** Initial browse-order handbook page.

@@ -1,7 +1,8 @@
 # Level 9: Enterprise AI Architecture
 
 > **Prerequisites:** Levels 0-8
-> **Goal:** Deploy AI systems that meet enterprise governance, compliance, security, and scale requirements
+> **Goal:** Deploy AI systems that meet enterprise governance, compliance, security, and scale requirements  
+> **Updated:** 2026-07-16
 
 ---
 
@@ -34,6 +35,7 @@ These are not optional features for enterprise. They are architectural requireme
 ### Security
 | File | What It Covers |
 |------|----------------|
+| [security/agent-security-controls.md](./security/agent-security-controls.md) | Six blocking controls for agents: Rule of Two, self-config integrity, CI agents, supply chain, dependencies, egress |
 | [security/prompt-injection-defense.md](./security/prompt-injection-defense.md) | Defense-in-depth against injection |
 | [security/sandboxing.md](./security/sandboxing.md) | Tool execution isolation |
 | [security/least-privilege.md](./security/least-privilege.md) | Principle of least privilege for AI |

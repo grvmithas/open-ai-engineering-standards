@@ -1,5 +1,7 @@
 # RFC-XXXX: [Feature / Standard Title]
 
+> **Updated:** 2026-08-08
+
 - **Start Date**: YYYY-MM-DD
 - **Author(s)**: [Name / GitHub Handle]
 - **Status**: Draft | Under Review | Approved | Rejected

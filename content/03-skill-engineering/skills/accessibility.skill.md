@@ -1,11 +1,16 @@
+---
+name: accessibility
+description: "Accessibility procedure with verification and rollback evidence. Use when a web or native user interface is created, changed, or assessed for accessibility."
+---
+
 # Accessibility Skill
 
 > **Skill ID:** `accessibility`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when A web or native user interface is created, changed, or assessed for accessibility.
+Activate this skill when a web or native user interface is created, changed, or assessed for accessibility.
 
 ## Why
 An accessibility acceptance matrix, semantic implementation, automated results, keyboard and screen-reader evidence, and documented exceptions is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -68,5 +73,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

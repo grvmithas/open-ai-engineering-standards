@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import matter from 'gray-matter';
 import {
   ROOT,
   buildManifest,
@@ -29,6 +30,29 @@ for (const filePath of walkContent()) {
   if (fs.statSync(filePath).size === 0) {
     failures.push(`${toPosix(path.relative(ROOT, filePath))}: empty content file`);
   }
+}
+
+// Source skills and agents feed runtime-native files; enforce the open Agent Skills limits at the source.
+const SKILL_NAME = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+for (const filePath of walkContent()) {
+  const rel = toPosix(path.relative(ROOT, filePath));
+  const isSkill = rel.endsWith('.skill.md') && !rel.startsWith('content/patterns/');
+  const isAgent = /\.(agent|subagent)\.md$/.test(rel) && !rel.startsWith('content/patterns/');
+  if (!isSkill && !isAgent) continue;
+  const text = fs.readFileSync(filePath, 'utf8').replace(/^\uFEFF/, '');
+  let data;
+  try {
+    data = matter(text).data;
+  } catch (error) {
+    failures.push(`${rel}: invalid YAML frontmatter (${error.message})`);
+    continue;
+  }
+  const name = String(data.name ?? '');
+  const description = String(data.description ?? '');
+  if (!SKILL_NAME.test(name) || name.length > 64) failures.push(`${rel}: frontmatter name must be kebab-case ≤ 64 chars`);
+  if (!description || description.length > 1024) failures.push(`${rel}: frontmatter description required, ≤ 1024 chars`);
+  if (/^[.,;:]\s|^\s*Use (when|for)\b/.test(description) || description.length < 40) failures.push(`${rel}: frontmatter description must start with what the artifact does (runtimes delegate on it)`);
+  if (isAgent && !data.tools) failures.push(`${rel}: agent frontmatter must declare tools`);
 }
 
 if (failures.length) {

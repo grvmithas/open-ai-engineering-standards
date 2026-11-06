@@ -1,8 +1,16 @@
+---
+name: postgres
+description: "Optimize PostgreSQL queries and produce safe, reversible schema migrations. Use when a parent agent delegates a narrowly scoped task in this domain; edits only files named in the task contract."
+tools: Read, Grep, Glob, Edit, Write, Bash
+model: inherit
+privilege: workspace-write
+---
+
 # Postgres Subagent
 
 > **ID:** `postgres`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
 Optimize PostgreSQL queries and produce safe, reversible schema migrations.
@@ -119,5 +127,6 @@ Bind runtime identity to workload credentials, enforce tenant and region boundar
 - [PostgreSQL CREATE INDEX](https://www.postgresql.org/docs/current/sql-createindex.html)
 
 ## Changelog
+- **2026-11-06:** Added native subagent frontmatter (`name`, `description`, `tools`, `model`) so Claude Code, Cursor, Copilot, Gemini CLI, and opencode load this definition directly via the AIES kit.
 - **2.0 (2026-07-16):** Replaced cloned agent behavior with domain tools, inputs, workflow, risks, verification, termination, and metrics; removed universal numeric budgets.
 - **1.1:** Initial standardized contract.

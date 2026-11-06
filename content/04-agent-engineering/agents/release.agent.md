@@ -1,8 +1,16 @@
+---
+name: release
+description: "Assemble release evidence and control promotion of an immutable approved artifact. Use only with explicit human approval for each external effect; prepares, executes the approved step, and verifies."
+tools: Read, Grep, Glob, Edit, Write, Bash
+model: inherit
+privilege: external-effect
+---
+
 # Release Agent
 
 > **ID:** `release`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
 Assemble release evidence and control promotion of an immutable approved artifact.
@@ -117,5 +125,6 @@ Bind runtime identity to workload credentials, enforce tenant and region boundar
 - [DORA Metrics](https://dora.dev/guides/dora-metrics-four-keys/)
 
 ## Changelog
+- **2026-11-06:** Added native subagent frontmatter (`name`, `description`, `tools`, `model`) so Claude Code, Cursor, Copilot, Gemini CLI, and opencode load this definition directly via the AIES kit.
 - **2.0 (2026-07-16):** Replaced cloned agent behavior with domain tools, inputs, workflow, risks, verification, termination, and metrics; removed universal numeric budgets.
 - **1.1:** Initial standardized contract.

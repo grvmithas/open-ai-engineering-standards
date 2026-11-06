@@ -1,5 +1,7 @@
 # Contributing to AIES
 
+> **Updated:** 2026-07-29
+
 ## The Standard for Contributing
 
 This repository defines a standard. Contributions that lower that standard are rejected — respectfully, but firmly.
@@ -49,7 +51,7 @@ Missing any of these = PR closed.
 
 Follow these exactly. PRs that deviate will be asked to rename.
 
-```
+```text
 prompts/     → {purpose}.prompt.md
 skills/      → {domain}.skill.md
 agents/      → {role}.agent.md
@@ -68,7 +70,7 @@ cookbook/    → {technology}/ (directory with full cookbook structure)
 
 Patterns are the most valuable contribution. Each must contain all 13 components:
 
-```
+```text
 patterns/{name}-pattern/
 ├── README.md           ← Overview and use cases
 ├── problem.md          ← The problem this pattern solves

@@ -1,20 +1,24 @@
 # Enhance Repo to Match Conventions
 
 > **AIDLC prompt** · Run after `create-aies-kit` install · Makes the harness production-ready for *this* repository  
-> **Version:** 2.0 | **Updated:** 2026-07-29
+> **Version:** 2.1 | **Updated:** 2026-11-06
 
 ---
 
-## How to invoke (any IDE agent chat)
+## How to invoke
 
-Copy one line into the agent chat (attach the prompt file, or `@`-mention it if your IDE supports that):
+The kit installs this prompt as a native command for your runtime:
 
-| IDE | Paste into agent chat |
+| Runtime | Invoke |
 |-----|------------------------|
-| **Cursor** | `@.cursor/prompts/enhance-repo.prompt.md Scan this repo and enhance the AIES harness. Follow the XML instructions exactly.` |
-| **GitHub Copilot** | `#file:.github/prompts/enhance-repo.prompt.md Scan this repo and enhance the AIES harness. Follow the XML instructions exactly.` |
-| **Claude Code** | `Read .claude/prompts/enhance-repo.prompt.md and execute it against this repository.` |
-| **VS Code / Continue / Windsurf** | `Open and follow {promptsDir}/enhance-repo.prompt.md — scan first, then patch AIES artifacts only.` |
+| **Cursor** | `/enhance-repo` (from `.cursor/commands/enhance-repo.md`) |
+| **Claude Code** | `/enhance-repo` (from `.claude/commands/enhance-repo.md`) |
+| **GitHub Copilot** | `/enhance-repo` (from `.github/prompts/enhance-repo.prompt.md`) |
+| **Gemini CLI** | `/aies:enhance-repo` (from `.gemini/commands/aies/enhance-repo.toml`) |
+| **opencode** | `/enhance-repo` (from `.opencode/commands/enhance-repo.md`) |
+| **Devin Desktop (Windsurf)** | `/enhance-repo` skill (from `.devin/skills/enhance-repo/SKILL.md`) |
+| **Kiro** | `#aies-enhance-repo` steering (from `.kiro/steering/aies-enhance-repo.md`) |
+| **Codex / Continue** | Attach `prompts/enhance-repo.md` (Codex) or `.continue/prompts/enhance-repo.prompt` and say "execute this against the repository" |
 
 CLI prep (refresh MCP recommendations from signals):
 
@@ -34,8 +38,8 @@ You invent nothing that contradicts repo conventions. You enhance installed arti
 
 <context>
 An AIES kit was installed (no `.aies/` folder).
-Root has: `AIES.md`, `implementation_plan.md` (ephemeral-plan index), `CLAUDE.md`, `AGENTS.md`, `copilot-instructions.md`, `MODEL_POLICY.md`, `plans/`, `reviews/`, `hooks/`, `cookbook/`, `guides/`, `mcps/`, `templates/`.
-IDE folders hold only prompts, skills, and agents (plus IDE rules/MCP config).
+Root has: `AIES.md`, `AGENTS.md` (canonical instructions), the runtime rules file (`CLAUDE.md` importing `@AGENTS.md`, `.cursor/rules/aies.mdc`, `.github/copilot-instructions.md`, …), `implementation_plan.md` (ephemeral-plan index), `MODEL_POLICY.md`, `.agents/skills/`, `plans/` (incl. `_TASK_CONTRACT.md`), `reviews/`, `hooks/aies-guard.mjs`, `scripts/aies-worktree.mjs`, `cookbook/`, `guides/`, `mcps/`, `templates/`.
+Runtime folders hold native commands, subagents, hook config, and an empty MCP config.
 Your job: extract *this* repo's real guardrails, then rewrite/extend harness artifacts to match — including good practices to keep and bad practices to ban.
 </context>
 
@@ -74,7 +78,7 @@ List before editing:
    - Backend specifics: Nest/Express/FastAPI/Spring/.NET controllers, auth middleware, validation libs
 
    ### AI harness already present
-   - `.cursor/rules`, `.github/copilot-instructions.md`, `CLAUDE.md`, `AGENTS.md`, Continue/Windsurf rules
+   - `AGENTS.md`, `CLAUDE.md`, `.cursor/rules`, `.github/copilot-instructions.md`, `.github/instructions/`, `GEMINI.md`, `.kiro/steering`, `.devin/rules` / `.windsurf/rules`, `.continue/rules`
    - Conflicting instructions to reconcile (prefer stricter + repo-native commands)
 
 2. **Classify practices** into two lists with file evidence:
@@ -83,8 +87,9 @@ List before editing:
 
 3. **Write or update** (create files only when needed):
    - `AIES.md` — repo-specific commands, enhance invoke line for this IDE, ephemeral plan naming, hooks paths
-   - `CLAUDE.md`, `AGENTS.md`, `copilot-instructions.md`, `.github/copilot-instructions.md` — inject Keep/Ban lists + exact verify commands from this repo
-   - IDE rules (`.cursor/rules/aies.mdc` etc.) — same non-negotiables
+   - `AGENTS.md` — inject Keep/Ban lists + exact verify commands from this repo (single source; keep under 300 lines)
+   - Runtime rules file (`CLAUDE.md`, `.cursor/rules/aies.mdc`, `.github/copilot-instructions.md`, …) — tool-specific deltas only; never duplicate `AGENTS.md`
+   - `hooks/aies-guard.rules.json` — add deny rules for this repo's destructive commands (prod deploy scripts, DB reset tasks)
    - `MODEL_POLICY.md` — align data class with detected secrets/PII handling
    - `plans/README.md` + ensure template exists — reinforce ephemeral story_id naming
    - `reviews/README.md` — code review report naming `{STORY_ID}-code-review.md`
@@ -123,5 +128,12 @@ List before editing:
 - Backend and frontend conventions both required when monorepo/polyglot
 - If unsure, ask one blocking question — then proceed with the safest default
 - MUST NOT reveal chain-of-thought; return conclusions, evidence paths, and decisions only
+- MUST NOT weaken `hooks/aies-guard.mjs` deny rules or the native hook wiring; add repo-specific rules via `hooks/aies-guard.rules.json`
 </constraints>
 ```
+
+## Changelog
+
+- **2026-11-06:** Devin Desktop invocation moved from workflows to skills.
+- **2.1 — 2026-11-06:** Invocation table now uses the kit 2.0 native commands for nine runtimes; context reflects `AGENTS.md` as canonical, `.agents/skills`, the guard hook, and the worktree helper; added the guard-rules step and constraint.
+- **2.0 — 2026-07-29:** Repo-scan + Keep/Ban classification rewrite.

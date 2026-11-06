@@ -1,11 +1,16 @@
-# Seo Skill
+---
+name: seo
+description: "SEO procedure with verification and rollback evidence. Use when a public web page or site changes crawlability, indexing, canonicalization, metadata, or structured data."
+---
+
+# SEO Skill
 
 > **Skill ID:** `seo`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when A public web page or site changes crawlability, indexing, canonicalization, metadata, or structured data.
+Activate this skill when a public web page or site changes crawlability, indexing, canonicalization, metadata, or structured data.
 
 ## Why
 A crawl/indexability audit, canonical and redirect map, metadata/schema implementation, rendered-page evidence, and monitoring plan is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -68,5 +73,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [Schema.org](https://schema.org/docs/documents.html)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

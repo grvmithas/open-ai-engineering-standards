@@ -1,8 +1,16 @@
+---
+name: incident-response
+description: "Coordinate containment, evidence preservation, recovery, and communication for an active incident. Use only with explicit human approval for each external effect; prepares, executes the approved step, and verifies."
+tools: Read, Grep, Glob, Edit, Write, Bash
+model: inherit
+privilege: external-effect
+---
+
 # Incident Response Agent
 
 > **ID:** `incident-response`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
 Coordinate containment, evidence preservation, recovery, and communication for an active incident.
@@ -117,5 +125,6 @@ Bind runtime identity to workload credentials, enforce tenant and region boundar
 - [Google SRE Incident Response](https://sre.google/sre-book/managing-incidents/)
 
 ## Changelog
+- **2026-11-06:** Added native subagent frontmatter (`name`, `description`, `tools`, `model`) so Claude Code, Cursor, Copilot, Gemini CLI, and opencode load this definition directly via the AIES kit.
 - **2.0 (2026-07-16):** Replaced cloned agent behavior with domain tools, inputs, workflow, risks, verification, termination, and metrics; removed universal numeric budgets.
 - **1.1:** Initial standardized contract.

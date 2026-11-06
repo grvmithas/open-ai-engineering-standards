@@ -30,12 +30,29 @@ export const MATURITIES: Array<{ id: AiMaturity; label: string; hint: string }> 
 
 export const IDES: Array<{ id: UserIde; label: string }> = [
   { id: 'cursor', label: 'Cursor' },
-  { id: 'copilot', label: 'GitHub Copilot' },
   { id: 'claude-code', label: 'Claude Code' },
-  { id: 'vscode', label: 'VS Code' },
-  { id: 'windsurf', label: 'Windsurf' },
+  { id: 'copilot', label: 'GitHub Copilot (VS Code / CLI / cloud agent)' },
+  { id: 'codex', label: 'OpenAI Codex' },
+  { id: 'gemini-cli', label: 'Gemini CLI' },
+  { id: 'kiro', label: 'Kiro' },
+  { id: 'windsurf', label: 'Devin Desktop (Windsurf)' },
+  { id: 'opencode', label: 'opencode' },
   { id: 'continue', label: 'Continue' },
 ];
+
+const IDE_ALIASES: Record<string, UserIde> = {
+  vscode: 'copilot',
+  devin: 'windsurf',
+  gemini: 'gemini-cli',
+  claude: 'claude-code',
+};
+
+/** Maps retired/alias ids (old links, saved profiles) onto a supported target; null when unknown. */
+export function normalizeUserIde(value: string | null | undefined): UserIde | null {
+  if (!value) return null;
+  const id = IDE_ALIASES[value] ?? value;
+  return IDES.some(i => i.id === id) ? (id as UserIde) : null;
+}
 
 export const MODELS: Array<{ id: ModelProvider; label: string; hint: string }> = [
   { id: 'claude', label: 'Claude (Anthropic)', hint: 'Pin model IDs; strong for coding agents' },

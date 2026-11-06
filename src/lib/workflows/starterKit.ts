@@ -23,6 +23,7 @@ export {
 
 
 export type StarterKitBundle = {
+  kitVersion?: string;
   stack: string;
   generatedAt: string;
   profile: Record<string, string>;

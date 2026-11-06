@@ -1,12 +1,27 @@
 # Bitbucket Cloud MCP Integration
 
-> **Version:** 1.1 | **Updated:** 2026-07-16 | **Category:** Version Control
+> **Version:** 1.3 | **Updated:** 2026-11-06 | **Category:** Version Control
 
 ## Purpose and applicability
 Provide agent-safe access to workspaces, repositories, pull requests, issues, pipelines. Use this integration only when those capabilities are required and a named owner accepts the data and write risk. The implementation baseline is Atlassian's official remote MCP service where Bitbucket tools are available; otherwise a reviewed adapter over Bitbucket Cloud REST.
 
+## Why use it — and when not to
+Atlassian does not offer a vendor-hosted Bitbucket MCP server; any server you run is self-maintained or third-party code. Use one only when Bitbucket is your forge and you need PR and pipeline context in the agent, and pin a reviewed version with workspace-scoped API tokens. For most coding tasks the agent's native git tools plus the Atlassian remote server for Jira are sufficient.
+
+## How to connect — deployment status (2026-11)
+| Field | Current guidance |
+|---|---|
+| Deployment | No vendor-hosted server verified |
+| Endpoint / package | Atlassian Rovo MCP covers Jira/Confluence, not Bitbucket; use git + scoped API tokens in CI, or a reviewed self-hosted server |
+| Auth | Scoped API token / workspace access token, server-side |
+| Least-privilege setup | Repository-scoped read token |
+| Avoid | App passwords with admin scope; unreviewed registry listings |
+| AIES kit id | not in kit catalog |
+
+Trust only MCP Registry entries under a reverse-DNS namespace the vendor controls (for example `com.monday/*`); aggregator and look-alike listings are third-party code. Remote endpoint liveness is re-checked weekly by `scripts/check-external.mjs`. See [MCP: remote servers & OAuth](../../handbook/mcp-remote-servers-and-auth.md).
+
 ## Protocol, transport, and capability lifecycle
-Implement stable MCP `2025-11-25`. Negotiate `protocolVersion` in `initialize`; reject unsupported versions. Prefer Streamable HTTP for remote service and `stdio` only for a local, single-user process; do not expose `stdio` through a network shim. Advertise only implemented `tools`, `resources`, `prompts`, and `logging`. Paginate lists, use progress/cancellation where supported, and send the corresponding `list_changed` notification after authorization or configuration changes. Clients re-list and review metadata changes before use.
+Implement MCP `2026-07-28` (current stable: stateless Streamable HTTP, no session affinity required); keep `2025-11-25` negotiation only while clients migrate. Negotiate `protocolVersion` in `initialize`; reject unsupported versions. Prefer Streamable HTTP for remote service and `stdio` only for a local, single-user process; do not expose `stdio` through a network shim. Advertise only implemented `tools`, `resources`, `prompts`, and `logging`. Paginate lists, use progress/cancellation where supported, and send the corresponding `list_changed` notification after authorization or configuration changes. Clients re-list and review metadata changes before use.
 
 ## Tool, resource, and prompt design
 - **Tools:** bounded list/get/search operations over workspaces, repositories, pull requests, issues, pipelines; mutations are separate, disabled by default, idempotency-aware, and approval-gated.
@@ -15,7 +30,7 @@ Implement stable MCP `2025-11-25`. Negotiate `protocolVersion` in `initialize`; 
 - **Validation:** closed JSON Schemas; normalize and authorize workspace/repository slugs, UUIDs, refs; cap arrays, strings, time ranges, rows, bytes, and pagination. Return typed, size-bounded results with opaque cursors and structured errors. Label all provider content untrusted and redact credentials, secrets, personal data, and internal URLs.
 
 ## Authorization, consent, and least privilege
-Remote deployments publish RFC 9728 Protected Resource Metadata and standards-compliant `WWW-Authenticate`. Discover the authorization server from metadata, require authorization code flow with PKCE `S256`, verify advertised PKCE support, and include the canonical MCP URI as RFC 8707 `resource` in authorization and token requests. Validate token signature, issuer, expiry/not-before, authorized party when applicable, and audience/resource for this server.
+Remote deployments publish RFC 9728 Protected Resource Metadata and standards-compliant `WWW-Authenticate`. Discover the authorization server from metadata, require authorization code flow with PKCE `S256`, verify advertised PKCE support, and include the canonical MCP URI as RFC 8707 `resource` in authorization and token requests. Clients register with Client ID Metadata Documents (CIMD) where the authorization server supports them; Dynamic Client Registration is a fallback, not the default. Validate token signature, issuer, expiry/not-before, authorized party when applicable, and audience/resource for this server.
 
 Never pass an inbound MCP bearer token to the provider. Exchange/map it server-side to a short-lived, tenant-bound provider credential. Consent names the provider, tenant, enabled tools, data classes, and write effects. Use Atlassian consent and Bitbucket workspace/repository permissions; rely on the provider's current permission catalog and consent screen—never invent scope names. Step-up authorization cannot silently broaden prior consent.
 
@@ -63,9 +78,11 @@ Enforce Atlassian Guard SAML/SCIM, managed accounts, workspace access controls, 
 ## Primary references
 - [Bitbucket Cloud implementation/API](https://support.atlassian.com/atlassian-rovo-mcp-server/docs/using-bitbucket/)
 - [Bitbucket Cloud limits/security](https://developer.atlassian.com/cloud/bitbucket/rest/intro/#rate-limiting)
-- [MCP specification `2025-11-25`](https://modelcontextprotocol.io/specification/2025-11-25/)
-- [MCP authorization](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization)
+- [MCP specification `2026-07-28`](https://modelcontextprotocol.io/specification/2026-07-28/)
+- [MCP authorization](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization)
 
 ## Changelog
+- **1.3 — 2026-11-06:** Added service-specific "Why use it — and when not to" guidance.
+- **1.2 — 2026-11-06:** Added 2026-11 deployment status (vendor-hosted endpoint, auth, least-privilege setup, registry trust rule); moved the protocol baseline to MCP `2026-07-28`; added CIMD client registration.
 - **1.1 — 2026-07-16:** Replaced a template marker with concrete service-specific enterprise controls.
 - **1.0 — 2026-07-16:** Initial production specification.

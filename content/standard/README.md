@@ -2,7 +2,8 @@
 
 > **Version:** 1.0.1  
 > **Published:** 2026-07-16  
-> **Status:** Normative
+> **Status:** Normative  
+> **Updated:** 2026-07-29
 
 ## Purpose
 

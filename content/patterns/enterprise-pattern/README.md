@@ -31,7 +31,7 @@ Do NOT apply this pattern to:
 
 ## Problem
 
-```
+```text
 enterprise-pattern/problem.md
 ```
 

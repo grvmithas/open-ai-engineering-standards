@@ -1,11 +1,16 @@
-# Rag Skill
+---
+name: rag
+description: "RAG procedure with verification and rollback evidence. Use when a product must ground generation in an external corpus using retrieval."
+---
+
+# RAG Skill
 
 > **Skill ID:** `rag`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when A product must ground generation in an external corpus using retrieval.
+Activate this skill when a product must ground generation in an external corpus using retrieval.
 
 ## Why
 A corpus/data contract, chunking and metadata design, retrieval pipeline, golden queries, quality report, and operational runbook is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -69,5 +74,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [NIST IR Evaluation Overview](https://www.nist.gov/itl/iad/ig/trec-data)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

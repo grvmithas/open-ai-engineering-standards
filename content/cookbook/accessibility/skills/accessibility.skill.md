@@ -1,6 +1,11 @@
+---
+name: accessibility
+description: "Execute a repeatable Accessibility Engineering change or diagnosis for a semantic component, keyboard flow, focus transition, WCAG audit, remediation, or conformance release, including native evidence, validation, rollout, and rollback. Use when source, manifests, runtime configuration, topology, data contracts, or operating behavior for Accessibility Engineering can change."
+---
+
 # Accessibility Engineering Production Skill
 
-> Version: 1.1.0 | Updated: 2026-07-16
+> Version: 1.1.0 | Updated: 2026-11-06
 
 ## Purpose
 
@@ -98,5 +103,6 @@ Accessibility governance owns the WCAG target, supported AT matrix, design-syste
 
 ## Changelog
 
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - 1.1.0 (2026-07-16): Added platform-native procedure, commands, evidence, and rollback.
 - 1.0.0 (2026-07-16): Added initial skill.

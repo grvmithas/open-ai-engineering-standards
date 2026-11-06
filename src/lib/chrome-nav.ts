@@ -63,4 +63,4 @@ export const FEATURED_PATTERNS = [
   },
 ] as const;
 
-export const KIT_CLI_COMMAND = 'npx @grvmithas/create-aies-kit';
+export const KIT_CLI_COMMAND = 'npx @grvmithas/create-aies-kit@latest';

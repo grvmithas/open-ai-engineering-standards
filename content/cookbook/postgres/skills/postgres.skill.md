@@ -1,6 +1,11 @@
+---
+name: postgres
+description: "Execute a repeatable PostgreSQL change or diagnosis for a schema, migration, query, index, transaction, replication path, or recovery runbook, including native evidence, validation, rollout, and rollback. Use when source, manifests, runtime configuration, topology, data contracts, or operating behavior for PostgreSQL can change."
+---
+
 # PostgreSQL Production Skill
 
-> Version: 1.1.0 | Updated: 2026-07-16
+> Version: 1.1.0 | Updated: 2026-11-06
 
 ## Purpose
 
@@ -99,5 +104,6 @@ PostgreSQL governance assigns schema ownership, migration approval, privileged-r
 
 ## Changelog
 
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - 1.1.0 (2026-07-16): Added platform-native procedure, commands, evidence, and rollback.
 - 1.0.0 (2026-07-16): Added initial skill.

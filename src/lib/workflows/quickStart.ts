@@ -13,13 +13,18 @@ const STACK_SKILL: Record<string, string> = {
   dotnet: '03-skill-engineering/skills/dotnet.skill',
 };
 
+const OPEN_STANDARDS = '/docs/handbook/open-agent-standards';
+
 const IDE_SETUP: Record<string, { title: string; href: string }> = {
-  cursor: { title: 'Cursor — project rules & context', href: '/docs/handbook/how-to-give-context' },
-  copilot: { title: 'GitHub Copilot — instructions file', href: '/docs/handbook/how-to-give-context' },
-  'claude-code': { title: 'Claude Code — CLAUDE.md baseline', href: '/docs/02-context-engineering/templates/CLAUDE.md.template' },
-  vscode: { title: 'VS Code — extensions & context', href: '/docs/handbook/how-to-give-context' },
-  windsurf: { title: 'Windsurf — flow rules', href: '/docs/handbook/how-to-give-context' },
-  continue: { title: 'Continue — config & skills', href: '/docs/03-skill-engineering/README' },
+  cursor: { title: 'Cursor — rules, subagents, hooks.json', href: OPEN_STANDARDS },
+  'claude-code': { title: 'Claude Code — CLAUDE.md → @AGENTS.md, subagents, hooks', href: OPEN_STANDARDS },
+  copilot: { title: 'Copilot — .github/agents, prompts, hooks, cloud agent', href: OPEN_STANDARDS },
+  codex: { title: 'Codex — AGENTS.md, .codex/agents TOML, config.toml', href: OPEN_STANDARDS },
+  'gemini-cli': { title: 'Gemini CLI — settings.json, agents, TOML commands', href: OPEN_STANDARDS },
+  kiro: { title: 'Kiro — steering, hooks, specs', href: OPEN_STANDARDS },
+  windsurf: { title: 'Devin Desktop — .devin rules, workflows, skills', href: OPEN_STANDARDS },
+  opencode: { title: 'opencode — agents, commands, opencode.json', href: OPEN_STANDARDS },
+  continue: { title: 'Continue — rules & prompts', href: OPEN_STANDARDS },
 };
 
 const ROLE_WORKFLOW: Record<string, string> = {
@@ -53,8 +58,9 @@ const MATURITY_EXTRAS: Record<string, QuickStartRecommendation[]> = {
     { title: 'Evals as quality gates', description: 'Block bad releases automatically', href: '/docs/handbook/evals-as-quality-gates', kind: 'checklist' },
   ],
   advanced: [
-    { title: 'MCP when and how', description: 'Add tools without losing control', href: '/docs/handbook/mcp-when-and-how', kind: 'mcp' },
-    { title: 'Agent engineering', description: 'Termination, budgets, delegation', href: '/docs/04-agent-engineering/README', kind: 'agent' },
+    { title: 'Parallel agents & worktrees', description: 'Task contracts, isolation, serial merge', href: '/docs/handbook/parallel-agents-and-worktrees', kind: 'workflow' },
+    { title: 'MCP: remote servers & OAuth', description: 'Vendor-hosted servers, no static tokens', href: '/docs/handbook/mcp-remote-servers-and-auth', kind: 'mcp' },
+    { title: 'IDE-native subagents', description: 'Least-privilege agents the runtime enforces', href: '/docs/handbook/ide-native-subagents', kind: 'agent' },
   ],
   enterprise: [
     { title: 'AI migration bible path', description: 'Org pilot → team harness → production gate → SoA', href: '/docs/handbook/ai-migration-bible-path', kind: 'workflow' },
@@ -103,7 +109,7 @@ export function buildQuickStart(profile: UserProfile): QuickStartRecommendation[
     { title: 'PR review with AI', description: 'Human-accountable review playbook', href: '/docs/handbook/pr-review-with-ai', kind: 'doc' },
     { title: 'Debug skill', description: 'Systematic troubleshooting', href: '/docs/03-skill-engineering/skills/debug.skill', kind: 'skill' },
     { title: 'DevOps skill', description: 'Pipeline and release discipline', href: '/docs/03-skill-engineering/skills/devops.skill', kind: 'skill' },
-    { title: 'Hooks README', description: 'agentHooks baseline (shell hooks)', href: '/docs/04-agent-engineering/hooks/README', kind: 'hook' },
+    { title: 'Native agent hooks', description: 'Deny unsafe tool calls inside the runtime', href: '/docs/handbook/native-agent-hooks', kind: 'hook' },
     { title: 'MCP catalog', description: 'Pick integrations deliberately', href: '/docs/mcps/README', kind: 'mcp' },
     { title: 'Reviewer agent pattern', description: 'Human-accountable review', href: '/docs/patterns/reviewer-pattern/README', kind: 'agent' },
     { title: 'Definition of Ready', description: 'Kickoff checklist', href: '/docs/08-ai-sdlc/quality-standards/definition-of-ready', kind: 'checklist' },
@@ -125,8 +131,8 @@ export function buildQuickStart(profile: UserProfile): QuickStartRecommendation[
   if (profile.model) {
     items.push({
       title: 'Model policy (kit)',
-      description: 'Pin providers, IDs, and data-class rules in MODEL_POLICY.md (under your IDE folder) after install',
-      href: '/docs/handbook/mcp-when-and-how',
+      description: 'Route models by task class and data class in MODEL_POLICY.md (repo root) after install',
+      href: '/docs/handbook/containing-token-waste',
       kind: 'doc',
     });
   }
@@ -134,8 +140,8 @@ export function buildQuickStart(profile: UserProfile): QuickStartRecommendation[
   if (profile.dataClass === 'confidential') {
     items.push({
       title: 'MCP when and how',
-      description: 'Confidential data — MCP off by default; allowlist before enabling tools',
-      href: '/docs/handbook/mcp-when-and-how',
+      description: 'Confidential data — MCP off by default; read-only endpoints and OAuth before enabling tools',
+      href: '/docs/handbook/mcp-remote-servers-and-auth',
       kind: 'mcp',
     });
   }

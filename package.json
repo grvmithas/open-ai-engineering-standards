@@ -30,7 +30,12 @@
     "a11y:smoke": "node scripts/smoke-checks.mjs accessibility",
     "security:smoke": "node scripts/smoke-checks.mjs security",
     "workflows:check": "node scripts/validate-workflow-hrefs.mjs",
-    "test": "npm run content:check-generated && npm run content:validate && npm run portal:validate && npm run links:check && npm run workflows:check && npm run mermaid:check && npm run a11y:smoke && npm run security:smoke",
+    "kit:check": "node scripts/check-kit.mjs",
+    "kit:snapshot": "node scripts/check-kit.mjs --update",
+    "kit:vendor": "npm --prefix packages/create-aies-kit run vendor",
+    "content:freshness": "node scripts/freshness-report.mjs",
+    "conformance:test": "node --test tools/conformance/test/conformance.test.mjs",
+    "test": "npm run content:check-generated && npm run content:validate && npm run portal:validate && npm run links:check && npm run workflows:check && npm run mermaid:check && npm run a11y:smoke && npm run security:smoke && npm run conformance:test && npm run kit:check",
     "prebuild": "npm run generate"
   },
   "dependencies": {

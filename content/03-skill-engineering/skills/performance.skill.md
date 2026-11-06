@@ -1,11 +1,16 @@
+---
+name: performance
+description: "Performance procedure with verification and rollback evidence. Use when a measured latency, throughput, saturation, memory, CPU, or cost objective is missed."
+---
+
 # Performance Skill
 
 > **Skill ID:** `performance`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when A measured latency, throughput, saturation, memory, CPU, or cost objective is missed.
+Activate this skill when a measured latency, throughput, saturation, memory, CPU, or cost objective is missed.
 
 ## Why
 A baseline profile, workload definition, bottleneck evidence, capacity model, optimized change, and before/after comparison is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -69,5 +74,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [Brendan Gregg USE Method](https://www.brendangregg.com/usemethod.html)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

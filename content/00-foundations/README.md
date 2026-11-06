@@ -1,7 +1,8 @@
 # Level 0: AI Foundations
 
 > **Prerequisites:** None
-> **Goal:** Understand how to engineer systems around LLMs — not just use them
+> **Goal:** Understand how to engineer systems around LLMs — not just use them  
+> **Updated:** 2026-07-16
 
 ---
 

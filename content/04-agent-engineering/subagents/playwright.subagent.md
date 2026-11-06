@@ -1,8 +1,16 @@
+---
+name: playwright
+description: "Implement deterministic browser journeys with isolated fixtures, traces, and accessibility checks. Use when a parent agent delegates a narrowly scoped task in this domain; edits only files named in the task contract."
+tools: Read, Grep, Glob, Edit, Write, Bash
+model: inherit
+privilege: workspace-write
+---
+
 # Playwright Subagent
 
 > **ID:** `playwright`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
 Implement deterministic browser journeys with isolated fixtures, traces, and accessibility checks.
@@ -117,5 +125,6 @@ Bind runtime identity to workload credentials, enforce tenant and region boundar
 - [Playwright Best Practices](https://playwright.dev/docs/best-practices)
 
 ## Changelog
+- **2026-11-06:** Added native subagent frontmatter (`name`, `description`, `tools`, `model`) so Claude Code, Cursor, Copilot, Gemini CLI, and opencode load this definition directly via the AIES kit.
 - **2.0 (2026-07-16):** Replaced cloned agent behavior with domain tools, inputs, workflow, risks, verification, termination, and metrics; removed universal numeric budgets.
 - **1.1:** Initial standardized contract.

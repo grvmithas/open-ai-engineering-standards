@@ -1,6 +1,11 @@
+---
+name: node
+description: "Execute a repeatable Node.js change or diagnosis for a HTTP handler, worker, stream pipeline, package, or process lifecycle, including native evidence, validation, rollout, and rollback. Use when source, manifests, runtime configuration, topology, data contracts, or operating behavior for Node.js can change."
+---
+
 # Node.js Production Skill
 
-> Version: 1.1.0 | Updated: 2026-07-16
+> Version: 1.1.0 | Updated: 2026-11-06
 
 ## Purpose
 
@@ -98,5 +103,6 @@ Node service governance pins runtime and package-manager lines, reviews install 
 
 ## Changelog
 
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - 1.1.0 (2026-07-16): Added platform-native procedure, commands, evidence, and rollback.
 - 1.0.0 (2026-07-16): Added initial skill.

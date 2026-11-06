@@ -1,7 +1,8 @@
 # AI Engineering Standard (AIES)
 
 > **The definitive open-source standard for building production-grade AI systems.**
-> Not a tutorial. Not a template. A *standard* — opinionated, battle-tested, and built by engineers who ship.
+> Not a tutorial. Not a template. A *standard* — opinionated, battle-tested, and built by engineers who ship.  
+> **Updated:** 2026-08-09
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](CHANGELOG.md)
@@ -47,7 +48,7 @@ This repository is structured as a 10-level AI Engineering Maturity Model. Enter
 
 **Every feature. Every time. No exceptions.**
 
-```
+```text
 Idea → Research → Requirements → Story Kickoff → Context Collection →
 Knowledge Gathering → Planning → Architecture → Human Approval →
 Prompt Generation → Coding → Self Review → Agent Review → Testing →

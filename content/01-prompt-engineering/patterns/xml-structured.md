@@ -1,6 +1,7 @@
 # XML-Structured Prompting — The AIES Standard
 
-> **This is the only prompt format the AIES standard uses.**
+> **This is the only prompt format the AIES standard uses.**  
+> **Version:** 1.1 | **Updated:** 2026-11-06
 
 ---
 
@@ -14,7 +15,7 @@ Establish a single, unambiguous prompt format that works across all frontier mod
 
 Three reasons that override all personal preferences:
 
-1. **Model training alignment.** Claude, GPT-4, and Gemini are all trained on structured data with XML-like markup. XML section boundaries produce more reliable instruction-following than markdown headers or prose.
+1. **Model training alignment.** The Claude, GPT, and Gemini model families are all trained on structured data with XML-like markup. XML section boundaries produce more reliable instruction-following than markdown headers or prose.
 
 2. **"Lost in the middle" resistance.** XML tags mark section boundaries explicitly. Models can locate the `<constraints>` section even in long prompts without losing context of other sections.
 
@@ -47,7 +48,7 @@ Your outputs are [quality bar — how good they must be].
 </context>
 
 <instructions>
-Think step by step inside <thinking></thinking> tags before responding.
+[Non-reasoning models only:] Think step by step inside <thinking></thinking> tags before responding.
 
 1. [First action — specific, imperative]
 2. [Second action — specific, imperative]
@@ -97,6 +98,17 @@ Then provide your final response outside the thinking tags.
 
 **Why:** Reasoning before committing to an answer measurably improves accuracy on multi-step tasks. The `<thinking>` block is also a debugging surface — you can see exactly why the model produced a given output.
 
+**Reasoning models:** When the target model has native reasoning enabled (extended/adaptive thinking, reasoning effort), drop the `<thinking>` instruction. The model already reasons internally; control depth with the API's reasoning-effort or thinking-budget parameter and spend prompt tokens on goals, constraints, and success criteria instead. Keep an explicit scratchpad only when you need the reasoning persisted as an audit artifact.
+
+---
+
+## How to adopt
+
+1. Start every new prompt from the [system prompt template](../templates/system-prompt.template.md).
+2. Order sections stable → volatile: `<role>`, `<constraints>`, tool docs, then `<context>`, then the user's input — this maximizes provider prompt-cache hits.
+3. When a program consumes the output, keep `<output_format>` for humans but enforce the shape with the provider's structured-output / JSON-schema mode.
+4. Add the prompt to the eval suite and version it with the change ([Prompt quality standard](../../08-ai-sdlc/quality-standards/prompt-quality-standard.md)).
+
 ---
 
 ## Constraint Types
@@ -129,7 +141,7 @@ QUALITY: Every code example must be complete and runnable without modification.
 
 When consistency is critical, embed examples directly:
 
-```xml
+````xml
 <examples>
 <example id="1">
 <input>Create a button component</input>
@@ -151,7 +163,7 @@ export const Button = ({ label, onClick, variant = 'primary' }: ButtonProps) => 
 </output>
 </example>
 </examples>
-```
+````
 
 **Rule:** Use 2-3 examples. More than 5 dilutes attention. Less than 2 is insufficient for complex format requirements.
 
@@ -160,7 +172,7 @@ export const Button = ({ label, onClick, variant = 'primary' }: ButtonProps) => 
 ## Anti-Patterns
 
 ### ❌ Prose instructions
-```
+```xml
 # Wrong
 "Please analyze the code and let me know if there are any issues, 
 focusing on security and performance if possible."
@@ -174,7 +186,7 @@ focusing on security and performance if possible."
 ```
 
 ### ❌ Implicit output format
-```
+```xml
 # Wrong — what format? length? structure?
 "Tell me about the architecture"
 
@@ -189,7 +201,7 @@ Return an architecture assessment as:
 ```
 
 ### ❌ Role description that describes the user, not the model
-```
+```xml
 # Wrong — this describes what the USER wants, not who the MODEL is
 <role>You are helping a developer who wants to improve their code</role>
 
@@ -203,6 +215,20 @@ You do NOT rewrite code unprompted — you identify issues and explain fixes.
 
 ---
 
+## Tradeoffs
+
+| Choice | You gain | You give up |
+|---|---|---|
+| XML sections everywhere | Reviewable, parseable, cross-model structure | 5–10% more tokens than terse prose |
+| One format for all prompts | No per-team style debates; tooling can lint it | Some vendor docs show markdown-style prompts you must translate |
+| Explicit `<thinking>` (non-reasoning models) | Auditable reasoning, better multi-step accuracy | Latency and output tokens |
+
+## Enterprise considerations
+
+- XML sections make prompts machine-lintable: CI can verify every production prompt has `<constraints>` with at least three rules and an `<output_format>`, turning the standard into an enforced gate.
+- Extracted sections (`<role>`, `<constraints>`) feed the AI system inventory and model cards without manual copy-paste.
+- Keep secrets and customer data out of all sections; prompts are logged by most observability stacks.
+
 ## Checklist
 
 - [ ] Role is specific, professional, with explicit exclusions
@@ -210,6 +236,12 @@ You do NOT rewrite code unprompted — you identify issues and explain fixes.
 - [ ] Instructions are numbered and imperative (not suggestions)
 - [ ] Output format is explicit with a concrete example
 - [ ] At least 3 hard constraints specified
-- [ ] Thinking/planning step included for complex tasks
+- [ ] Thinking/planning step included for complex tasks on non-reasoning models; reasoning effort set via API for reasoning models
+- [ ] Sections ordered stable → volatile for cache hits
 - [ ] Prompt tested with adversarial input
 - [ ] Prompt versioned with changelog entry
+
+## Changelog
+
+- **1.1 — 2026-11-06:** Repaired broken nested code fences that swallowed the Anti-Patterns section; added reasoning-model guidance, How-to-adopt (cache ordering, structured outputs), Tradeoffs, and Enterprise considerations.
+- **1.0:** Initial standard.

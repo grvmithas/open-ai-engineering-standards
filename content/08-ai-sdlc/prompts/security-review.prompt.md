@@ -2,7 +2,8 @@
 
 > **SDLC Stage:** 16 — Security
 > **Version:** 1.0
-> **Purpose:** Comprehensive security audit of code changes before deployment
+> **Purpose:** Comprehensive security audit of code changes before deployment  
+> **Updated:** 2026-07-16
 
 ---
 

@@ -1,11 +1,16 @@
-# Devops Skill
+---
+name: devops
+description: "DevOps procedure with verification and rollback evidence. Use when a build, CI/CD, release pipeline, infrastructure automation, or artifact supply-chain flow changes."
+---
+
+# DevOps Skill
 
 > **Skill ID:** `devops`  
 > **Version:** 2.1  
-> **Updated:** 2026-07-29
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when A build, CI/CD, release pipeline, infrastructure automation, or artifact supply-chain flow changes.
+Activate this skill when a build, CI/CD, release pipeline, infrastructure automation, or artifact supply-chain flow changes.
 
 ## Why
 A pipeline design, immutable artifact flow, provenance controls, promotion policy, rollback, and reliability evidence is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -71,6 +76,7 @@ Separate who merges code, who approves environment promotion, and who holds brea
 - [OpenSSF Scorecard](https://scorecard.dev/)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.1 (2026-07-29):** De-boilerplated Tradeoffs, Anti-Patterns, and Enterprise Considerations with devops-domain content (canaries, digest promotion, OIDC, SLSA evidence).
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

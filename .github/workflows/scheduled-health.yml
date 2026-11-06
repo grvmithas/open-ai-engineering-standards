@@ -1,0 +1,69 @@
+name: Scheduled Health
+
+# Weekly drift detection: the standard rots when vendors move, endpoints change, and pages age.
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  health:
+    name: Weekly health report
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Full test suite
+        id: tests
+        continue-on-error: true
+        run: npm test
+
+      - name: Dependency audit
+        id: audit
+        continue-on-error: true
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Remote endpoint liveness (MCP catalog, vendor docs)
+        id: endpoints
+        continue-on-error: true
+        run: node scripts/check-external.mjs
+
+      - name: Content freshness report
+        id: freshness
+        continue-on-error: true
+        run: node scripts/freshness-report.mjs --summary "$GITHUB_STEP_SUMMARY" --fail-over 25
+
+      - name: Open or update the health issue on failure
+        if: steps.tests.outcome == 'failure' || steps.audit.outcome == 'failure' || steps.endpoints.outcome == 'failure' || steps.freshness.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="Scheduled health: drift detected"
+          BODY=$(printf '%s\n' \
+            "Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            "" \
+            "| Check | Outcome |" "|---|---|" \
+            "| npm test | ${{ steps.tests.outcome }} |" \
+            "| npm audit | ${{ steps.audit.outcome }} |" \
+            "| remote endpoints | ${{ steps.endpoints.outcome }} |" \
+            "| content freshness | ${{ steps.freshness.outcome }} |" \
+            "" \
+            "Triage per content/handbook/vendor-watchlist.md.")
+          EXISTING=$(gh issue list --state open --search "$TITLE in:title" --json number --jq '.[0].number')
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body "$BODY"
+          else
+            gh issue create --title "$TITLE" --body "$BODY" --label maintenance || gh issue create --title "$TITLE" --body "$BODY"
+          fi
+          exit 1

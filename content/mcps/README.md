@@ -1,6 +1,7 @@
 # MCP Integrations
 
-> **The M×N Problem Solver — One standard integration per external system.**
+> **The M×N Problem Solver — One standard integration per external system.**  
+> **Updated:** 2026-07-29
 
 ---
 
@@ -10,7 +11,7 @@ Model Context Protocol (MCP) is the open standard for connecting AI agents to ex
 - **Without MCP:** M models × N tools = M×N custom integrations
 - **With MCP:** M models × N MCP servers = M+N implementations
 
-Every major AI system (Claude, GPT-4, Gemini, Cursor, Windsurf, Roo) now supports MCP. It is the integration standard.
+Every major coding runtime (Claude Code, Cursor, GitHub Copilot, Codex, Gemini CLI, Kiro, Devin Desktop, OpenCode, Continue) and the Anthropic, OpenAI, and Google model APIs speak MCP. It is the integration standard, governed by the Agentic AI Foundation under the Linux Foundation.
 
 ---
 
@@ -106,7 +107,7 @@ All tool invocations (inputs and outputs) must be logged for audit, debugging, a
 
 Every MCP in this library follows this specification:
 
-```markdown
+````markdown
 # {Service} MCP Integration
 
 ## Purpose
@@ -134,7 +135,7 @@ Every MCP in this library follows this specification:
 
 ## Anti-Patterns
 [What not to do with this MCP]
-```
+````
 
 ---
 

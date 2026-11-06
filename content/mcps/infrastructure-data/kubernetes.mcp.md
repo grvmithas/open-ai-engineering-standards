@@ -1,12 +1,27 @@
 # Kubernetes MCP Integration
 
-> **Version:** 1.1 | **Updated:** 2026-07-16 | **Category:** Infrastructure/Data
+> **Version:** 1.3 | **Updated:** 2026-11-06 | **Category:** Infrastructure/Data
 
 ## Purpose and applicability
 Provide agent-safe access to clusters, namespaces, workloads, events, logs. Use this integration only when those capabilities are required and a named owner accepts the data and write risk. The implementation baseline is a pinned, reviewed Kubernetes MCP server over the official Kubernetes API; no community package is implicitly trusted.
 
+## Why use it — and when not to
+Use it for read-only cluster diagnosis: describe workloads, read events and logs, compare desired versus live state during an incident. Bind it to a namespace-scoped, read-only RBAC role via a short-lived kubeconfig. Changes go through GitOps (a PR to the manifests), never through `apply` or `delete` tools — that keeps rollback and audit in the deployment pipeline.
+
+## How to connect — deployment status (2026-11)
+| Field | Current guidance |
+|---|---|
+| Deployment | Local (stdio) against a scoped kubeconfig |
+| Endpoint / package | `containers/kubernetes-mcp-server` (registry `io.github.containers/kubernetes-mcp-server`), pinned |
+| Auth | Kubeconfig context bound to a namespaced ServiceAccount |
+| Least-privilege setup | `--read-only` / `--disable-destructive`; namespace-scoped RBAC |
+| Avoid | cluster-admin kubeconfigs or production contexts on developer laptops |
+| AIES kit id | not in kit catalog |
+
+Trust only MCP Registry entries under a reverse-DNS namespace the vendor controls (for example `com.monday/*`); aggregator and look-alike listings are third-party code. Remote endpoint liveness is re-checked weekly by `scripts/check-external.mjs`. See [MCP: remote servers & OAuth](../../handbook/mcp-remote-servers-and-auth.md).
+
 ## Protocol, transport, and capability lifecycle
-Implement stable MCP `2025-11-25`. Negotiate `protocolVersion` in `initialize`; reject unsupported versions. Prefer Streamable HTTP for remote service and `stdio` only for a local, single-user process; do not expose `stdio` through a network shim. Advertise only implemented `tools`, `resources`, `prompts`, and `logging`. Paginate lists, use progress/cancellation where supported, and send the corresponding `list_changed` notification after authorization or configuration changes. Clients re-list and review metadata changes before use.
+Implement MCP `2026-07-28` (current stable: stateless Streamable HTTP, no session affinity required); keep `2025-11-25` negotiation only while clients migrate. Negotiate `protocolVersion` in `initialize`; reject unsupported versions. Prefer Streamable HTTP for remote service and `stdio` only for a local, single-user process; do not expose `stdio` through a network shim. Advertise only implemented `tools`, `resources`, `prompts`, and `logging`. Paginate lists, use progress/cancellation where supported, and send the corresponding `list_changed` notification after authorization or configuration changes. Clients re-list and review metadata changes before use.
 
 ## Tool, resource, and prompt design
 - **Tools:** bounded list/get/search operations over clusters, namespaces, workloads, events, logs; mutations are separate, disabled by default, idempotency-aware, and approval-gated.
@@ -15,7 +30,7 @@ Implement stable MCP `2025-11-25`. Negotiate `protocolVersion` in `initialize`; 
 - **Validation:** closed JSON Schemas; normalize and authorize context, namespace, names, label selectors, manifests; cap arrays, strings, time ranges, rows, bytes, and pagination. Return typed, size-bounded results with opaque cursors and structured errors. Label all provider content untrusted and redact credentials, secrets, personal data, and internal URLs.
 
 ## Authorization, consent, and least privilege
-Remote deployments publish RFC 9728 Protected Resource Metadata and standards-compliant `WWW-Authenticate`. Discover the authorization server from metadata, require authorization code flow with PKCE `S256`, verify advertised PKCE support, and include the canonical MCP URI as RFC 8707 `resource` in authorization and token requests. Validate token signature, issuer, expiry/not-before, authorized party when applicable, and audience/resource for this server.
+Remote deployments publish RFC 9728 Protected Resource Metadata and standards-compliant `WWW-Authenticate`. Discover the authorization server from metadata, require authorization code flow with PKCE `S256`, verify advertised PKCE support, and include the canonical MCP URI as RFC 8707 `resource` in authorization and token requests. Clients register with Client ID Metadata Documents (CIMD) where the authorization server supports them; Dynamic Client Registration is a fallback, not the default. Validate token signature, issuer, expiry/not-before, authorized party when applicable, and audience/resource for this server.
 
 Never pass an inbound MCP bearer token to the provider. Exchange/map it server-side to a short-lived, tenant-bound provider credential. Consent names the provider, tenant, enabled tools, data classes, and write effects. Use short-lived Kubernetes credentials and RBAC; rely on the provider's current permission catalog and consent screen—never invent scope names. Step-up authorization cannot silently broaden prior consent.
 
@@ -63,9 +78,11 @@ Enforce federated identity, namespace RBAC, admission policy, Pod Security Stand
 ## Primary references
 - [Kubernetes implementation/API](https://kubernetes.io/docs/reference/access-authn-authz/rbac/)
 - [Kubernetes limits/security](https://kubernetes.io/docs/concepts/cluster-administration/flow-control/)
-- [MCP specification `2025-11-25`](https://modelcontextprotocol.io/specification/2025-11-25/)
-- [MCP authorization](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization)
+- [MCP specification `2026-07-28`](https://modelcontextprotocol.io/specification/2026-07-28/)
+- [MCP authorization](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization)
 
 ## Changelog
+- **1.3 — 2026-11-06:** Added service-specific "Why use it — and when not to" guidance.
+- **1.2 — 2026-11-06:** Added 2026-11 deployment status (vendor-hosted endpoint, auth, least-privilege setup, registry trust rule); moved the protocol baseline to MCP `2026-07-28`; added CIMD client registration.
 - **1.1 — 2026-07-16:** Replaced a template marker with concrete service-specific enterprise controls.
 - **1.0 — 2026-07-16:** Initial production specification.

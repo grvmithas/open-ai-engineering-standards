@@ -1,8 +1,16 @@
+---
+name: migration
+description: "Plan and coordinate reversible application, platform, or data migrations with compatibility windows. Use only with explicit human approval for each external effect; prepares, executes the approved step, and verifies."
+tools: Read, Grep, Glob, Edit, Write, Bash
+model: inherit
+privilege: external-effect
+---
+
 # Migration Agent
 
 > **ID:** `migration`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
 Plan and coordinate reversible application, platform, or data migrations with compatibility windows.
@@ -117,5 +125,6 @@ Bind runtime identity to workload credentials, enforce tenant and region boundar
 - [AWS Prescriptive Guidance Migration](https://docs.aws.amazon.com/prescriptive-guidance/latest/migration-retiring-applications/welcome.html)
 
 ## Changelog
+- **2026-11-06:** Added native subagent frontmatter (`name`, `description`, `tools`, `model`) so Claude Code, Cursor, Copilot, Gemini CLI, and opencode load this definition directly via the AIES kit.
 - **2.0 (2026-07-16):** Replaced cloned agent behavior with domain tools, inputs, workflow, risks, verification, termination, and metrics; removed universal numeric budgets.
 - **1.1:** Initial standardized contract.

@@ -1,6 +1,7 @@
 # Create Skill
 
-> **AIDLC prompt** · Author a production AIES skill (procedural HOW) for this repository
+> **AIDLC prompt** · Author a production AIES skill (procedural HOW) for this repository  
+> **Updated:** 2026-07-29
 
 ---
 

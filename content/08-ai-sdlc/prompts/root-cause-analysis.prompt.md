@@ -2,7 +2,8 @@
 
 > **SDLC Stage:** 23 — Postmortem
 > **Version:** 1.0
-> **Purpose:** Systematic root cause analysis for production incidents
+> **Purpose:** Systematic root cause analysis for production incidents  
+> **Updated:** 2026-07-16
 
 ---
 

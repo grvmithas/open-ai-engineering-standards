@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { useRouter } from 'next/navigation';
 import Fuse from 'fuse.js';
 import { STATIC_COMMAND_INDEX, parseNaturalLanguageQuery } from '@/lib/workflows/commandIndex';
@@ -47,21 +47,23 @@ function SearchIcon({ className }: { className?: string }) {
   );
 }
 
+const subscribeNoop = () => () => {};
+
+function getClientModKey() {
+  return /Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent) ? '⌘' : 'Ctrl';
+}
+
 export default function DocSearch() {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const [docs, setDocs] = useState<SearchDoc[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadedDocs, setDocs] = useState<SearchDoc[] | null>(null);
+  const docs = useMemo(() => loadedDocs ?? [], [loadedDocs]);
+  const isLoading = isOpen && loadedDocs === null;
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [modKey, setModKey] = useState('Ctrl');
+  const modKey = useSyncExternalStore(subscribeNoop, getClientModKey, () => 'Ctrl');
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-
-  useEffect(() => {
-    const isApple = /Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent);
-    setModKey(isApple ? '⌘' : 'Ctrl');
-  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -80,14 +82,12 @@ export default function DocSearch() {
   }, []);
 
   useEffect(() => {
-    if (!isOpen || docs.length > 0) return;
-    setIsLoading(true);
+    if (!isOpen || loadedDocs !== null) return;
     fetch('/search-index.json')
       .then(res => res.json())
       .then((data: SearchDoc[]) => setDocs(data))
-      .catch(() => setDocs([]))
-      .finally(() => setIsLoading(false));
-  }, [isOpen, docs.length]);
+      .catch(() => setDocs([]));
+  }, [isOpen, loadedDocs]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -220,6 +220,11 @@ export default function DocSearch() {
         <input
           ref={inputRef}
           type="search"
+          role="combobox"
+          aria-expanded={isOpen}
+          aria-controls="doc-search-results"
+          aria-autocomplete="list"
+          aria-activedescendant={isOpen && results.length > 0 ? `doc-search-option-${selectedIndex}` : undefined}
           value={query}
           onFocus={() => setIsOpen(true)}
           onChange={e => {
@@ -247,7 +252,7 @@ export default function DocSearch() {
             </div>
           ) : null}
 
-          <div className="max-h-[380px] overflow-y-auto p-2">
+          <div id="doc-search-results" role="listbox" aria-label="Search results" className="max-h-[380px] overflow-y-auto p-2">
             {isLoading && query.trim() !== '' ? (
               <div className="flex items-center justify-center gap-2 py-8 text-xs text-[var(--ink-muted)]">
                 <div className="spinner" />
@@ -263,15 +268,18 @@ export default function DocSearch() {
               </div>
             ) : (
               Array.from(grouped.entries()).map(([group, items]) => (
-                <div key={group} className="mb-1.5">
-                  <div className="px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.12em] text-[var(--ink-muted)]">
+                <div key={group} role="group" aria-label={GROUP_LABELS[group] ?? group} className="mb-1.5">
+                  <div aria-hidden="true" className="px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.12em] text-[var(--ink-muted)]">
                     {GROUP_LABELS[group] ?? group}
                   </div>
                   <div className="space-y-0.5">
                     {items.map(item => (
                       <button
                         key={item.id}
+                        id={`doc-search-option-${item.index}`}
                         type="button"
+                        role="option"
+                        aria-selected={item.index === selectedIndex}
                         onClick={() => handleSelect(item.href)}
                         onMouseEnter={() => setSelectedIndex(item.index)}
                         className={`flex w-full flex-col rounded-xl px-2.5 py-2 text-left transition duration-150 ${

@@ -1,12 +1,12 @@
 # OWASP LLM and Agentic Security Crosswalk
 
-**Version:** 1.0.1  
-**Date:** 2026-07-16  
+**Version:** 1.1.0  
+**Date:** 2026-11-06  
 **Status:** Informative
 
 ## Purpose
 
-Map AIES prevention, detection, and response artifacts to the OWASP Top 10 for LLM Applications 2025 and OWASP Top 10 for Agentic Applications 2026.
+Map AIES prevention, detection, and response artifacts to the OWASP Top 10 for LLM Applications 2026, the OWASP Top 10 for Agentic Applications 2026, and the OWASP MCP Top 10 (beta).
 
 ## Why
 
@@ -14,18 +14,20 @@ LLM risks focus on model-integrated applications; agentic risks add delegated id
 
 ## OWASP LLM Top 10 crosswalk
 
-| OWASP 2025 risk | AIES controls and evidence | Relationship |
-|---|---|---|
-| LLM01 Prompt Injection | Context Manifest trust levels, instruction isolation, sanitization; Prompt Release adversarial review; Tool Contract authorization | `evidence-supports` |
-| LLM02 Sensitive Information Disclosure | Data classification, source authorization, redaction policy, output contract, evidence access controls | `evidence-supports` |
-| LLM03 Supply Chain | Model Record source/license/digest; prompt/tool versions; Evidence Bundle integrity | `evidence-supports` |
-| LLM04 Data and Model Poisoning | Context provenance/integrity; model and dataset digests; evaluation regression gates | `evidence-supports` |
-| LLM05 Improper Output Handling | Structured output schema, consumer-side validation, encoding, least-privilege tool contract | `partial` |
-| LLM06 Excessive Agency | Agent authority limits, prohibited actions, approval gates, termination criteria, tool side-effect class | `evidence-supports` |
-| LLM07 System Prompt Leakage | Prompt artifact access controls, secret prohibition, assume-prompt-public design | `partial` |
-| LLM08 Vector and Embedding Weaknesses | Context source authorization, tenant isolation, provenance, retrieval evaluation | `partial` |
-| LLM09 Misinformation | Factuality/groundedness evaluation, source provenance, human verification, incident response | `evidence-supports` |
-| LLM10 Unbounded Consumption | Token budget, timeouts, rate limits, retry caps, cost and saturation telemetry | `evidence-supports` |
+OWASP published the **LLM Top 10 2026** edition in August 2026. Risk names are mostly stable but the numbering moved, so assessments keyed to 2025 IDs must be re-keyed. Both IDs are listed; cite the 2026 ID in new evidence.
+
+| OWASP 2026 risk | 2025 ID | AIES controls and evidence | Relationship |
+|---|---|---|---|
+| LLM01:2026 Prompt Injection (incl. cross-modal) | LLM01 | Context Manifest trust levels, instruction isolation, sanitization; Prompt Release adversarial review; Tool Contract authorization; image/audio inputs treated as untrusted context | `evidence-supports` |
+| LLM02:2026 Sensitive Information Disclosure | LLM02 | Data classification, source authorization, redaction policy, output contract, evidence access controls; guard secret-read policy for coding agents | `evidence-supports` |
+| LLM03:2026 Excessive Agency | LLM06 | Agent authority limits, prohibited actions, approval gates, termination criteria, tool side-effect class, capability-composition gate | `evidence-supports` |
+| LLM04:2026 Supply Chain | LLM03 | Model Record source/license/digest; prompt/tool/skill/MCP versions; Evidence Bundle integrity; dependency existence checks | `evidence-supports` |
+| LLM05:2026 Data and Model Poisoning (incl. fine-tuning subversion) | LLM04 | Context provenance/integrity; model and dataset digests; evaluation regression gates | `evidence-supports` |
+| LLM06:2026 Unbounded Consumption | LLM10 | Token budget, timeouts, rate limits, retry caps, cost and saturation telemetry | `evidence-supports` |
+| LLM07:2026 Misinformation | LLM09 | Factuality/groundedness evaluation, source provenance, human verification, incident response | `evidence-supports` |
+| LLM08:2026 Hidden Context Exposure (was System Prompt Leakage) | LLM07 | Prompt and context artifact access controls, secret prohibition, assume-context-public design, retrieval scoping per user | `partial` |
+| LLM09:2026 Vector and Embedding Weaknesses | LLM08 | Context source authorization, tenant isolation, provenance, retrieval evaluation | `partial` |
+| LLM10:2026 Improper Output Handling (incl. insecure generated code) | LLM05 | Structured output schema, consumer-side validation, encoding, least-privilege tool contract; SAST and review gates on AI-generated code | `partial` |
 
 ## OWASP Agentic Top 10 crosswalk
 
@@ -41,6 +43,23 @@ LLM risks focus on model-integrated applications; agentic risks add delegated id
 | ASI08 Cascading Failures | Retry limits, timeouts, circuit breaking, termination criteria, safe state, incident escalation | `evidence-supports` |
 | ASI09 Human-Agent Trust Exploitation | Human-oversight mode, explicit uncertainty/provenance, confirmation policy, UX testing | `partial` |
 | ASI10 Rogue Agents | Agent inventory, owner/status, bounded authority, identity revocation, kill switch, behavior monitoring | `evidence-supports` |
+
+## OWASP MCP Top 10 crosswalk
+
+The OWASP MCP Top 10 (beta, MCP01–MCP10) covers risks specific to Model Context Protocol servers and clients. Use it alongside the agentic list whenever an agent reaches tools through MCP. The beta IDs may change; freeze the edition you assess against.
+
+| OWASP MCP risk | AIES controls and evidence | Relationship |
+|---|---|---|
+| MCP01 Token Mismanagement & Secret Exposure | Per-server scoped tokens from a secret manager, never in repo MCP config; guard denies agent reads of `.env`/credential files | `evidence-supports` |
+| MCP02 Privilege Escalation via Scope Creep | MCP spec "Why use it — and when not to" per server; read-only default; scope review on every server upgrade | `evidence-supports` |
+| MCP03 Tool Poisoning | Pinned server versions, tool-description diff review on upgrade, tool output treated as untrusted context | `partial` |
+| MCP04 Software Supply Chain Attacks & Dependency Tampering | Allowlisted servers only, version pins and digests, provenance for local servers, skill/tool supply-chain review | `evidence-supports` |
+| MCP05 Command Injection & Execution | Sandboxed local servers, schema validation on tool arguments, guard shell policy, regression test for auth-URL injection (CVE-2025-6514 class) | `partial` |
+| MCP06 Prompt Injection via Contextual Payloads | Context trust hierarchy; untrusted tool results never escalate to instructions; capability-composition gate | `evidence-supports` |
+| MCP07 Insufficient Authentication & Authorization | Remote servers over OAuth 2.1 per MCP 2026-07-28 (issuer validation per RFC 9207, Client ID Metadata Documents), audience-bound tokens | `evidence-supports` |
+| MCP08 Lack of Audit and Telemetry | Tool-call tracing with server, tool, argument hash, decision; guard audit log; SIEM forwarding | `evidence-supports` |
+| MCP09 Shadow MCP Servers | MCP config files are human-only (guard write policy); inventory of approved servers in `mcps/recommended.json`; managed allowlists | `evidence-supports` |
+| MCP10 Context Injection & Over-Sharing | Minimum-necessary context per tool call, tenant scoping, redaction before tool egress | `partial` |
 
 ## How
 
@@ -61,6 +80,7 @@ LLM risks focus on model-integrated applications; agentic risks add delegated id
 | Agent | Goal drift, retry loops, authority crossing, termination, human override |
 | Multi-agent | Spoofing, task tampering, artifact poisoning, trust transitivity, cascade containment |
 | Supply chain | Digest verification, provenance, dependency review, rollback |
+| MCP | Tool-description change detection, token scope audit, unapproved-server detection, auth-flow injection regression |
 
 ## Equivalence limits
 
@@ -73,6 +93,7 @@ OWASP Top 10 documents are awareness and risk-prioritization resources, not comp
 | Threats map directly to testable component contracts | Adversarial testing must evolve with attacks |
 | Bounded authority limits blast radius | More confirmation gates reduce autonomy and throughput |
 | Context provenance aids investigation | Provenance infrastructure adds latency and storage |
+| Tracking three OWASP lists | Each list catches risks the others miss (agent autonomy, MCP auth, model I/O) | Three editions to re-key when OWASP renumbers |
 
 ## Anti-patterns
 
@@ -81,6 +102,7 @@ OWASP Top 10 documents are awareness and risk-prioritization resources, not comp
 - **Transitive trust:** trusting an artifact because another agent produced it.
 - **Leakage fixation:** protecting prompt text while embedding credentials or relying on secrecy for safety.
 - **Top-10 completeness:** assuming risks outside the published ten do not matter.
+- **Stale IDs:** citing `LLM06` as Excessive Agency in 2026 evidence. It is now Unbounded Consumption; re-key or state the edition.
 
 ## Enterprise considerations
 
@@ -91,12 +113,15 @@ Integrate these tests with application security, IAM, data loss prevention, soft
 - [OWASP Top 10 for Large Language Model Applications](https://genai.owasp.org/llm-top-10/)
 - [OWASP Top 10 for Agentic Applications](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/)
 - [OWASP GenAI Security Project](https://genai.owasp.org/)
+- [OWASP MCP Top 10](https://owasp.org/www-project-mcp-top-10/)
 
-Sources accessed 2026-07-16.
+Sources accessed 2026-11-06.
 
 ## Checklist
 
 - [ ] Both LLM and agentic threat sets are assessed where agents are used
+- [ ] Evidence cites LLM Top 10 **2026** IDs (or states the edition)
+- [ ] MCP Top 10 assessed for every MCP server in use
 - [ ] Every agent and tool has a dedicated least-privilege identity
 - [ ] Untrusted context cannot become privileged instruction
 - [ ] High-impact actions require an independent authorization gate
@@ -104,6 +129,11 @@ Sources accessed 2026-07-16.
 - [ ] Top-10 coverage is not represented as certification
 
 ## Changelog
+
+### 1.1.0 — 2026-11-06
+
+- Re-keyed the LLM table to the OWASP LLM Top 10 2026 edition, keeping 2025 IDs for traceability.
+- Added the OWASP MCP Top 10 (beta) crosswalk and MCP verification row.
 
 ### 1.0.1 — 2026-07-16
 

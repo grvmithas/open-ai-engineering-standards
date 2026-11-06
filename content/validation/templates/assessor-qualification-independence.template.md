@@ -2,7 +2,8 @@
 
 > **Template version:** 1.0.0  
 > **Published:** 2026-07-16  
-> **Status:** Controlled record template
+> **Status:** Controlled record template  
+> **Updated:** 2026-07-29
 
 ## Purpose
 

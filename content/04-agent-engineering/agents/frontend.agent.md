@@ -1,8 +1,16 @@
+---
+name: frontend
+description: "Implement accessible, resilient browser UI and its client-side integration contracts. Use when an approved plan assigns work in this domain; edits only files named in the task contract."
+tools: Read, Grep, Glob, Edit, Write, Bash
+model: inherit
+privilege: workspace-write
+---
+
 # Frontend Agent
 
 > **ID:** `frontend`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
 Implement accessible, resilient browser UI and its client-side integration contracts.
@@ -117,5 +125,6 @@ Bind runtime identity to workload credentials, enforce tenant and region boundar
 - [WCAG 2.2](https://www.w3.org/TR/WCAG22/)
 
 ## Changelog
+- **2026-11-06:** Added native subagent frontmatter (`name`, `description`, `tools`, `model`) so Claude Code, Cursor, Copilot, Gemini CLI, and opencode load this definition directly via the AIES kit.
 - **2.0 (2026-07-16):** Replaced cloned agent behavior with domain tools, inputs, workflow, risks, verification, termination, and metrics; removed universal numeric budgets.
 - **1.1:** Initial standardized contract.

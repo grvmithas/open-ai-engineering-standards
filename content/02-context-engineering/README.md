@@ -1,7 +1,8 @@
 # Level 2: Context Engineering
 
 > **Prerequisites:** Level 1: Prompt Engineering
-> **Goal:** Build systems that provide the right information, to the right model, at the right time
+> **Goal:** Build systems that provide the right information, to the right model, at the right time  
+> **Updated:** 2026-07-16
 
 ---
 

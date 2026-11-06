@@ -2,7 +2,8 @@
 
 > **Template version:** 1.0.0  
 > **Published:** 2026-07-16  
-> **Status:** Publication template; completion does not establish approval
+> **Status:** Publication template; completion does not establish approval  
+> **Updated:** 2026-07-29
 
 ## Purpose
 

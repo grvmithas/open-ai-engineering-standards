@@ -1,6 +1,7 @@
 # AIES Community Launch Kits & Distribution Blueprints
 
-> **Production-grade distribution templates for launching the AI Engineering Standard (AIES) across Hacker News, Dev.to, Substack, Reddit, and Discord.**
+> **Production-grade distribution templates for launching the AI Engineering Standard (AIES) across Hacker News, Dev.to, Substack, Reddit, and Discord.**  
+> **Updated:** 2026-08-08
 
 ---
 
@@ -21,7 +22,7 @@
 > **Key Technical Highlights**:
 > 1. **50/50 Rule for Context Engineering**: Pin critical instructions to the top and bottom 15% of context windows to overcome model attention decay ("lost in the middle").
 > 2. **Bounded MCP Tool Contracts**: Strict schema validation and token budget limits for Model Context Protocol (MCP) servers.
-> 3. **CLI Conformance Auditor (`npx @grvmithas/create-aies-kit audit`)**: Automated linter that scans a repo's harness files (`AIES.md`, `AGENTS.md`, `.cursorrules`, stage gate schemas) and issues a 0–100% compliance score — plus `npx @grvmithas/create-aies-kit fix` to auto-remediate missing files.
+> 3. **CLI Conformance Auditor (`npx @grvmithas/create-aies-kit audit`)**: Automated linter that scans a repo's harness files (`AIES.md`, `AGENTS.md`, runtime rules such as `.cursor/rules/`, stage gate schemas) and issues a 0–100% compliance score — plus `npx @grvmithas/create-aies-kit fix` to auto-remediate missing files.
 > 4. **Standards Crosswalk**: Direct alignment with NIST AI RMF 1.0 (SP 1270), ISO/IEC 42001, and OWASP Top 10 for LLM Applications.
 > 
 > **Site**: https://www.ai-standards.dev  

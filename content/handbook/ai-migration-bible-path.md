@@ -1,7 +1,7 @@
 # AI Migration Bible Path
 
 > **Status:** Working guidance · AIES v1.0 corpus  
-> **Updated:** 2026-07-29  
+> **Updated:** 2026-11-06  
 > **Audience:** Engineering leaders, architects, and first pilot teams adopting AI-assisted delivery
 
 ---
@@ -72,19 +72,22 @@ One repository where AI coding cannot skip planning and human approval.
 1. Open site `/start` or run:
 
 ```bash
-npx @grvmithas/create-aies-kit --stack <stack> --ide <ide> --role <role> --maturity intermediate --goal existing-codebase --model <model> --data-class <class> --yes
+npx @grvmithas/create-aies-kit@latest --stack <stack> --ide <ide> --role <role> --maturity intermediate --goal existing-codebase --model <model> --data-class <class> --yes
 ```
 
-2. Fill `implementation_plan.md` (repo root) for the first slice.  
+2. Copy `plans/_TEMPLATE.md` → `plans/{STORY_ID}-plan.md` for the first slice (root `implementation_plan.md` is only the index — never a living plan).  
 3. Complete plan approval HITL (site `/workflows/human-review`) before coding.  
-4. Use stack skill + coding prompt from the IDE folder (e.g. `.cursor/` or `.github/`) — not ad-hoc chat only.  
-5. Keep MCP empty until [MCP when and how](./mcp-when-and-how.md) is reviewed.
+4. Use the native commands (`/implementation-plan`, `/coding`) and `.agents/skills/` the kit installed — not ad-hoc chat only.  
+5. Confirm the native guard hook fires: ask the agent to run `git push --force` and verify it is denied ([Native agent hooks](./native-agent-hooks.md)).  
+6. Keep MCP empty until [MCP: remote servers & OAuth](./mcp-remote-servers-and-auth.md) is reviewed; then enable one read-only vendor endpoint.  
+7. Add `npx @grvmithas/create-aies-kit@latest audit --min-score 90` to CI so the harness cannot silently decay.  
+8. Parallel agents come **after** one serial PR has landed cleanly — then use `scripts/aies-worktree.mjs` with task contracts ([Parallel agents & worktrees](./parallel-agents-and-worktrees.md)).
 
 ### Exit evidence
 
-- Kit committed (or documented install)
+- Kit committed; `audit` ≥ 90 in CI
 - At least one approved plan → merged PR
-- Hooks or equivalent checklist enforced
+- Native guard hook verified to deny a destructive command; evidence-gate hooks or equivalent checklist enforced
 
 ---
 
@@ -183,4 +186,5 @@ External or internal assessors can see **where** AI delivery maps to controls.
 
 ## Changelog
 
+- **2026-11-06:** Stage 2 updated for kit 2.0 — ephemeral `plans/` per story, native commands and `.agents/skills`, guard-hook verification, CI `audit --min-score`, remote MCP, parallel agents only after a clean serial PR.
 - **2026-07-29:** Initial migration bible path for org pilot → SoA.

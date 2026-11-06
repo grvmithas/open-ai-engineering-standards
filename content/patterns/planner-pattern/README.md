@@ -2,7 +2,8 @@
 
 > **Pattern:** Planner
 > **Category:** Planning & Decomposition
-> **Maturity:** Stable v1.0
+> **Maturity:** Stable v1.0  
+> **Updated:** 2026-07-29
 
 ---
 
@@ -31,7 +32,7 @@ Do NOT apply this pattern to:
 
 ## Problem
 
-```
+```text
 planner-pattern/problem.md
 ```
 

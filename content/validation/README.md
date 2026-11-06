@@ -2,7 +2,8 @@
 
 > **Version:** 1.0.0  
 > **Published:** 2026-07-16  
-> **Status:** Implemented infrastructure; external evidence pending
+> **Status:** Implemented infrastructure; external evidence pending  
+> **Updated:** 2026-07-29
 
 ## Purpose
 

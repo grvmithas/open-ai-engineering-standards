@@ -1,8 +1,16 @@
+---
+name: aws
+description: "Design scoped AWS IaC and IAM changes with organization controls and recovery evidence. Use when a parent agent delegates a narrowly scoped task in this domain; edits only files named in the task contract."
+tools: Read, Grep, Glob, Edit, Write, Bash
+model: inherit
+privilege: workspace-write
+---
+
 # Aws Subagent
 
 > **ID:** `aws`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
 Design scoped AWS IaC and IAM changes with organization controls and recovery evidence.
@@ -117,5 +125,6 @@ Bind runtime identity to workload credentials, enforce tenant and region boundar
 - [AWS Well-Architected Framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)
 
 ## Changelog
+- **2026-11-06:** Added native subagent frontmatter (`name`, `description`, `tools`, `model`) so Claude Code, Cursor, Copilot, Gemini CLI, and opencode load this definition directly via the AIES kit.
 - **2.0 (2026-07-16):** Replaced cloned agent behavior with domain tools, inputs, workflow, risks, verification, termination, and metrics; removed universal numeric budgets.
 - **1.1:** Initial standardized contract.

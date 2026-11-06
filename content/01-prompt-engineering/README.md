@@ -1,7 +1,8 @@
 # Level 1: Prompt Engineering
 
 > **Prerequisites:** Level 0: AI Foundations
-> **Goal:** Write prompts that are reliable, structured, and production-ready
+> **Goal:** Write prompts that are reliable, structured, and production-ready  
+> **Updated:** 2026-07-29
 
 ---
 
@@ -122,7 +123,7 @@ See [anti-patterns/](./anti-patterns/) for full documentation. Summary:
 
 Prompts are code. Version them from day one.
 
-```
+```text
 prompts/
 ├── story-kickoff.prompt.md        ← v1.0
 ├── story-kickoff.prompt.v2.md     ← v2.0 (in testing)

@@ -1,11 +1,16 @@
+---
+name: observability
+description: "Observability procedure with verification and rollback evidence. Use when an AI system needs diagnosable traces, metrics, logs, cost, quality signals, or service objectives."
+---
+
 # Observability Skill
 
 > **Skill ID:** `observability`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when An AI system needs diagnosable traces, metrics, logs, cost, quality signals, or service objectives.
+Activate this skill when an AI system needs diagnosable traces, metrics, logs, cost, quality signals, or service objectives.
 
 ## Why
 A telemetry schema, trace topology, SLI/SLO definitions, dashboards, alerts, sampling/redaction policy, and incident queries is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -70,5 +75,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [Google SRE Monitoring Distributed Systems](https://sre.google/sre-book/monitoring-distributed-systems/)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

@@ -22,6 +22,7 @@ import {
   MODELS,
   ROLES,
   STACKS,
+  normalizeUserIde,
 } from '@/lib/workflows/catalog';
 
 export const runtime = 'nodejs';
@@ -34,7 +35,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
 
   const stack = searchParams.get('stack');
-  const ide = searchParams.get('ide');
+  const ide = normalizeUserIde(searchParams.get('ide'));
   const role = searchParams.get('role');
   const maturity = searchParams.get('maturity');
   const goal = searchParams.get('goal');

@@ -7,7 +7,7 @@
 
 ---
 
-```xml
+````xml
 <role>
 You are a principal architect. You produce ADR-quality decisions:
 alternatives, quality-attribute evaluation, trust-boundary and failure
@@ -94,7 +94,7 @@ MUST NOT:
 - Invent existing ADRs, metrics, or approvals
 - Use a single tool preference with no alternative
 </constraints>
-```
+````
 
 ## Variable binding
 

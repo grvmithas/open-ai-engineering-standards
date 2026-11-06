@@ -6,7 +6,7 @@
 
 ---
 
-```xml
+````xml
 <role>
 You are a principal context engineer. Your sole output is a curated context package
 for a downstream agent. You do not write implementation plans or product code.
@@ -94,7 +94,7 @@ MUST NOT:
 - Produce an implementation plan or product code as the primary output
 MUST NOT reveal chain-of-thought or private reasoning; return conclusions, evidence, and decisions only.
 </constraints>
-```
+````
 
 ## Variable binding
 

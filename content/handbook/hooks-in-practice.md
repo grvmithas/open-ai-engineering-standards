@@ -2,13 +2,15 @@
 
 > **Handbook:** Fail closed before bad artifacts leave the laptop  
 > **Repo anchors:** [`content/04-agent-engineering/hooks/`](../04-agent-engineering/hooks/README.md) · [`content/patterns/*/hooks.md`](../patterns/planner-pattern/hooks.md) · [`tests/hooks.test.sh`](../04-agent-engineering/hooks/tests/hooks.test.sh)  
-> **Version:** 1.0 | **Updated:** 2026-07-16
+> **Version:** 1.1 | **Updated:** 2026-11-06
 
 ---
 
 ## Purpose
 
 Use hooks as **deterministic evidence gates** on the AI delivery lifecycle — not as task runners, secret scanners, or soft reminders. A hook either accepts declared evidence/approvals or exits non-zero. Orchestrators supply evidence; hooks validate it.
+
+> **Two layers since 2026.** This chapter covers **evidence gates** (the `*.hook.sh` library, run by orchestrators and CI). Agent runtimes now also expose **native hooks** — Claude Code `PreToolUse`, Cursor `beforeShellExecution`/`beforeReadFile`, Copilot `preToolUse`, Kiro `PreToolUse`, Codex `PreToolUse`, Gemini CLI `BeforeTool`, Devin `PreToolUse`, opencode `tool.execute.before` — that can deny a tool call *before it executes*. Use both: native hooks stop destructive commands in the moment; evidence gates stop incomplete artifacts at stage boundaries. The kit wires `hooks/aies-guard.mjs` into each runtime's native hook config. See [Native agent hooks](./native-agent-hooks.md).
 
 ## Why
 
@@ -237,4 +239,6 @@ OAIES_APPROVAL_FILE=artifacts/approval.evidence \
 
 ## Changelog
 
+- **2026-11-06:** Native hook list extended to Codex, Gemini CLI, Devin, opencode, and Cursor `beforeReadFile`.
+- 2026-11-06: Added the two-layer model (native runtime hooks + evidence gates) and linked Native agent hooks.
 - 2026-07-16: Initial handbook chapter — hooks as evidence gates in AI-assisted delivery.

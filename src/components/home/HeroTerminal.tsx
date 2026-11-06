@@ -1,28 +1,30 @@
 'use client';
 
 import { useState } from 'react';
+import { KIT_CLI_COMMAND } from '@/lib/chrome-nav';
+import { KIT_VERSION } from '../../../packages/kit-core/lib/options.js';
 
 const SNIPPETS = [
   {
     id: 'cli',
     label: 'CLI Quickstart',
     icon: '⚡',
-    command: 'npx create-aies-kit',
-    desc: 'Scaffold AIES rules, skills & prompts in your project',
+    command: KIT_CLI_COMMAND,
+    desc: 'Interactive: pick stack, agent runtime, and data class — writes native skills, subagents, hooks',
   },
   {
     id: 'claude',
     label: 'Claude Code',
     icon: '🤖',
-    command: 'mkdir -p .claude/skills && cp .aies/content/03-skill-engineering/skills/*.skill.md .claude/skills/',
-    desc: 'Install procedural skills for Claude Code agent harness',
+    command: `${KIT_CLI_COMMAND} --ide claude-code`,
+    desc: 'CLAUDE.md, .claude/skills, read-only subagents, guard hook in .claude/settings.json',
   },
   {
     id: 'cursor',
-    label: 'Cursor Rules',
+    label: 'Cursor',
     icon: '📐',
-    command: 'git clone https://github.com/grvmithas/open-ai-engineering-standards.git .aies && cp .aies/CLAUDE.md ./CLAUDE.md',
-    desc: 'Apply AIES behavioral contract & rules to Cursor workspace',
+    command: `${KIT_CLI_COMMAND} --ide cursor`,
+    desc: '.cursor/rules, agents, commands, and a fail-closed guard in .cursor/hooks.json',
   },
 ];
 
@@ -107,7 +109,7 @@ export default function HeroTerminal() {
         {/* Descriptor sub-bar */}
         <div className="border-t border-slate-800/60 bg-[#090e1a] px-4 py-2 text-[11px] font-mono text-slate-400 flex items-center justify-between">
           <span>{currentSnippet.desc}</span>
-          <span className="text-indigo-400/80">v1.0.0</span>
+          <span className="text-indigo-400/80">v{KIT_VERSION}</span>
         </div>
       </div>
     </div>

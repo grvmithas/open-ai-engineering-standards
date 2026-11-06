@@ -2,7 +2,7 @@
 
 > **Audience:** Engineering orgs adopting AI-assisted delivery (UI, platform, and full-stack)  
 > **Goal:** Depth over inventory — how to work day-to-day, not a dump of every file in the repo  
-> **Version:** 1.1 | **Updated:** 2026-07-29
+> **Version:** 1.2 | **Updated:** 2026-11-06
 
 ---
 
@@ -51,6 +51,22 @@ flowchart LR
 | [Containing token waste](./containing-token-waste.md) | Cut cost and noise without starving quality |
 | [AIDLC roles & evolving delivery](./aidlc-roles-and-evolving-delivery.md) | Staff the new jobs AI-DLC creates |
 
+### Agentic engineering (2026)
+
+| Chapter | You will be able to |
+|---------|---------------------|
+| [Open standards & file matrix](./open-agent-standards.md) | Configure AGENTS.md, skills, subagents, hooks, and MCP correctly for eight runtimes |
+| [IDE-native subagents](./ide-native-subagents.md) | Write subagents the runtime loads, isolates, and constrains |
+| [Agent Skills standard](./agent-skills-standard.md) | Author `.agents/skills` once for every runtime |
+| [Native agent hooks](./native-agent-hooks.md) | Deny unsafe tool calls inside the runtime, not just in prose |
+| [Parallel agents & worktrees](./parallel-agents-and-worktrees.md) | Run 2–4 agents concurrently with contracts and serial merges |
+| [Cloud & background agents](./cloud-and-background-agents.md) | Delegate to cloud agents that still merge safely |
+| [MCP: remote servers & OAuth](./mcp-remote-servers-and-auth.md) | Move from stdio + tokens to vendor-hosted Streamable HTTP + OAuth |
+| [Evaluating coding agents](./evaluating-coding-agents.md) | Accept harness changes on task-level evidence |
+| [Agent SDKs & A2A](./agent-sdks-and-a2a.md) | Pick the right layer for agents inside your product |
+| [Computer-use agents](./computer-use-agents.md) | Let agents drive UIs without handing over your session |
+| [Vendor watchlist](./vendor-watchlist.md) | Detect and triage vendor drift before it breaks the standard |
+
 ## Repo map (start here on disk)
 
 | Concern | Canonical path |
@@ -81,5 +97,6 @@ If a page is only a list of links, it does not belong here. Push catalogs to [Sk
 
 ## Changelog
 
+- 2026-11-06: Added the Agentic engineering (2026) track: open standards matrix, native subagents, Agent Skills, native hooks, parallel worktrees, cloud agents, MCP remote/OAuth, coding-agent evals, agent SDKs/A2A, computer use.
 - 2026-07-29: Linked AI migration bible path as the org-adoption spine.
 - 2026-07-16: Introduced practitioner handbook spine and curated navigation.

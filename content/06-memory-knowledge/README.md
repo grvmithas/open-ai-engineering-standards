@@ -1,7 +1,8 @@
 # Level 6: Memory & Knowledge Systems
 
 > **Prerequisites:** Level 5: Multi-Agent Systems
-> **Goal:** Give agents persistent memory, accumulated knowledge, and the ability to learn from experience
+> **Goal:** Give agents persistent memory, accumulated knowledge, and the ability to learn from experience  
+> **Updated:** 2026-07-29
 
 ---
 

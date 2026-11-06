@@ -2,7 +2,7 @@
 
 > **Pattern:** Migration  
 > **Component:** mcps.md  
-> **Version:** 1.1 | **Updated:** 2026-07-29
+> **Version:** 1.2 | **Updated:** 2026-11-06
 
 ---
 
@@ -25,6 +25,8 @@ PostgreSQL/Docker/Kubernetes MCPs are for read-only parity checks and rollout st
 
 ## Enable rules (this pattern)
 
+Connect through the vendor-hosted endpoint and client OAuth listed in each spec's **Deployment status (2026-11)** table; use read-only endpoints (`/readonly`, `read_only=true`) unless this pattern's gate authorizes writes. See [MCP: remote servers & OAuth](../../handbook/mcp-remote-servers-and-auth.md).
+
 1. Database MCP starts SELECT-only; DDL requires an approved phase ticket
 2. Never commit tokens; map secrets outside git  
 3. Record allowlist + data class in MODEL_POLICY / SoA before write tools  
@@ -41,3 +43,7 @@ PostgreSQL/Docker/Kubernetes MCPs are for read-only parity checks and rollout st
 - [ ] Migration MCPs mapped to env secrets outside git  
 - [ ] Unused servers remain disabled after the migration gate  
 - [ ] Injection / tool PEP reviewed if tools can act
+
+## Changelog
+
+- **1.2 — 2026-11-06:** Pointed enable rules at vendor-hosted, read-only-first endpoints and client OAuth.

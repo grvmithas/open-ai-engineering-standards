@@ -1,11 +1,16 @@
+---
+name: python
+description: "Python procedure with verification and rollback evidence. Use when a Python package, service, async task, CLI, or data-processing module changes."
+---
+
 # Python Skill
 
 > **Skill ID:** `python`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when A Python package, service, async task, CLI, or data-processing module changes.
+Activate this skill when a Python package, service, async task, CLI, or data-processing module changes.
 
 ## Why
 A typed module contract, dependency and environment specification, tests, packaging evidence, and operational error behavior is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -68,5 +73,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [PyPA Packaging Guide](https://packaging.python.org/)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

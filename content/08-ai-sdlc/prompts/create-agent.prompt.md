@@ -1,6 +1,7 @@
 # Create Agent
 
-> **AIDLC prompt** · Author a production AIES agent definition for this repository
+> **AIDLC prompt** · Author a production AIES agent definition for this repository  
+> **Updated:** 2026-07-29
 
 ---
 

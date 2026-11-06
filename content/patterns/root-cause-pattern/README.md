@@ -30,7 +30,7 @@ Do NOT apply this pattern to:
 
 ## Problem
 
-```
+```text
 root-cause-pattern/problem.md
 ```
 

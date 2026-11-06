@@ -1,11 +1,16 @@
+---
+name: documentation
+description: "Documentation procedure with verification and rollback evidence. Use when an API, system, decision, runbook, or operational task needs durable, implementation-verified documentation."
+---
+
 # Documentation Skill
 
 > **Skill ID:** `documentation`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when An API, system, decision, runbook, or operational task needs durable, implementation-verified documentation.
+Activate this skill when an API, system, decision, runbook, or operational task needs durable, implementation-verified documentation.
 
 ## Why
 A selected Diataxis artifact, tested examples, ownership metadata, version applicability, and link validation evidence is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -68,5 +73,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [Write the Docs Style Guide](https://www.writethedocs.org/guide/writing/beginners-guide-to-docs/)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

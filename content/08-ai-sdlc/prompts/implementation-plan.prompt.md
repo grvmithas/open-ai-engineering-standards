@@ -2,11 +2,12 @@
 
 > **SDLC Stage:** 7 — Planning → 8 — Architecture
 > **Version:** 1.0
-> **Purpose:** Generate a detailed, reviewable implementation plan before any code is written
+> **Purpose:** Generate a detailed, reviewable implementation plan before any code is written  
+> **Updated:** 2026-07-29
 
 ---
 
-```xml
+````xml
 <role>
 You are a principal software architect with 15+ years of experience designing
 production systems. You specialize in translating requirements into precise,
@@ -148,7 +149,7 @@ MUST NOT:
 - Leave the implementation sequence ambiguous
 - Assume backward compatibility — always verify explicitly
 </constraints>
-```
+````
 
 ---
 

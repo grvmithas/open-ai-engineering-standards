@@ -1,6 +1,11 @@
+---
+name: nextjs
+description: "Execute a repeatable Next.js change or diagnosis for a App Router route, layout, Server Component, Client Component, or Route Handler, including native evidence, validation, rollout, and rollback. Use when source, manifests, runtime configuration, topology, data contracts, or operating behavior for Next.js can change."
+---
+
 # Next.js Production Skill
 
-> Version: 1.1.0 | Updated: 2026-07-16
+> Version: 1.1.0 | Updated: 2026-11-06
 
 ## Purpose
 
@@ -98,5 +103,6 @@ Next.js governance must pin hosting behavior, cache ownership, public environmen
 
 ## Changelog
 
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - 1.1.0 (2026-07-16): Added platform-native procedure, commands, evidence, and rollback.
 - 1.0.0 (2026-07-16): Added initial skill.

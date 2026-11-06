@@ -2,13 +2,15 @@
 
 > **Handbook:** Add tools without turning agents into confused deputies  
 > **Repo anchors:** [`content/mcps/README.md`](../mcps/README.md) · [`content/mcps/version-control/github.mcp.md`](../mcps/version-control/github.mcp.md) · [`pre-tool-call.hook.sh`](../04-agent-engineering/hooks/pre-tool-call.hook.sh)  
-> **Version:** 1.0 | **Updated:** 2026-07-16
+> **Version:** 1.1 | **Updated:** 2026-11-06
 
 ---
 
 ## Purpose
 
 Decide **when** an MCP server belongs in an agent’s tool belt, how to scope auth and effects, and how to keep tool definitions agent-optimized. This chapter is a decision playbook — not a dump of every integration under [`content/mcps/`](../mcps/README.md).
+
+> **2026 update — read with [MCP: remote servers & OAuth](./mcp-remote-servers-and-auth.md).** The decision model below is unchanged. What changed is *how* you connect: most SaaS vendors (GitHub, GitLab, Sentry, Linear, Notion, Atlassian, Asana, Supabase, Slack, monday.com) now host Streamable HTTP servers with OAuth, so the default is a vendor URL plus client-side OAuth, not a local `npx` server holding a PAT. The reference `server-github`, `server-postgres`, `server-redis`, and `server-slack` packages are archived. Spec `2026-07-28` makes Streamable HTTP stateless and prefers Client ID Metadata Documents over Dynamic Client Registration. Where this chapter says "PAT", read "fallback only when OAuth is unavailable".
 
 ## Why
 
@@ -246,4 +248,5 @@ If the team cannot do steps 2–4, they are not ready for write MCP.
 
 ## Changelog
 
+- 2026-11-06: Added the 2026 update (vendor-hosted remote servers + OAuth as default, archived reference servers, spec `2026-07-28`); linked the remote-servers chapter.
 - 2026-07-16: Initial handbook chapter — when/how to add MCP, auth risks, GitHub worked example.

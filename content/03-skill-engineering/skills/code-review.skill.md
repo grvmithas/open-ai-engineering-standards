@@ -1,8 +1,13 @@
+---
+name: code-review
+description: "Severity-calibrated code review with file:line findings, remediations, and a verdict a human can own; verifies claimed fixes and never merges. Use when a PR or diff is ready for review, AI-generated code needs a second pass, or a fix claims to resolve an earlier finding."
+---
+
 # Code Review Skill
 
 > **Skill ID:** `code-review`  
-> **Version:** 1.2 | **Updated:** 2026-07-29  
-> **Install:** `.claude/skills/code-review.skill.md`  
+> **Version:** 1.3 | **Updated:** 2026-11-06  
+> **Install:** `.agents/skills/code-review/SKILL.md`  
 > **Handbook:** [`handbook/pr-review-with-ai.md`](../../handbook/pr-review-with-ai.md)  
 > **Pattern:** [`patterns/reviewer-pattern/README.md`](../../patterns/reviewer-pattern/README.md)
 
@@ -24,6 +29,10 @@ Do **not** activate for “rewrite this feature” — that is coding, not revie
 ## Purpose
 
 Produce a **severity-calibrated** review: concrete file:line findings, remediations, and a verdict a human can own. Verify claimed fixes. Do not merge.
+
+## Why
+
+Agent-generated changes arrive faster than humans can read them line by line, and they fail in characteristic ways: plausible code that ignores the plan, tests weakened to pass, and security shortcuts. An unstructured "LGTM" review misses all three. A fixed multi-pass procedure with severity calibration finds those failures, keeps reviewers from drowning in nits, and leaves a verdict a human can sign.
 
 ---
 
@@ -155,6 +164,8 @@ Five-pass severity-calibrated review is slower than a vibe check, but produces f
 Auth, payments, PII, and agent-tool surfaces require a named security or domain reviewer before merge. Retain verdict, severity list, and claim-verification evidence on the PR for audit. Separation of duties: the author cannot be the sole approver on Critical-path changes.
 
 ## Changelog
+- **1.3 — 2026-11-06:** Added Why section.
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **1.2 (2026-07-29):** Added Tradeoffs, Anti-Patterns, and Enterprise Considerations with code-review-domain content (severity calibration, claim verification, SoD).
 
 ---

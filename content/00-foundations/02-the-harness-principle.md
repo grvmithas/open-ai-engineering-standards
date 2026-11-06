@@ -1,6 +1,7 @@
 # The Harness Principle
 
-> **The LLM is one component. The harness is the product.**
+> **The LLM is one component. The harness is the product.**  
+> **Version:** 1.1 | **Updated:** 2026-11-06
 
 ---
 
@@ -127,6 +128,29 @@ Log every harness decision — not just final actions. This is non-negotiable fo
 
 ---
 
+## How to implement — two harness shapes
+
+The seven components are the same everywhere; where they live depends on whether you are building an AI product or running coding agents.
+
+| Component | AI application (you own the loop) | Coding agent runtime (vendor owns the loop) |
+|---|---|---|
+| Input validation | API gateway / service layer before the model call | `UserPromptSubmit`-style hook; repository rules |
+| Authorization | Resolve user identity and data entitlements before retrieval | Runtime permission modes; per-agent `tools` allowlist |
+| Context assembly | Retrieval filtered by the caller's permissions | `AGENTS.md`, skills, scoped rules, subagents |
+| Output schema validation | Provider structured outputs + server-side schema check | Typecheck, lint, tests in `PostToolUse` hook and CI |
+| Safety filter | Deterministic policy engine on proposed actions | `PreToolUse` hook (`aies-guard`) blocking protected paths and destructive commands |
+| Tool execution gate | Tiered approval service | Runtime approval prompts; sandbox (worktree, container, cloud VM) |
+| Audit logging | OpenTelemetry GenAI spans + immutable log store | Runtime transcripts + hook logs + PR history |
+
+**Steps:**
+1. Inventory every action the model can cause; assign each a tier (read, reversible write, irreversible).
+2. Implement the deny path first: what happens on invalid schema, denied tool, failed authorization.
+3. Put enforcement in code or hooks; keep the system prompt for *intent*, never for *permission*.
+4. Emit one audit event per harness decision; verify you can reconstruct any session from logs alone.
+5. Test the harness with adversarial cases — including instructions arriving inside tool results — not just the model.
+
+---
+
 ## Tradeoffs
 
 | Benefit | Cost |
@@ -143,7 +167,7 @@ Log every harness decision — not just final actions. This is non-negotiable fo
 ## Anti-Patterns
 
 ### ❌ Security through system prompt
-```
+```markdown
 # Wrong
 system: "Never access files outside /data directory"
 
@@ -171,7 +195,7 @@ The model can return invalid JSON, valid JSON with wrong schema, or valid JSON w
 
 ## Checklist
 
-- [ ] Input validation rejects prompt injection patterns
+- [ ] Input validation in place (injection classifiers are a signal; privilege separation is the control)
 - [ ] Authorization resolved before context assembly
 - [ ] Context filtered by user permissions
 - [ ] Output validated against strict schema
@@ -179,3 +203,11 @@ The model can return invalid JSON, valid JSON with wrong schema, or valid JSON w
 - [ ] Tool execution gate enforced by tier
 - [ ] Every harness decision logged with minimum payload
 - [ ] Logs are immutable and retained per compliance requirement
+- [ ] Coding agents: guard hook installed and tested (blocked action exits 2 and is reported back to the agent)
+
+---
+
+## Changelog
+
+- **1.1 — 2026-11-06:** Added "How to implement" mapping the seven components to AI applications and to coding-agent runtimes (hooks, permission modes, sandboxes); corrected input-validation checklist so pattern matching is not presented as an injection control.
+- **1.0:** Initial principle.

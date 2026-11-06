@@ -1,11 +1,16 @@
-# Aws Skill
+---
+name: aws
+description: "AWS procedure with verification and rollback evidence. Use when an AWS IAM, network, compute, data, resilience, or deployment design changes."
+---
+
+# AWS Skill
 
 > **Skill ID:** `aws`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when An AWS IAM, network, compute, data, resilience, or deployment design changes.
+Activate this skill when an AWS IAM, network, compute, data, resilience, or deployment design changes.
 
 ## Why
 An AWS architecture record, IaC plan/change set, IAM analysis, cost estimate, and rollback/failover evidence is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -68,5 +73,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [IAM Access Analyzer](https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

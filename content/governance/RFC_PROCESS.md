@@ -1,7 +1,8 @@
 # AIES Open Governance Model & RFC Process
 
 > **The AI Engineering Standard (AIES) is an open-source, community-governed specification.**
-> No single company or model vendor owns the standard. Decisions regarding stage gates, prompt engineering schemas, MCP tool contracts, and evaluation standards are driven by public RFCs (Requests for Comments).
+> No single company or model vendor owns the standard. Decisions regarding stage gates, prompt engineering schemas, MCP tool contracts, and evaluation standards are driven by public RFCs (Requests for Comments).  
+> **Updated:** 2026-08-08
 
 ---
 

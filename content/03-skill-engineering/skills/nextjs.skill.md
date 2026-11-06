@@ -1,11 +1,16 @@
-# Nextjs Skill
+---
+name: nextjs
+description: "Next.js procedure with verification and rollback evidence. Use when a Next.js route, rendering boundary, cache policy, middleware, server action, or deployment behavior changes."
+---
+
+# Next.js Skill
 
 > **Skill ID:** `nextjs`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when A Next.js route, rendering boundary, cache policy, middleware, server action, or deployment behavior changes.
+Activate this skill when a Next.js route, rendering boundary, cache policy, middleware, server action, or deployment behavior changes.
 
 ## Why
 A version-pinned route design, server/client boundary map, cache and invalidation contract, build output, and route tests is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -68,5 +73,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [Next.js Data Fetching and Caching](https://nextjs.org/docs/app/building-your-application/data-fetching)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

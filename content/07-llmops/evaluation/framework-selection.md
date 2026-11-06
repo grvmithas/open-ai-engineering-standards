@@ -1,7 +1,8 @@
 # Evaluation Framework Selection Guide
 
 > **Decision:** RAGAS vs. DeepEval vs. Promptfoo
-> **The AIES standard uses all three — for different purposes.**
+> **The AIES standard uses all three — for different purposes — plus Inspect AI for sandboxed agent evals.**  
+> **Version:** 1.1.0 | **Updated:** 2026-11-06
 
 ---
 
@@ -20,6 +21,28 @@ Each tool was built for a different problem:
 | **DeepEval** | CI/CD integration | pytest-style unit testing for LLM outputs |
 | **RAGAS** | RAG pipeline evaluation | Reference-free retrieval and generation quality |
 | **Promptfoo** | Security and comparison | Adversarial testing and multi-model benchmarking |
+| **Inspect AI** | Sandboxed capability and safety evals | Agent tasks in containers, scored with error bars |
+
+### 2026 landscape changes that affect this choice
+
+| Change | Impact |
+|---|---|
+| **OpenAI Evals shuts down 2026-11-30** (read-only since 2026-10-31) | Export eval definitions now. OpenAI names promptfoo as the replacement (acquisition agreed Mar 2026). Keep eval definitions in your repo, not in a vendor dashboard. |
+| **DeepEval 4.2 inverted four metrics** — `BiasMetric`, `HallucinationMetric`, `MisuseMetric`, `ToxicityMetric` are now **higher = better** | Thresholds written for ≤ 4.1 now pass bad outputs. Audit every threshold on these metrics after upgrading. |
+| DeepEval added agent metrics: Task Completion, Tool Correctness, Argument Correctness, Step Efficiency, Plan Adherence, `AgentLoopDetectionMetric`, `ToolPermissionMetric`, `CitationFaithfulnessMetric` | Agent evals can score the trajectory, not just the final answer. |
+| Langfuse acquired by ClickHouse (remains MIT); Arize acquired by Dynatrace (Phoenix stays ELv2) | Production-monitoring choice is unchanged; re-check contract terms. |
+| SWE-bench Verified saturated and contaminated | Public benchmarks shortlist models; release decisions use private, workload-specific evals. |
+
+---
+
+## How to adopt
+
+1. Put every eval definition (datasets, metrics, thresholds) in the repository under `eval/`, versioned with the prompts they test.
+2. Wire DeepEval into CI as the merge gate for prompt and model changes.
+3. Add RAGAS (or DeepEval `CitationFaithfulnessMetric`) for every retrieval pipeline.
+4. Run promptfoo red-team scans before each release and on a schedule.
+5. For agents, add trajectory metrics (tool correctness, argument correctness, step efficiency, loop detection) and an end-state check; use Inspect AI when the agent needs a sandbox.
+6. Calibrate every LLM judge against human labels before its scores gate anything (see below).
 
 ---
 
@@ -163,9 +186,9 @@ Promptfoo is a CLI-first evaluation tool specializing in multi-model comparison 
 # promptfooconfig.yaml
 # AIES Standard configuration for Promptfoo
 providers:
-  - id: openai:gpt-4o
-  - id: anthropic:claude-sonnet-4
-  - id: openai:gpt-4o-mini
+  - id: anthropic:messages:claude-sonnet-5-5
+  - id: openai:responses:gpt-6.1-terra
+  - id: openai:responses:gpt-6-luna
 
 prompts:
   - file://prompts/user-classifier-v1.prompt.md
@@ -214,7 +237,7 @@ Promptfoo provides built-in adversarial testing suites that map directly to the 
 Standard security config (`promptfooredteam.yaml`):
 ```yaml
 # promptfooredteam.yaml
-# Map directly to OWASP LLM01: Prompt Injection & LLM06: Sensitive Info Disclosure
+# Maps to OWASP LLM01:2026 Prompt Injection & LLM02:2026 Sensitive Information Disclosure
 redteam:
   plugins:
     - 'harmful'             # General harm categories
@@ -268,6 +291,35 @@ graph TD
 
 ---
 
+## Agent Evaluation — Score the Trajectory
+
+A correct final answer reached through a forbidden tool call, an infinite retry loop, or 40 unnecessary steps is a failure. Agent evals score four things:
+
+| Dimension | Metric | Gate |
+|---|---|---|
+| Outcome | Task Completion; end-state check (the database/file system is in the goal state, tau-bench style) | Required |
+| Tool use | Tool Correctness, Argument Correctness, `ToolPermissionMetric` (no out-of-policy calls) | Required |
+| Efficiency | Step Efficiency, cost per task including thinking tokens | Regression threshold |
+| Safety | `AgentLoopDetectionMetric` (deterministic), Plan Adherence | Required |
+
+```python
+from deepeval.metrics import TaskCompletionMetric, ToolCorrectnessMetric, StepEfficiencyMetric
+from deepeval.test_case import LLMTestCase, ToolCall
+
+case = LLMTestCase(
+    input="Refund order 1042",
+    actual_output=run.final_message,
+    tools_called=[ToolCall(name=c.name, input_parameters=c.args) for c in run.tool_calls],
+    expected_tools=[ToolCall(name="lookup_order"), ToolCall(name="issue_refund")],
+)
+assert_test(case, [TaskCompletionMetric(threshold=0.9), ToolCorrectnessMetric(threshold=1.0), StepEfficiencyMetric(threshold=0.7)])
+assert db.order(1042).status == "refunded"  # end-state check, not a judge
+```
+
+Use **Inspect AI** when the agent must run code or browse: it executes tasks in sandboxes and reports scores with confidence intervals, which matters when a 3-point swing is within harness noise.
+
+---
+
 ## LLM-as-Judge: Known Biases
 
 All three tools use LLMs to evaluate LLM outputs (LLM-as-judge). Be aware:
@@ -279,9 +331,40 @@ All three tools use LLMs to evaluate LLM outputs (LLM-as-judge). Be aware:
 | **Self-preference bias** | Model rates its own outputs higher | Use different model for evaluation than generation |
 | **Instruction following** | Over-rates outputs that sound confident | Include factual accuracy checks |
 
-**Calibration recommendation:** Before trusting LLM-as-judge scores, validate a sample of 50-100 judgments against human assessments. If correlation is below 0.7, the judge is not reliable for your domain.
+**Calibration standard:** treat the judge as a classifier.
+
+1. Measure human-to-human agreement first (Cohen's kappa for two raters, Fleiss' kappa or Krippendorff's alpha for more). The judge cannot be held to a higher bar than humans reach.
+2. Label at least 20–30 items per failure category; split into dev and test sets.
+3. Tune the judge prompt on dev only. Read the test split once and report raw agreement, kappa, a confusion matrix, and confidence intervals.
+4. Gate on the judge only if its kappa against humans is within ~0.1 of human-human kappa and ≥ 0.6.
+5. Re-calibrate whenever the judge model, judge prompt, or task changes.
 
 ---
+
+## Tradeoffs
+
+| Choice | Benefit | Cost |
+|---|---|---|
+| Three-plus tools, one per job | Each layer uses the tool built for it | Four configs, four upgrade cycles |
+| Evals in the repo, not a vendor platform | Survives vendor shutdowns (OpenAI Evals) and acquisitions | You own storage, dashboards, and history |
+| LLM judges for open-ended quality | Scales beyond human review | Bias, cost, and calibration overhead; never the only gate |
+| Trajectory metrics for agents | Catches unsafe or wasteful paths to right answers | Requires tool-call capture in every eval run |
+
+## Anti-patterns
+
+- **One tool for everything.** DeepEval red-teaming or promptfoo RAG metrics give shallow coverage and false confidence.
+- **Upgrading DeepEval past 4.2 without re-checking thresholds.** Inverted Bias/Hallucination/Misuse/Toxicity thresholds silently pass harmful outputs.
+- **Eval definitions living only in a vendor dashboard.** OpenAI Evals' shutdown strands every team that did this.
+- **Scoring agents on final answers only.** Misses out-of-policy tool calls, loops, and cost blow-ups.
+- **Uncalibrated judges as merge gates.** A judge with kappa 0.3 against humans is noise with a threshold.
+- **Citing public benchmark scores as release evidence.** Saturated and contaminated; use private holdouts.
+
+## Enterprise considerations
+
+- Eval datasets built from production traces contain user data: apply the same classification, retention, and access controls as the source system, and redact before export to third-party eval platforms.
+- Judge models send outputs to a provider; check data-processing terms and zero-data-retention eligibility for regulated data.
+- Record eval runs (dataset version, metric versions, judge model, thresholds, results) in the evidence bundle for each release — they are the accuracy and robustness evidence for EU AI Act Article 15 and ISO/IEC 42001.
+- Standardize metric versions across teams; a DeepEval upgrade is a policy change, not a dependency bump.
 
 ## Checklist
 
@@ -292,3 +375,11 @@ All three tools use LLMs to evaluate LLM outputs (LLM-as-judge). Be aware:
 - [ ] All test cases stored in version control (not just in memory)
 - [ ] Evaluation results stored with timestamps for trend analysis
 - [ ] Alert if evaluation score drops >5% week-over-week
+- [ ] No eval definitions remain only in OpenAI Evals (shutdown 2026-11-30)
+- [ ] DeepEval Bias/Hallucination/Misuse/Toxicity thresholds re-checked for the 4.2 inversion
+- [ ] Agent evals score trajectory (tools, arguments, steps, loops) and end state
+
+## Changelog
+
+- **1.1.0 — 2026-11-06:** 2026 landscape (OpenAI Evals shutdown, DeepEval 4.2 inversion, agent metrics, Inspect AI); trajectory evaluation; judge calibration as a classifier; OWASP 2026 IDs; current models in the promptfoo example; Tradeoffs, Anti-patterns, Enterprise considerations.
+- **1.0.0 — 2026-07-29:** Initial guide.

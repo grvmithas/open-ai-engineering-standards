@@ -2,7 +2,7 @@
 
 > **Handbook:** Practitioner daily vocabulary  
 > **Repo anchors:** [`content/03-skill-engineering/`](../03-skill-engineering/README.md) · [`content/01-prompt-engineering/`](../01-prompt-engineering/README.md) · [`content/04-agent-engineering/`](../04-agent-engineering/README.md)  
-> **Version:** 1.0 | **Updated:** 2026-07-16
+> **Version:** 1.1 | **Updated:** 2026-11-06
 
 ---
 
@@ -140,16 +140,13 @@ Without the skill, the coder invents React patterns. Without the plan prompt, th
 
 ## How to install and use skills (practical)
 
-```bash
-# From this repository root
-mkdir -p .claude/skills
-cp content/03-skill-engineering/skills/*.skill.md .claude/skills/
-cp content/cookbook/react/skills/react.skill.md .claude/skills/
+Use the kit — it converts AIES sources into the formats each runtime actually loads:
 
-# Agents
-mkdir -p .claude/agents
-cp content/04-agent-engineering/agents/*.agent.md .claude/agents/
+```bash
+npx @grvmithas/create-aies-kit@latest --ide claude-code --stack react --yes   # or cursor, copilot, codex, gemini-cli, kiro, windsurf, opencode
 ```
+
+Skills land in `.agents/skills/<name>/SKILL.md` (the open Agent Skills standard: `name` must equal the folder, `description` says when to activate) and are mirrored to `.claude/skills/` only for runtimes that need it. Agents land in the runtime's native subagent folder with frontmatter (`.claude/agents/*.md`, `.cursor/agents/*.md`, `.github/agents/*.agent.md`, `.codex/agents/*.toml`, …). Copying raw `*.skill.md` / `*.agent.md` files into those folders does **not** work — runtimes ignore files without the required name, frontmatter, and layout. Details: [Agent Skills standard](./agent-skills-standard.md) · [IDE-native subagents](./ide-native-subagents.md).
 
 **Usage rule:** In the session, name the skill trigger (“use the React skill for this component”) rather than pasting the entire skill into the prompt every time. Pasting once into a system pack is fine; duplicating 6 KB into every user message is token waste (see [Containing token waste](./containing-token-waste.md)).
 
@@ -186,7 +183,13 @@ cp content/04-agent-engineering/agents/*.agent.md .claude/agents/
 
 ## Related
 
+- [Agent Skills standard](./agent-skills-standard.md) · [IDE-native subagents](./ide-native-subagents.md) · [Open standards & file matrix](./open-agent-standards.md)
 - [How to set up planning](./how-to-set-up-planning.md)
 - [PR review with AI](./pr-review-with-ai.md)
 - [XML structured prompts](../01-prompt-engineering/patterns/xml-structured.md)
 - [Skill engineering README](../03-skill-engineering/README.md)
+
+## Changelog
+
+- 2026-11-06: Replaced manual `cp` install (runtimes ignore raw `*.skill.md` / `*.agent.md`) with the kit 2.0 native layout; linked the Agent Skills, subagents, and open-standards chapters.
+- 2026-07-16: Initial handbook chapter.

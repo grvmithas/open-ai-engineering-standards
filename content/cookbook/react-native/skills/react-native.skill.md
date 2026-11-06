@@ -1,6 +1,11 @@
+---
+name: react-native
+description: "Execute a repeatable React Native change or diagnosis for a screen, navigation flow, FlatList, native module, platform adapter, or mobile release, including native evidence, validation, rollout, and rollback. Use when source, manifests, runtime configuration, topology, data contracts, or operating behavior for React Native can change."
+---
+
 # React Native Production Skill
 
-> Version: 1.1.0 | Updated: 2026-07-16
+> Version: 1.1.0 | Updated: 2026-11-06
 
 ## Purpose
 
@@ -98,5 +103,6 @@ React Native governance aligns JS/native dependency matrices, signing, store rol
 
 ## Changelog
 
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - 1.1.0 (2026-07-16): Added platform-native procedure, commands, evidence, and rollback.
 - 1.0.0 (2026-07-16): Added initial skill.

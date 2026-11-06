@@ -1,12 +1,27 @@
 # Notion MCP Integration
 
-> **Version:** 1.1 | **Updated:** 2026-07-16 | **Category:** Project Management
+> **Version:** 1.3 | **Updated:** 2026-11-06 | **Category:** Project Management
 
 ## Purpose and applicability
 Provide agent-safe access to pages, data sources, comments, search. Use this integration only when those capabilities are required and a named owner accepts the data and write risk. The implementation baseline is Notion's official hosted MCP server.
 
+## Why use it — and when not to
+Use Notion's remote server when specs, ADRs, or runbooks live in Notion and the agent needs them as context. Page-level sharing defines what the agent sees, so share only the spaces it needs. Pages are a prime indirect-injection surface — anyone with edit access can plant instructions — so treat retrieved content as data and keep page writes approval-gated.
+
+## How to connect — deployment status (2026-11)
+| Field | Current guidance |
+|---|---|
+| Deployment | Vendor-hosted remote |
+| Endpoint / package | `https://mcp.notion.com/mcp` |
+| Auth | Notion OAuth |
+| Least-privilege setup | Share only the pages/databases the task needs |
+| Avoid | Internal-integration secrets with workspace-wide sharing |
+| AIES kit id | `notion` |
+
+Trust only MCP Registry entries under a reverse-DNS namespace the vendor controls (for example `com.monday/*`); aggregator and look-alike listings are third-party code. Remote endpoint liveness is re-checked weekly by `scripts/check-external.mjs`. See [MCP: remote servers & OAuth](../../handbook/mcp-remote-servers-and-auth.md).
+
 ## Protocol, transport, and capability lifecycle
-Implement stable MCP `2025-11-25`. Negotiate `protocolVersion` in `initialize`; reject unsupported versions. Prefer Streamable HTTP for remote service and `stdio` only for a local, single-user process; do not expose `stdio` through a network shim. Advertise only implemented `tools`, `resources`, `prompts`, and `logging`. Paginate lists, use progress/cancellation where supported, and send the corresponding `list_changed` notification after authorization or configuration changes. Clients re-list and review metadata changes before use.
+Implement MCP `2026-07-28` (current stable: stateless Streamable HTTP, no session affinity required); keep `2025-11-25` negotiation only while clients migrate. Negotiate `protocolVersion` in `initialize`; reject unsupported versions. Prefer Streamable HTTP for remote service and `stdio` only for a local, single-user process; do not expose `stdio` through a network shim. Advertise only implemented `tools`, `resources`, `prompts`, and `logging`. Paginate lists, use progress/cancellation where supported, and send the corresponding `list_changed` notification after authorization or configuration changes. Clients re-list and review metadata changes before use.
 
 ## Tool, resource, and prompt design
 - **Tools:** bounded list/get/search operations over pages, data sources, comments, search; mutations are separate, disabled by default, idempotency-aware, and approval-gated.
@@ -15,7 +30,7 @@ Implement stable MCP `2025-11-25`. Negotiate `protocolVersion` in `initialize`; 
 - **Validation:** closed JSON Schemas; normalize and authorize page/data-source IDs, property types, result bounds; cap arrays, strings, time ranges, rows, bytes, and pagination. Return typed, size-bounded results with opaque cursors and structured errors. Label all provider content untrusted and redact credentials, secrets, personal data, and internal URLs.
 
 ## Authorization, consent, and least privilege
-Remote deployments publish RFC 9728 Protected Resource Metadata and standards-compliant `WWW-Authenticate`. Discover the authorization server from metadata, require authorization code flow with PKCE `S256`, verify advertised PKCE support, and include the canonical MCP URI as RFC 8707 `resource` in authorization and token requests. Validate token signature, issuer, expiry/not-before, authorized party when applicable, and audience/resource for this server.
+Remote deployments publish RFC 9728 Protected Resource Metadata and standards-compliant `WWW-Authenticate`. Discover the authorization server from metadata, require authorization code flow with PKCE `S256`, verify advertised PKCE support, and include the canonical MCP URI as RFC 8707 `resource` in authorization and token requests. Clients register with Client ID Metadata Documents (CIMD) where the authorization server supports them; Dynamic Client Registration is a fallback, not the default. Validate token signature, issuer, expiry/not-before, authorized party when applicable, and audience/resource for this server.
 
 Never pass an inbound MCP bearer token to the provider. Exchange/map it server-side to a short-lived, tenant-bound provider credential. Consent names the provider, tenant, enabled tools, data classes, and write effects. Use Notion OAuth consent and explicit page/data-source sharing; rely on the provider's current permission catalog and consent screen—never invent scope names. Step-up authorization cannot silently broaden prior consent.
 
@@ -63,9 +78,11 @@ Enforce Notion SAML/SCIM, domain and guest controls, page-level sharing, integra
 ## Primary references
 - [Notion implementation/API](https://developers.notion.com/docs/mcp)
 - [Notion limits/security](https://developers.notion.com/reference/request-limits)
-- [MCP specification `2025-11-25`](https://modelcontextprotocol.io/specification/2025-11-25/)
-- [MCP authorization](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization)
+- [MCP specification `2026-07-28`](https://modelcontextprotocol.io/specification/2026-07-28/)
+- [MCP authorization](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization)
 
 ## Changelog
+- **1.3 — 2026-11-06:** Added service-specific "Why use it — and when not to" guidance.
+- **1.2 — 2026-11-06:** Added 2026-11 deployment status (vendor-hosted endpoint, auth, least-privilege setup, registry trust rule); moved the protocol baseline to MCP `2026-07-28`; added CIMD client registration.
 - **1.1 — 2026-07-16:** Replaced a template marker with concrete service-specific enterprise controls.
 - **1.0 — 2026-07-16:** Initial production specification.

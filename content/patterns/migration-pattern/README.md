@@ -32,7 +32,7 @@ Do NOT apply this pattern to:
 
 ## Problem
 
-```
+```text
 migration-pattern/problem.md
 ```
 

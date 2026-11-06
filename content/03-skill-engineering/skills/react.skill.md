@@ -1,8 +1,13 @@
+---
+name: react
+description: "React procedure with verification and rollback evidence. Use when React component behavior, state ownership, rendering, hydration, or client accessibility is being changed."
+---
+
 # React Skill
 
 > **Skill ID:** `react`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
 Activate this skill when React component behavior, state ownership, rendering, hydration, or client accessibility is being changed.
@@ -68,5 +73,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [WAI-ARIA Authoring Practices Combobox](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

@@ -2,7 +2,8 @@
 
 > **SDLC Stage:** 11 — Coding
 > **Version:** 2.0
-> **Purpose:** Implement an approved plan with bounded scope, verifiable tests, and an explicit stop on plan conflict
+> **Purpose:** Implement an approved plan with bounded scope, verifiable tests, and an explicit stop on plan conflict  
+> **Updated:** 2026-07-16
 
 ---
 

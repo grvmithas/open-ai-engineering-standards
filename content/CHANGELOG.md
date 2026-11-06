@@ -1,5 +1,7 @@
 # Changelog
 
+> **Updated:** 2026-07-29
+
 All notable changes to the AI Engineering Standard are documented here.
 
 Format: `[Version] — YYYY-MM-DD`

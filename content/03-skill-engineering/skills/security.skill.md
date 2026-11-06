@@ -1,9 +1,14 @@
+---
+name: security
+description: "Security Review procedure. Use when security review is explicitly requested; a PR touches authentication, authorization, or data access; new API endpoints are being added."
+---
+
 # Security Review Skill
 
 > **Skill ID:** `security`
-> **Version:** 1.1
-> **Updated:** 2026-07-29
-> **Install:** `.claude/skills/security.skill.md`
+> **Version:** 1.2
+> **Updated:** 2026-11-06
+> **Install:** `.agents/skills/security/SKILL.md`
 
 ---
 
@@ -22,6 +27,10 @@ Activate this skill when:
 ## Purpose
 
 Perform a comprehensive security review against OWASP Top 10 and AI-specific attack vectors. Produce a prioritized finding report with actionable remediation.
+
+## Why
+
+AI-assisted code ships more volume with the same review capacity, and agentic features add attack paths a classic web checklist never covered: injected tool output, agents editing their own config, CI agents on untrusted triggers, and malicious skills or MCP servers. A procedure that covers both the classic web surface and the agent surface, with calibrated severities, keeps reviews thorough without becoming a scan-everything ritual.
 
 ---
 
@@ -108,6 +117,11 @@ Identify:
 - [ ] Context isolation: Multi-tenant systems filter context by tenant at database level
 - [ ] Output validation: Model output validated before acting on it
 - [ ] Audit trail: All AI actions logged with user, model, tokens, action taken
+- [ ] Rule of Two: no agent session combines untrusted input + sensitive access + external/state-changing actions without an approval step ([AC-01](https://www.ai-standards.dev/docs/09-enterprise-ai/security/agent-security-controls))
+- [ ] Self-config integrity: agents cannot edit hook, permission, MCP, auto-approve, or CI files (AC-02)
+- [ ] CI agents: none with write/shell/secret access on untrusted triggers; no untrusted fields interpolated into prompts (AC-03)
+- [ ] Supply chain: MCP servers and skills allowlisted and pinned; new dependencies exist, are not freshly registered, and are lockfile-pinned (AC-04, AC-05)
+- [ ] Map findings to OWASP LLM Top 10 **2026** IDs, Agentic ASI01–ASI10, and MCP01–MCP10 where applicable
 
 ### Step 4: Prioritize Findings
 Assign severity using CVSS-inspired framework:
@@ -190,4 +204,6 @@ Full OWASP plus AI attack-surface review slows merge velocity on sensitive PRs; 
 Critical/High findings escalate to a security owner with remediation SLAs before merge. MCP/tool allowlists and outbound URL policies are change-controlled—not ad-hoc per PR. Preserve the attack-surface map and finding IDs as audit evidence; never paste production secrets into review reports.
 
 ## Changelog
+- **1.2 — 2026-11-06:** Added Why section and agentic checks (Rule of Two, self-config integrity, CI agents, supply chain, OWASP 2026 IDs).
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **1.1 (2026-07-29):** Added Tradeoffs, Anti-Patterns, and Enterprise Considerations with security-domain content (prompt injection, MCP/tool allowlists, AuthZ, finding SLAs).

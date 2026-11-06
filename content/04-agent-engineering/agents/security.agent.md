@@ -1,8 +1,16 @@
+---
+name: security
+description: "Threat-model and assess application security without modifying the workspace or exploiting production. Use for an independent read-only pass; returns findings with file evidence and never edits files."
+tools: Read, Grep, Glob, Bash
+model: inherit
+privilege: read-only
+---
+
 # Security Agent
 
 > **ID:** `security`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
 Threat-model and assess application security without modifying the workspace or exploiting production.
@@ -116,5 +124,6 @@ Bind runtime identity to workload credentials, enforce tenant and region boundar
 - [OWASP ASVS](https://owasp.org/www-project-application-security-verification-standard/)
 
 ## Changelog
+- **2026-11-06:** Added native subagent frontmatter (`name`, `description`, `tools`, `model`) so Claude Code, Cursor, Copilot, Gemini CLI, and opencode load this definition directly via the AIES kit.
 - **2.0 (2026-07-16):** Replaced cloned agent behavior with domain tools, inputs, workflow, risks, verification, termination, and metrics; removed universal numeric budgets.
 - **1.1:** Initial standardized contract.

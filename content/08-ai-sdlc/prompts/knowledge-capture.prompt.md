@@ -2,7 +2,8 @@
 
 > **SDLC Stage:** 25 — Knowledge Base Update
 > **Version:** 1.0
-> **Purpose:** Systematically extract institutional knowledge from completed work before it is lost
+> **Purpose:** Systematically extract institutional knowledge from completed work before it is lost  
+> **Updated:** 2026-07-29
 
 ---
 

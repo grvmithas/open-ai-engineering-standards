@@ -2,7 +2,8 @@
 
 > **Version:** 1.0.0  
 > **Published:** 2026-07-16  
-> **Status:** Operational protocol; no external evidence package is asserted
+> **Status:** Operational protocol; no external evidence package is asserted  
+> **Updated:** 2026-07-29
 
 ## Purpose
 

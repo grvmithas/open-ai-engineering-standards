@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "documentCount": 606,
+  "documentCount": 620,
   "documents": [
     {
       "slug": "00-foundations/01-how-llms-think",
@@ -60,7 +60,7 @@
       "slug": "01-prompt-engineering/anti-patterns/prompt-anti-patterns",
       "sourcePath": "content/01-prompt-engineering/anti-patterns/prompt-anti-patterns.md",
       "title": "Prompt Anti-Patterns",
-      "description": "Symptom: Output is different every time for the same input."
+      "description": "The registry of prompt mistakes that pass casual review and fail in production, each with symptom, example, and root cause."
     },
     {
       "slug": "01-prompt-engineering/checklists/prompt-quality-checklist",
@@ -222,25 +222,25 @@
       "slug": "03-skill-engineering/skills/accessibility.skill",
       "sourcePath": "content/03-skill-engineering/skills/accessibility.skill.md",
       "title": "Accessibility Skill",
-      "description": "Activate this skill when A web or native user interface is created, changed, or assessed for accessibility."
+      "description": "Activate this skill when a web or native user interface is created, changed, or assessed for accessibility."
     },
     {
       "slug": "03-skill-engineering/skills/architecture.skill",
       "sourcePath": "content/03-skill-engineering/skills/architecture.skill.md",
       "title": "Architecture Skill",
-      "description": "Activate this skill when A request changes system boundaries, deployment topology, data ownership, or a cross-team interface."
+      "description": "Activate this skill when a request changes system boundaries, deployment topology, data ownership, or a cross-team interface."
     },
     {
       "slug": "03-skill-engineering/skills/aws.skill",
       "sourcePath": "content/03-skill-engineering/skills/aws.skill.md",
-      "title": "Aws Skill",
-      "description": "Activate this skill when An AWS IAM, network, compute, data, resilience, or deployment design changes."
+      "title": "AWS Skill",
+      "description": "Activate this skill when an AWS IAM, network, compute, data, resilience, or deployment design changes."
     },
     {
       "slug": "03-skill-engineering/skills/azure.skill",
       "sourcePath": "content/03-skill-engineering/skills/azure.skill.md",
       "title": "Azure Skill",
-      "description": "Activate this skill when An Azure identity, network, compute, data, policy, or deployment design changes."
+      "description": "Activate this skill when an Azure identity, network, compute, data, policy, or deployment design changes."
     },
     {
       "slug": "03-skill-engineering/skills/code-review.skill",
@@ -252,13 +252,13 @@
       "slug": "03-skill-engineering/skills/context.skill",
       "sourcePath": "content/03-skill-engineering/skills/context.skill.md",
       "title": "Context Skill",
-      "description": "Activate this skill when An agent is missing relevant evidence, overloaded by noise, or vulnerable to stale/untrusted context."
+      "description": "Activate this skill when an agent is missing relevant evidence, overloaded by noise, or vulnerable to stale/untrusted context."
     },
     {
       "slug": "03-skill-engineering/skills/data-engineering.skill",
       "sourcePath": "content/03-skill-engineering/skills/data-engineering.skill.md",
       "title": "Data Engineering Skill",
-      "description": "Activate this skill when A batch, streaming, transformation, lineage, or data-quality pipeline changes."
+      "description": "Activate this skill when a batch, streaming, transformation, lineage, or data-quality pipeline changes."
     },
     {
       "slug": "03-skill-engineering/skills/debug.skill",
@@ -269,86 +269,86 @@
     {
       "slug": "03-skill-engineering/skills/devops.skill",
       "sourcePath": "content/03-skill-engineering/skills/devops.skill.md",
-      "title": "Devops Skill",
-      "description": "Activate this skill when A build, CI/CD, release pipeline, infrastructure automation, or artifact supply-chain flow changes."
+      "title": "DevOps Skill",
+      "description": "Activate this skill when a build, CI/CD, release pipeline, infrastructure automation, or artifact supply-chain flow changes."
     },
     {
       "slug": "03-skill-engineering/skills/documentation.skill",
       "sourcePath": "content/03-skill-engineering/skills/documentation.skill.md",
       "title": "Documentation Skill",
-      "description": "Activate this skill when An API, system, decision, runbook, or operational task needs durable, implementation-verified documentation."
+      "description": "Activate this skill when an API, system, decision, runbook, or operational task needs durable, implementation-verified documentation."
     },
     {
       "slug": "03-skill-engineering/skills/dotnet.skill",
       "sourcePath": "content/03-skill-engineering/skills/dotnet.skill.md",
-      "title": "Dotnet Skill",
-      "description": "Activate this skill when A .NET API, worker, library, EF Core model, or asynchronous workflow changes."
+      "title": ".NET Skill",
+      "description": "Activate this skill when a .NET API, worker, library, EF Core model, or asynchronous workflow changes."
     },
     {
       "slug": "03-skill-engineering/skills/evaluation.skill",
       "sourcePath": "content/03-skill-engineering/skills/evaluation.skill.md",
       "title": "Evaluation Skill",
-      "description": "Activate this skill when A model, prompt, retrieval, tool, or agent change needs an evidence-based release decision."
+      "description": "Activate this skill when a model, prompt, retrieval, tool, or agent change needs an evidence-based release decision."
     },
     {
       "slug": "03-skill-engineering/skills/java.skill",
       "sourcePath": "content/03-skill-engineering/skills/java.skill.md",
       "title": "Java Skill",
-      "description": "Activate this skill when A Java library, JVM service, Spring component, transaction, or concurrency behavior changes."
+      "description": "Activate this skill when a Java library, JVM service, Spring component, transaction, or concurrency behavior changes."
     },
     {
       "slug": "03-skill-engineering/skills/memory.skill",
       "sourcePath": "content/03-skill-engineering/skills/memory.skill.md",
       "title": "Memory Skill",
-      "description": "Activate this skill when An agent must retain state across turns, sessions, users, or tasks."
+      "description": "Activate this skill when an agent must retain state across turns, sessions, users, or tasks."
     },
     {
       "slug": "03-skill-engineering/skills/nextjs.skill",
       "sourcePath": "content/03-skill-engineering/skills/nextjs.skill.md",
-      "title": "Nextjs Skill",
-      "description": "Activate this skill when A Next.js route, rendering boundary, cache policy, middleware, server action, or deployment behavior changes."
+      "title": "Next.js Skill",
+      "description": "Activate this skill when a Next.js route, rendering boundary, cache policy, middleware, server action, or deployment behavior changes."
     },
     {
       "slug": "03-skill-engineering/skills/node.skill",
       "sourcePath": "content/03-skill-engineering/skills/node.skill.md",
       "title": "Node Skill",
-      "description": "Activate this skill when A Node.js service, stream, worker, package, or event-loop behavior changes."
+      "description": "Activate this skill when a Node.js service, stream, worker, package, or event-loop behavior changes."
     },
     {
       "slug": "03-skill-engineering/skills/observability.skill",
       "sourcePath": "content/03-skill-engineering/skills/observability.skill.md",
       "title": "Observability Skill",
-      "description": "Activate this skill when An AI system needs diagnosable traces, metrics, logs, cost, quality signals, or service objectives."
+      "description": "Activate this skill when an AI system needs diagnosable traces, metrics, logs, cost, quality signals, or service objectives."
     },
     {
       "slug": "03-skill-engineering/skills/performance.skill",
       "sourcePath": "content/03-skill-engineering/skills/performance.skill.md",
       "title": "Performance Skill",
-      "description": "Activate this skill when A measured latency, throughput, saturation, memory, CPU, or cost objective is missed."
+      "description": "Activate this skill when a measured latency, throughput, saturation, memory, CPU, or cost objective is missed."
     },
     {
       "slug": "03-skill-engineering/skills/planning.skill",
       "sourcePath": "content/03-skill-engineering/skills/planning.skill.md",
       "title": "Planning Skill",
-      "description": "Activate this skill when An approved feature or remediation must be decomposed into executable repository changes."
+      "description": "Activate this skill when an approved feature or remediation must be decomposed into executable repository changes."
     },
     {
       "slug": "03-skill-engineering/skills/prompt.skill",
       "sourcePath": "content/03-skill-engineering/skills/prompt.skill.md",
       "title": "Prompt Skill",
-      "description": "Activate this skill when A production model instruction, tool-use policy, or structured-output prompt must be authored or changed."
+      "description": "Activate this skill when a production model instruction, tool-use policy, or structured-output prompt must be authored or changed."
     },
     {
       "slug": "03-skill-engineering/skills/python.skill",
       "sourcePath": "content/03-skill-engineering/skills/python.skill.md",
       "title": "Python Skill",
-      "description": "Activate this skill when A Python package, service, async task, CLI, or data-processing module changes."
+      "description": "Activate this skill when a Python package, service, async task, CLI, or data-processing module changes."
     },
     {
       "slug": "03-skill-engineering/skills/rag.skill",
       "sourcePath": "content/03-skill-engineering/skills/rag.skill.md",
-      "title": "Rag Skill",
-      "description": "Activate this skill when A product must ground generation in an external corpus using retrieval."
+      "title": "RAG Skill",
+      "description": "Activate this skill when a product must ground generation in an external corpus using retrieval."
     },
     {
       "slug": "03-skill-engineering/skills/react.skill",
@@ -365,14 +365,14 @@
     {
       "slug": "03-skill-engineering/skills/seo.skill",
       "sourcePath": "content/03-skill-engineering/skills/seo.skill.md",
-      "title": "Seo Skill",
-      "description": "Activate this skill when A public web page or site changes crawlability, indexing, canonicalization, metadata, or structured data."
+      "title": "SEO Skill",
+      "description": "Activate this skill when a public web page or site changes crawlability, indexing, canonicalization, metadata, or structured data."
     },
     {
       "slug": "03-skill-engineering/skills/testing.skill",
       "sourcePath": "content/03-skill-engineering/skills/testing.skill.md",
       "title": "Testing Skill",
-      "description": "Activate this skill when A behavior change, defect, integration boundary, or release risk needs automated evidence."
+      "description": "Activate this skill when a behavior change, defect, integration boundary, or release risk needs automated evidence."
     },
     {
       "slug": "04-agent-engineering/agents/architect.agent",
@@ -390,7 +390,7 @@
       "slug": "04-agent-engineering/agents/coder.agent",
       "sourcePath": "content/04-agent-engineering/agents/coder.agent.md",
       "title": "Coder Agent",
-      "description": "You are a senior software engineer. Your job is to implement approved implementation plans with precision, following the exact specifications in the plan and th"
+      "description": "Turn a human-approved plan into a reviewable diff with passing verification, without expanding scope."
     },
     {
       "slug": "04-agent-engineering/agents/context-engineer.agent",
@@ -445,6 +445,12 @@
       "sourcePath": "content/04-agent-engineering/agents/observability.agent.md",
       "title": "Observability Agent",
       "description": "Define and verify telemetry, service objectives, dashboards, and diagnostic workflows."
+    },
+    {
+      "slug": "04-agent-engineering/agents/parallel-implementer.agent",
+      "sourcePath": "content/04-agent-engineering/agents/parallel-implementer.agent.md",
+      "title": "Parallel Implementer Agent",
+      "description": "Execute exactly one task contract inside its own git worktree and branch, then stop with evidence."
     },
     {
       "slug": "04-agent-engineering/agents/planner.agent",
@@ -624,7 +630,7 @@
       "slug": "05-multi-agent-systems/frameworks/autogen/README",
       "sourcePath": "content/05-multi-agent-systems/frameworks/autogen/README.md",
       "title": "AutoGen Production Integration",
-      "description": "Apply AIES controls when Microsoft AutoGen is selected for multi-agent messaging and teams."
+      "description": "Apply AIES controls to existing Microsoft AutoGen systems, and migrate them to Microsoft Agent Framework (MAF) on a planned schedule."
     },
     {
       "slug": "05-multi-agent-systems/frameworks/crewai/README",
@@ -843,6 +849,12 @@
       "description": "Define claim-level faithfulness, groundedness, context recall, hallucination rate, and decision rules."
     },
     {
+      "slug": "07-llmops/model-lifecycle",
+      "sourcePath": "content/07-llmops/model-lifecycle.md",
+      "title": "Model Lifecycle and API Capability Matrix",
+      "description": "Keep production LLM systems working through model turnover: know which models are current, when pinned models retire, and which request parameters each model ge"
+    },
+    {
       "slug": "07-llmops/observability/alerting",
       "sourcePath": "content/07-llmops/observability/alerting.md",
       "title": "LLMOps Alerting",
@@ -906,7 +918,7 @@
       "slug": "08-ai-sdlc/prompts/architecture-review.prompt",
       "sourcePath": "content/08-ai-sdlc/prompts/architecture-review.prompt.md",
       "title": "Architecture Review Prompt",
-      "description": "(Only if decision is APPROVE WITH CONDITIONS)"
+      "description": "If approval is skipped: Architecture debt is unbudgeted. Stage 9 of the AIES SDLC is violated."
     },
     {
       "slug": "08-ai-sdlc/prompts/coding.prompt",
@@ -942,19 +954,19 @@
       "slug": "08-ai-sdlc/prompts/enhance-repo.prompt",
       "sourcePath": "content/08-ai-sdlc/prompts/enhance-repo.prompt.md",
       "title": "Enhance Repo to Match Conventions",
-      "description": "Copy one line into the agent chat (attach the prompt file, or @-mention it if your IDE supports that):"
+      "description": "The kit installs this prompt as a native command for your runtime:"
     },
     {
       "slug": "08-ai-sdlc/prompts/implementation-plan.prompt",
       "sourcePath": "content/08-ai-sdlc/prompts/implementation-plan.prompt.md",
       "title": "Implementation Plan Prompt",
-      "description": "[How to revert if something goes wrong post-deployment]"
+      "description": "After generating this plan, the following must happen:"
     },
     {
       "slug": "08-ai-sdlc/prompts/incident.prompt",
       "sourcePath": "content/08-ai-sdlc/prompts/incident.prompt.md",
       "title": "Incident Response Prompt",
-      "description": "Blameless by default. Focus on system conditions, not individuals."
+      "description": "Debug before contain — Spending 40 minutes reading stack traces while the model still emits harmful outputs is a protocol failure."
     },
     {
       "slug": "08-ai-sdlc/prompts/knowledge-capture.prompt",
@@ -966,25 +978,25 @@
       "slug": "08-ai-sdlc/prompts/migration.prompt",
       "sourcePath": "content/08-ai-sdlc/prompts/migration.prompt.md",
       "title": "Migration Prompt",
-      "description": "Definition: [Exact phase/step after which rollback cannot restore prior state]"
+      "description": "This is the default. Justify any deviation in writing."
     },
     {
       "slug": "08-ai-sdlc/prompts/performance-review.prompt",
       "sourcePath": "content/08-ai-sdlc/prompts/performance-review.prompt.md",
       "title": "Performance Review Prompt",
-      "description": "Human gate (high risk): Soak + failover/degraded-provider test required before SHIP."
+      "description": "A \"p99\" from 50 requests is noise. State sample count. If the count is too small, say so and recommend more runs — do not pretend precision."
     },
     {
       "slug": "08-ai-sdlc/prompts/refactoring.prompt",
       "sourcePath": "content/08-ai-sdlc/prompts/refactoring.prompt.md",
       "title": "Refactoring Prompt",
-      "description": "Human gate (high risk): Refactor must not share a release with behavior changes; canary each phase."
+      "description": "If both are needed, ship the refactor first (or the feature first) — never both as one causal blob."
     },
     {
       "slug": "08-ai-sdlc/prompts/release.prompt",
       "sourcePath": "content/08-ai-sdlc/prompts/release.prompt.md",
       "title": "Release Prompt",
-      "description": "Rollback procedure: [Steps or runbook link]"
+      "description": "Canary exists to limit blast radius. If you cannot define who is in the cohort and what metric aborts promotion, you do not have a canary — you have hope."
     },
     {
       "slug": "08-ai-sdlc/prompts/root-cause-analysis.prompt",
@@ -1002,7 +1014,7 @@
       "slug": "08-ai-sdlc/prompts/story-kickoff.prompt",
       "sourcePath": "content/08-ai-sdlc/prompts/story-kickoff.prompt.md",
       "title": "Story Kickoff Prompt",
-      "description": "Technical Notes:"
+      "description": "A complete story kickoff produces an artifact where:"
     },
     {
       "slug": "08-ai-sdlc/prompts/technical-debt.prompt",
@@ -1014,7 +1026,7 @@
       "slug": "08-ai-sdlc/prompts/test-generation.prompt",
       "sourcePath": "content/08-ai-sdlc/prompts/test-generation.prompt.md",
       "title": "Test Generation Prompt",
-      "description": "(Repeat for each test ID — group by file if many.)"
+      "description": "Happy-path factories — 40 tests that all assert 200 OK teach nothing about failure."
     },
     {
       "slug": "08-ai-sdlc/quality-standards/agent-quality-standard",
@@ -1111,6 +1123,12 @@
       "sourcePath": "content/09-enterprise-ai/README.md",
       "title": "Level 9: Enterprise AI Architecture",
       "description": "Most AI engineering content targets startups: move fast, ship fast, iterate fast. Enterprise AI engineering operates under additional constraints that change th"
+    },
+    {
+      "slug": "09-enterprise-ai/security/agent-security-controls",
+      "sourcePath": "content/09-enterprise-ai/security/agent-security-controls.md",
+      "title": "Agent Security Controls",
+      "description": "Define six blocking controls for agentic systems. Each one closes a class of attack that hit production agents between 2025 and 2026, and none of them depends o"
     },
     {
       "slug": "09-enterprise-ai/security/least-privilege",
@@ -2235,6 +2253,18 @@
       "description": "Brief 2–3 sentence explanation of the proposed change or specification."
     },
     {
+      "slug": "handbook/agent-sdks-and-a2a",
+      "sourcePath": "content/handbook/agent-sdks-and-a2a.md",
+      "title": "Agent SDKs and Agent-to-Agent Protocols",
+      "description": "Choose between building on a coding-agent harness SDK, a general agent SDK, a graph orchestration framework, or plain model API calls — and know when agent-to-a"
+    },
+    {
+      "slug": "handbook/agent-skills-standard",
+      "sourcePath": "content/handbook/agent-skills-standard.md",
+      "title": "The Agent Skills Standard",
+      "description": "Specify how AIES skills conform to the open Agent Skills format (SKILL.md folders under .agents/skills/) so one skill library works across Codex, Cursor, GitHub"
+    },
+    {
       "slug": "handbook/ai-migration-bible-path",
       "sourcePath": "content/handbook/ai-migration-bible-path.md",
       "title": "AI Migration Bible Path",
@@ -2247,6 +2277,18 @@
       "description": "Name how development roles change when delivery runs through an AI-enhanced SDLC: who approves plans, who owns evals, who owns AI-assisted review, and what the "
     },
     {
+      "slug": "handbook/cloud-and-background-agents",
+      "sourcePath": "content/handbook/cloud-and-background-agents.md",
+      "title": "Cloud and Background Agents",
+      "description": "Set the operating rules for agents that run asynchronously in vendor or CI infrastructure — GitHub Copilot cloud agent, Cursor Cloud Agents, Codex cloud tasks, "
+    },
+    {
+      "slug": "handbook/computer-use-agents",
+      "sourcePath": "content/handbook/computer-use-agents.md",
+      "title": "Computer-Use and Browser Agents",
+      "description": "Define when to use agents that drive a browser or desktop (screenshots, clicks, keystrokes) and the isolation, credential, and verification rules that make them"
+    },
+    {
       "slug": "handbook/containing-token-waste",
       "sourcePath": "content/handbook/containing-token-waste.md",
       "title": "Containing Token Waste",
@@ -2257,6 +2299,12 @@
       "sourcePath": "content/handbook/evals-as-quality-gates.md",
       "title": "Evals as Quality Gates",
       "description": "Turn evaluation from a slide-deck metric into a release control: versioned cases, deterministic component checks, calibrated judges only when needed, and CI tha"
+    },
+    {
+      "slug": "handbook/evaluating-coding-agents",
+      "sourcePath": "content/handbook/evaluating-coding-agents.md",
+      "title": "Evaluating Coding Agents",
+      "description": "Measure coding-agent configurations — model, runtime, instructions, skills, subagents, hooks — on your own repositories with task-level outcomes and trajectory "
     },
     {
       "slug": "handbook/external-standards-map",
@@ -2295,10 +2343,40 @@
       "description": "Define where humans must approve in AI-assisted UI and platform delivery — plan, high-impact tools, release, and exceptions — using risk, not ceremony."
     },
     {
+      "slug": "handbook/ide-native-subagents",
+      "sourcePath": "content/handbook/ide-native-subagents.md",
+      "title": "IDE-Native Subagents",
+      "description": "Define how AIES agent definitions become native subagents in Claude Code, Cursor, GitHub Copilot, Codex, Gemini CLI, and opencode, and the design rules that mak"
+    },
+    {
+      "slug": "handbook/mcp-remote-servers-and-auth",
+      "sourcePath": "content/handbook/mcp-remote-servers-and-auth.md",
+      "title": "MCP in 2026: Remote Servers, Stateless Transport, and OAuth",
+      "description": "Update MCP practice for the 2026-07-28 specification era: prefer vendor-hosted Streamable HTTP servers with OAuth 2.1 over local stdio packages and pasted token"
+    },
+    {
       "slug": "handbook/mcp-when-and-how",
       "sourcePath": "content/handbook/mcp-when-and-how.md",
       "title": "MCP When and How",
       "description": "Decide when an MCP server belongs in an agent’s tool belt, how to scope auth and effects, and how to keep tool definitions agent-optimized. This chapter is a de"
+    },
+    {
+      "slug": "handbook/native-agent-hooks",
+      "sourcePath": "content/handbook/native-agent-hooks.md",
+      "title": "Native Agent Hooks",
+      "description": "Use each runtime's native hook system to deny unsafe agent actions deterministically — force pushes, destructive deletes, deploys, secret reads — with one share"
+    },
+    {
+      "slug": "handbook/open-agent-standards",
+      "sourcePath": "content/handbook/open-agent-standards.md",
+      "title": "Open Agent Standards and the Cross-Tool File Matrix",
+      "description": "Name the open standards AIES builds on — AGENTS.md, the Agent Skills format, and the Model Context Protocol — and give the authoritative file matrix for each su"
+    },
+    {
+      "slug": "handbook/parallel-agents-and-worktrees",
+      "sourcePath": "content/handbook/parallel-agents-and-worktrees.md",
+      "title": "Parallel Agents and Git Worktrees",
+      "description": "Define the one correct way to run multiple AI coding agents concurrently on one repository: one task, one branch, one worktree, one base commit, bounded by a wr"
     },
     {
       "slug": "handbook/pr-review-with-ai",
@@ -2317,6 +2395,12 @@
       "sourcePath": "content/handbook/skills-vs-prompts-vs-agents.md",
       "title": "Skills vs Prompts vs Agents",
       "description": "Stop the most expensive confusion in AI-assisted teams: calling every pasted XML blob a “skill,” every chat session an “agent,” and every checklist a “prompt.” "
+    },
+    {
+      "slug": "handbook/vendor-watchlist",
+      "sourcePath": "content/handbook/vendor-watchlist.md",
+      "title": "Vendor Watchlist",
+      "description": "Name every external surface AIES depends on, how drift is detected, and who changes what when a vendor moves. This page is the triage runbook for the weekly Sch"
     },
     {
       "slug": "mcps/browser-testing/chrome-devtools.mcp",
@@ -2526,7 +2610,7 @@
       "slug": "patterns/architecture-pattern/prompt",
       "sourcePath": "content/patterns/architecture-pattern/prompt.md",
       "title": "Architecture Pattern — Prompt",
-      "description": "Reviewer: Date: Decision: APPROVE | APPROVE WITH CONDITIONS | REJECT"
+      "description": "AI Engineering Standard — production-grade AI engineering documentation."
     },
     {
       "slug": "patterns/architecture-pattern/README",
@@ -2610,7 +2694,7 @@
       "slug": "patterns/context-pattern/prompt",
       "sourcePath": "content/patterns/context-pattern/prompt.md",
       "title": "Context Pattern — Prompt",
-      "description": "Consuming agent: {{CONSUMER}} (planner | coder | reviewer | debug)"
+      "description": "AI Engineering Standard — production-grade AI engineering documentation."
     },
     {
       "slug": "patterns/context-pattern/README",
@@ -2778,7 +2862,7 @@
       "slug": "patterns/enterprise-pattern/prompt",
       "sourcePath": "content/patterns/enterprise-pattern/prompt.md",
       "title": "Enterprise Pattern — Prompt",
-      "description": "Expected time: <15 minutes for high tier"
+      "description": "AI Engineering Standard — production-grade AI engineering documentation."
     },
     {
       "slug": "patterns/enterprise-pattern/README",
@@ -3030,7 +3114,7 @@
       "slug": "patterns/migration-pattern/prompt",
       "sourcePath": "content/patterns/migration-pattern/prompt.md",
       "title": "Migration Pattern — Prompt",
-      "description": "Cutover approver: Date:"
+      "description": "AI Engineering Standard — production-grade AI engineering documentation."
     },
     {
       "slug": "patterns/migration-pattern/README",
@@ -3534,7 +3618,7 @@
       "slug": "standard/crosswalks/eu-ai-act",
       "sourcePath": "content/standard/crosswalks/eu-ai-act.md",
       "title": "EU AI Act Engineering Map",
-      "description": "Version: 1.0.0"
+      "description": "Version: 1.1.0"
     },
     {
       "slug": "standard/crosswalks/iso-ai-management-risk-impact",
@@ -3552,7 +3636,7 @@
       "slug": "standard/crosswalks/owasp-ai-security",
       "sourcePath": "content/standard/crosswalks/owasp-ai-security.md",
       "title": "OWASP LLM and Agentic Security Crosswalk",
-      "description": "Version: 1.0.1"
+      "description": "Version: 1.1.0"
     },
     {
       "slug": "standard/crosswalks/protocols-and-observability",

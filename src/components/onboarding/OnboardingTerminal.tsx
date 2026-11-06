@@ -2,15 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import {
-  DATA_CLASSES,
-  GOALS,
-  IDES,
-  MATURITIES,
-  MODELS,
-  ROLES,
-  STACKS,
-} from '@/lib/workflows/catalog';
+import { GOALS, IDES, STACKS, normalizeUserIde } from '@/lib/workflows/catalog';
 import type {
   AiMaturity,
   DataClass,
@@ -44,7 +36,7 @@ export default function OnboardingTerminal() {
   const { saveProfile } = useUserProfile();
   const [step, setStep] = useState<Step>('goal');
   const [history, setHistory] = useState<string[]>([
-    'AIES Engineering OS v1.0',
+    'AIES Engineering OS · kit 2.0',
     'Streamlined Onboarding — 3 quick steps to scaffold your AI harness.',
     '',
     '> /start',
@@ -63,7 +55,7 @@ export default function OnboardingTerminal() {
 
   useEffect(() => {
     const stack = searchParams.get('stack') as TechStack | null;
-    const ide = searchParams.get('ide') as UserIde | null;
+    const ide = normalizeUserIde(searchParams.get('ide'));
     const model = searchParams.get('model') as ModelProvider | null;
     const dataClass = (searchParams.get('dataClass') ?? searchParams.get('data-class')) as DataClass | null;
     if (stack || ide || model || dataClass) {

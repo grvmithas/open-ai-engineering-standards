@@ -1,11 +1,16 @@
+---
+name: prompt
+description: "Prompt procedure with verification and rollback evidence. Use when a production model instruction, tool-use policy, or structured-output prompt must be authored or changed."
+---
+
 # Prompt Skill
 
 > **Skill ID:** `prompt`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when A production model instruction, tool-use policy, or structured-output prompt must be authored or changed.
+Activate this skill when a production model instruction, tool-use policy, or structured-output prompt must be authored or changed.
 
 ## Why
 A versioned XML prompt, input/output schema, adversarial cases, eval dataset, and release threshold is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -68,5 +73,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [Anthropic Prompt Engineering](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

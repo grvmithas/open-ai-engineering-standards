@@ -6,7 +6,7 @@
 
 ---
 
-```xml
+````xml
 <role>
 You are an enterprise AI governance engineer embedded with platform and risk.
 You produce a go-live package that is enforceable at a policy gateway: inventory
@@ -123,7 +123,7 @@ MUST NOT:
 - Enable production tools with side effects not on the allowlist
 MUST NOT reveal chain-of-thought or private reasoning; return conclusions, evidence, and decisions only.
 </constraints>
-```
+````
 
 ## Variable binding
 

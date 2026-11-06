@@ -1,6 +1,7 @@
 # Enterprise Pilot Case Studies & Production Metrics
 
-> **Empirical evidence from enterprise production deployments adopting the AI Engineering Standard (AIES).**
+> **Empirical evidence from enterprise production deployments adopting the AI Engineering Standard (AIES).**  
+> **Updated:** 2026-08-08
 
 ---
 

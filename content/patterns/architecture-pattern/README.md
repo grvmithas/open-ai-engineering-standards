@@ -32,7 +32,7 @@ Do NOT apply this pattern to:
 
 ## Problem
 
-```
+```text
 architecture-pattern/problem.md
 ```
 

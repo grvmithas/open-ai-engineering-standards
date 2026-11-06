@@ -1,12 +1,27 @@
 # PostgreSQL MCP Integration
 
-> **Version:** 1.1 | **Updated:** 2026-07-16 | **Category:** Infrastructure/Data
+> **Version:** 1.3 | **Updated:** 2026-11-06 | **Category:** Infrastructure/Data
 
 ## Purpose and applicability
 Provide agent-safe access to schemas, tables, query plans, read-only queries. Use this integration only when those capabilities are required and a named owner accepts the data and write risk. The implementation baseline is a pinned reference server or reviewed adapter using the official PostgreSQL driver.
 
+## Why use it — and when not to
+Use it when the agent must inspect schema, explain query plans, or run bounded read queries to diagnose performance. Connect with a read-only role against a replica or a masked copy — never a primary with production PII. Schema changes belong in migration files reviewed in a PR; the MCP is for evidence, not mutation.
+
+## How to connect — deployment status (2026-11)
+| Field | Current guidance |
+|---|---|
+| Deployment | Provider-hosted where available; otherwise self-hosted, pinned |
+| Endpoint / package | Reference `@modelcontextprotocol/server-postgres` is archived — use your provider's server (e.g. Supabase) or a reviewed, pinned server |
+| Auth | Dedicated database role; credentials server-side |
+| Least-privilege setup | Read-only role on a replica or masked snapshot; statement timeout |
+| Avoid | Superuser/owner roles; connecting to production primaries |
+| AIES kit id | `supabase` (Supabase-hosted Postgres) |
+
+Trust only MCP Registry entries under a reverse-DNS namespace the vendor controls (for example `com.monday/*`); aggregator and look-alike listings are third-party code. Remote endpoint liveness is re-checked weekly by `scripts/check-external.mjs`. See [MCP: remote servers & OAuth](../../handbook/mcp-remote-servers-and-auth.md).
+
 ## Protocol, transport, and capability lifecycle
-Implement stable MCP `2025-11-25`. Negotiate `protocolVersion` in `initialize`; reject unsupported versions. Prefer Streamable HTTP for remote service and `stdio` only for a local, single-user process; do not expose `stdio` through a network shim. Advertise only implemented `tools`, `resources`, `prompts`, and `logging`. Paginate lists, use progress/cancellation where supported, and send the corresponding `list_changed` notification after authorization or configuration changes. Clients re-list and review metadata changes before use.
+Implement MCP `2026-07-28` (current stable: stateless Streamable HTTP, no session affinity required); keep `2025-11-25` negotiation only while clients migrate. Negotiate `protocolVersion` in `initialize`; reject unsupported versions. Prefer Streamable HTTP for remote service and `stdio` only for a local, single-user process; do not expose `stdio` through a network shim. Advertise only implemented `tools`, `resources`, `prompts`, and `logging`. Paginate lists, use progress/cancellation where supported, and send the corresponding `list_changed` notification after authorization or configuration changes. Clients re-list and review metadata changes before use.
 
 ## Tool, resource, and prompt design
 - **Tools:** bounded list/get/search operations over schemas, tables, query plans, read-only queries; mutations are separate, disabled by default, idempotency-aware, and approval-gated.
@@ -15,7 +30,7 @@ Implement stable MCP `2025-11-25`. Negotiate `protocolVersion` in `initialize`; 
 - **Validation:** closed JSON Schemas; normalize and authorize SQL AST, statement class, parameters, rows, bytes, and timeout; cap arrays, strings, time ranges, rows, bytes, and pagination. Return typed, size-bounded results with opaque cursors and structured errors. Label all provider content untrusted and redact credentials, secrets, personal data, and internal URLs.
 
 ## Authorization, consent, and least privilege
-Remote deployments publish RFC 9728 Protected Resource Metadata and standards-compliant `WWW-Authenticate`. Discover the authorization server from metadata, require authorization code flow with PKCE `S256`, verify advertised PKCE support, and include the canonical MCP URI as RFC 8707 `resource` in authorization and token requests. Validate token signature, issuer, expiry/not-before, authorized party when applicable, and audience/resource for this server.
+Remote deployments publish RFC 9728 Protected Resource Metadata and standards-compliant `WWW-Authenticate`. Discover the authorization server from metadata, require authorization code flow with PKCE `S256`, verify advertised PKCE support, and include the canonical MCP URI as RFC 8707 `resource` in authorization and token requests. Clients register with Client ID Metadata Documents (CIMD) where the authorization server supports them; Dynamic Client Registration is a fallback, not the default. Validate token signature, issuer, expiry/not-before, authorized party when applicable, and audience/resource for this server.
 
 Never pass an inbound MCP bearer token to the provider. Exchange/map it server-side to a short-lived, tenant-bound provider credential. Consent names the provider, tenant, enabled tools, data classes, and write effects. Use database roles with read-only default transactions; rely on the provider's current permission catalog and consent screen—never invent scope names. Step-up authorization cannot silently broaden prior consent.
 
@@ -63,9 +78,11 @@ Enforce database role separation, row-level security where applicable, TLS, netw
 ## Primary references
 - [PostgreSQL implementation/API](https://www.postgresql.org/docs/current/ddl-priv.html)
 - [PostgreSQL limits/security](https://github.com/modelcontextprotocol/servers-archived/tree/main/src/postgres)
-- [MCP specification `2025-11-25`](https://modelcontextprotocol.io/specification/2025-11-25/)
-- [MCP authorization](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization)
+- [MCP specification `2026-07-28`](https://modelcontextprotocol.io/specification/2026-07-28/)
+- [MCP authorization](https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization)
 
 ## Changelog
+- **1.3 — 2026-11-06:** Added service-specific "Why use it — and when not to" guidance.
+- **1.2 — 2026-11-06:** Added 2026-11 deployment status (vendor-hosted endpoint, auth, least-privilege setup, registry trust rule); moved the protocol baseline to MCP `2026-07-28`; added CIMD client registration.
 - **1.1 — 2026-07-16:** Replaced a template marker with concrete service-specific enterprise controls.
 - **1.0 — 2026-07-16:** Initial production specification.

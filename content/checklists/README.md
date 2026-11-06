@@ -1,6 +1,7 @@
 # AIES Quality Checklists
 
-> **Gate every stage. Skip none. These checklists are the standard.**
+> **Gate every stage. Skip none. These checklists are the standard.**  
+> **Updated:** 2026-07-29
 
 ---
 

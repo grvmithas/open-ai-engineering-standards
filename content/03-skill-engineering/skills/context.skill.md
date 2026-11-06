@@ -1,11 +1,16 @@
+---
+name: context
+description: "Context procedure with verification and rollback evidence. Use when an agent is missing relevant evidence, overloaded by noise, or vulnerable to stale/untrusted context."
+---
+
 # Context Skill
 
 > **Skill ID:** `context`  
 > **Version:** 2.1  
-> **Updated:** 2026-07-29
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when An agent is missing relevant evidence, overloaded by noise, or vulnerable to stale/untrusted context.
+Activate this skill when an agent is missing relevant evidence, overloaded by noise, or vulnerable to stale/untrusted context.
 
 ## Why
 A context manifest, source provenance, trust labels, token budget allocation, retrieval policy, and freshness rules is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -71,6 +76,7 @@ Context packs inherit the data classification of their sources—block restricte
 - [NIST AI RMF](https://www.nist.gov/itl/ai-risk-management-framework)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.1 (2026-07-29):** De-boilerplated Tradeoffs, Anti-Patterns, and Enterprise Considerations with context-domain content (trust labels, token budgets, tenant isolation, injection resistance).
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

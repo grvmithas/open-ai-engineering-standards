@@ -2,7 +2,8 @@
 
 > **Version:** 1.0.0  
 > **Published:** 2026-07-16  
-> **Status:** Implemented methodology; real independent-assessor evidence pending
+> **Status:** Implemented methodology; real independent-assessor evidence pending  
+> **Updated:** 2026-07-29
 
 ## Purpose
 

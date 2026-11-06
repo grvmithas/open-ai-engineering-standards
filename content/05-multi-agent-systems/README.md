@@ -1,7 +1,8 @@
 # Level 5: Multi-Agent Systems
 
 > **Prerequisites:** Level 4: Agent Engineering
-> **Goal:** Orchestrate multiple agents reliably, with defined communication protocols and failure isolation
+> **Goal:** Orchestrate multiple agents reliably, with defined communication protocols and failure isolation  
+> **Updated:** 2026-11-06
 
 ---
 
@@ -240,7 +241,12 @@ See [frameworks/langgraph/](./frameworks/langgraph/) for:
 - Human-in-the-loop integration
 - Streaming output
 
+### Choosing a layer (2026)
+
+Frameworks are one of three layers. Vendor agent SDKs (Claude Agent SDK, OpenAI Agents SDK, Google ADK, Microsoft Agent Framework — the successor that merges AutoGen and Semantic Kernel) give you the loop, tools, and handoffs; A2A connects agents across services and vendors; graph frameworks such as LangGraph give you explicit, checkpointed state machines. Pick per [Agent SDKs & A2A](../handbook/agent-sdks-and-a2a.md). For coding work inside one repository, prefer IDE-native subagents plus [parallel worktrees](../handbook/parallel-agents-and-worktrees.md) over a hand-built orchestrator.
+
 ### AutoGen (Microsoft)
+New Microsoft projects should start on Microsoft Agent Framework; keep AutoGen guidance for existing systems.
 See [frameworks/autogen/](./frameworks/autogen/) for:
 - Conversation-based multi-agent setup
 - GroupChat patterns
@@ -296,3 +302,8 @@ Before deploying a multi-agent system, verify:
 - [ ] All agent interactions logged in audit trail
 - [ ] Total system timeout enforced (not just per-agent timeout)
 - [ ] Cost per task bounded and monitored
+- [ ] Parallel coding agents isolated per worktree with task contracts and serial merge ([Parallel agents & worktrees](../handbook/parallel-agents-and-worktrees.md))
+
+## Changelog
+
+- **2026-11-06:** Added the 2026 layer-selection guidance (agent SDKs, A2A, Microsoft Agent Framework as AutoGen successor) and the parallel-worktree readiness item.

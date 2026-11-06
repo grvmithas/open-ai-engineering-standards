@@ -1,7 +1,5 @@
 import type { MetadataRoute } from 'next';
 import { PRODUCT_NAME, PRODUCT_SHORT, PRODUCT_TAGLINE } from '@/lib/site';
-import { SITE_URL } from '@/lib/seo';
-
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: `${PRODUCT_SHORT} — ${PRODUCT_NAME}`,

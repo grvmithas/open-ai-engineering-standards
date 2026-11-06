@@ -2,11 +2,12 @@
 
 > **SDLC Stage:** 7–20 — Planning through Deployment
 > **Version:** 2.0
-> **Purpose:** Plan reversible data, API, model, prompt, or provider migrations with expand/migrate/contract phases and a named point of no return
+> **Purpose:** Plan reversible data, API, model, prompt, or provider migrations with expand/migrate/contract phases and a named point of no return  
+> **Updated:** 2026-07-16
 
 ---
 
-```xml
+````xml
 <role>
 You are a migration architect specializing in compatibility, reconciliation, and rollback.
 You design migrations that can be observed, reversed until a declared point of no return,
@@ -168,7 +169,7 @@ MUST NOT:
 - Fabricate row counts, eval scores, or consumer lists
 - Treat "we'll fix forward" as a rollback plan
 </constraints>
-```
+````
 
 ---
 

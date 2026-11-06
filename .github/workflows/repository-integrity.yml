@@ -24,10 +24,70 @@ jobs:
           - typecheck
           - content:check-generated
           - content:validate
+          - portal:validate
           - links:check
+          - workflows:check
           - mermaid:check
           - a11y:smoke
           - security:smoke
+          - conformance:test
+          - kit:check
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ${{ matrix.gate }}
+        run: npm run ${{ matrix.gate }}
+
+  embedded-corpus:
+    name: Embedded kit corpus is current
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Regenerate and diff
+        run: |
+          npm run kit:embed
+          git diff --exit-code -- packages/kit-core/lib/embedded-corpus.js || {
+            echo "::error::embedded-corpus.js is stale. Run 'npm run kit:embed' and commit.";
+            exit 1;
+          }
+
+  kit-e2e:
+    name: Kit install + audit (${{ matrix.os }}, ${{ matrix.ide }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        ide: [cursor, claude-code, copilot, codex, gemini-cli, kiro, windsurf, opencode, continue]
+        include:
+          # Windows path/encoding coverage for the three most-installed targets
+          - os: windows-latest
+            ide: cursor
+          - os: windows-latest
+            ide: claude-code
+          - os: windows-latest
+            ide: copilot
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,13 +96,29 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Vendor kit-core into the CLI package
+        run: node packages/create-aies-kit/scripts/vendor-kit-core.mjs
 
-      - name: Run ${{ matrix.gate }}
-        run: npm run ${{ matrix.gate }}
+      - name: Install into an empty repo and audit
+        shell: bash
+        run: |
+          CLI="$GITHUB_WORKSPACE/packages/create-aies-kit/bin/create-aies-kit.js"
+          TARGET="$RUNNER_TEMP/aies-e2e"
+          mkdir -p "$TARGET" && cd "$TARGET"
+          git init -q
+          node "$CLI" --stack nextjs --ide ${{ matrix.ide }} --role fullstack --maturity advanced --goal new-product --model claude --data-class internal --yes
+          node "$CLI" audit --min-score 100
+
+      - name: Guard denies a force push through the installed hook
+        shell: bash
+        run: |
+          cd "$RUNNER_TEMP/aies-e2e"
+          set +e
+          echo '{"tool_input":{"command":"git push --force origin main"}}' | node hooks/aies-guard.mjs --target cli
+          code=$?
+          set -e
+          test "$code" -eq 2
 
   build:
     name: Production build
@@ -54,7 +130,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
@@ -73,7 +149,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Audit production dependencies

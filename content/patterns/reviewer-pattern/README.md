@@ -32,7 +32,7 @@ Do NOT apply this pattern to:
 
 ## Problem
 
-```
+```text
 reviewer-pattern/problem.md
 ```
 

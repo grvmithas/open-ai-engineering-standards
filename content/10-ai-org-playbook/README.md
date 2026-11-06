@@ -1,7 +1,8 @@
 # Level 10: AI Organization Playbook
 
 > **Prerequisites:** Levels 0-9
-> **Goal:** Build and operate an AI-first engineering organization
+> **Goal:** Build and operate an AI-first engineering organization  
+> **Updated:** 2026-07-29
 
 ---
 
@@ -57,7 +58,7 @@ The industry has not standardized these roles. This is the AIES standard.
 ## Team Operating Models
 
 ### Model 1: Centralized AI Team
-```
+```text
 CTO
 ├── Engineering Teams (traditional)
 └── AI Platform Team
@@ -72,7 +73,7 @@ CTO
 **Tradeoffs:** Bottleneck risk. Domain expertise gap (AI team doesn't know product deeply).
 
 ### Model 2: Federated (Embedded)
-```
+```text
 CTO
 ├── Product Team A
 │   ├── Engineers
@@ -88,7 +89,7 @@ CTO
 **Tradeoffs:** Standards drift risk without strong guild governance. Harder to share infrastructure.
 
 ### Model 3: Hybrid (AIES Recommended for Scale)
-```
+```text
 CTO
 ├── AI Platform Team (centralized)
 │   ├── Shared infrastructure (eval, LLMOps, observability)

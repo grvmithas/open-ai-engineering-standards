@@ -19,7 +19,16 @@ export type UserRole =
 
 export type AiMaturity = 'beginner' | 'intermediate' | 'advanced' | 'enterprise';
 
-export type UserIde = 'cursor' | 'copilot' | 'claude-code' | 'vscode' | 'windsurf' | 'continue';
+export type UserIde =
+  | 'cursor'
+  | 'claude-code'
+  | 'copilot'
+  | 'codex'
+  | 'gemini-cli'
+  | 'kiro'
+  | 'windsurf'
+  | 'opencode'
+  | 'continue';
 
 export type ModelProvider = 'claude' | 'gpt' | 'gemini' | 'multi' | 'local' | 'undecided';
 

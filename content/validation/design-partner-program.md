@@ -2,7 +2,8 @@
 
 > **Version:** 1.0.0  
 > **Published:** 2026-07-16  
-> **Status:** Operational protocol; no partners enrolled by this document
+> **Status:** Operational protocol; no partners enrolled by this document  
+> **Updated:** 2026-07-29
 
 ## Purpose
 

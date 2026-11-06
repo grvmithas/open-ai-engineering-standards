@@ -2,7 +2,7 @@
 
 > **Pattern:** Context  
 > **Component:** mcps.md  
-> **Version:** 1.1 | **Updated:** 2026-07-29
+> **Version:** 1.2 | **Updated:** 2026-11-06
 
 ---
 
@@ -23,6 +23,8 @@ Filesystem MCP is the default for scoped reads. GitHub is optional only when pri
 
 ## Enable rules (this pattern)
 
+Connect through the vendor-hosted endpoint and client OAuth listed in each spec's **Deployment status (2026-11)** table; use read-only endpoints (`/readonly`, `read_only=true`) unless this pattern's gate authorizes writes. See [MCP: remote servers & OAuth](../../handbook/mcp-remote-servers-and-auth.md).
+
 1. Bound filesystem roots to the pack budget before the first read
 2. Never commit tokens; map secrets outside git  
 3. Record allowlist + data class in MODEL_POLICY / SoA before write tools  
@@ -39,3 +41,7 @@ Filesystem MCP is the default for scoped reads. GitHub is optional only when pri
 - [ ] Context MCPs mapped to env secrets outside git  
 - [ ] Unused servers remain disabled after the context gate  
 - [ ] Injection / tool PEP reviewed if tools can act
+
+## Changelog
+
+- **1.2 — 2026-11-06:** Pointed enable rules at vendor-hosted, read-only-first endpoints and client OAuth.

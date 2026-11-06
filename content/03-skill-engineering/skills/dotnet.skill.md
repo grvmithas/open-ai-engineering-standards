@@ -1,11 +1,16 @@
-# Dotnet Skill
+---
+name: dotnet
+description: ".NET procedure with verification and rollback evidence. Use when a .NET API, worker, library, EF Core model, or asynchronous workflow changes."
+---
+
+# .NET Skill
 
 > **Skill ID:** `dotnet`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when A .NET API, worker, library, EF Core model, or asynchronous workflow changes.
+Activate this skill when a .NET API, worker, library, EF Core model, or asynchronous workflow changes.
 
 ## Why
 A nullable-safe contract, dependency lifetime map, cancellation behavior, tests, and publish output is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -68,5 +73,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [ASP.NET Core Fundamentals](https://learn.microsoft.com/aspnet/core/fundamentals/)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

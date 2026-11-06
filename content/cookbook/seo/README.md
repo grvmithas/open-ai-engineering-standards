@@ -1,7 +1,8 @@
 # SEO Cookbook
 
 > **Stack:** Modern Web App frameworks (Next.js, React, HTML5)
-> **Focus:** Search visibility, structured schema (JSON-LD), Core Web Vitals, dynamic metadata generation, and AI-assisted content optimization
+> **Focus:** Search visibility, structured schema (JSON-LD), Core Web Vitals, dynamic metadata generation, and AI-assisted content optimization  
+> **Updated:** 2026-07-29
 
 ---
 

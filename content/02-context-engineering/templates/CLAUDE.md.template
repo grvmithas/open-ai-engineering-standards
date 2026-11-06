@@ -19,7 +19,7 @@
 
 ## Architecture Overview
 
-```
+```text
 [Simple ASCII or text description of the main components]
 Example:
 Frontend (Next.js) → API Gateway → Microservices → PostgreSQL + Redis

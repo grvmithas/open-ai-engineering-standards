@@ -1,5 +1,7 @@
 export const SITE_URL = 'https://www.ai-standards.dev';
 
+export const KIT_VERSION = '2.2.0';
+
 export const GOALS = [
   { id: 'new-product', label: 'Build a new product' },
   { id: 'existing-codebase', label: 'Join an existing codebase' },
@@ -30,12 +32,27 @@ export const MATURITIES = [
 
 export const IDES = [
   { id: 'cursor', label: 'Cursor' },
-  { id: 'copilot', label: 'GitHub Copilot' },
   { id: 'claude-code', label: 'Claude Code' },
-  { id: 'vscode', label: 'VS Code' },
-  { id: 'windsurf', label: 'Windsurf' },
+  { id: 'copilot', label: 'GitHub Copilot (VS Code / CLI / cloud agent)' },
+  { id: 'codex', label: 'OpenAI Codex (CLI / app / cloud)' },
+  { id: 'gemini-cli', label: 'Gemini CLI' },
+  { id: 'kiro', label: 'Kiro' },
+  { id: 'windsurf', label: 'Devin Desktop (Windsurf)' },
+  { id: 'opencode', label: 'opencode' },
   { id: 'continue', label: 'Continue' },
 ];
+
+/** Legacy ids accepted on input and normalized before generation. */
+export const IDE_ALIASES = {
+  vscode: 'copilot',
+  devin: 'windsurf',
+  gemini: 'gemini-cli',
+  claude: 'claude-code',
+};
+
+export function normalizeIde(ide) {
+  return IDE_ALIASES[ide] ?? ide;
+}
 
 export const MODELS = [
   { id: 'claude', label: 'Claude (Anthropic)' },

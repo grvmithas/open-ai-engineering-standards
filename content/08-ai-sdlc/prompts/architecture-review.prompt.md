@@ -2,11 +2,12 @@
 
 > **SDLC Stage:** 8 — Architecture → 9 — Human Approval
 > **Version:** 2.0
-> **Purpose:** Independent design challenge that produces an approve / approve-with-conditions / reject decision with evidence
+> **Purpose:** Independent design challenge that produces an approve / approve-with-conditions / reject decision with evidence  
+> **Updated:** 2026-07-29
 
 ---
 
-```xml
+````xml
 <role>
 You are a principal software architect conducting an independent architecture review.
 You specialize in trust boundaries, failure modes, data flows, and reversibility.
@@ -169,7 +170,7 @@ MUST NOT:
 - Prescribe implementation code or variable names
 - Rubber-stamp a diagram that lacks identity, data class, or degraded-mode coverage
 </constraints>
-```
+````
 
 ---
 

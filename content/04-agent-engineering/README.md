@@ -1,7 +1,8 @@
 # Level 4: Agent Engineering
 
 > **Prerequisites:** Level 3: Skill Engineering
-> **Goal:** Build autonomous agents that are reliable, verifiable, and production-safe
+> **Goal:** Build autonomous agents that are reliable, verifiable, and production-safe  
+> **Updated:** 2026-11-06
 
 ---
 
@@ -68,20 +69,25 @@ The #1 failure mode for agents in production is the **infinite loop** — the ag
 
 ## The Agent Library
 
+### Runtime-native frontmatter
+
+Every agent and subagent file now starts with YAML frontmatter (`name`, `description` with a "Use when …" clause, `tools`, `model`, `privilege`). The kit converts it into each runtime's native subagent format — `.claude/agents/*.md`, `.cursor/agents/*.md` (`readonly`), `.github/agents/*.agent.md`, `.codex/agents/*.toml` (inherits the project `sandbox_mode`; agent files cannot override it), `.gemini/agents/*.md`, `.opencode/agents/*.md` (`permission`) — so read-only agents are read-only **by runtime enforcement**, not by prose. Install with `npx @grvmithas/create-aies-kit@latest`; copying these files by hand does not produce loadable subagents. See [IDE-native subagents](../handbook/ide-native-subagents.md).
+
 ### Core Agents
 
-| Agent | Role | Install |
+| Agent | Role | Shipped by kit |
 |-------|------|---------|
-| [planner.agent.md](./agents/planner.agent.md) | Creates implementation plans | `.claude/agents/` |
-| [architect.agent.md](./agents/architect.agent.md) | Designs system architecture | `.claude/agents/` |
-| [research.agent.md](./agents/research.agent.md) | Gathers and synthesizes information | `.claude/agents/` |
-| [coder.agent.md](./agents/coder.agent.md) | Implements approved plans | `.claude/agents/` |
-| [reviewer.agent.md](./agents/reviewer.agent.md) | Reviews code and artifacts | `.claude/agents/` |
-| [security.agent.md](./agents/security.agent.md) | Performs security audits | `.claude/agents/` |
-| [testing.agent.md](./agents/testing.agent.md) | Generates and runs tests | `.claude/agents/` |
-| [documentation.agent.md](./agents/documentation.agent.md) | Generates technical docs | `.claude/agents/` |
-| [observability.agent.md](./agents/observability.agent.md) | Monitors and diagnoses | `.claude/agents/` |
-| [devops.agent.md](./agents/devops.agent.md) | Manages CI/CD and infrastructure | `.claude/agents/` |
+| [planner.agent.md](./agents/planner.agent.md) | Creates implementation plans | ✅ read-only |
+| [architect.agent.md](./agents/architect.agent.md) | Designs system architecture | — |
+| [research.agent.md](./agents/research.agent.md) | Gathers and synthesizes information | — |
+| [coder.agent.md](./agents/coder.agent.md) | Implements approved plans | ✅ |
+| [reviewer.agent.md](./agents/reviewer.agent.md) | Reviews code and artifacts | ✅ read-only |
+| [security.agent.md](./agents/security.agent.md) | Performs security audits | ✅ read-only |
+| [testing.agent.md](./agents/testing.agent.md) | Generates and runs tests | ✅ |
+| [parallel-implementer.agent.md](./agents/parallel-implementer.agent.md) | Executes one task contract in an isolated worktree | ✅ `isolation: worktree` |
+| [documentation.agent.md](./agents/documentation.agent.md) | Generates technical docs | — |
+| [observability.agent.md](./agents/observability.agent.md) | Monitors and diagnoses | — |
+| [devops.agent.md](./agents/devops.agent.md) | Manages CI/CD and infrastructure | — |
 
 ### Specialist Agents
 | Agent | Role |
@@ -189,3 +195,10 @@ Before proceeding to Level 5, verify:
 - [ ] High-impact operations require human approval
 - [ ] All agent actions are logged in audit trail
 - [ ] At least one agent has been tested for adversarial input
+- [ ] Read-only agents are enforced by the runtime (native tool/permission/sandbox fields), not by prose
+- [ ] A native guard hook denies destructive shell commands ([Native agent hooks](../handbook/native-agent-hooks.md))
+
+## Changelog
+
+- **2026-11-06:** Codex subagent note corrected: agent TOML inherits the project sandbox.
+- **2026-11-06:** Added runtime-native frontmatter section, `parallel-implementer` agent, kit-shipped column, and native-enforcement readiness items.

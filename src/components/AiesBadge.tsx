@@ -31,6 +31,7 @@ export default function AiesBadge() {
         {/* Live Badge Preview */}
         <div className="flex items-center gap-3 rounded-xl border border-[var(--paper-border)] bg-[var(--paper-subtle)] p-3">
           <a href="https://www.ai-standards.dev" target="_blank" rel="noopener noreferrer">
+            {/* eslint-disable-next-line @next/next/no-img-element -- remote shields.io SVG; must match the README snippet byte-for-byte */}
             <img
               src="https://img.shields.io/badge/AIES-Compliant-6366f1?style=for-the-badge&logo=shield"
               alt="AIES Compliant Badge"

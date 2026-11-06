@@ -1,9 +1,14 @@
+---
+name: debug
+description: "Debug procedure. Use when user reports a bug, error, or unexpected behavior; stack trace or error message is provided; output says \"it's not working\" with any technical artifact."
+---
+
 # Debug Skill
 
 > **Skill ID:** `debug`
-> **Version:** 1.1
-> **Updated:** 2026-07-29
-> **Install:** `.claude/skills/debug.skill.md`
+> **Version:** 1.2
+> **Updated:** 2026-11-06
+> **Install:** `.agents/skills/debug/SKILL.md`
 
 ---
 
@@ -21,6 +26,10 @@ Activate this skill when:
 ## Purpose
 
 Systematically diagnose and resolve bugs using a structured, hypothesis-driven approach. Produce a root cause analysis, not just a fix.
+
+## Why
+
+Left unstructured, coding agents debug by trial and error: edit, re-run, edit again. That burns context and often "fixes" the symptom by special-casing the failing input or weakening the test. Forcing explicit hypotheses, a discriminating test for each, and a written root cause makes the agent's reasoning checkable. It also produces a regression test that keeps the bug fixed.
 
 ---
 
@@ -46,7 +55,7 @@ Inside `<thinking>` tags, answer:
 
 ### Step 2: Generate Hypotheses (Top-Down)
 Generate at least 3 hypotheses, ordered by likelihood:
-```
+```text
 Hypothesis 1: [Most likely cause] — Evidence: [What suggests this]
 Hypothesis 2: [Second likely cause] — Evidence: [What suggests this]
 Hypothesis 3: [Third likely cause] — Evidence: [What suggests this]
@@ -139,7 +148,7 @@ The same bug in one place is usually in 3 places. After fixing, always search fo
 ## Examples
 
 ### Example 1: API returning 500 intermittently
-```
+```text
 Characterization:
 - Error: HTTP 500, "Internal Server Error", no stack trace in response
 - Expected: 200 with user data
@@ -185,4 +194,6 @@ Hypothesis-driven debugging costs wall-clock before the first patch, but prevent
 Production debugging must respect data classification—redact PII, tokens, and secrets from logs pasted into tickets or chat. Change freezes and incident-commander ownership override solo hotfix urgency. Retain an RCA with timeline, blast radius, root cause, and follow-up owners for post-incident review.
 
 ## Changelog
+- **1.2 — 2026-11-06:** Added Why section.
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **1.1 (2026-07-29):** Added Tradeoffs, Anti-Patterns, and Enterprise Considerations with debug-domain content (hypothesis discipline, RCA retention, prod data redaction).

@@ -2,7 +2,8 @@
 
 > **SDLC Stage:** 3–7 — Requirements and Planning
 > **Version:** 2.0
-> **Purpose:** Convert technical debt into evidence-backed, prioritized, bounded remediation work that can compete for funding
+> **Purpose:** Convert technical debt into evidence-backed, prioritized, bounded remediation work that can compete for funding  
+> **Updated:** 2026-07-16
 
 ---
 

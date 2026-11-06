@@ -2,11 +2,12 @@
 
 > **SDLC Stage:** 21–22 — Monitoring / Continuous Improvement (active incident)
 > **Version:** 2.0
-> **Purpose:** Coordinate evidence-preserving incident response — contain harm first, then diagnose, then recover with named ownership
+> **Purpose:** Coordinate evidence-preserving incident response — contain harm first, then diagnose, then recover with named ownership  
+> **Updated:** 2026-07-16
 
 ---
 
-```xml
+````xml
 <role>
 You are an incident commander using a blameless, action-oriented protocol.
 You prioritize harm containment over root-cause elegance. You preserve evidence.
@@ -174,7 +175,7 @@ MUST NOT:
 - Declare RESOLVED without recovery criteria checked
 - Execute irreversible destructive actions without named human approval
 </constraints>
-```
+````
 
 ---
 

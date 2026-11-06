@@ -2,7 +2,7 @@
 
 > **Service:** GitHub
 > **Category:** Version Control
-> **Version:** 1.0
+> **Version:** 1.2 | **Updated:** 2026-11-06
 
 ---
 
@@ -12,9 +12,27 @@ Enables AI agents to interact with GitHub: read issues, create PRs, search code,
 
 ---
 
+## Why use it — and when not to
+Use GitHub's hosted server when the agent needs forge context that git alone does not have: issues, PR reviews, Actions logs, code scanning alerts. Start with the read-only endpoint and enable write toolsets per workflow. It replaces the archived reference server and personal access tokens with OAuth and fine-grained permissions.
+
+## How to connect — deployment status (2026-11)
+
+| Field | Current guidance |
+|---|---|
+| Deployment | Vendor-hosted remote (GitHub MCP Server) |
+| Endpoint | `https://api.githubcopilot.com/mcp/` — read-only variant `https://api.githubcopilot.com/mcp/readonly` |
+| Auth | OAuth via the client (Copilot, VS Code, Claude Code, Cursor); fine-grained PAT only where OAuth is unavailable |
+| Least-privilege setup | Default to `/readonly`; enable write toolsets per task; restrict to named repositories |
+| Avoid | Archived `@modelcontextprotocol/server-github`; classic PATs with `repo` scope |
+| AIES kit id | `github` (shipped by default, read-only endpoint) |
+
+Trust only MCP Registry entries under a namespace the vendor controls; look-alike listings are third-party code. Endpoint liveness is re-checked weekly by `scripts/check-external.mjs`. See [MCP: remote servers & OAuth](../../handbook/mcp-remote-servers-and-auth.md).
+
+---
+
 ## Security Model
 
-**Authentication:** Personal Access Token (PAT) with minimal scopes, or GitHub App with installation tokens.
+**Authentication:** OAuth through the MCP client (preferred). Fallbacks, in order: GitHub App installation tokens (short-lived, scoped), then fine-grained PATs restricted to specific repositories.
 
 **Required scopes (minimum):**
 - `repo:read` — Read repository content and metadata
@@ -126,7 +144,7 @@ Enables AI agents to interact with GitHub: read issues, create PRs, search code,
 
 ## Example Agent Interaction
 
-```
+```text
 User: "Look at issue #456 and create a plan to fix it"
 
 Agent uses tools in sequence:
@@ -159,30 +177,53 @@ Personal Access Tokens with `repo` scope can access all your repositories. Creat
 
 ## Setup
 
+Portable `.mcp.json` (Claude Code, Copilot, Kiro, Continue) — OAuth happens in the client, so no secret lives in the file:
+
 ```json
-// .claude/settings.json or mcp config
 {
   "mcpServers": {
     "github": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
-      }
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/readonly"
     }
   }
 }
 ```
 
-**Environment variable:** Set `GITHUB_TOKEN` in your environment or secret manager. Never commit tokens.
+Cursor (`.cursor/mcp.json`) uses `{ "mcpServers": { "github": { "url": "…" } } }`; Codex (`.codex/config.toml`) uses `[mcp_servers.github]` with `url = "…"`. `npx @grvmithas/create-aies-kit` writes the correct shape per runtime into `mcps/recommended.json` without enabling it.
+
+Switch to `https://api.githubcopilot.com/mcp/` (read-write) only for the task that needs writes, then switch back. Never commit tokens; if a PAT is unavoidable, reference it from the client's secret store, not the file.
+
+---
+
+## Tradeoffs
+
+| Choice | You gain | You give up |
+|---|---|---|
+| Vendor-hosted remote server | No server to patch; OAuth and fine-grained permissions | Dependency on GitHub's availability and toolset changes |
+| Read-only endpoint by default | Safe to enable for every agent | Write workflows need a deliberate second configuration |
+| MCP over `gh` CLI | Structured, typed results and per-tool allowlisting | `gh` is already authenticated in many environments and costs no context for tool schemas — prefer it for simple one-off commands in a terminal-capable agent |
+
+## Enterprise considerations
+
+Enable the GitHub MCP server through organization policy (Copilot settings → MCP servers) so admins control which clients may connect; OAuth grants appear in the organization's authorized-apps audit trail. For GitHub Enterprise Cloud with data residency, use the tenant's own endpoint rather than the public one. Pair with branch protection and required reviews: the agent's write toolsets must never be the control that prevents an unsafe merge.
 
 ---
 
 ## Checklist
 
-- [ ] Token scoped to minimum required permissions
-- [ ] Token restricted to specific repositories (not all repositories)
-- [ ] Token rotation schedule set (quarterly minimum)
+- [ ] Remote server with client OAuth; no archived `server-github`, no secrets in config files
+- [ ] `/readonly` endpoint by default; write endpoint enabled per task only
+- [ ] Access restricted to specific repositories (not all repositories)
+- [ ] Any fallback token is fine-grained, repo-scoped, and rotated (quarterly minimum)
 - [ ] Audit logging enabled for tool calls
 - [ ] Rate limit handling implemented (exponential backoff)
 - [ ] Tested with read-only operations first before enabling write tools
+
+---
+
+## Changelog
+
+- **1.2 — 2026-11-06:** Added Tradeoffs and service-specific "Why use it — and when not to" guidance.
+- **1.1 — 2026-11-06:** Moved to the vendor-hosted GitHub MCP server with client OAuth and a read-only default; marked `@modelcontextprotocol/server-github` as archived; added deployment status, enterprise considerations, and Changelog.
+- **1.0:** Initial integration spec.

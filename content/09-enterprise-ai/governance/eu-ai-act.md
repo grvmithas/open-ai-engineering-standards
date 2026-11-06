@@ -1,7 +1,7 @@
 # EU AI Act Engineering Control Map
 
-> **Version:** 1.1.0
-> **Last updated:** 2026-07-16
+> **Version:** 1.2.0
+> **Last updated:** 2026-11-06
 > **Status:** Informative AIES implementation profile
 
 ## Purpose
@@ -23,17 +23,24 @@ Use at intake, material change, and scheduled regulatory review.
 ## Legal boundary and effective-date caveat
 This document is engineering implementation guidance, not legal advice. It does not determine whether a system is prohibited, high-risk, a GPAI model, or compliant. The accountable legal function must use the Official Journal text, applicable delegated or implementing acts, harmonised standards or common specifications, Commission guidance, and national competent-authority requirements current on the decision date.
 
-As of **2026-07-16**, the principal Article 113 timeline is:
+As of **2026-11-06**, the principal timeline — Article 113 of Regulation (EU) 2024/1689 as amended by the **Digital Omnibus on AI, Regulation (EU) 2026/1744** (Official Journal 24 Jul 2026, in force 27 Jul 2026) — is:
 
 | Date | Engineering planning significance | Caveat |
 |---|---|---|
 | 2024-08-01 | Regulation entered into force | Entry into force is not the same as full applicability |
 | 2025-02-02 | Chapters I and II apply, including Article 4 AI-literacy and Article 5 prohibited practices | Confirm workforce and prohibited-use controls now |
 | 2025-08-02 | Article 113(b) provisions apply, including GPAI Chapter V and specified governance, notified-body, confidentiality, and penalty provisions | Transitional rules in Article 111 can alter dates for existing systems/models |
-| 2026-08-02 | Most remaining provisions apply | This date is near; release plans must work backward from conformity and evidence lead time |
-| 2027-08-02 | Article 6(1) classification and corresponding obligations apply | Applies to specified product-safety-component/product categories; verify exact Article 113(c) scope |
+| 2026-08-02 | Article 50 transparency obligations apply; Commission GPAI enforcement powers apply | Chatbot disclosure, machine-readable marking **and** detection of synthetic content, deepfake labels. Marking without a detection means is non-compliant |
+| 2026-12-02 | Article 50 compliance deadline for systems already on the market before 2026-08-02; new prohibition on generating non-consensual intimate content and CSAM applies | Legacy chat and generation features need disclosure and marking shipped by this date |
+| 2027-08-02 | GPAI models placed on the market before 2025-08-02 must comply | Transitional rule; verify the model's placement date |
+| 2027-12-02 | High-risk obligations (Chapter III, Sections 1–3) apply to **Annex III** stand-alone systems | Moved from 2026-08-02 by Regulation (EU) 2026/1744 |
+| 2028-08-02 | High-risk obligations apply to **Annex I** systems (Article 6(1), AI in regulated products) | AI-enabled machinery moves to the Machinery Regulation; verify sector scope |
 
-The Commission’s AI Act policy page, last updated 2026-07-07, reports a **political agreement** on an AI Omnibus that would move certain Annex III high-risk dates to 2027-12-02 and high-risk systems embedded in regulated products to 2028-08-02. A political agreement or policy summary is not a substitute for an enacted amending regulation in the Official Journal. Counsel must track the legislative act and use the legally effective text on the decision date.
+**Harmonised standards.** EN 18286:2026 (quality management system, Article 17) is the first harmonised standard cited in the Official Journal (Implementing Decision (EU) 2026/2274, 14 Oct 2026); conformity with it gives presumption of conformity for Article 17 only. Risk management (prEN 18228), cybersecurity (prEN 18282), logging (prEN 18229-1) and data (prEN 18284) are still drafts — track them, do not cite them as harmonised.
+
+**Article 50 implementation.** The Code of Practice on marking and labelling AI-generated content (finalised 10 Jun 2026) and Commission guidelines C(2026) 5054 (20 Jul 2026) describe acceptable techniques. Engineering evidence: disclosure shown before first interaction, provenance metadata (C2PA manifests) plus a watermark or fingerprint that survives common transformations, a detection API or tool available to the people the Code names, and regression tests that marking survives your own export paths.
+
+**Unverified after the Omnibus.** The Article 73 serious-incident reporting start date for high-risk providers presumably follows the delayed high-risk dates; counsel must confirm. The GDPR "Digital Omnibus" (COM(2025) 837, including a proposed Art. 88bis legitimate-interest basis for AI) is **not law** as of this date.
 
 For GPAI, Commission guidance states: obligations apply from 2025-08-02 for models placed on the market from that date; Commission enforcement powers apply from 2026-08-02; providers of GPAI models placed on the market before 2025-08-02 must comply by 2027-08-02 under the transitional rule. Verify the specific model’s placement date and current guidance.
 
@@ -108,6 +115,7 @@ Do not use the `10^25` FLOP presumption in Article 51 as the only systemic-risk 
 - **EA-05 Human oversight:** overseers demonstrate authority, competence, stop/override access, and workload capacity.
 - **EA-06 Post-market:** complaints, drift, serious-incident escalation, provider notification, and corrective-action loops pass a tabletop exercise.
 - **EA-07 Change control:** substantial-modification and intended-purpose triggers are implemented in release intake.
+- **EA-08 Transparency (Article 50):** user-facing disclosure, machine-readable marking, and a detection means are shipped and regression-tested for every generative output path; legacy systems have a 2026-12-02 completion record.
 
 ## Evidence contract
 The decision record is the **EU AI Act applicability and evidence file**. It records provider/deployer/importer/distributor/GPAI roles; territory; intended purpose; Article/Annex basis; dates; controls; counsel decision. The EU AI Act compliance owner owns completeness; the evidence is invalid when intended purpose, model role, or value-chain contract changes. Preserve legal/applicability decisions, system and data facts, contracts, evidence versions, approvals, and next-review triggers in the system record.
@@ -124,14 +132,20 @@ The **EU AI Act compliance owner** accepts the operational decision. The **quali
 | Choice | Benefit | Cost |
 |---|---|---|
 | Conservative scope | Lower compliance risk | More controls |
+| Planning to the Omnibus dates (2027-12-02 / 2028-08-02) | Realistic evidence lead time | Risk if counsel's reading of transitional rules differs; keep the decision record dated |
+| Shipping Article 50 marking + detection everywhere generative output leaves the system | One mechanism across products | Watermarks add latency and can degrade some media formats |
 
 ## Anti-patterns
 - Calling every AI system high-risk.
 - Claiming compliance from a checklist alone.
+- Planning to the superseded 2026-08-02 high-risk date, or ignoring Article 50 because "we are not high-risk" — Article 50 applies to limited-risk chat and generation features.
+- Shipping C2PA metadata alone as "marking": metadata is stripped by most re-encoders; pair it with a robust watermark and a detection means.
 
 ## Enterprise considerations
 - Legal owns interpretation; engineering owns evidence.
 - Do not claim conformity or certification without formal assessment.
+- Map the AIES quality-management evidence (Definition of Done, release gates, evidence bundles) to EN 18286 clauses before building a parallel QMS.
+- Track ISO/IEC 27090:2026 (AI security threats, published Oct 2026) for Article 15 cybersecurity evidence; it is not a harmonised standard.
 
 ## Framework relationship
 For **EU AI Act Engineering Control Map**, this profile translates governance questions into engineering records. Qualified authorities still decide legal duties, conformity, and risk acceptance.
@@ -147,7 +161,9 @@ For **EU AI Act Engineering Control Map**, this profile translates governance qu
 - [ ] Article 5 prohibited-practice review is signed and unresolved uncertainty blocks deployment.
 - [ ] Article 6 and Annex I/III classification basis includes exclusions and intended-purpose facts.
 - [ ] GPAI provider and Article 51 systemic-risk analyses are separate from system classification.
-- [ ] Article 113 dates and Article 111 transitional rules are reviewed against the current official text.
+- [ ] Article 113 dates (as amended by Regulation (EU) 2026/1744) and Article 111 transitional rules are reviewed against the current official text.
+- [ ] Article 50 disclosure, marking, and detection are shipped for every generative path; legacy systems complete by 2026-12-02.
+- [ ] Quality-management evidence is mapped to EN 18286 where the provider relies on the harmonised route.
 - [ ] Applicable Articles 9–15 evidence is linked to owners and immutable release identifiers.
 - [ ] Conformity, registration, transparency, FRIA, and deployer duties are dispositioned.
 - [ ] Serious-incident, corrective-action, and authority/provider notification paths are exercised.
@@ -157,11 +173,15 @@ For **EU AI Act Engineering Control Map**, this profile translates governance qu
 - European Union, [Regulation (EU) 2024/1689, Official Journal text](https://eur-lex.europa.eu/eli/reg/2024/1689/oj) (accessed 2026-07-16).
 - European Commission, [Regulatory framework for AI](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai) (accessed 2026-07-16). Use guidance only with the binding Regulation and current implementing/delegated acts.
 - European Commission, [Guidelines for providers of general-purpose AI models](https://digital-strategy.ec.europa.eu/en/policies/guidelines-gpai-providers) (accessed 2026-07-16).
+- European Union, [Regulation (EU) 2026/1744 — Digital Omnibus on AI](https://eur-lex.europa.eu/eli/reg/2026/1744/oj/eng) (accessed 2026-11-06).
+- European Commission, [Code of Practice on AI-generated content](https://digital-strategy.ec.europa.eu/en/policies/code-practice-ai-generated-content) (accessed 2026-11-06).
+- European Commission, [First harmonised standard supporting the AI Act (EN 18286)](https://digital-strategy.ec.europa.eu/en/library/first-harmonised-standard-supporting-ai-act-published-official-journal) (accessed 2026-11-06).
 - NIST, [AI RMF 1.0](https://doi.org/10.6028/NIST.AI.100-1), GOVERN and MAP (accessed 2026-07-16); cross-framework implementation aid only.
 - ISO, [ISO/IEC 42001:2023](https://www.iso.org/standard/81230.html) (accessed 2026-07-16); certification does not establish EU AI Act conformity.
 
 ## Changelog
 | Version | Date | Change |
 |---|---|---|
+| 1.2.0 | 2026-11-06 | Timeline re-based on enacted Regulation (EU) 2026/1744: high-risk 2027-12-02 (Annex III) / 2028-08-02 (Annex I); Article 50 since 2026-08-02 with 2026-12-02 legacy deadline; EN 18286 harmonised standard; EA-08 transparency gate. |
 | 1.1.0 | 2026-07-16 | Added operator-role, Article/Annex, effective-date, high-risk, GPAI, systemic-risk, evidence, and release-gate implementation maps with explicit legal boundaries. |
 | 1.0.0 | 2026-07-16 | Initial complete profile. |

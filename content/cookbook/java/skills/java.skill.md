@@ -1,6 +1,11 @@
+---
+name: java
+description: "Execute a repeatable Java change or diagnosis for a Spring controller, application service, JPA aggregate, message consumer, or JVM process, including native evidence, validation, rollout, and rollback. Use when source, manifests, runtime configuration, topology, data contracts, or operating behavior for Java can change."
+---
+
 # Java Production Skill
 
-> Version: 1.1.0 | Updated: 2026-07-16
+> Version: 1.1.0 | Updated: 2026-11-06
 
 ## Purpose
 
@@ -98,5 +103,6 @@ Java governance aligns JDK, Spring, Jakarta, Hibernate, and build-plugin baselin
 
 ## Changelog
 
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - 1.1.0 (2026-07-16): Added platform-native procedure, commands, evidence, and rollback.
 - 1.0.0 (2026-07-16): Added initial skill.

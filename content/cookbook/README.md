@@ -1,6 +1,7 @@
 # AI Cookbook
 
-> **Immediately useful. Zero setup required. Fork and adapt.**
+> **Immediately useful. Zero setup required. Fork and adapt.**  
+> **Updated:** 2026-07-29
 
 ---
 
@@ -79,7 +80,7 @@ Maturity only changes the reading path in `AIES.md` — the install is always co
 
 ## Each Cookbook Contains (shipped minimum)
 
-```
+```text
 {technology}/
 ├── README.md
 ├── prompts/          generate · review · debug

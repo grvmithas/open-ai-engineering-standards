@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { navigation, NavItem } from '@/lib/navigation';
@@ -43,11 +43,6 @@ function activePatternDir(pathname: string): string | null {
   const segment = rest.split('/')[0];
   if (!segment?.endsWith('-pattern')) return null;
   return `patterns/${segment}`;
-}
-
-function withActivePatternChildren(items: NavItem[], pathname: string): NavItem[] {
-  // Pass through navigation items directly without expanding sub-files in the sidebar.
-  return items;
 }
 
 function initialExpansion(items: NavItem[], pathname: string, expanded: Record<string, boolean> = {}) {
@@ -95,24 +90,18 @@ export default function Sidebar({ onLinkClick }: SidebarProps) {
   const pathname = usePathname();
   const [query, setQuery] = useState('');
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>(
-    () => initialExpansion(withActivePatternChildren(navigation, pathname), pathname),
+    () => initialExpansion(navigation, pathname),
   );
-
-  useEffect(() => {
-    setExpandedCategories(prev => ({
-      ...prev,
-      ...initialExpansion(withActivePatternChildren(navigation, pathname), pathname),
-    }));
-  }, [pathname]);
+  const [expandedForPath, setExpandedForPath] = useState(pathname);
+  if (expandedForPath !== pathname) {
+    setExpandedForPath(pathname);
+    setExpandedCategories(prev => ({ ...prev, ...initialExpansion(navigation, pathname) }));
+  }
 
   const normalizedQuery = query.trim().toLowerCase();
-  const navWithPatternPages = useMemo(
-    () => withActivePatternChildren(navigation, pathname),
-    [pathname],
-  );
   const visibleNavigation = useMemo(
-    () => filterNavigation(navWithPatternPages, normalizedQuery),
-    [navWithPatternPages, normalizedQuery],
+    () => filterNavigation(navigation, normalizedQuery),
+    [normalizedQuery],
   );
 
   const toggleCategory = (slug: string) => {

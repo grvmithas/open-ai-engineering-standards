@@ -1,11 +1,16 @@
+---
+name: data-engineering
+description: "Data Engineering procedure with verification and rollback evidence. Use when a batch, streaming, transformation, lineage, or data-quality pipeline changes."
+---
+
 # Data Engineering Skill
 
 > **Skill ID:** `data-engineering`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when A batch, streaming, transformation, lineage, or data-quality pipeline changes.
+Activate this skill when a batch, streaming, transformation, lineage, or data-quality pipeline changes.
 
 ## Why
 A source-to-target contract, lineage, idempotency and replay design, quality rules, orchestration, backfill plan, and SLO evidence is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -70,5 +75,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [OpenLineage Specification](https://openlineage.io/docs/spec/)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

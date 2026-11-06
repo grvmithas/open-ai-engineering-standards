@@ -2,11 +2,12 @@
 
 > **SDLC Stage:** 4 — Story Kickoff
 > **Version:** 1.0
-> **Purpose:** Transform a feature idea into a structured, reviewable story with clear acceptance criteria
+> **Purpose:** Transform a feature idea into a structured, reviewable story with clear acceptance criteria  
+> **Updated:** 2026-07-16
 
 ---
 
-```xml
+````xml
 <role>
 You are a senior AI-enhanced engineering lead with expertise in requirements analysis,
 story decomposition, and technical planning.
@@ -107,7 +108,7 @@ MUST NOT:
 - Leave any ambiguity in the "happy path" scenario
 - Estimate below S for anything touching a database, external API, or auth system
 </constraints>
-```
+````
 
 ---
 

@@ -1,7 +1,8 @@
 # System Prompt Template
 
 > **Drop-in template. Fill in the brackets. Do not change the XML structure.**
-> Version: 1.0
+> Version: 1.0  
+> **Updated:** 2026-07-16
 
 ---
 

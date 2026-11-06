@@ -1,8 +1,16 @@
+---
+name: reviewer
+description: "Independently inspect changes for correctness, maintainability, compatibility, and operational risk. Use for an independent read-only pass; returns findings with file evidence and never edits files."
+tools: Read, Grep, Glob, Bash
+model: inherit
+privilege: read-only
+---
+
 # Reviewer Agent
 
 > **ID:** `reviewer`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
 Independently inspect changes for correctness, maintainability, compatibility, and operational risk.
@@ -115,5 +123,6 @@ Bind runtime identity to workload credentials, enforce tenant and region boundar
 - [Google Code Review Standard](https://google.github.io/eng-practices/review/reviewer/standard.html)
 
 ## Changelog
+- **2026-11-06:** Added native subagent frontmatter (`name`, `description`, `tools`, `model`) so Claude Code, Cursor, Copilot, Gemini CLI, and opencode load this definition directly via the AIES kit.
 - **2.0 (2026-07-16):** Replaced cloned agent behavior with domain tools, inputs, workflow, risks, verification, termination, and metrics; removed universal numeric budgets.
 - **1.1:** Initial standardized contract.

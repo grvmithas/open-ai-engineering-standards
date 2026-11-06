@@ -1,6 +1,7 @@
 'use client';
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo, useSyncExternalStore } from 'react';
+import { normalizeUserIde } from '@/lib/workflows/catalog';
 import type { UserProfile } from '@/lib/workflows/types';
 
 const STORAGE_KEY = 'aies-user-profile';
@@ -13,42 +14,56 @@ interface UserProfileContextValue {
 }
 
 const UserProfileContext = createContext<UserProfileContextValue | null>(null);
+const profileListeners = new Set<() => void>();
 
-function readProfile(): UserProfile | null {
-  if (typeof window === 'undefined') return null;
+function subscribeProfile(callback: () => void) {
+  profileListeners.add(callback);
+  window.addEventListener('storage', callback);
+  return () => {
+    profileListeners.delete(callback);
+    window.removeEventListener('storage', callback);
+  };
+}
+
+function notifyProfile() {
+  profileListeners.forEach(listener => listener());
+}
+
+function readRawProfile() {
+  return localStorage.getItem(STORAGE_KEY);
+}
+
+function subscribeNoop() {
+  return () => {};
+}
+
+function parseProfile(raw: string | null): UserProfile | null {
+  if (!raw) return null;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
     const parsed = JSON.parse(raw) as Partial<UserProfile>;
-    // Sprint B: require model + dataClass — force re-onboarding for older profiles
-    if (!parsed.model || !parsed.dataClass || !parsed.stack || !parsed.ide) {
-      localStorage.removeItem(STORAGE_KEY);
-      return null;
-    }
-    return parsed as UserProfile;
+    const ide = normalizeUserIde(parsed.ide);
+    // Sprint B: require model + dataClass — older profiles re-onboard
+    if (!parsed.model || !parsed.dataClass || !parsed.stack || !ide) return null;
+    return { ...parsed, ide } as UserProfile;
   } catch {
     return null;
   }
 }
 
 export function UserProfileProvider({ children }: { children: React.ReactNode }) {
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    setProfile(readProfile());
-    setIsLoaded(true);
-  }, []);
+  const raw = useSyncExternalStore(subscribeProfile, readRawProfile, () => null);
+  const isLoaded = useSyncExternalStore(subscribeNoop, () => true, () => false);
+  const profile = useMemo(() => parseProfile(raw), [raw]);
 
   const saveProfile = useCallback((next: UserProfile) => {
     const withTimestamp = { ...next, completedAt: new Date().toISOString() };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(withTimestamp));
-    setProfile(withTimestamp);
+    notifyProfile();
   }, []);
 
   const clearProfile = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY);
-    setProfile(null);
+    notifyProfile();
   }, []);
 
   const value = useMemo(

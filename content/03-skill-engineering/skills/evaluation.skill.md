@@ -1,11 +1,16 @@
+---
+name: evaluation
+description: "Evaluation procedure with verification and rollback evidence. Use when a model, prompt, retrieval, tool, or agent change needs an evidence-based release decision."
+---
+
 # Evaluation Skill
 
 > **Skill ID:** `evaluation`  
 > **Version:** 2.1  
-> **Updated:** 2026-07-29
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when A model, prompt, retrieval, tool, or agent change needs an evidence-based release decision.
+Activate this skill when a model, prompt, retrieval, tool, or agent change needs an evidence-based release decision.
 
 ## Why
 An eval specification, frozen dataset with provenance, rubric or executable graders, baseline/candidate runs, slice report, and release decision is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -67,10 +72,11 @@ Eval datasets may contain customer or regulated content—classify them, restric
 - [ ] Recovery, rollback, owner, and residual risk recorded
 
 ## Authoritative Sources
-- [OpenAI Evals Guide](https://platform.openai.com/docs/guides/evals)
+- [Moving from OpenAI Evals to promptfoo](https://developers.openai.com/cookbook/examples/evaluation/moving-from-openai-evals-to-promptfoo) (OpenAI Evals shuts down 2026-11-30)
 - [NIST AI RMF Measure](https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook/Measure)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.1 (2026-07-29):** De-boilerplated Tradeoffs, Anti-Patterns, and Enterprise Considerations with evaluation-domain content (goldens vs judges, held-out leakage, slice gates).
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

@@ -1,6 +1,11 @@
+---
+name: mongo
+description: "Execute a repeatable MongoDB change or diagnosis for a document model, collection validator, query, aggregation, index, transaction, or shard key, including native evidence, validation, rollout, and rollback. Use when source, manifests, runtime configuration, topology, data contracts, or operating behavior for MongoDB can change."
+---
+
 # MongoDB Production Skill
 
-> Version: 1.1.0 | Updated: 2026-07-16
+> Version: 1.1.0 | Updated: 2026-11-06
 
 ## Purpose
 
@@ -98,5 +103,6 @@ MongoDB governance owns database/collection naming, validator enforcement, encry
 
 ## Changelog
 
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - 1.1.0 (2026-07-16): Added platform-native procedure, commands, evidence, and rollback.
 - 1.0.0 (2026-07-16): Added initial skill.

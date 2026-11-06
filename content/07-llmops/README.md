@@ -1,7 +1,8 @@
 # Level 7: LLMOps
 
 > **Prerequisites:** Levels 0-6
-> **Goal:** Operate LLMs in production with reliability, observability, cost control, and continuous improvement
+> **Goal:** Operate LLMs in production with reliability, observability, cost control, and continuous improvement  
+> **Updated:** 2026-11-06
 
 ---
 
@@ -59,6 +60,7 @@ Without LLMOps, every prompt change is a deployment risk. With LLMOps, prompt ch
 | File | What It Covers |
 |------|----------------|
 | [cost-optimization/model-routing.md](./cost-optimization/model-routing.md) | Route tasks to appropriate model tier |
+| [model-lifecycle.md](./model-lifecycle.md) | Current model tiers, deprecation calendar, per-provider API capability changes |
 | [cost-optimization/caching-strategies.md](./cost-optimization/caching-strategies.md) | Semantic caching, exact-match caching |
 | [cost-optimization/token-budgets.md](./cost-optimization/token-budgets.md) | Enforced per-request token limits |
 
@@ -119,28 +121,34 @@ langfuse prompt promote --name "user-intent-classifier" --version 2.0 --environm
 
 ## Cost Optimization: The Model Routing Standard
 
-**Use the cheapest model that can do the job. Use expensive models only for tasks that require them.**
+**Use the cheapest model and lowest effort that pass your evals. Route by tier, not by model name** — model IDs turn over every 6–12 months, tiers do not.
 
 ```python
-# Model routing configuration (AIES standard)
-MODEL_ROUTING = {
-    "classification": "gpt-4o-mini",        # Fast, cheap, good for simple classification
-    "extraction": "gpt-4o-mini",            # Structured extraction from text
-    "summarization": "gpt-4o-mini",         # Basic summarization
-    "code_generation": "claude-sonnet-4",   # Complex code generation
-    "architecture_review": "claude-opus-4", # High-stakes architectural decisions
-    "creative_writing": "claude-sonnet-4",  # Creative content
-    "rag_synthesis": "gpt-4o-mini",         # RAG response generation (context does the work)
-    "complex_reasoning": "o3",              # Multi-step reasoning, math
+# Model routing configuration (AIES standard). Code routes to tiers; config maps tiers to pinned model IDs.
+TASK_TIER = {
+    "classification":      ("small",    "low"),     # intent, routing, moderation pre-checks
+    "extraction":          ("small",    "low"),     # structured extraction with strict schema
+    "summarization":       ("small",    "medium"),
+    "rag_synthesis":       ("mid",      "low"),     # context does the work
+    "code_generation":     ("mid",      "medium"),
+    "complex_reasoning":   ("frontier", "high"),
+    "architecture_review": ("frontier", "high"),
 }
 
-def route_model(task_type: str, complexity: str = "standard") -> str:
-    """Route task to appropriate model based on type and complexity."""
-    if complexity == "high":
-        # Upgrade to next tier for high-complexity variants
-        return MODEL_ROUTING.get(f"{task_type}_complex", MODEL_ROUTING[task_type])
-    return MODEL_ROUTING[task_type]
+# Pinned per environment, reviewed on every provider deprecation notice (examples as of 2026-11).
+TIER_MODEL = {
+    "small":    "claude-haiku-5-5",   # or gpt-6-luna, gemini-3.8-flash
+    "mid":      "claude-sonnet-5-5",  # or gpt-6.1-terra / gpt-6.1-sol
+    "frontier": "claude-opus-5-5",    # or gpt-6-astra, gemini-4-argon
+}
+
+def route_model(task_type: str) -> tuple[str, str]:
+    """Return (model_id, effort) for a task. Unknown tasks fail loudly instead of defaulting to frontier."""
+    tier, effort = TASK_TIER[task_type]
+    return TIER_MODEL[tier], effort
 ```
+
+Reasoning **effort** is now the first cost lever on every major provider (`effort` on Claude, `reasoning.effort` on GPT-6, `thinkingLevel` on Gemini 4). Lower effort before dropping a tier. Thinking tokens bill as output tokens — budget `max_tokens` for both. See [Model lifecycle and API capabilities](./model-lifecycle.md) for deprecation dates and per-provider parameter changes.
 
 **Cost impact:** Teams implementing model routing typically reduce LLM API costs by 40-70% without measurable quality degradation for routed tasks.
 
@@ -195,7 +203,7 @@ Manual evaluation doesn't scale beyond 50 samples. At production scale (10k+ req
 **The model changes.** API providers update models. Fine-tuned models drift. Even with a frozen prompt, your evaluation suite must run on a schedule.
 
 ### ❌ "We use the most powerful model for everything"
-A `gpt-4o-mini` call that classifies user intent costs 20-50x less than a `gpt-4o` call. For simple tasks, this is waste — not quality.
+A small-tier call (Haiku 5.5, GPT-6 Luna) that classifies user intent costs 20–100× less than a frontier call at high effort. For simple tasks, this is waste — not quality.
 
 ### ❌ "Our developers update prompts directly in production"
 Prompts are deployable artifacts. They need staging environments, regression tests, and rollback capability — exactly like code.

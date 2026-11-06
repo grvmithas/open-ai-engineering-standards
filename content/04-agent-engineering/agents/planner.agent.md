@@ -1,8 +1,16 @@
+---
+name: planner
+description: "Convert approved outcomes into dependency-ordered, file-specific plans without implementing them. Use for an independent read-only pass; returns findings with file evidence and never edits files."
+tools: Read, Grep, Glob, Bash
+model: inherit
+privilege: read-only
+---
+
 # Planner Agent
 
 > **ID:** `planner`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
 Convert approved outcomes into dependency-ordered, file-specific plans without implementing them.
@@ -114,5 +122,6 @@ Bind runtime identity to workload credentials, enforce tenant and region boundar
 - [Google Small CLs](https://google.github.io/eng-practices/review/developer/small-cls.html)
 
 ## Changelog
+- **2026-11-06:** Added native subagent frontmatter (`name`, `description`, `tools`, `model`) so Claude Code, Cursor, Copilot, Gemini CLI, and opencode load this definition directly via the AIES kit.
 - **2.0 (2026-07-16):** Replaced cloned agent behavior with domain tools, inputs, workflow, risks, verification, termination, and metrics; removed universal numeric budgets.
 - **1.1:** Initial standardized contract.

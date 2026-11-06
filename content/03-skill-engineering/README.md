@@ -1,7 +1,8 @@
 # Level 3: Skill Engineering
 
 > **Prerequisites:** Level 2: Context Engineering
-> **Goal:** Build reusable, discoverable procedural knowledge that agents can invoke
+> **Goal:** Build reusable, discoverable procedural knowledge that agents can invoke  
+> **Updated:** 2026-07-29
 
 ---
 
@@ -132,7 +133,7 @@ cp oaies/skills/*.skill.md .claude/skills/
 
 ## Naming Conventions
 
-```
+```text
 {domain}.skill.md          # Core skills
 {technology}.skill.md      # Technology-specific skills
 {platform}.skill.md        # Platform skills
@@ -155,7 +156,7 @@ cp oaies/skills/*.skill.md .claude/skills/
 ## Anti-Patterns
 
 ### ❌ Skill That's Too Broad
-```
+```markdown
 # Wrong — "development skill" triggers on everything
 Trigger Conditions: Any development task
 

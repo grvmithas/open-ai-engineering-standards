@@ -1,7 +1,8 @@
 # Level 8: AI SDLC
 
 > **Prerequisites:** Levels 0-7
-> **Goal:** Operate a complete, auditable AI-enhanced software development lifecycle
+> **Goal:** Operate a complete, auditable AI-enhanced software development lifecycle  
+> **Updated:** 2026-07-29
 
 ---
 

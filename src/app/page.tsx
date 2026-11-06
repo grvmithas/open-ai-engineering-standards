@@ -1,12 +1,9 @@
-import type { CSSProperties } from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import AppHeader from '@/components/AppHeader';
-import PatternsMegaMenu from '@/components/PatternsMegaMenu';
 import HeroTerminal from '@/components/home/HeroTerminal';
 import TokenCalculator from '@/components/tools/TokenCalculator';
 import MaturityQuiz from '@/components/tools/MaturityQuiz';
-import ShareButtons from '@/components/tools/ShareButtons';
 import {
   PRODUCT_NAME,
   PRODUCT_SHORT,
@@ -36,19 +33,6 @@ export const metadata: Metadata = {
   },
 };
 
-const CAPABILITIES = [
-  { title: 'AI SDLC / AIDLC', desc: 'Stage gates, plans, HITL, and production prompts', href: '/docs/08-ai-sdlc/README' },
-  { title: 'Prompt engineering', desc: 'Structured prompts, anti-patterns, templates', href: '/docs/01-prompt-engineering/README' },
-  { title: 'Context engineering', desc: 'Minimal high-signal packages, progressive disclosure', href: '/docs/handbook/how-to-give-context' },
-  { title: 'Skills & agents', desc: 'Procedures, tool-bounded actors, termination', href: '/docs/handbook/skills-vs-prompts-vs-agents' },
-  { title: 'Patterns', desc: 'Planner, reviewer, release, hotfix, and more', href: '/docs/patterns/README' },
-  { title: 'Memory & knowledge', desc: 'Hybrid RAG, lifecycle, poisoning defenses', href: '/docs/06-memory-knowledge/README' },
-  { title: 'MCP integrations', desc: 'When to add tools — and how not to', href: '/docs/handbook/mcp-when-and-how' },
-  { title: 'Evaluation & LLMOps', desc: 'Gates, judges, tracing, cost discipline', href: '/docs/handbook/evals-as-quality-gates' },
-  { title: 'Governance', desc: 'Enterprise controls, evidence, SoA semantics', href: '/docs/standard/README' },
-  { title: 'Org playbook', desc: 'Roles, operating model, assurance culture', href: '/docs/10-ai-org-playbook/README' },
-];
-
 const PRINCIPLES = [
   'Human first',
   'AI assisted',
@@ -61,32 +45,6 @@ const PRINCIPLES = [
   'Context rich, noise poor',
   'Documentation driven',
 ];
-
-const ROADMAP = [
-  { ver: 'A1', title: 'Corpus publish — prompts, skills, MCP, evals, AIDLC, patterns', state: 'done' },
-  { ver: 'A2', title: 'Packaging & discoverability for external contributors', state: 'current' },
-  { ver: 'A3', title: 'External pilots with published evidence notes', state: 'next' },
-  { ver: 'A4', title: 'Shared governance + non-steward RFC reviewers', state: 'planned' },
-  { ver: 'A5', title: 'Inter-assessor SoA reliability notes', state: 'planned' },
-  { ver: 'S1', title: 'Community-standard claim (adoption earned)', state: 'future' },
-];
-
-const navLink: CSSProperties = {
-  padding: '0.4rem 0.75rem',
-  borderRadius: 6,
-  color: 'var(--shell-muted)',
-  fontSize: '0.85rem',
-  textDecoration: 'none',
-  fontWeight: 500,
-};
-
-const paperCard: CSSProperties = {
-  background: 'var(--paper)',
-  color: 'var(--ink)',
-  border: '1px solid var(--paper-border)',
-  borderRadius: 12,
-  boxShadow: 'var(--shadow-sm)',
-};
 
 export default function HomePage() {
   return (

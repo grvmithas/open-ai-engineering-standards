@@ -1,6 +1,7 @@
 # Create Prompt
 
-> **AIDLC prompt** · Author a production AIES prompt following XML structure and corpus quality gates
+> **AIDLC prompt** · Author a production AIES prompt following XML structure and corpus quality gates  
+> **Updated:** 2026-07-29
 
 ---
 

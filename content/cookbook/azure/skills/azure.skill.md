@@ -1,6 +1,11 @@
+---
+name: azure
+description: "Execute a repeatable Azure change or diagnosis for a subscription workload, Bicep module, managed identity, private endpoint, or release pipeline, including native evidence, validation, rollout, and rollback. Use when source, manifests, runtime configuration, topology, data contracts, or operating behavior for Azure can change."
+---
+
 # Azure Production Skill
 
-> Version: 1.1.0 | Updated: 2026-07-16
+> Version: 1.1.0 | Updated: 2026-11-06
 
 ## Purpose
 
@@ -98,5 +103,6 @@ Azure governance maps management groups to policy initiatives, centralizes Activ
 
 ## Changelog
 
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - 1.1.0 (2026-07-16): Added platform-native procedure, commands, evidence, and rollback.
 - 1.0.0 (2026-07-16): Added initial skill.

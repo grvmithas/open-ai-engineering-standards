@@ -1,11 +1,16 @@
+---
+name: testing
+description: "Testing procedure with verification and rollback evidence. Use when a behavior change, defect, integration boundary, or release risk needs automated evidence."
+---
+
 # Testing Skill
 
 > **Skill ID:** `testing`  
 > **Version:** 2.1  
-> **Updated:** 2026-07-29
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when A behavior change, defect, integration boundary, or release risk needs automated evidence.
+Activate this skill when a behavior change, defect, integration boundary, or release risk needs automated evidence.
 
 ## Why
 A risk matrix, layered test set, deterministic fixtures, coverage rationale, and executable test report is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -70,6 +75,7 @@ CI must use synthetic or scrubbed fixtures—no production customer dumps in pip
 - [Google Testing Blog](https://testing.googleblog.com/)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.1 (2026-07-29):** De-boilerplated Tradeoffs, Anti-Patterns, and Enterprise Considerations with testing-domain content (pyramid layers, flaky quarantine, fixture isolation).
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

@@ -2,7 +2,7 @@
 
 > **Pattern:** Reviewer  
 > **Component:** mcps.md  
-> **Version:** 1.1 | **Updated:** 2026-07-29
+> **Version:** 1.2 | **Updated:** 2026-11-06
 
 ---
 
@@ -23,6 +23,8 @@ Enable GitHub for the PR diff under review. Enable Filesystem only to open paths
 
 ## Enable rules (this pattern)
 
+Connect through the vendor-hosted endpoint and client OAuth listed in each spec's **Deployment status (2026-11)** table; use read-only endpoints (`/readonly`, `read_only=true`) unless this pattern's gate authorizes writes. See [MCP: remote servers & OAuth](../../handbook/mcp-remote-servers-and-auth.md).
+
 1. Reviewer MCPs stay read-only; never merge or comment via tool without HITL
 2. Never commit tokens; map secrets outside git  
 3. Record allowlist + data class in MODEL_POLICY / SoA before write tools  
@@ -39,3 +41,7 @@ Enable GitHub for the PR diff under review. Enable Filesystem only to open paths
 - [ ] Reviewer MCPs mapped to env secrets outside git  
 - [ ] Unused servers remain disabled after the reviewer gate  
 - [ ] Injection / tool PEP reviewed if tools can act
+
+## Changelog
+
+- **1.2 — 2026-11-06:** Pointed enable rules at vendor-hosted, read-only-first endpoints and client OAuth.

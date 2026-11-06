@@ -31,54 +31,107 @@ export const MCP_SPECS = [
   { id: 'discord', category: 'communication', file: 'communication/discord.mcp.md', label: 'Discord' },
 ];
 
-/** Runnable stubs — copy into mcpServers only after human approval + secrets. */
-export const MCP_SERVER_STUBS = {
+/**
+ * Enable-ready server definitions (MCP 2026-07-28 era).
+ * Prefer the vendor-hosted Streamable HTTP endpoint with OAuth 2.1 — no long-lived token in the repo.
+ * stdio entries remain only where no vendor remote exists. Reference servers archived by the MCP
+ * project (server-github, server-postgres, server-redis, server-slack) are intentionally absent.
+ * Endpoints verified 2026-11-06; re-verify in the quarterly vendor review.
+ */
+export const MCP_SERVERS = {
   github: {
-    command: 'npx',
-    args: ['-y', '@modelcontextprotocol/server-github'],
-    env: { GITHUB_PERSONAL_ACCESS_TOKEN: '${GITHUB_TOKEN}' },
+    transport: 'http',
+    url: 'https://api.githubcopilot.com/mcp/readonly',
+    auth: 'oauth',
+    note: 'Read-only endpoint. Drop /readonly only after approval; narrow toolsets with the X-MCP-Toolsets header.',
   },
-  filesystem: {
-    command: 'npx',
-    args: ['-y', '@modelcontextprotocol/server-filesystem', '${WORKSPACE_ROOT}'],
-  },
-  docker: {
-    command: 'npx',
-    args: ['-y', '@modelcontextprotocol/server-docker'],
-  },
-  postgresql: {
-    command: 'npx',
-    args: ['-y', '@modelcontextprotocol/server-postgres'],
-    env: { POSTGRES_CONNECTION_STRING: '${DATABASE_URL}' },
-  },
-  redis: {
-    command: 'npx',
-    args: ['-y', '@modelcontextprotocol/server-redis'],
-    env: { REDIS_URL: '${REDIS_URL}' },
-  },
-  playwright: {
-    command: 'npx',
-    args: ['-y', '@playwright/mcp@latest'],
-  },
+  gitlab: { transport: 'http', url: 'https://gitlab.com/api/v4/mcp', auth: 'oauth' },
   sentry: {
-    command: 'npx',
-    args: ['-y', '@sentry/mcp-server'],
-    env: { SENTRY_AUTH_TOKEN: '${SENTRY_AUTH_TOKEN}' },
+    transport: 'http',
+    url: 'https://mcp.sentry.dev/mcp',
+    auth: 'oauth',
+    note: 'Scope by URL: /mcp/{org}/{project}.',
   },
-  linear: {
-    command: 'npx',
-    args: ['-y', 'mcp-linear'],
-    env: { LINEAR_API_KEY: '${LINEAR_API_KEY}' },
+  linear: { transport: 'http', url: 'https://mcp.linear.app/mcp/readonly', auth: 'oauth' },
+  notion: { transport: 'http', url: 'https://mcp.notion.com/mcp', auth: 'oauth' },
+  jira: {
+    transport: 'http',
+    url: 'https://mcp.atlassian.com/v2/mcp',
+    auth: 'oauth',
+    note: 'Atlassian Rovo MCP (Jira + Confluence); honors the signed-in user\'s permissions.',
   },
-  slack: {
+  asana: { transport: 'http', url: 'https://mcp.asana.com/v2/mcp', auth: 'oauth' },
+  supabase: {
+    transport: 'http',
+    url: 'https://mcp.supabase.com/mcp?read_only=true',
+    auth: 'oauth',
+    note: 'Add &project_ref=<ref> to pin one project.',
+  },
+  playwright: { transport: 'stdio', command: 'npx', args: ['-y', '@playwright/mcp@latest'] },
+  'chrome-devtools': { transport: 'stdio', command: 'npx', args: ['-y', 'chrome-devtools-mcp@latest'] },
+  filesystem: {
+    transport: 'stdio',
     command: 'npx',
-    args: ['-y', '@modelcontextprotocol/server-slack'],
-    env: { SLACK_BOT_TOKEN: '${SLACK_BOT_TOKEN}' },
+    args: ['-y', '@modelcontextprotocol/server-filesystem', '.'],
+    note: 'Usually redundant: coding agents already have scoped file tools.',
   },
 };
 
+/** @deprecated kept for 1.x consumers; use MCP_SERVERS. */
+export const MCP_SERVER_STUBS = MCP_SERVERS;
+
+/**
+ * Render enabled servers for one client config format.
+ * @param {'portable'|'cursor'|'gemini'|'opencode'|'vscode'} format
+ * @param {string[]} ids
+ */
+export function renderMcpServers(format, ids) {
+  /** @type {Record<string, object>} */
+  const out = {};
+  for (const id of ids) {
+    const s = MCP_SERVERS[id];
+    if (!s) continue;
+    if (s.transport === 'http') {
+      out[id] = {
+        portable: { type: 'http', url: s.url },
+        vscode: { type: 'http', url: s.url },
+        cursor: { url: s.url },
+        gemini: { httpUrl: s.url },
+        opencode: { type: 'remote', url: s.url, enabled: true },
+      }[format];
+    } else {
+      out[id] = {
+        portable: { type: 'stdio', command: s.command, args: s.args },
+        vscode: { type: 'stdio', command: s.command, args: s.args },
+        cursor: { command: s.command, args: s.args },
+        gemini: { command: s.command, args: s.args },
+        opencode: { type: 'local', command: [s.command, ...s.args], enabled: true },
+      }[format];
+    }
+  }
+  return out;
+}
+
+/** Codex `.codex/config.toml` — every server commented out until a human enables it. */
+export function renderCodexMcpToml(ids) {
+  const lines = [];
+  for (const id of ids) {
+    const s = MCP_SERVERS[id];
+    if (!s) continue;
+    lines.push(`# [mcp_servers.${id.replace(/[^a-z0-9_]/gi, '_')}]`);
+    if (s.transport === 'http') {
+      lines.push(`# url = "${s.url}"`);
+    } else {
+      lines.push(`# command = "${s.command}"`);
+      lines.push(`# args = [${s.args.map(a => `"${a}"`).join(', ')}]`);
+    }
+    lines.push('');
+  }
+  return lines.join('\n');
+}
+
 export function stackMcpIds(stackId) {
-  const base = ['github', 'filesystem'];
+  const base = ['github'];
   switch (stackId) {
     case 'react':
     case 'nextjs':
@@ -147,7 +200,9 @@ export function detectRepoSignals(cwd, fs) {
     signals.postgres = signals.postgres || /psycopg|sqlalchemy|asyncpg/i.test(py);
   }
 
-  const ids = new Set(['github', 'filesystem']);
+  const ids = new Set(['github']);
+  if (exists('.gitlab-ci.yml')) ids.add('gitlab');
+  if (exists('supabase')) ids.add('supabase');
   if (signals.dockerfile) ids.add('docker');
   if (signals.kubernetes) ids.add('kubernetes');
   if (signals.playwright || signals.next) ids.add('playwright');
@@ -164,7 +219,7 @@ export function buildRecommendedMcpConfig(ids) {
   /** @type {Record<string, object>} */
   const recommended = {};
   for (const id of ids) {
-    if (MCP_SERVER_STUBS[id]) recommended[id] = MCP_SERVER_STUBS[id];
+    if (MCP_SERVERS[id]) recommended[id] = MCP_SERVERS[id];
   }
   return recommended;
 }

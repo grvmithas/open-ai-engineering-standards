@@ -1,6 +1,11 @@
+---
+name: graphql
+description: "Execute a repeatable GraphQL change or diagnosis for a schema, resolver, request DataLoader, gateway, persisted operation, or federated subgraph, including native evidence, validation, rollout, and rollback. Use when source, manifests, runtime configuration, topology, data contracts, or operating behavior for GraphQL can change."
+---
+
 # GraphQL Production Skill
 
-> Version: 1.1.0 | Updated: 2026-07-16
+> Version: 1.1.0 | Updated: 2026-11-06
 
 ## Purpose
 
@@ -98,5 +103,6 @@ GraphQL governance assigns type/field ownership, schema review, operation regist
 
 ## Changelog
 
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - 1.1.0 (2026-07-16): Added platform-native procedure, commands, evidence, and rollback.
 - 1.0.0 (2026-07-16): Added initial skill.

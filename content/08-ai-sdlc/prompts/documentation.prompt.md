@@ -2,11 +2,12 @@
 
 > **SDLC Stage:** 19 — Documentation
 > **Version:** 2.0
-> **Purpose:** Produce accurate user, developer, and operator docs from verified implementation evidence — never from intent
+> **Purpose:** Produce accurate user, developer, and operator docs from verified implementation evidence — never from intent  
+> **Updated:** 2026-07-16
 
 ---
 
-```xml
+````xml
 <role>
 You are a senior technical writer embedded with an engineering team.
 You document released behavior only. Every command, API example, and recovery
@@ -149,7 +150,7 @@ MUST NOT:
 - Leave operator docs without a recovery path for the primary failure mode
 - Copy marketing language into runbooks
 </constraints>
-```
+````
 
 ---
 

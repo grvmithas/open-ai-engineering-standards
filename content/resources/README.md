@@ -1,7 +1,8 @@
 # Curated Resources
 
 > **These are the resources that matter. Not a list — a curated library.**
-> Every resource here was selected because it changed how experts think about AI engineering.
+> Every resource here was selected because it changed how experts think about AI engineering.  
+> **Updated:** 2026-08-08
 
 ---
 
@@ -62,7 +63,7 @@
 | [deepeval-ai/deepeval](https://github.com/confident-ai/deepeval) | LLM evaluation framework | CI/CD evaluation gates |
 | [explodinggradients/ragas](https://github.com/explodinggradients/ragas) | RAG evaluation | RAG quality measurement |
 | [promptfoo/promptfoo](https://github.com/promptfoo/promptfoo) | Prompt testing | Security and comparison testing |
-| [microsoft/autogen](https://github.com/microsoft/autogen) | Multi-agent framework | Microsoft's agent orchestration |
+| [microsoft/agent-framework](https://github.com/microsoft/agent-framework) | Agent framework | Microsoft Agent Framework 1.0 — successor to AutoGen (maintenance mode) and Semantic Kernel |
 | [modelcontextprotocol/servers](https://github.com/modelcontextprotocol/servers) | MCP server library | Reference MCP implementations |
 
 ---
@@ -145,3 +146,7 @@
 ### Hold (Do not adopt)
 - **Autonomous agents without human-in-loop for high-stakes tasks** — Not ready for production
 - **LLMs for real-time decisions in regulated industries without human review** — Compliance risk
+
+## Changelog
+
+- **2026-11-06:** Replaced AutoGen with Microsoft Agent Framework.

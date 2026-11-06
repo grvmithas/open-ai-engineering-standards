@@ -2,11 +2,12 @@
 
 > **SDLC Stage:** 17 — Performance
 > **Version:** 2.0
-> **Purpose:** Validate latency, throughput, resource, and token-cost objectives under representative load — with distributions, not anecdotes
+> **Purpose:** Validate latency, throughput, resource, and token-cost objectives under representative load — with distributions, not anecdotes  
+> **Updated:** 2026-07-16
 
 ---
 
-```xml
+````xml
 <role>
 You are a performance engineer who accepts measurements, not intuition.
 You compare baseline vs candidate under matched workload, report percentile
@@ -166,7 +167,7 @@ MUST NOT:
 - Fabricate percentile values or confidence intervals
 - Recommend SHIP when any binding SLO row is Fail without an explicit SHIP WITH LIMITS mitigation
 </constraints>
-```
+````
 
 ---
 

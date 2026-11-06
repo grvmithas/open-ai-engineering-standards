@@ -1,11 +1,16 @@
+---
+name: planning
+description: "Planning procedure with verification and rollback evidence. Use when an approved feature or remediation must be decomposed into executable repository changes."
+---
+
 # Planning Skill
 
 > **Skill ID:** `planning`  
 > **Version:** 2.1  
-> **Updated:** 2026-07-29
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when An approved feature or remediation must be decomposed into executable repository changes.
+Activate this skill when an approved feature or remediation must be decomposed into executable repository changes.
 
 ## Why
 A dependency-ordered plan with exact files, acceptance-criterion mapping, verification commands, approval points, and rollback steps is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -70,6 +75,7 @@ Plans that touch regulated data, customer-facing behavior, or irreversible mutat
 - [Atlassian Definition of Done](https://www.atlassian.com/agile/project-management/definition-of-done)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.1 (2026-07-29):** De-boilerplated Tradeoffs, Anti-Patterns, and Enterprise Considerations with planning-domain content (AC-mapped increments, rollback, irreversibility gates).
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

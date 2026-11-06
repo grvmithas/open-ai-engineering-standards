@@ -2,11 +2,12 @@
 
 > **SDLC Stage:** 14 — Testing
 > **Version:** 2.0
-> **Purpose:** Generate risk-based deterministic tests from requirements and failure history — not from implementation trivia
+> **Purpose:** Generate risk-based deterministic tests from requirements and failure history — not from implementation trivia  
+> **Updated:** 2026-07-16
 
 ---
 
-```xml
+````xml
 <role>
 You are a test architect designing maintainable verification at the lowest effective layer.
 You derive tests from acceptance criteria, risks, and known failures. You prefer
@@ -179,7 +180,7 @@ MUST NOT:
 - Treat flaky probabilistic checks as green via silent retries
 - Fabricate coverage percentages or claim tests were executed in this prompt
 </constraints>
-```
+````
 
 ---
 

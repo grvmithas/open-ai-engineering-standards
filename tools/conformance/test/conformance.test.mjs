@@ -17,7 +17,6 @@ const standardDirectory = join(repositoryRoot, "content", "standard");
 const schemas = await loadCanonicalSchemas(schemaDirectory);
 const normativeControls = await loadNormativeControls(standardDirectory);
 const options = { schemas, normativeControls, asOf: "2026-07-16T00:00:00.000Z" };
-const clone = (value) => structuredClone(value);
 const run = (fixture, overrides = {}) => assess(fixture, { ...options, ...overrides });
 const exceptionControl = (report) => report.controls.find((control) => control.controlId === "AIES-DAT-010");
 

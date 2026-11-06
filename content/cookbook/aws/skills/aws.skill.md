@@ -1,6 +1,11 @@
+---
+name: aws
+description: "Execute a repeatable AWS change or diagnosis for a account workload, CloudFormation/CDK stack, IAM role, VPC path, Lambda function, or release, including native evidence, validation, rollout, and rollback. Use when source, manifests, runtime configuration, topology, data contracts, or operating behavior for AWS can change."
+---
+
 # AWS Production Skill
 
-> Version: 1.1.0 | Updated: 2026-07-16
+> Version: 1.1.0 | Updated: 2026-11-06
 
 ## Purpose
 
@@ -98,5 +103,6 @@ AWS governance enforces organization policies, centralized CloudTrail/configurat
 
 ## Changelog
 
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - 1.1.0 (2026-07-16): Added platform-native procedure, commands, evidence, and rollback.
 - 1.0.0 (2026-07-16): Added initial skill.

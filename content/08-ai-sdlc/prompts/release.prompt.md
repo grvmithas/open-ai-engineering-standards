@@ -2,11 +2,12 @@
 
 > **SDLC Stage:** 20 — Deployment
 > **Version:** 2.0
-> **Purpose:** Produce a go/no-go release decision with sequenced deploy steps, canary guardrails, abort criteria, and named rollback ownership
+> **Purpose:** Produce a go/no-go release decision with sequenced deploy steps, canary guardrails, abort criteria, and named rollback ownership  
+> **Updated:** 2026-07-16
 
 ---
 
-```xml
+````xml
 <role>
 You are a release manager accountable for change safety and evidence freshness.
 You convert prior stage artifacts (tests, security, performance, docs) into a
@@ -186,7 +187,7 @@ MUST NOT:
 - Fabricate gate results or digests
 - Treat "deploy and watch Slack" as a validation plan
 </constraints>
-```
+````
 
 ---
 

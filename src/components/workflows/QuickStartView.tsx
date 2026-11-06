@@ -138,22 +138,24 @@ export default function QuickStartView() {
           <h2 className="text-lg font-bold text-[var(--ink)]">Install into your project</h2>
           <p className="mt-2 text-sm text-[var(--ink-muted)]">
             Run this in the <strong className="text-[var(--ink-secondary)]">root of your app repo</strong>.
-            It writes prompts, skills, and agents under the IDE folder, plus the full{' '}
+            Kit 2.0 writes files the runtime actually loads: native subagents and commands, open-standard
+            skills, an enforcing guard hook, and a parallel-worktree helper, plus the{' '}
             {label(profile.stack, STACKS)} cookbook at repo root.{' '}
             <strong className="text-[var(--ink-secondary)]">
-              No <code className="font-mono text-xs">.aies/</code> folder. Cookbook never nests under{' '}
-              <code className="font-mono text-xs">.github/</code>.
+              No <code className="font-mono text-xs">.aies/</code> folder. No MCP server enabled by default.
             </strong>
           </p>
 
           <div className="mt-3 overflow-x-auto rounded-lg border border-[var(--paper-border)] bg-[var(--paper-subtle)] p-3 text-[11px] leading-relaxed text-[var(--ink-secondary)]">
             <p className="font-semibold text-[var(--ink)]">What gets written</p>
             <ul className="mt-1 list-disc space-y-0.5 pl-4 font-mono">
-              <li>AIES.md · implementation_plan.md · CLAUDE.md · AGENTS.md</li>
-              <li>IDE only — {layout.promptsDir}/ · {layout.skillsDir}/ · {layout.agentsDir}/</li>
-              <li>Repo root — {layout.cookbookDir}/ · {layout.guidesDir}/ · {layout.mcpsDir}/ · templates/ · plans/ · reviews/ · hooks/</li>
-              <li>{layout.mcpFile} (mcpServers empty + _aiesRecommended)</li>
-              <li>{layout.rulesFile}</li>
+              <li>{layout.rootFiles.join(' · ')}{layout.rootFiles.includes(layout.rulesFile) ? '' : ` · ${layout.rulesFile}`}</li>
+              <li>Skills — {layout.skillsDir}/&lt;name&gt;/SKILL.md</li>
+              <li>Native — {(layout.ideOnly ?? []).map(d => `${d}/`).join(' · ') || layout.promptsDir}</li>
+              <li>Hooks — hooks/aies-guard.mjs → {layout.hooksFile}</li>
+              <li>Parallel — scripts/aies-worktree.mjs · plans/_TASK_CONTRACT.md</li>
+              <li>Repo root — {layout.cookbookDir}/ · {layout.guidesDir}/ · {layout.mcpsDir}/ · templates/ · reviews/</li>
+              <li>{layout.mcpFile ?? 'MCP (user-level for this runtime)'} — empty; see mcps/recommended.json</li>
             </ul>
           </div>
 

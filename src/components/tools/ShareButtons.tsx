@@ -15,7 +15,6 @@ export default function ShareButtons({
   text = 'Check out the AI Engineering Standard - An open-source operational standard for production AI.',
   url,
   className = '',
-  variant = 'compact',
 }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
 

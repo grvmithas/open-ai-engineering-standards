@@ -1,11 +1,16 @@
+---
+name: azure
+description: "Azure procedure with verification and rollback evidence. Use when an Azure identity, network, compute, data, policy, or deployment design changes."
+---
+
 # Azure Skill
 
 > **Skill ID:** `azure`  
 > **Version:** 2.0  
-> **Updated:** 2026-07-16
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when An Azure identity, network, compute, data, policy, or deployment design changes.
+Activate this skill when an Azure identity, network, compute, data, policy, or deployment design changes.
 
 ## Why
 An Azure architecture record, Bicep or Terraform change, RBAC matrix, policy results, cost estimate, and deployment/rollback evidence is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -69,5 +74,6 @@ Apply repository ownership, separation of duties, data residency and retention, 
 - [Azure RBAC Best Practices](https://learn.microsoft.com/azure/role-based-access-control/best-practices)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

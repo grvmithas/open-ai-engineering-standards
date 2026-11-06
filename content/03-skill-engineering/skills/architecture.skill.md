@@ -1,11 +1,16 @@
+---
+name: architecture
+description: "Architecture procedure with verification and rollback evidence. Use when a request changes system boundaries, deployment topology, data ownership, or a cross-team interface."
+---
+
 # Architecture Skill
 
 > **Skill ID:** `architecture`  
 > **Version:** 2.1  
-> **Updated:** 2026-07-29
+> **Updated:** 2026-11-06
 
 ## Purpose
-Activate this skill when A request changes system boundaries, deployment topology, data ownership, or a cross-team interface.
+Activate this skill when a request changes system boundaries, deployment topology, data ownership, or a cross-team interface.
 
 ## Why
 An architecture decision record, C4 context/container views, interface contracts, quality-attribute scenarios, and a migration sequence is the minimum reviewable deliverable for this domain. A generic "inspect, change, test" loop omits the domain decisions and failure evidence needed for production use.
@@ -70,6 +75,7 @@ Cross-team interfaces need named owners and change control before topology ships
 - [AWS Architecture Decision Records](https://docs.aws.amazon.com/prescriptive-guidance/latest/architectural-decision-records/welcome.html)
 
 ## Changelog
+- **2026-11-06:** Added Agent Skills frontmatter (`name`, `description`) for `.agents/skills` discovery; normalized trigger casing.
 - **2.1 (2026-07-29):** De-boilerplated Tradeoffs, Anti-Patterns, and Enterprise Considerations with architecture-domain content (ADRs, quality attributes, irreversible migrations).
 - **2.0 (2026-07-16):** Replaced the cloned generic procedure with domain-specific artifacts, workflow, recovery, examples, and sources.
 - **1.1:** Initial standardized structure.

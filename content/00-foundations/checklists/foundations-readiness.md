@@ -1,7 +1,8 @@
 # Foundations Readiness Checklist
 
 > Complete this checklist before proceeding to Level 1: Prompt Engineering.
-> **Minimum passing score: 10/12 items checked.**
+> **Minimum passing score: 10/12 items checked.**  
+> **Updated:** 2026-07-16
 
 ---
 

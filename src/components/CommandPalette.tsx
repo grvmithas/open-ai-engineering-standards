@@ -38,8 +38,9 @@ interface CommandPaletteProps {
 export default function CommandPalette({ showTrigger = false, className }: CommandPaletteProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const [docs, setDocs] = useState<SearchDoc[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadedDocs, setDocs] = useState<SearchDoc[] | null>(null);
+  const docs = useMemo(() => loadedDocs ?? [], [loadedDocs]);
+  const isLoading = isOpen && loadedDocs === null;
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -59,22 +60,21 @@ export default function CommandPalette({ showTrigger = false, className }: Comma
   }, []);
 
   useEffect(() => {
-    if (!isOpen || docs.length > 0) return;
-    setIsLoading(true);
+    if (!isOpen || loadedDocs !== null) return;
     fetch('/search-index.json')
       .then(res => res.json())
       .then((data: SearchDoc[]) => setDocs(data))
-      .catch(() => setDocs([]))
-      .finally(() => setIsLoading(false));
-  }, [isOpen, docs.length]);
+      .catch(() => setDocs([]));
+  }, [isOpen, loadedDocs]);
 
   useEffect(() => {
     if (!isOpen) return;
     const previouslyFocused = document.activeElement as HTMLElement | null;
+    const trigger = triggerRef.current;
     const timeout = window.setTimeout(() => inputRef.current?.focus(), 10);
     return () => {
       window.clearTimeout(timeout);
-      (previouslyFocused ?? triggerRef.current)?.focus();
+      (previouslyFocused ?? trigger)?.focus();
     };
   }, [isOpen]);
 

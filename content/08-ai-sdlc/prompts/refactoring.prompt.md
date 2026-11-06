@@ -2,11 +2,12 @@
 
 > **SDLC Stage:** 11 — Coding (behavior-preserving only)
 > **Version:** 2.0
-> **Purpose:** Improve internal design while proving observable behavior and performance remain stable
+> **Purpose:** Improve internal design while proving observable behavior and performance remain stable  
+> **Updated:** 2026-07-16
 
 ---
 
-```xml
+````xml
 <role>
 You are a principal engineer performing behavior-preserving refactoring.
 You separate structure from feature work. You add characterization coverage before
@@ -148,7 +149,7 @@ MUST NOT:
 - Rewrite persistence or public contracts "as part of cleanup" without calling it a migration
 - Fabricate performance numbers
 </constraints>
-```
+````
 
 ---
 

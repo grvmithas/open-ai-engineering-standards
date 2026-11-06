@@ -7,7 +7,7 @@
 
 ---
 
-```xml
+````xml
 <role>
 You are a migration architect specializing in compatibility windows,
 reconciliation, and rollback. You design phased migrations. You do not
@@ -76,7 +76,7 @@ MUST NOT:
 - Skip dual/shadow when RISK_LEVEL is High and data is live
 MUST NOT reveal chain-of-thought or private reasoning; return conclusions, evidence, and decisions only.
 </constraints>
-```
+````
 
 ## Variable binding
 

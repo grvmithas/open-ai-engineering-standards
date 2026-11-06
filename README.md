@@ -1,7 +1,7 @@
 # AI Engineering Standard (AIES) Website
 
-**Version:** 1.0.0  
-**Last updated:** 2026-07-29
+**Version:** 1.1.0  
+**Last updated:** 2026-11-06
 
 ## Purpose
 
@@ -20,18 +20,42 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`. The `prebuild` script generates `public/search-index.json` deterministically from `content/`.
+Open `http://localhost:3100`. `predev` and `prebuild` run `npm run generate`, which embeds the kit corpus and regenerates the content manifest and `public/search-index.json` deterministically from `content/`.
 
 ### Quality gates
 
 ```bash
-npm run lint
+npm run lint          # zero warnings
 npm run typecheck
-npm test
+npm test              # content, portal, links, workflows, mermaid, a11y, security, SoA conformance, kit conformance
 npm run build
 ```
 
 The generated manifest is the source of truth for document routes, navigation, search, sitemap entries, and published document counts. `npm run content:check-generated` fails when committed generated artifacts do not match `content/`.
+
+### Starter kit (`packages/`)
+
+`packages/kit-core` generates the harness; `packages/create-aies-kit` is the published CLI (it vendors kit-core at pack time). The website's `/api/kit` route and the CLI share the same generator.
+
+```bash
+npm run kit:embed      # re-embed content into packages/kit-core/lib/embedded-corpus.js (part of generate)
+npm run kit:check      # conformance: 9 runtimes × 4 stacks, frontmatter/TOML/JSON, guard behavior, layout snapshot
+npm run kit:snapshot   # accept an intentional layout change (review the diff first)
+npm run kit:vendor     # vendor kit-core into the CLI package
+```
+
+Release: bump `packages/create-aies-kit/package.json`, add a `## [x.y.z]` entry to its `CHANGELOG.md`, push tag `create-aies-kit-vX.Y.Z`. `release-kit.yml` verifies, smoke-tests the packed tarball, and publishes with npm provenance (OIDC trusted publishing preferred; `NPM_TOKEN` repository secret as fallback). Never publish from a laptop `.env`.
+
+### Operations
+
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `repository-integrity.yml` | PR, push to `main` | All gates, embedded-corpus drift, kit install + audit E2E on Linux/Windows, build, dependency audit |
+| `eval-gate.yml` | PR touching prompts/agents/skills/eval | DeepEval suite; explicit *skipped* summary when `OPENAI_API_KEY` is absent |
+| `release-kit.yml` | `create-aies-kit-v*` tag | Verified, provenance-signed npm publish |
+| `scheduled-health.yml` | Weekly | Tests, audit, remote MCP/doc liveness (`scripts/check-external.mjs`), freshness (`npm run content:freshness`); opens an issue on drift |
+
+Triage runbook: [`content/handbook/vendor-watchlist.md`](content/handbook/vendor-watchlist.md).
 
 ### Vercel deployment
 
@@ -39,7 +63,7 @@ The generated manifest is the source of truth for document routes, navigation, s
 2. Select the Next.js framework preset.
 3. Keep the root directory as `.`.
 4. Do not configure an output directory or custom build command.
-5. Set `NEXT_PUBLIC_SITE_URL` to the production origin, such as `https://oaies.dev`.
+5. Set `NEXT_PUBLIC_SITE_URL` to the production origin, such as `https://www.ai-standards.dev`.
 
 Vercel uses native Next.js auto-detection and runs `npm run build`.
 
@@ -72,8 +96,16 @@ Vercel uses native Next.js auto-detection and runs `npm run build`.
 - [ ] `/docs` permanently redirects to `/docs/README`.
 - [ ] `NEXT_PUBLIC_SITE_URL` matches the production domain.
 - [ ] Vercel has no custom output-directory override.
+- [ ] `npm run kit:check` passes and the embedded corpus is current.
+- [ ] `scheduled-health.yml` has an owner; no open drift issue older than one week.
 
 ## Changelog
+
+### 1.1.0 — 2026-11-06
+
+- 2026 modernization (see `plans/aies-2026-modernization-plan.md`): kit 2.0 (nine runtimes, native subagents/commands/hooks, Agent Skills, remote MCP, parallel worktrees, plugin bundle, cloud setup); Agentic engineering handbook track; 24 MCP specs refreshed to spec `2026-07-28` with deployment-status tables.
+- CI: all gates incl. kit conformance and SoA tests; kit install E2E; conditional eval gate; tag-driven provenance release; weekly health workflow.
+- Lint debt cleared (zero warnings): storage-backed providers moved to `useSyncExternalStore`.
 
 ### 1.0.0 — 2026-07-16
 
