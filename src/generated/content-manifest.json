@@ -1236,7 +1236,7 @@
       "slug": "CHANGELOG",
       "sourcePath": "content/CHANGELOG.md",
       "title": "Changelog",
-      "description": "All notable changes to the AI Engineering Standard are documented here."
+      "description": "All notable changes to the AI Engineering Standard are documented here. The normative kernel (standard/) is versioned separately in its own README; the starter "
     },
     {
       "slug": "checklists/README",

@@ -14,6 +14,7 @@ import {
   SITE_VERSION,
 } from '@/lib/site';
 import { DEFAULT_DESCRIPTION, SEO_KEYWORDS } from '@/lib/seo';
+import { KIT_VERSION } from '../../packages/kit-core/lib/options.js';
 
 export const metadata: Metadata = {
   title: `${PRODUCT_SHORT} — ${PRODUCT_NAME}`,
@@ -608,7 +609,7 @@ export default function HomePage() {
       <footer className="border-t border-[var(--shell-border)] bg-[var(--shell)] px-4 py-8 text-center text-xs text-[var(--shell-muted)] md:px-6">
         <p>
           <strong className="text-[var(--shell-text)]">{PRODUCT_SHORT}</strong>
-          {' '}— {PRODUCT_NAME} · {RELEASE_STATUS} · site v{SITE_VERSION}
+          {' '}— {PRODUCT_NAME} · {RELEASE_STATUS} · standard v{SITE_VERSION} · kit v{KIT_VERSION}
         </p>
         <p className="mx-auto mt-2 max-w-lg text-[11px] leading-relaxed">
           Not affiliated with OpenAI, Anthropic, or any model vendor. “Open” means open-source and community-governed.

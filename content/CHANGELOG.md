@@ -1,11 +1,33 @@
 # Changelog
 
-> **Updated:** 2026-07-29
+> **Updated:** 2026-11-06
 
-All notable changes to the AI Engineering Standard are documented here.
+All notable changes to the AI Engineering Standard are documented here. The normative kernel (`standard/`) is versioned separately in its own README; the starter kit (`@grvmithas/create-aies-kit`) has its own changelog.
 
 Format: `[Version] — YYYY-MM-DD`
 Each entry includes: Added, Changed, Deprecated, Removed, Fixed, Security.
+
+---
+
+## [1.1.0] — 2026-11-06
+
+### Added
+- `07-llmops/model-lifecycle.md` — model deprecation tracking, pinning, and migration runbook.
+- `09-enterprise-ai/security/agent-security-controls.md` — agent controls AC-01 to AC-06 (self-configuration integrity, secret reads, tool authority).
+- Handbook chapters for 2026 agent runtimes: native agent hooks, IDE-native subagents, open agent standards, MCP remote servers with OAuth, vendor watchlist.
+- Prompt anti-patterns #14–16.
+
+### Changed
+- EU AI Act control map and crosswalk updated for the 2026 obligation timeline.
+- OWASP AI security crosswalk updated for agentic and MCP risks.
+- AutoGen marked maintenance mode; Microsoft Agent Framework 1.0 is the recommended successor.
+- Evaluation framework selection updated with current tools and pinned provider examples.
+- MCP specifications move to vendor-hosted Streamable HTTP servers with OAuth; archived reference servers are flagged.
+- Skills updated: code-review 1.3, debug 1.2, security 1.2.
+
+### Fixed
+- Homepage install command now uses the published package name (`npx @grvmithas/create-aies-kit@latest`).
+- Footer and docs pages show the current corpus version instead of 1.0.0.
 
 ---
 
